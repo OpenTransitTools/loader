@@ -1,5 +1,5 @@
-0.1.0 (2012-11-05)
+0.1.0 (2015-01-15)
 ------------------
-- First running example
-- Uses a sqllite database and python code to render html
 - Initial project setup
+- OTT Deploy stuff
+- Includes scripts to run routing tests against an OTP Graph.obj

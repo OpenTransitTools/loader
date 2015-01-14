@@ -7,18 +7,11 @@ README = open(os.path.join(here, 'README.md')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'ott.utils',
-    'sqlalchemy<0.9.0',
-    'transaction',
-    'gtfsdb',
-    'protobuf',
     'simplejson'
 ]
 
 extras_require = dict(
     dev=[],
-    geo=['geoalchemy>=0.6'],
-    postgresql=['psycopg2>=2.4.2'],
 )
 
 #
@@ -29,9 +22,9 @@ if sys.version_info[:2] < (2, 7):
 
 
 setup(
-    name='ott.data',
+    name='ott.deploy',
     version='0.1.0',
-    description='Open Transit Tools - OTT Database',
+    description='Open Transit Tools - OTT Deploy',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
         "Programming Language :: Python",
@@ -41,7 +34,6 @@ setup(
     author="Open Transit Tools",
     author_email="info@opentransittools.org",
     dependency_links=[
-        'git+https://github.com/OpenTransitTools/utils.git#egg=ott.utils-0.1.0',
     ],
     license="Mozilla-derived (http://opentransittools.com)",
     url='http://opentransittools.com',
@@ -52,10 +44,8 @@ setup(
     install_requires=requires,
     extras_require=extras_require,
     tests_require=requires,
-    test_suite="ott.data.tests",
+    test_suite="ott.deploy.tests",
     entry_points="""\
         [console_scripts]
-        load_rt = ott.data.gtfsrdb.gtfsrdb:main
-        route_alerts = ott.data.dao.alerts_dao:main
     """,
 )
