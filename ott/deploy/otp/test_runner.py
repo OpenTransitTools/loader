@@ -494,13 +494,13 @@ def stress(argv):
         ts.printer()
 
 
-def main(argv):
+def main(argv=sys.argv):
     if 'STRESS' in argv:
         stress(argv)
     else:
         runner(argv)
 
-def xmain(argv):
+def xmain(argv=sys.argv):
     ''' test method for developing / debugging the suite.... 
     '''
     date = None
@@ -523,4 +523,4 @@ def xmain(argv):
     print x.get_ridetrimetorg_url()
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
