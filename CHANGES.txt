@@ -1,0 +1,5 @@
+0.1.0 (2012-11-05)
+------------------
+- First running example
+- Uses a sqllite database and python code to render html
+- Initial project setup
