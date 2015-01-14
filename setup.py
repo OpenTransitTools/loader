@@ -46,9 +46,8 @@ setup(
     extras_require=extras_require,
     tests_require=requires,
     test_suite="ott.deploy.tests",
-    entry_points={
-        'console_scripts': [
-            'otp_tests = ott.deploy.otp.test_runner:main'
-        ]
-    },
+    entry_points="""
+        [console_scripts]
+        otp_tests = ott.deploy.otp.test_runner:main
+    """,
 )

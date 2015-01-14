@@ -410,7 +410,7 @@ class TestRunner(object):
         url to the trip planner, calling the url, then printing a report
     """
 
-    def __init__(self, report_template=None, date=None, suites='./otpdeployer/suites/'):
+    def __init__(self, report_template=None, date=None, suites='./ott/deploy/otp/suites'):
         """constructor builds the test runner
         """
         self.dir = envvar('OTP_CSV_DIR', suites, '/')
@@ -419,7 +419,7 @@ class TestRunner(object):
             self.report_template = Template(filename=report_template)
 
     @classmethod
-    def get_test_suites(cls, date=None, dir='./otpdeployer/suites/'):
+    def get_test_suites(cls, date=None, dir='./ott/deploy/otp/suites/'):
         test_suites = []
         files=os.listdir(dir)
         for f in files:
@@ -467,7 +467,7 @@ def runner(argv):
             date = argv[1]
     logging.basicConfig(level=lev)
 
-    template = envvar('OTP_TEMPLATE', './otpdeployer/templates/good_bad.html')
+    template = envvar('OTP_TEMPLATE', './ott/deploy/otp/templates/good_bad.html')
     t = TestRunner(template, date)
     t.run()
     r = t.report()
@@ -477,7 +477,7 @@ def runner(argv):
     else:
         print('Nope, no errors')
 
-    report = envvar('OTP_REPORT',   './otp/graph/otp_report.html')
+    report = envvar('OTP_REPORT',   'otp_report.html')
     f = open(report, 'w')
     f.write(r)
     f.flush()
@@ -493,7 +493,6 @@ def stress(argv):
     for ts in test_suites:
         ts.printer()
 
-
 def main(argv=sys.argv):
     if 'STRESS' in argv:
         stress(argv)
@@ -508,7 +507,7 @@ def xmain(argv=sys.argv):
         date = argv[1]
 
     logging.basicConfig(level=logging.INFO)
-    template = envvar('OTP_TEMPLATE', './otpdeployer/templates/good_bad.html')
+    template = envvar('OTP_TEMPLATE', './ott/deploy/otp/templates/good_bad.html')
     x = Test({
               'From' : '1',
               'To' : '1',
