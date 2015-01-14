@@ -83,8 +83,12 @@ class Test(object):
         if 'Expected number of legs' in param_dict:
             self.expect_num_legs = self.get_param('Expected number of legs')
 
-        self.planner_url = envvar('OTP_URL',  'http://maps10.trimet.org/prod')
-        self.map_url = envvar('OTP_MAP_URL',  'http://maps10.trimet.org/otp.html')
+        host = envvar('HOSTNAME')
+        if host is None or "maps" not in host:
+            host = 'maps7.trimet.org'
+        self.planner_url = envvar('OTP_URL', "http://{0}/prod".format(host))
+        self.map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
+
         self.init_url_params()
         self.date = self.get_date_param(self.date)
 
