@@ -49,5 +49,6 @@ setup(
     entry_points="""
         [console_scripts]
         otp_tests = ott.deploy.otp.test_runner:main
+        ws_tests = ott.deploy.otp.tm_ws_runner:main
     """,
 )

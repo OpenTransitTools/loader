@@ -11,6 +11,7 @@ import socket
 import urllib2
 from mako.template import Template
 
+
 def envvar(name, defval=None, suffix=None):
     """ envvar interface -- TODO: put this in a utils api
     """
@@ -18,7 +19,6 @@ def envvar(name, defval=None, suffix=None):
     if suffix is not None:
         retval = retval + suffix
     return retval
-
 
 class TestResult:
     FAIL=000
@@ -28,6 +28,7 @@ class TestResult:
 class Test(object):
     """ Params for test, along with run capability -- Test object is typically built from a row in an .csv test suite 
     """
+    TestClass = None
 
     def __init__(self, param_dict, line_number, date=None):
         """ {
@@ -213,7 +214,7 @@ class Test(object):
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.otp_params
 
-    
+
     def init_url_params(self):
         """
         """
@@ -264,8 +265,6 @@ class Test(object):
     def get_date_param(self, date):
         """ provide a default date (set to today) if no service provided...
         """
-
-
         if self.otp_params.find('date') < 0:
             if date is None:
                 if self.service is None:
@@ -320,6 +319,9 @@ class Test(object):
 
 
 
+Test.TestClass = Test
+
+
 class TestSuite(object):
     """ url
     """
@@ -371,13 +373,13 @@ class TestSuite(object):
         """
         logging.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
-            t = Test(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
+            t = Test.TestClass(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
             t.depart_by_check()
             self.do_test(t)
 
             """ arrive by tests
             """
-            t = Test(p, i+2, self.date)
+            t = Test.TestClass(p, i+2, self.date)
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
