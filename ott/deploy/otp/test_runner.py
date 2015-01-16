@@ -80,19 +80,25 @@ class Test(object):
         self.expect_num_legs = self.get_param('Expected number of legs')
         self.arrive_by       = self.get_param('Arrive by')
         self.depart_by       = self.get_param('Depart by')
-        
+
         if 'Expected number of legs' in param_dict:
             self.expect_num_legs = self.get_param('Expected number of legs')
 
-        host = envvar('HOSTNAME')
-        if host is None or "maps" not in host:
-            host = 'maps7.trimet.org'
-        self.planner_url = envvar('OTP_URL', "http://{0}/prod".format(host))
-        self.map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
-
+        self.set_hostname()
+        self.set_urls()
         self.init_url_params()
         self.date = self.get_date_param(self.date)
 
+
+    def set_hostname(self):
+        host = envvar('HOSTNAME')
+        if host is None or "maps" not in host:
+            host = 'maps7.trimet.org'
+        self.host = host
+
+    def set_urls(self):
+        self.planner_url = envvar('OTP_URL', "http://{0}/prod".format(self.host))
+        self.map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(self.host))
 
     def get_param(self, name, def_val=None):
         ret_val = def_val
@@ -105,17 +111,14 @@ class Test(object):
 
         return ret_val
 
-
     def did_test_pass(self):
         ret_val = False
         if self.result is not None and self.result is TestResult.PASS:
             ret_val = True
         return ret_val
 
-
     def append_note(self, note=""):
         self.description += " " + note 
-
 
     def call_otp(self, url=None):
         ''' calls the trip web service
@@ -143,7 +146,6 @@ class Test(object):
             self.error_descript = 'ERROR: could not get data from url (timeout?): {0}'.format(url)
             logging.warn(self.error_descript)
             self.result = TestResult.WARN
-
 
     def test_otp_result(self, strict=True):
         """ regexp test of the itinerary output for certain strings
@@ -201,19 +203,15 @@ class Test(object):
 
         return self.result
 
-
     def get_planner_url(self):
         return "{0}?submit&{1}".format(self.planner_url, self.otp_params)
-
 
     def get_map_url(self):
         purl = self.planner_url.split('/')[-1]
         return "{0}?submit&purl=/{1}&{2}".format(self.map_url, purl, self.otp_params)
 
-    
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.otp_params
-
 
     def init_url_params(self):
         """
@@ -225,7 +223,6 @@ class Test(object):
                 logging.warn(self.error_descript)
             self.is_valid = False
 
-    
     def url_param(self, name, param, default=None):
         """
         """
@@ -280,7 +277,6 @@ class Test(object):
             self.url_param('date', date)
         return date
 
-
     def url_service_next_weekday(self):
         """
         """
@@ -295,7 +291,6 @@ class Test(object):
             date = date+datetime.timedelta(days=5-day)
         date = date.strftime("%Y-%m-%d")
         return date
-        
 
     def url_service_next_sunday(self):
         date = datetime.datetime.now()
@@ -318,9 +313,7 @@ class Test(object):
             self.is_valid = False
 
 
-
 Test.TestClass = Test
-
 
 class TestSuite(object):
     """ url
@@ -484,7 +477,6 @@ def runner(argv):
     f.write(r)
     f.flush()
     f.close()
-
 
 def stress(argv):
     date = None
