@@ -4,16 +4,14 @@ from test_runner import *
 class WsTest(Test):
     """ ...
     """
+    def __init__(self, param_dict, line_number, date=None):
+        super(WsTest, self).__init__(param_dict, line_number, date)
+
+
     def init_url_params(self):
         """
         """
-        print "Foo"
-        self.otp_params = 'fromPlace={0}&toPlace={1}'.format(self.coord_from, self.coord_to)
-        if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
-            if self.coord_from != None or self.coord_to != None:
-                self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:" + str(self.coord_from) + ' to:' + str(self.coord_to)
-                logging.warn(self.error_descript)
-            self.is_valid = False
+        self.otp_params = 'from={0}&to={1}'.format(self.coord_from, self.coord_to)
 
 
 Test.TestClass = WsTest
