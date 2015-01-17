@@ -14,15 +14,27 @@ class WsTest(Test):
 
     @classmethod
     def to_coord(cls, param):
+        ret_val = None
         p = param.split('::')
-        return p[1]
+        if p and len(p) > 0:
+            ret_val = p[0]
+            if len(p) > 1:
+                ret_val = p[1]
+        return ret_val
 
     def init_url_params(self):
         """
         """
-        f = self.to_coord(self.coord_from)
-        t = self.to_coord(self.coord_to)
-        self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&fromCoord={0}&toCoord={1}'.format(f, t)
+        try:
+            f = self.to_coord(self.coord_from)
+            t = self.to_coord(self.coord_to)
+            self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&fromCoord={0}&toCoord={1}'.format(f, t)
+        except:
+            print "**************************"
+            print "Error: this might not be a test, but a comment "
+            print self.__dict__
+            print "**************************"
+            print "\n\n"
 
 Test.TestClass = WsTest
 
