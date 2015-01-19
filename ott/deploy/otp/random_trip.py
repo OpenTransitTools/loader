@@ -1,5 +1,6 @@
 import sys
 from test_runner import *
+from ott.utils.parse import csv_reader
 
 class RandomTrip(Test):
     """ read in a .csv file full of points, and then output a set of test cases
@@ -15,7 +16,11 @@ class RandomTrip(Test):
 Test.TestClass = RandomTrip
 
 def main(argv=sys.argv):
-    runner(argv)
+    #runner(argv)
+    geotests = csv_reader.Csv.get_relative_dirname(__file__, "../../geocode/tests/geocodes.csv")
+    csv_file = csv_reader.Csv('geocodes.csv', geotests)
+    test_data = csv_file.open()
+
 
 if __name__ == '__main__':
     main()
