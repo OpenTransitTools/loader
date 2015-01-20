@@ -8,12 +8,13 @@ class RandomTrip():
         geotests = csv_reader.Csv.get_relative_dirname(__file__, "../../geocode/tests/geocodes.csv")
         csv_file = csv_reader.Csv('geocodes.csv', geotests)
         test_data = csv_file.open()
+        print planner_url
         for t in test_data:
             print t
 
 
 def ws_trips():
-    from ws_test_runner import WsTest
+    from tm_ws_runner import WsTest
     h = WsTest.make_hostname()
     p,m = WsTest.make_urls(h)
     rt = RandomTrip(p)

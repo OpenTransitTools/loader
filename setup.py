@@ -53,5 +53,6 @@ setup(
         otp_tests = ott.deploy.otp.test_runner:main
         ws_tests = ott.deploy.otp.tm_ws_runner:main
         random_trips = ott.deploy.otp.random_trip:main
+        random_trips_ws = ott.deploy.otp.random_trip:ws_trips
     """,
 )
