@@ -149,13 +149,14 @@ class Test(object):
             logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url " + url)
 
     @classmethod
-    def static_call_otp(self, url, accept='application/xml'):
+    def static_call_otp(cls, url, accept='application/xml'):
         ret_val = None
         try:
             socket.setdefaulttimeout(45)
             logging.debug("call_otp: OTP output for " + url)
             req = urllib2.Request(url, None, {'Accept':accept})
             res = urllib2.urlopen(req)
+            logging.debug("call_otp: OTP output for " + url)
             ret_val = res.read()
             res.close()
         except:

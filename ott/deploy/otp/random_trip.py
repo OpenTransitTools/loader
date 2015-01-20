@@ -23,13 +23,30 @@ class RandomTrip():
     def make_tests(self, planner_url, params="fromPlace={0}&toPlace={1}", num=500):
         for i in xrange(num):
             s = random.sample(self.name_list, 2)
-            p = params.format(*s)
-            u = planner_url + "?" + urllib.quote_plus(p)
+            p1 = s[0].replace(' ', '%20').replace('&', '%26').replace('#', '%23')
+            p2 = s[1].replace(' ', '%20').replace('&', '%26').replace('#', '%23')
+            p = params.format(p1, p2)
+            u = planner_url + "?" + p
             self.url_list.append(u)
 
     def call_urls(self):
         for u in self.url_list:
-            Test.static_call_otp(u)
+            #import pdb; pdb.set_trace()
+            itinerary = Test.static_call_otp(u)
+            print u
+            if itinerary:
+                if len(itinerary) < 1000:
+                    error_descript = "test_otp_result: itinerary content looks small at " + str(len(itinerary)) + " characters."
+                    print error_descript
+                if "Uncertain Location" in itinerary:
+                    error_descript = "test_otp_result: itinerary had ambiguous geocode"
+                    print error_descript
+            else:
+                print "Planner didn't return anything (null)..."
+
+def zws_trips():
+    s = Test.static_call_otp("http://maps7.trimet.org/maps/tpws/V1/trips/tripplanner?fromPlace=6236%20SE%20134TH%20AVE&toPlace=9341%20N%20FISKE%20AVE")
+    print s
 
 def ws_trips():
     h = WsTest.make_hostname()
