@@ -13,7 +13,7 @@ class WsTest(Test):
         self.map_url = m
 
     def get_date_param(self, date, fmt="%m-%d-%Y"):
-        super(WsTest, self).get_date_param(fmt)
+        super(WsTest, self).get_date_param(date, fmt)
 
     @classmethod
     def make_urls(cls, host):
