@@ -15,6 +15,11 @@ class WsTest(Test):
     def get_date_param(self, date, fmt="%m-%d-%Y"):
         super(WsTest, self).get_date_param(date, fmt)
 
+    def test_expected_response(self, expected_output, ret_val, strict):
+        if "interlineWithPreviousLeg" in expected_output:
+            ret_val = super(WsTest, self).test_expected_response("thru-route", ret_val, strict)
+        return ret_val
+
     @classmethod
     def make_urls(cls, host):
         #self.planner_url = "http://developer.trimet.org/ws/V1/trips/tripplanner"

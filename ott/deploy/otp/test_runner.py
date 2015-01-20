@@ -174,12 +174,7 @@ class Test(object):
                 self.error_descript = "test_otp_result: itinerary content size is " + str(len(self.itinerary)) + " characters."
                 logging.info(self.error_descript)
                 warn = False
-                if self.expect_output is not None and len(self.expect_output) > 0:
-                    regres = re.search(self.expect_output, self.itinerary)
-                    if regres is None:
-                        self.result = TestResult.FAIL if strict else TestResult.WARN
-                        self.error_descript += "test_otp_result: couldn't find " + self.expect_output + " in otp response."
-                        warn = True
+                warn = self.test_expected_response(self.expect_output, warn, strict)
                 if self.expect_duration is not None and len(self.expect_duration) > 0:
                     durations = re.findall('<itinerary>.*?<duration>(.*?)</duration>.*?</itinerary>', self.itinerary) 
                     error = 0.2
@@ -213,6 +208,15 @@ class Test(object):
                     logging.warn(self.error_descript)
 
         return self.result
+
+    def test_expected_response(self, expected_output, ret_val, strict):
+        if expected_output is not None and len(expected_output) > 0:
+            regres = re.search(expected_output, self.itinerary)
+            if regres is None:
+                self.result = TestResult.FAIL if strict else TestResult.WARN
+                self.error_descript += "test_otp_result: couldn't find " + expected_output + " in otp response."
+                ret_val = True
+        return ret_val
 
     def get_planner_url(self):
         return "{0}?submit&{1}".format(self.planner_url, self.otp_params)
