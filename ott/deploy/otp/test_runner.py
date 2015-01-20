@@ -89,16 +89,27 @@ class Test(object):
         self.init_url_params()
         self.date = self.get_date_param(self.date)
 
-
     def set_hostname(self):
+        self.host = self.make_hostname()
+
+    @classmethod
+    def make_hostname(cls):
         host = envvar('HOSTNAME')
         if host is None or "maps" not in host:
             host = 'maps7.trimet.org'
-        self.host = host
+        return host
 
     def set_urls(self):
-        self.planner_url = envvar('OTP_URL', "http://{0}/prod".format(self.host))
-        self.map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(self.host))
+        p,m = self.make_urls(self.host)
+        self.planner_url = p
+        self.map_url = m
+
+    @classmethod
+    def make_urls(cls, host):
+        planner_url = envvar('OTP_URL', "http://{0}/prod".format(host))
+        map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
+        return planner_url, map_url
+
 
     def get_param(self, name, def_val=None):
         ret_val = def_val

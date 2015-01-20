@@ -8,9 +8,16 @@ class WsTest(Test):
         super(WsTest, self).__init__(param_dict, line_number, date)
 
     def set_urls(self):
+        p,m = self.make_urls(self.host)
+        self.planner_url = p
+        self.map_url = m
+
+    @classmethod
+    def make_urls(cls, host):
         #self.planner_url = "http://developer.trimet.org/ws/V1/trips/tripplanner"
-        self.planner_url = "http://{0}/maps/tpws/V1/trips/tripplanner".format(self.host)
-        self.map_url = "http://{0}/otp.html".format(self.host)
+        planner_url = "http://{0}/maps/tpws/V1/trips/tripplanner".format(host)
+        map_url = "http://{0}/otp.html".format(host)
+        return planner_url, map_url
 
     @classmethod
     def to_coord(cls, param):
