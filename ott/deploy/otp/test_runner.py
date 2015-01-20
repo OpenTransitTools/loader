@@ -269,20 +269,20 @@ class Test(object):
         """
         """
         pass
-    
-    def get_date_param(self, date):
+
+    def get_date_param(self, date, fmt="%Y-%m-%d"):
         """ provide a default date (set to today) if no service provided...
         """
         if self.otp_params.find('date') < 0:
             if date is None:
                 if self.service is None:
-                    date = datetime.datetime.now().strftime("%Y-%m-%d")
+                    date = datetime.datetime.now().strftime(fmt)
                 elif self.service == 'Saturday':
                     date = self.url_service_next_saturday()
                 elif self.service == 'Sunday':
                     date = self.url_service_next_sunday()
                 else:
-                    date = datetime.datetime.now().strftime("%Y-%m-%d")
+                    date = datetime.datetime.now().strftime(fmt)
                     logging.warn("service param '{0}' not valid, using todays date.".format(self.service))
             
             self.url_param('date', date)

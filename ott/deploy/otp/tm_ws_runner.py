@@ -12,12 +12,16 @@ class WsTest(Test):
         self.planner_url = p
         self.map_url = m
 
+    def get_date_param(self, date, fmt="%m-%d-%Y"):
+        super(WsTest, self).get_date_param(fmt)
+
     @classmethod
     def make_urls(cls, host):
         #self.planner_url = "http://developer.trimet.org/ws/V1/trips/tripplanner"
         planner_url = "http://{0}/maps/tpws/V1/trips/tripplanner".format(host)
         map_url = "http://{0}/otp.html".format(host)
         return planner_url, map_url
+
 
     @classmethod
     def to_coord(cls, param):

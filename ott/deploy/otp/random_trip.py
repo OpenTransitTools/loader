@@ -14,13 +14,10 @@ class RandomTrip():
         for t in self.test_data:
             self.name_list.append(t['name'])
 
-
-    def make_tests(self, planner_url, params="?from={0}&to={1}", num=500):
+    def make_tests(self, planner_url, params="?fromPlace={0}&toPlace={1}", num=500):
         for i in xrange(num):
             s = random.sample(self.name_list, 2)
             print planner_url + params.format(*s)
-
-
 
 def ws_trips():
     from tm_ws_runner import WsTest
