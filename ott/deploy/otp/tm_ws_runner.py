@@ -16,7 +16,7 @@ class WsTest(Test):
         super(WsTest, self).get_date_param(date, fmt)
 
     def test_expected_response(self, expected_output, ret_val, strict):
-        if "interlineWithPreviousLeg" in expected_output:
+        if expected_output and "interlineWithPreviousLeg" in expected_output:
             ret_val = super(WsTest, self).test_expected_response("thru-route", ret_val, strict)
         return ret_val
 

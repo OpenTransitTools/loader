@@ -129,34 +129,38 @@ class Test(object):
         return ret_val
 
     def append_note(self, note=""):
-        self.description += " " + note 
+        self.description += " " + note
 
     def call_otp(self, url=None):
         ''' calls the trip web service
         '''
         self.itinerary = None
-        try:
-            start = time.time()
-            url = (url if url != None else self.get_planner_url())
-            socket.setdefaulttimeout(45)
-            req = urllib2.Request(url, None, {'Accept':'application/xml'})
-            res = urllib2.urlopen(req)
-            self.itinerary = res.read()
-            res.close()
-            end = time.time()
-            self.response_time = end - start
-            logging.info("call_otp: response time of " + str(self.response_time) + " seconds for url " + url)
-            logging.debug("call_otp: OTP output for " + url)
-            logging.debug(self.itinerary)
-            if self.response_time <= 30:
-                self.result = TestResult.PASS
-            else:
-                self.result = TestResult.WARN
-                logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url " + url)
-        except:
-            self.error_descript = 'ERROR: could not get data from url (timeout?): {0}'.format(url)
-            logging.warn(self.error_descript)
+        start = time.time()
+        url = (url if url != None else self.get_planner_url())
+        self.itinerary = self.static_call_otp(url)
+        end = time.time()
+        self.response_time = end - start
+        logging.info("call_otp: response time of " + str(self.response_time) + " seconds for url " + url)
+        logging.debug(self.itinerary)
+        if self.response_time <= 30:
+            self.result = TestResult.PASS
+        else:
             self.result = TestResult.WARN
+            logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url " + url)
+
+    @classmethod
+    def static_call_otp(self, url, accept='application/xml'):
+        ret_val = None
+        try:
+            socket.setdefaulttimeout(45)
+            logging.debug("call_otp: OTP output for " + url)
+            req = urllib2.Request(url, None, {'Accept':accept})
+            res = urllib2.urlopen(req)
+            ret_val = res.read()
+            res.close()
+        except:
+            logging.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
+        return ret_val
 
     def test_otp_result(self, strict=True):
         """ regexp test of the itinerary output for certain strings
