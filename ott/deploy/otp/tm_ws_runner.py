@@ -24,7 +24,7 @@ class WsTest(Test):
     def make_urls(cls, host):
         #self.planner_url = "http://developer.trimet.org/ws/V1/trips/tripplanner"
         planner_url = "http://{0}/maps/tpws/V1/trips/tripplanner".format(host)
-        map_url = "http://{0}/otp.html".format(host)
+        map_url = "http://{0}/tmap.html?debug".format(host)
         return planner_url, map_url
 
 
