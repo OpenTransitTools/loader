@@ -466,7 +466,11 @@ class TestRunner(object):
     def report(self):
         """ render a pass/fail report
         """
-        r = self.report_template.render(test_suites=self.test_suites, test_errors=self.has_errors())
+        r = None
+        try:
+            r = self.report_template.render(test_suites=self.test_suites, test_errors=self.has_errors())
+        except Exception, e:
+            print e
         return r
 
 
@@ -494,7 +498,10 @@ def runner(argv):
 
     report = envvar('OTP_REPORT',   'otp_report.html')
     f = open(report, 'w')
-    f.write(r)
+    if r:
+        f.write(r)
+    else:
+        f.write("Sorry, the template was null...")
     f.flush()
     f.close()
 
