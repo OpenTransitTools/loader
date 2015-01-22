@@ -60,6 +60,7 @@ class Test(object):
 
         self.itinerary       = None
         self.otp_params      = ''
+        self.map_params      = ''
         self.is_valid        = True
         self.error_descript  = None
         self.result          = TestResult.FAIL
@@ -230,7 +231,7 @@ class Test(object):
 
     def get_map_url(self):
         purl = self.planner_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.otp_params)
+        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
 
     @classmethod
     def make_url(cls, url, separater="?submit"):
@@ -240,12 +241,13 @@ class Test(object):
         return ret_val
 
     def get_ridetrimetorg_url(self):
-        return "http://ride.trimet.org?submit&" + self.otp_params
+        return "http://ride.trimet.org?submit&" + self.map_params
 
     def init_url_params(self):
         """
         """
         self.otp_params = 'fromPlace={0}&toPlace={1}'.format(self.coord_from, self.coord_to)
+        self.map_params = self.otp_params
         if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
             if self.coord_from != None or self.coord_to != None:
                 self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:" + str(self.coord_from) + ' to:' + str(self.coord_to)
@@ -258,6 +260,7 @@ class Test(object):
         p = (param if param != None else default)
         if p != None and p != '':
             self.otp_params += '&{0}={1}'.format(name, p)
+            self.map_params += '&{0}={1}'.format(name, p)
 
     def url_distance(self, dist=None):
         self.url_param('maxWalkDistance', dist, self.distance)

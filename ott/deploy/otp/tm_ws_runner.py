@@ -38,6 +38,9 @@ class WsTest(Test):
                 ret_val = p[1]
         return ret_val
 
+    def get_map_url(self):
+        return "{0}&{1}".format(self.make_url(self.map_url), self.map_params)
+
     def init_url_params(self):
         """
         """
@@ -45,6 +48,7 @@ class WsTest(Test):
             f = self.to_coord(self.coord_from)
             t = self.to_coord(self.coord_to)
             self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&fromCoord={0}&toCoord={1}'.format(f, t)
+            self.map_params = 'fromPlace={0}&toPlace={1}'.format(f, t)
         except:
             print "**************************"
             print "Error: this might not be a test, but a comment "
