@@ -10,6 +10,7 @@ import re
 import socket
 import urllib2
 from mako.template import Template
+from mako import exceptions
 
 
 def envvar(name, defval=None, suffix=None):
@@ -62,6 +63,7 @@ class Test(object):
         self.is_valid        = True
         self.error_descript  = None
         self.result          = TestResult.FAIL
+        self.host            = ''
 
         self.coord_from      = self.get_param('From')
         self.coord_to        = self.get_param('To')
@@ -224,11 +226,18 @@ class Test(object):
         return ret_val
 
     def get_planner_url(self):
-        return "{0}?submit&{1}".format(self.planner_url, self.otp_params)
+        return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
 
     def get_map_url(self):
         purl = self.planner_url.split('/')[-1]
-        return "{0}?submit&purl=/{1}&{2}".format(self.map_url, purl, self.otp_params)
+        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.otp_params)
+
+    @classmethod
+    def make_url(cls, url, separater="?submit"):
+        ret_val = url
+        if "?" not in url:
+            ret_val = url + separater
+        return ret_val
 
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.otp_params
@@ -468,9 +477,9 @@ class TestRunner(object):
         """
         r = None
         try:
-            r = self.report_template.render(test_suites=self.test_suites, test_errors=self.has_errors())
-        except Exception, e:
-            print e
+            r = self.report_template.render(host="http://" + Test.make_hostname(), test_suites=self.test_suites, test_errors=self.has_errors())
+        except:
+            print exceptions.text_error_template().render()
         return r
 
 
