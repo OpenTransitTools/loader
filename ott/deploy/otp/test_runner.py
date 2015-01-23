@@ -155,7 +155,7 @@ class Test(object):
     def static_call_otp(cls, url, accept='application/xml'):
         ret_val = None
         try:
-            socket.setdefaulttimeout(45)
+            socket.setdefaulttimeout(2000)
             logging.debug("call_otp: OTP output for " + url)
             req = urllib2.Request(url, None, {'Accept':accept})
             res = urllib2.urlopen(req)
