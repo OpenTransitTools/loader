@@ -42,10 +42,14 @@ class RandomTrip():
         return url_list
 
     @classmethod
-    def make_suite_csv(cls, from_to_list, file_name=None, suite_header=def_header, suite_format="test {0},{1},{2},,4:40 PM,,,,,,leg,,,,"):
+    def make_suite_csv(cls, from_to_list, file_name="random_test.csv", suite_header=def_header, suite_format="test {0},{1},{2},,4:40 PM,,,,,,leg,,,,"):
+        old_out = sys.stdout
+        if file_name:
+            sys.stdout = open(file_name, "w")
         print suite_header
         for i, p in enumerate(from_to_list):
             print suite_format.format(i+1, *p)
+        sys.stdout = old_out
 
     def call_urls(self, url_list):
         for u in url_list:
@@ -64,7 +68,6 @@ class RandomTrip():
 
 def zws_trips():
     s = Test.static_call_otp("http://maps7.trimet.org/maps/tpws/V1/trips/tripplanner?fromPlace=6236%20SE%20134TH%20AVE&toPlace=9341%20N%20FISKE%20AVE")
-    print s
 
 def ws_trips():
     h = WsTest.make_hostname()
