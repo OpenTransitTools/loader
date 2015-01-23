@@ -30,13 +30,29 @@ class WsTest(Test):
 
     @classmethod
     def to_coord(cls, param):
-        ret_val = None
+        ''' return cleaned param
+        '''
+        ret_val = param
         p = param.split('::')
         if p and len(p) > 0:
             ret_val = p[0]
             if len(p) > 1:
                 ret_val = p[1]
         return ret_val
+
+    @classmethod
+    def coord_or_name(cls, param, coord="Coord", place="Place"):
+        ''' return either 'Coord' or 'Place' based on whether string looks like a coord or name
+        '''
+        ret_val = place
+        try:
+            p = param.split(',')
+            if isinstance(p[0].strip(), float) and isinstance(p[1].strip(), float):
+                ret_val = coord
+        except:
+            pass
+        return place
+
 
     def get_map_url(self):
         return "{0}&{1}".format(self.make_url(self.map_url), self.map_params)
@@ -47,7 +63,7 @@ class WsTest(Test):
         try:
             f = self.to_coord(self.coord_from)
             t = self.to_coord(self.coord_to)
-            self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&fromCoord={0}&toCoord={1}'.format(f, t)
+            self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&from{0}={1}&to{2}={3}'.format(self.coord_or_name(f), f, self.coord_or_name(t), t)
             self.map_params = 'fromPlace={0}&toPlace={1}'.format(f, t)
         except:
             print "**************************"
