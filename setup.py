@@ -22,11 +22,10 @@ extras_require = dict(
 if sys.version_info[:2] < (2, 7):
     requires.extend(['argparse>=1.2.1', 'unittest2>=0.5.1'])
 
-
 setup(
-    name='ott.deploy',
+    name='ott.loader',
     version='0.1.0',
-    description='Open Transit Tools - OTT Deploy',
+    description='Open Transit Tools - OTT Loader',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
         "Programming Language :: Python",
@@ -47,12 +46,12 @@ setup(
     install_requires=requires,
     extras_require=extras_require,
     tests_require=requires,
-    test_suite="ott.deploy.tests",
+    test_suite="ott.loader.tests",
     entry_points="""
         [console_scripts]
-        otp_tests = ott.deploy.otp.test_runner:main
-        ws_tests = ott.deploy.otp.tm_ws_runner:main
-        random_trips = ott.deploy.otp.random_trip:main
-        random_trips_ws = ott.deploy.otp.random_trip:ws_trips
+        otp_tests = ott.loader.otp.test_runner:main
+        ws_tests = ott.loader.otp.tm_ws_runner:main
+        random_trips = ott.loader.otp.random_trip:main
+        random_trips_ws = ott.loader.otp.random_trip:ws_trips
     """,
 )
