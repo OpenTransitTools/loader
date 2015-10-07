@@ -437,7 +437,7 @@ class TestRunner(object):
         url to the trip planner, calling the url, then printing a report
     """
 
-    def __init__(self, report_template=None, date=None, suites='./ott/loader/otp/suites'):
+    def __init__(self, report_template=None, date=None, suites='./ott/loader/otp/tester/suites'):
         """constructor builds the test runner
         """
         self.dir = envvar('OTP_CSV_DIR', suites, '/')
@@ -446,7 +446,7 @@ class TestRunner(object):
             self.report_template = Template(filename=report_template)
 
     @classmethod
-    def get_test_suites(cls, date=None, dir='./ott/loader/otp/suites/'):
+    def get_test_suites(cls, date=None, dir='./ott/loader/otp/tester/suites/'):
         test_suites = []
         files=os.listdir(dir)
         for f in files:
@@ -540,7 +540,7 @@ def xmain(argv=sys.argv):
         date = argv[1]
 
     logging.basicConfig(level=logging.INFO)
-    template = envvar('OTP_TEMPLATE', './ott/loader/otp/templates/good_bad.html')
+    template = envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
     x = Test({
               'From' : '1',
               'To' : '1',

@@ -4,9 +4,8 @@ import urllib
 
 from ott.utils.parse import csv_reader
 
-from ott.loader.otp.tm_ws_runner import WsTest
-from ott.loader.otp.test_runner import Test
-
+from ott.loader.otp.tester.tm_ws_runner import WsTest
+from ott.loader.otp.tester.test_runner import Test
 
 def_header="Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?"
 
@@ -17,7 +16,7 @@ class RandomTrip():
         self.name_list = []
         self.from_to_list = []
 
-        geotests = csv_reader.Csv.get_relative_dirname(__file__, "../../geocode/tests/geocodes.csv")
+        geotests = csv_reader.Csv.get_relative_dirname(__file__, "../../../geocode/tests/geocodes.csv")
         csv_file = csv_reader.Csv('geocodes.csv', geotests)
         self.test_data = csv_file.open()
 
