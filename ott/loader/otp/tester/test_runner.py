@@ -3,7 +3,6 @@ import sys
 import time
 import datetime
 import logging
-import traceback
 
 import csv
 import re
@@ -498,7 +497,7 @@ def runner(argv):
             date = argv[1]
     logging.basicConfig(level=lev)
 
-    template = envvar('OTP_TEMPLATE', './ott/loader/otp/templates/good_bad.html')
+    template = envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
     t = TestRunner(template, date)
     t.run()
     r = t.report()
