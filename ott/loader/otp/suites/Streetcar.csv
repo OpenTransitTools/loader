@@ -1,0 +1,15 @@
+Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
+"Test: from OMSI/SE Water to MLK & Hawthorne","SE_Water/OMSI_(Streetcar)::45.506878,-122.663360","SE_M_L_King_@_Hawthorne::45.512512,-122.661960","TRAINISH,WALK",2:25 PM,Weekday,QUICK,840,,,Streetcar.*13616
+"Test: from hawthorne & mlk to good samaritan hospital","SE_Hawthorne_Blvd_@_SE_Martin_Luther_King_Jr_Blvd::45.512245,-122.661835","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",10:05 AM,Weekday,QUICK,840,,,Streetcar.*8989
+"Test: good samaritan hospital to south waterfront","Legacy_Good_Samaritan::45.530296,-122.697530","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12760	
+"Test: south waterfront to omsi","OHSU_Commons::45.498943,-122.670740","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRANSIT,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*12883
+"Test: PSU urban center to sw 10th and yamhill","PSU_Urban_Center::45.512220,-122.682076","SW_Yamhill_St_@_SW_10th_Ave::45.519333,-122.682480","TRAINISH,WALK",2:00 PM,Weekday,QUICK,840,,,Streetcar.*10767
+"Test: burnside and Grand to lovejoy and 9th","E_Burnside_St_@_SE_Grand_Ave::45.522930,-122.660720","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","TRANSIT,WALK",12:10 PM,Weekday,QUICK,840,,,Streetcar.*2167
+"Test: 9th and lovejoy to grand and oregon st","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","NE_Grand_Ave_@_NE_Oregon_St::45.528630,-122.660680","TRANSIT,WALK",1:00 PM,Weekday,QUICK,840,,,Streetcar.*13606
+"Test: 1st and harrison to grand and taylor","SW_Harrison_St_@_SW_1st_Ave::45.509758,-122.678090","SE_Taylor_St::45.515087,-122.660770","TRAINISH,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12376
+"Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*6493
+"Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,840,,,Streetcar.*13602
+"Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAINISH,WALK",12:02 PM,Weekday,QUICK,840,,,Streetcar.*13619
+"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
+"Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*13615
+"Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",11:00 AM,Weekday,QUICK,840,,,Streetcar.*13604
