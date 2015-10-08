@@ -40,6 +40,24 @@ def get_file_name_from_url(url):
     ret_val = url.split('/')[-1:][0]
     return ret_val
 
+def unzip_file(zip_file, target_file, file_name):
+    """ unzips a file from a zip file...
+        @returns True if there's a problem...
+    """
+    ret_val = False
+    try:
+        zip = zipfile.ZipFile(zip_file, 'r')
+        file = open(target_file, 'w')
+        file.write(zip.read(file_name))
+        file.flush()
+        file.close()
+        zip.close()
+    except:
+        ret_val = False
+        logging.warn("problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
+
+    return ret_val
+
 
 ##
 ## WEB UTILS

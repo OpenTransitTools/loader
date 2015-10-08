@@ -1,78 +1,33 @@
 import os
-import inspect
 
 import shutil
 import csv
 
 import urllib2
-import filecmp
+import filediff
 import shutil
 import zipfile
 import datetime
 import logging
 
-class Check():
-    """ Compares Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
+class Diff():
+    """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
         cached gtfs.zip file
     """
-    def __init__(self, cache_dir=None, gtfs_url="http://developer.trimet.org/schedule/gtfs.zip"):
+    old_cal  = None
+    new_cal  = None
+    old_info = None
+    new_info = None
+
+    def __init__(self, zipA, zipB):
+
+        #os.chdir(self.tmp_dir)
 
         # step 1: set up some dirs
-        self.tmp_dir      = "./tmp"
-        self.cache_dir    = cache_dir
 
         # step 2: file names
-        self.gtfs_url = gtfs_url
-        self.gtfs_file_name = self.gtfs_url.split('/')[-1:][0]
-        self.new_gtfs_zip   = os.path.join(self.tmp_dir, self.gtfs_file_name)
-        self.old_gtfs_zip = os.path.join(self.cache_dir, self.gtfs_file_name)
-        self.old_cal = self.new_cal = self.old_info = self.new_info = None
+        self.x
 
-
-    def download_gtfs(self, url=None, zip=None):
-        """ grab gtfs.zip file from url
-            IMPORTANT NOTE: this will *not* work if the URL is a redirect, etc...
-        """
-        if url is None:
-            url = self.gtfs_url
-        if zip is None:
-            zip = self.new_gtfs_zip
-        
-        try:
-            # get gtfs file from url
-            req = urllib2.Request(url)
-            res = urllib2.urlopen(req)
-
-            # write it out
-            f = open(zip, 'w')
-            f.write(res.read())
-            f.flush()
-            f.close()
-            res.close()
-
-            logging.info("check_gtfs: downloaded " + url + " into file " + zip)
-        except:
-            logging.warn('could not get data from url:\n', url, '\n(not a friendly place)')
-            pass
-
-
-    def unzip_file(self, zip_file, target_file, file_name):
-        """ unzips a file from a zip file...
-            @returns True if there's a problem...
-        """
-        ret_val = False
-        try:
-            zip  = zipfile.ZipFile(zip_file, 'r')
-            file = open(target_file, 'w')
-            file.write(zip.read(file_name))
-            file.flush()
-            file.close()
-            zip.close()
-        except:
-            ret_val = False
-            logging.warn("problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
-
-        return ret_val
 
     def unzip_calendar_and_info_files(self, cal_file='calendar_dates.txt', info_file='feed_info.txt'):
         """ unzip a file (calendar_dates.txt by default) from our old & new gtfs.zip files
@@ -90,7 +45,7 @@ class Check():
         self.unzip_file(self.new_gtfs_zip, self.new_info, info_file)
         return self.old_cal, self.new_cal, self.old_info, self.new_info
 
-    def cmp_files(self, old_name, new_name):
+    def diff_files(self, old_name, new_name):
         """ return whether files are the same or not...
         """
         ret_val = False
@@ -98,7 +53,7 @@ class Check():
             #import pdb; pdb.set_trace()
 
             # check #1
-            ret_val = filecmp.cmp(old_name, new_name)
+            ret_val = filediff.diff(old_name, new_name)
             logging.info("It's {0} that {1} is the same as {2} (according to os.stat)".format(ret_val, old_name, new_name))
 
             # check #2
@@ -208,42 +163,14 @@ class Check():
         return ret_val
 
 
-    def mk_tmp_dir(self):
-        """ remove existing ./tmp directory, and make new / empty one
-        """
-        shutil.rmtree(self.tmp_dir, True)
-        if not os.path.exists(self.tmp_dir):
-            os.makedirs(self.tmp_dir)
-
-    def cd_tmp_dir(self):
-        """ make a ./tmp directory, and cd into it...
-        """
-        if not os.path.exists(self.tmp_dir):
-            os.makedirs(self.tmp_dir)
-        os.chdir(self.tmp_dir)
-
-
-    def update_gtfs(self):
-        """ backup old gtfs file, and move new gtfs file into graph cache...
-        """
-        if os.path.isfile(self.old_gtfs_zip):
-            today = datetime.datetime.now().strftime("%Y-%m-%d")
-            shutil.copy2(self.old_gtfs_zip, self.old_gtfs_zip + today)
-        if os.path.isfile(self.new_gtfs_zip):
-            shutil.copy2(self.new_gtfs_zip, self.old_gtfs_zip)
-
-
 def main():
     logging.basicConfig(level=logging.INFO)
-    cmp = CompareTwoGtfsZipFiles()
-    cmp.cd_tmp_dir()
-    cmp.download_gtfs()
-    old_cal, new_cal, old_info, new_info = cmp.unzip_calendar_and_info_files()
-    is_same_gtfs = cmp.cmp_files(old_info, new_info)
-    start_date,end_date,pos,total = cmp.get_date_range_of_calendar_dates(new_cal)
-    start_date,end_date,id,version = cmp.get_feed_info(new_info)
-    print cmp.get_new_feed_version()
-
+    diff = Diff()
+    old_cal, new_cal, old_info, new_info = diff.unzip_calendar_and_info_files()
+    is_same_gtfs = diff.diff_files(old_info, new_info)
+    start_date,end_date,pos,total = diff.get_date_range_of_calendar_dates(new_cal)
+    start_date,end_date,id,version = diff.get_feed_info(new_info)
+    print diff.get_new_feed_version()
 
 if __name__ == '__main__':
     main()
