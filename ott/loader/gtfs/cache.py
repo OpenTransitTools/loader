@@ -2,13 +2,8 @@ import os
 import inspect
 import logging
 
-import shutil
-import csv
-
-import datetime
-
-
 from ott.loader.gtfs import utils
+from ott.loader.gtfs.diff import Diff
 
 class Cache():
     """ Does a 'smart' cache of a gtfs file
@@ -47,9 +42,16 @@ class Cache():
         utils.wget(self.url, tmp_path)
 
         # step 5: check the cache whether we should update or not
+        update = False
         if self.is_fresh_in_cache():
             logging.info("diff gtfs file")
+            diff = Diff(self.file_path, tmp_path)
+            if diff.is_different():
+                update = True
         else:
+            update = True
+
+        if update:
             logging.info("move to cache")
             utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)

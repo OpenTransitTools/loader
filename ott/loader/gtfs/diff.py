@@ -58,7 +58,7 @@ class Diff():
         info_diff = utils.diff_files(self.old_info, self.new_info)
         if info_diff:
             logging.info("feed_info.txt files are different")
-        cal_diff  = utils.diff_files(self.old_cal,  self.old_info)
+        cal_diff  = utils.diff_files(self.old_cal,  self.old_cal)
         if cal_diff:
             logging.info("calender_dates.txt files are different")
 
@@ -161,7 +161,8 @@ class Diff():
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    diff = Diff()
+    diff = Diff("C:\\java\\DEV\\loader\\ott\\loader\\gtfs\\cache\\trimet.zip", "C:\\java\\DEV\\loader\\ott\\loader\\gtfs\\cache\\trimet.zip.20151008")
+    #diff = Diff("/java/DEV/loader/ott/loader/gtfs/cache/trimet.zip", "/java/DEV/loader/ott/loader/gtfs/cache/trimet.zip.20151008")
     diff.is_different()
     print diff.get_new_feed_version()
     print diff.get_old_feed_version()

@@ -44,15 +44,15 @@ def get_file_name_from_url(url):
     return ret_val
 
 def diff_files(old_name, new_name):
-    """ return whether files are the same or not...
+    """ return True if the files are DIFFERENT ... False == files are THE SAME...
     """
-    ret_val = False
+    ret_val = True
 
     #import pdb; pdb.set_trace()
     try:
         # check #1
-        ret_val = filecmp.cmp(old_name, new_name)
-        logging.info("It's {0} that {1} is the same as {2} (according to os.stat)".format(ret_val, old_name, new_name))
+        ret_val = not filecmp.cmp(old_name, new_name)
+        logging.info("It's {0} that {1} is different from {2} (according to os.stat)".format(ret_val, old_name, new_name))
 
         # check #2
         # adapted from http://stackoverflow.com/questions/3043026/comparing-two-text-files-in-python
@@ -64,12 +64,12 @@ def diff_files(old_name, new_name):
         for i,j in zip(olist, nlist): #note: zip is used to iterate variables in 2 lists in single loop
             if i != j:
                 logging.info("At line #{0}, there's a difference between the files:\n\t{1}\t\t--vs--\n\t{2}\n".format(k, i, j))
-                ret_val = False
+                ret_val = True
                 break
             k=k+1
-    except:
-        ret_val = False
+    except Exception, e:
         logging.warn("problems comparing " + old_name + " and " + new_name)
+        ret_val = True
     return ret_val
 
 
@@ -78,15 +78,17 @@ def unzip_file(zip_file, target_file, file_name):
         @returns True if there's a problem...
     """
     ret_val = False
+
+    #import pdb; pdb.set_trace()
     try:
         rm(target_file)
         zip = zipfile.ZipFile(zip_file, 'r')
-        file = open(target_file, 'w')
+        file = open(target_file, 'wb')
         file.write(zip.read(file_name))
         file.flush()
         file.close()
         zip.close()
-    except:
+    except Exception, e:
         logging.warn("problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
         ret_val = True
 
@@ -107,7 +109,7 @@ def wget(url, file_name):
         res = urllib2.urlopen(req)
 
         # write it out
-        f = open(file_name, 'w')
+        f = open(file_name, 'wb')
         f.write(res.read())
         f.flush()
         f.close()
