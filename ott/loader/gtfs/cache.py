@@ -47,7 +47,6 @@ class Cache():
         utils.wget(self.url, tmp_path)
 
         # step 4: check the cache whether we should update or not
-        import pdb; pdb.set_trace()
         if self.is_fresh_in_cache():
             logging.info("diff gtfs file")
         else:
@@ -58,6 +57,7 @@ class Cache():
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
         '''
+        #import pdb; pdb.set_trace()
         ret_val = False
         try:
             # NOTE if the file isn't in the cache, we'll get an exception
@@ -69,6 +69,7 @@ class Cache():
         return ret_val
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     gtfs_feeds = [
         {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
         {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},

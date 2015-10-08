@@ -3,6 +3,10 @@ import logging
 import urllib2
 import datetime
 
+##
+## FILE UTILS
+##
+
 def file_time(file):
     ''' datetime for the modified file time '''
     mtime = os.path.getmtime(file)
@@ -36,6 +40,11 @@ def get_file_name_from_url(url):
     ret_val = url.split('/')[-1:][0]
     return ret_val
 
+
+##
+## WEB UTILS
+##
+
 def wget(url, file_name):
     """ wget a file from url
         IMPORTANT NOTE: this will *not* work if the URL is a redirect, etc...
@@ -55,3 +64,4 @@ def wget(url, file_name):
         logging.info("check_gtfs: downloaded " + url + " into file " + file_name)
     except:
         logging.warn('could not get data from url:\n', url, '\n(not a friendly place)')
+
