@@ -20,11 +20,6 @@ class Check():
         # step 1: set up some dirs
         self.tmp_dir      = "./tmp"
         self.cache_dir    = cache_dir
-        if self.cache_dir is None:
-            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-            self.cache_dir = os.path.join(this_module_dir, "cache")
-            if not os.path.exists(self.cache_dir):
-                os.makedirs(self.cache_dir)
 
         # step 2: file names
         self.gtfs_url = gtfs_url
