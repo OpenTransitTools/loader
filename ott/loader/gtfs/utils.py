@@ -1,3 +1,37 @@
+import os
+import logging
+import urllib2
+import datetime
+
+def file_time(file):
+    ''' datetime for the modified file time '''
+    mtime = os.path.getmtime(file)
+    dt = datetime.datetime.fromtimestamp(mtime)
+    return dt
+
+def file_age(file):
+    ''' age in days '''
+    mtime = file_time(file)
+    now = datetime.datetime.now()
+    diff = now - mtime
+    return diff.days
+
+def bkup(file):
+    #import pdb; pdb.set_trace()
+    if os.path.exists(file):
+        mtime = file_time(file)
+        tmp_file = "{}.{:%Y%m%d}".format(file, mtime)
+        rm(tmp_file)
+        os.rename(file, tmp_file)
+
+def rm(file):
+    if os.path.exists(file):
+        os.remove(file)
+
+def mkdir(dir):
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
 def get_file_name_from_url(url):
     ret_val = url.split('/')[-1:][0]
     return ret_val

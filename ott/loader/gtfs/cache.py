@@ -1,12 +1,12 @@
 import os
 import inspect
+import logging
 
 import shutil
 import csv
 
-import urllib2
 import datetime
-import logging
+
 
 from ott.loader.gtfs import utils
 
@@ -22,13 +22,17 @@ class Cache():
     cache_expire = 31
 
     def __init__(self, url, file_name=None, cache_dir=None, cache_expire=31):
+
+        # step 0: temp dir
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        tmp_dir = os.path.join(this_module_dir, "tmp")
+        utils.mkdir(tmp_dir)
+
         # step 1: cache dir management
         self.cache_dir = cache_dir
         if self.cache_dir is None:
-            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
             self.cache_dir = os.path.join(this_module_dir, "cache")
-        if not os.path.exists(self.cache_dir):
-            os.makedirs(self.cache_dir)
+        utils.mkdir(self.cache_dir)
         self.cache_expire = cache_expire
 
         # step 2: file name
@@ -37,17 +41,28 @@ class Cache():
             self.file_name = utils.get_file_name_from_url(url)
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
-        is_fresh_in_cache()
+        # step 3: download new gtfs file
+        self.url = url
+        tmp_path = os.path.join(tmp_dir, self.file_name)
+        #utils.wget(self.url, tmp_path)
+
+        # step 4: check the cache whether we should update or not
+        import pdb; pdb.set_trace()
+        if self.is_fresh_in_cache():
+            print "diff gtfs file"
+        else:
+            print "move to cache"
+            #utils.bkup(self.file_path)
+            #os.rename(tmp_path, self.file_path)
 
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
         '''
         ret_val = False
         try:
-            mtime = os.path.getmtime(self.file_path)
-            now = datetime.datetime.now()
-            diff = now - mtime
-            if diff.total_days() <= self.cache_expire:
+            # NOTE if the file isn't in the cache, we'll get an exception
+            age = utils.file_age(self.file_path)
+            if age <= self.cache_expire:
                 ret_val = True
         except:
             ret_val = False
