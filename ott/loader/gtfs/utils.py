@@ -3,7 +3,7 @@ import logging
 import datetime
 import urllib2
 import zipfile
-import filediff
+import filecmp
 
 ##
 ## FILE UTILS
@@ -51,7 +51,7 @@ def diff_files(old_name, new_name):
     #import pdb; pdb.set_trace()
     try:
         # check #1
-        ret_val = filediff.diff(old_name, new_name)
+        ret_val = filecmp.cmp(old_name, new_name)
         logging.info("It's {0} that {1} is the same as {2} (according to os.stat)".format(ret_val, old_name, new_name))
 
         # check #2
