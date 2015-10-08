@@ -23,30 +23,30 @@ class Cache():
 
     def __init__(self, url, file_name=None, cache_dir=None, cache_expire=31):
 
-        # step 0: temp dir
+        # step 1: temp dir
         this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         tmp_dir = os.path.join(this_module_dir, "tmp")
         utils.mkdir(tmp_dir)
 
-        # step 1: cache dir management
+        # step 2: cache dir management
         self.cache_dir = cache_dir
         if self.cache_dir is None:
             self.cache_dir = os.path.join(this_module_dir, "cache")
         utils.mkdir(self.cache_dir)
         self.cache_expire = cache_expire
 
-        # step 2: file name
+        # step 3: file name
         self.file_name = file_name
         if self.file_name is None:
             self.file_name = utils.get_file_name_from_url(url)
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
-        # step 3: download new gtfs file
+        # step 4: download new gtfs file
         self.url = url
         tmp_path = os.path.join(tmp_dir, self.file_name)
         utils.wget(self.url, tmp_path)
 
-        # step 4: check the cache whether we should update or not
+        # step 5: check the cache whether we should update or not
         if self.is_fresh_in_cache():
             logging.info("diff gtfs file")
         else:
