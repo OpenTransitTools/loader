@@ -11,14 +11,11 @@ import zipfile
 import datetime
 import logging
 
-class CheckGtfs():
+class Check():
     """ Compares Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
         cached gtfs.zip file
     """
-
     def __init__(self, cache_dir=None, gtfs_url="http://developer.trimet.org/schedule/gtfs.zip"):
-        """
-        """
 
         # step 1: set up some dirs
         self.tmp_dir      = "./tmp"
