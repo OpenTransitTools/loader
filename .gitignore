@@ -6,6 +6,7 @@ ott.openlayers.*
 .settings
 COMMIT_EDITMSG
 tmp/
+cache/
 .git/
 .git/*
 *.old
