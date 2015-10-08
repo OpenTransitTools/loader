@@ -2,7 +2,6 @@ import os
 import inspect
 
 import shutil
-import sys
 import csv
 
 import urllib2
@@ -11,10 +10,10 @@ import shutil
 import zipfile
 import datetime
 import logging
-import traceback
 
-class CompareTwoGtfsZipFiles():
-    """ Test's GTFS feed_info.txt & calendar_date.txt file to see if it's older than existing GTFS version...
+class CheckGtfs():
+    """ Compares Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
+        cached gtfs.zip file
     """
 
     def __init__(self, cache_dir=None, gtfs_url="http://developer.trimet.org/schedule/gtfs.zip"):
@@ -61,8 +60,7 @@ class CompareTwoGtfsZipFiles():
 
             logging.info("check_gtfs: downloaded " + url + " into file " + zip)
         except:
-            logging.warn('ERROR: could not get data from url:\n', url, '\n(not a friendly place)')
-            traceback.print_exc(file=sys.stdout)
+            logging.warn('could not get data from url:\n', url, '\n(not a friendly place)')
             pass
 
 
@@ -80,8 +78,7 @@ class CompareTwoGtfsZipFiles():
             zip.close()
         except:
             ret_val = False
-            logging.warn("ERROR: problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
-            traceback.print_exc(file=sys.stdout)
+            logging.warn("problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
 
         return ret_val
 
@@ -127,8 +124,7 @@ class CompareTwoGtfsZipFiles():
                 k=k+1
         except:
             ret_val = False
-            logging.warn("ERROR: problems comparing " + old_name + " and " + new_name)
-            traceback.print_exc(file=sys.stdout)
+            logging.warn("problems comparing " + old_name + " and " + new_name)
         return ret_val
 
 
