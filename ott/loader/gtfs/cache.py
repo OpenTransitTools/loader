@@ -44,16 +44,16 @@ class Cache():
         # step 3: download new gtfs file
         self.url = url
         tmp_path = os.path.join(tmp_dir, self.file_name)
-        #utils.wget(self.url, tmp_path)
+        utils.wget(self.url, tmp_path)
 
         # step 4: check the cache whether we should update or not
         import pdb; pdb.set_trace()
         if self.is_fresh_in_cache():
-            print "diff gtfs file"
+            logging.info("diff gtfs file")
         else:
-            print "move to cache"
-            #utils.bkup(self.file_path)
-            #os.rename(tmp_path, self.file_path)
+            logging.info("move to cache")
+            utils.bkup(self.file_path)
+            os.rename(tmp_path, self.file_path)
 
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
@@ -67,7 +67,6 @@ class Cache():
         except:
             ret_val = False
         return ret_val
-
 
 def main():
     gtfs_feeds = [
