@@ -5,6 +5,7 @@ ott.openlayers.*
 *.py[cod]
 .settings
 COMMIT_EDITMSG
+tmp/
 .git/
 .git/*
 *.old
