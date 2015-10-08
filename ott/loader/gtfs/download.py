@@ -49,3 +49,6 @@ class Download():
 
 def main():
     d = Download()
+
+if __name__ == '__main__':
+    main()
