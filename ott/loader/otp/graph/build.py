@@ -43,12 +43,17 @@ class Build():
     """
 
     def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds()):
+
+        # step x: cache files
         cache = self.get_cache_dir()
         for g in gtfs_zip_files:
             url, name = Cache.get_url_filename(g)
             diff = Cache.cmp_file_to_cached(cache, name)
             if diff.is_different():
-                print shutil.copyfile(diff.old_gtfs_zip, diff.new_gtfs_zip)
+                shutil.copyfile(diff.old_gtfs_zip, diff.new_gtfs_zip)
+                print "diff files"
+            else:
+                print "same files"
 
     @classmethod
     def get_cache_dir(cls, dir=None, def_name="cache"):
