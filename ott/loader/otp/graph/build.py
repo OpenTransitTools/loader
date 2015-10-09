@@ -7,6 +7,8 @@
 """
 
 import os
+import inspect
+import shutil
 import sys
 import time
 import traceback
@@ -14,6 +16,9 @@ import logging
 import smtplib
 import subprocess
 import datetime
+
+from ott.loader.gtfs.cache import Cache
+from ott.loader.gtfs import utils as file_utils
 
 # constants
 GRAPH_NAME = "Graph.obj"
@@ -33,6 +38,28 @@ VERSION_LOG = GRAPH_DIR + VLOG_NAME
 TEST_REPORT = GRAPH_DIR + TEST_HTML
 
 
+class Build():
+    """ build an OTP graph
+    """
+
+    def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds()):
+        cache = self.get_cache_dir()
+        for g in gtfs_zip_files:
+            url, name = Cache.get_url_filename(g)
+            diff = Cache.cmp_file_to_cached(cache, name)
+            if diff.is_different():
+                print shutil.copyfile(diff.old_gtfs_zip, diff.new_gtfs_zip)
+
+    @classmethod
+    def get_cache_dir(cls, dir=None, def_name="cache"):
+        ''' returns either dir (stupid check) or <current-directory>/$def_name
+        '''
+        ret_val = dir
+        if dir is None:
+            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+            ret_val = os.path.join(this_module_dir, def_name)
+        file_utils.mkdir(ret_val)
+        return ret_val
 
 def email(msg, subject="Graph builder info...", mailfrom="build.py"):
     """ send an email to someone...
@@ -240,7 +267,7 @@ def xmain(argv):
         real_build()
 
 def main(argv):
-    print "hi"
+    b = Build()
 
 if __name__ == '__main__':
     main(sys.argv)

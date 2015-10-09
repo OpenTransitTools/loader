@@ -16,24 +16,19 @@ class Cache():
     cache_dir = None
     cache_expire = 31
 
-    def __init__(self, url, file_name=None, cache_dir=None, cache_expire=31):
+    def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
 
         # step 1: temp dir
-        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        tmp_dir = os.path.join(this_module_dir, "tmp")
+        tmp_dir = self.get_tmp_dir()
         utils.mkdir(tmp_dir)
 
         # step 2: cache dir management
-        self.cache_dir = cache_dir
-        if self.cache_dir is None:
-            self.cache_dir = os.path.join(this_module_dir, "cache")
+        self.cache_dir = self.get_cache_dir(cache_dir)
         utils.mkdir(self.cache_dir)
         self.cache_expire = cache_expire
 
         # step 3: file name
-        self.file_name = file_name
-        if self.file_name is None:
-            self.file_name = utils.get_file_name_from_url(url)
+        self.file_name = self.get_file_name_via_url(url, file_name)
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
         # step 4: download new gtfs file
@@ -70,14 +65,52 @@ class Cache():
             ret_val = False
         return ret_val
 
+    @classmethod
+    def cmp_file_to_cached(cls, cmp_dir, gtfs_zip_name):
+        ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
+        '''
+        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
+        other_path = os.path.join(cmp_dir, gtfs_zip_name)
+        diff = Diff(cache_path, other_path)
+        return diff
+
+    @classmethod
+    def get_cache_dir(cls, dir=None, def_name="cache"):
+        ''' returns either dir (stupid check) or <current-directory>/$def_name
+        '''
+        ret_val = dir
+        if dir is None:
+            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+            ret_val = os.path.join(this_module_dir, def_name)
+        return ret_val
+
+    @classmethod
+    def get_tmp_dir(cls):
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        tmp_dir = os.path.join(this_module_dir, "tmp")
+        return tmp_dir
+
+    @classmethod
+    def get_url_filename(cls, gtfs_struct):
+        url  = gtfs_struct.get('url')
+        name = gtfs_struct.get('name', None)
+        if name is None:
+            name = utils.get_file_name_from_url(url)
+        return url, name
+
+    @classmethod
+    def get_gtfs_feeds(cls):
+        gtfs_feeds = [
+            {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
+            {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
+        ]
+        return gtfs_feeds
+
 def main():
     logging.basicConfig(level=logging.INFO)
-    gtfs_feeds = [
-        {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
-        {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
-    ]
-    for g in gtfs_feeds:
-        Cache(g.get('url'), g.get('name', None))
+    for g in Cache.get_gtfs_feeds():
+        url,name = Cache.get_url_filename(g)
+        Cache(url, name)
 
 if __name__ == '__main__':
     main()
