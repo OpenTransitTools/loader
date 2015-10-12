@@ -58,10 +58,9 @@ class Diff():
         info_diff = utils.diff_files(self.old_info, self.new_info)
         if info_diff:
             logging.info("feed_info.txt files are different")
-        cal_diff  = utils.diff_files(self.old_cal,  self.old_cal)
+        cal_diff  = utils.diff_files(self.old_cal,  self.new_cal)
         if cal_diff:
             logging.info("calender_dates.txt files are different")
-
         return info_diff or cal_diff
 
     def get_old_feed_version(self):

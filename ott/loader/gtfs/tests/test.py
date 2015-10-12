@@ -17,6 +17,7 @@ class TestGtfsDiff(unittest.TestCase):
         this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
         gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
+        import pdb; pdb.set_trace()
         d = Diff(gtfsA, gtfsB)
         self.assertTrue(d.is_different())
         pass
