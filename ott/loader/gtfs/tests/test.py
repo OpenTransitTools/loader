@@ -1,8 +1,12 @@
 import unittest
+import os
+import inspect
 
 from ott.loader.gtfs.cache import Cache
+from ott.loader.gtfs.diff import Diff
 
 class TestGtfsDiff(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -10,6 +14,11 @@ class TestGtfsDiff(unittest.TestCase):
         pass
 
     def test_diff_calendars(self):
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
+        gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
+        d = Diff(gtfsA, gtfsB)
+        self.assertTrue(d.is_different())
         pass
 
     def test_same(self):
@@ -27,7 +36,7 @@ class TestGtfsCache(unittest.TestCase):
         url="https://developers.google.com/transit/gtfs/examples/sample-feed.zip"
         name="google.zip"
         c = Cache(url, name)
-        self.assertTrue(c.file_name)
+        self.assertTrue(os.path.exists(c.file_path))
 
     def test_same(self):
         pass
