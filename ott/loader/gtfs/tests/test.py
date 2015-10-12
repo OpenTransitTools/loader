@@ -27,8 +27,7 @@ class TestGtfsCache(unittest.TestCase):
         url="https://developers.google.com/transit/gtfs/examples/sample-feed.zip"
         name="google.zip"
         c = Cache(url, name)
-        c.file_name
-        pass
+        self.assertTrue(c.file_name)
 
     def test_same(self):
         pass

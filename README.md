@@ -1,9 +1,11 @@
 loader
 ======
 
-scripts used to test OTP Graph.obj and loader new OTP Graphs into production.
-scripts used to update OSM data in a PostGIS db, etc...
-scripts used to populate PostGIS for the OTT system
+The loader project contains multiple utilities to load GTFS, OSM and OTP data into various apps and databases. The
+sub projects are:
+  1. otp.loader.gtfs, which contains routines to cache and compare gtfs feeds.
+  1. otp.loader.otp,
+
 
 build:
   0. install python 2.7, along easy_install, zc.buildout ("zc.buildout==1.5.2") and git
