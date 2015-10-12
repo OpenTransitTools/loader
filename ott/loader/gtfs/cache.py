@@ -1,6 +1,7 @@
 import os
 import inspect
 import logging
+import shutil
 
 from ott.loader.gtfs import utils
 from ott.loader.gtfs.diff import Diff
@@ -66,13 +67,19 @@ class Cache():
         return ret_val
 
     @classmethod
-    def cmp_file_to_cached(cls, cmp_dir, gtfs_zip_name):
+    def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
         '''
         cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
         other_path = os.path.join(cmp_dir, gtfs_zip_name)
         diff = Diff(cache_path, other_path)
         return diff
+
+    @classmethod
+    def get_tmp_dir(cls):
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        tmp_dir = os.path.join(this_module_dir, "tmp")
+        return tmp_dir
 
     @classmethod
     def get_cache_dir(cls, dir=None, def_name="cache"):
@@ -85,10 +92,15 @@ class Cache():
         return ret_val
 
     @classmethod
-    def get_tmp_dir(cls):
-        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        tmp_dir = os.path.join(this_module_dir, "tmp")
-        return tmp_dir
+    def get_cached_file(cls, gtfs_zip_name, dir=None, def_name="cache"):
+        cache_dir = cls.cache_dir(dir, def_name)
+        file = os.path.join(cache_dir, gtfs_zip_name)
+        return file
+
+    @classmethod
+    def cp_cached_gtfs_zip(cls, gtfs_zip_name, build_cache_dir, dir=None, def_name="cache"):
+        file = cls.get_cached_file(gtfs_zip_name, dir, def_name)
+        shutil.copyfile(file, build_cache_dir)
 
     @classmethod
     def get_url_filename(cls, gtfs_struct):

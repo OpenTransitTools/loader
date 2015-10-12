@@ -8,7 +8,6 @@
 
 import os
 import inspect
-import shutil
 import sys
 import time
 import traceback
@@ -25,17 +24,6 @@ GRAPH_NAME = "Graph.obj"
 GRAPH_SIZE = 500000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
-HOME_DIR    = "/home/otp/"
-HTDOCS_DIR  = HOME_DIR + "htdocs/"
-HTDOCS_VLOG = HTDOCS_DIR + VLOG_NAME
-DEPLOY_DIR  = HOME_DIR + "OtpDeployer/"
-OTP_DIR     = DEPLOY_DIR + "otp/"
-GRAPH_DIR   = OTP_DIR   + "graph/"
-CLUSTER_DIR = OTP_DIR   + "cluster/"
-GRAPH_FILE  = GRAPH_DIR + GRAPH_NAME
-GRAPH_FAILD = GRAPH_DIR + GRAPH_NAME + "-failed-tests"
-VERSION_LOG = GRAPH_DIR + VLOG_NAME
-TEST_REPORT = GRAPH_DIR + TEST_HTML
 
 
 class Build():
@@ -43,20 +31,32 @@ class Build():
     """
 
     def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds()):
+        # step 1: set some params
+        rebuild_graph = False
+        build_cache_dir = self.get_build_cache_dir()
+        graph_path = os.path.join(build_cache_dir, GRAPH_NAME)
 
-        # step x: cache files
-        cache = self.get_cache_dir()
+        # step 2: check the cache files
         for g in gtfs_zip_files:
             url, name = Cache.get_url_filename(g)
-            diff = Cache.cmp_file_to_cached(cache, name)
+            diff = Cache.cmp_file_to_cached(name, build_cache_dir)
             if diff.is_different():
-                shutil.copyfile(diff.old_gtfs_zip, diff.new_gtfs_zip)
-                print "diff files"
+                rebuild_graph = True
+                Cache.cp_cached_gtfs_zip(name, build_cache_dir)
             else:
-                print "same files"
+                logging.info('GTFS data is the same version: {0}'.format(feed_version))
+
+        # step 3: check graph file is fairly recent
+        if os.path.exists(graph_path) is False or file_utils.file_time(graph_path) > 30:
+            rebuild_graph = True
+
+        # step 4: build graph is needed
+        if rebuild_graph:
+            pass
+
 
     @classmethod
-    def get_cache_dir(cls, dir=None, def_name="cache"):
+    def get_build_cache_dir(cls, dir=None, def_name="cache"):
         ''' returns either dir (stupid check) or <current-directory>/$def_name
         '''
         ret_val = dir
@@ -66,65 +66,14 @@ class Build():
         file_utils.mkdir(ret_val)
         return ret_val
 
-def email(msg, subject="Graph builder info...", mailfrom="build.py"):
-    """ send an email to someone...
-    """
-    
-    sender = 'purcellf@trimet.org'
-    receivers = [sender]
-    message = """ <purcellf@trimet.org>
-To:  <mapfeedback@trimet.org>
-Subject: {0}
-
-""".format(subject)
-    try:
-        smtp_obj = smtplib.SMTP('localhost')
-        smtp_obj.sendmail(sender, receivers, "From: " + mailfrom + message + msg)
-        logging.info('MAIL: From: ' + mailfrom + message + msg)
-    except:
-        traceback.print_exc(file=sys.stdout)
-        logging.warn('ERROR: could not send email')
+    @classmethod
+    def XXX_dir(cls, dir=None, def_name="cache"):
+        pass
 
 
-def sys_memory(op="-g"):
-    """ linux memory check...how much RAM do we have, defaults to gigs of RAM
-    """
-    ret_val = -111
-    try:
-        ret_val = int(os.popen("free " + op).readlines()[1].split()[1])
-    except:
-        ret_val = -111
-    return ret_val
 
 
-def check_gtfs(cmp):
-    """ grab gtfs data, and see if its got new data (trigger for buiding a new graph)
-        return True if we update the GTFS, and thus the graph needs to be updated
-    """
-    ret_val = False
 
-    cmp.mk_tmp_dir()
-    cmp.cd_tmp_dir()
-    cmp.download_gtfs()
-    old_cal, new_cal, old_info, new_info = cmp.unzip_calendar_and_info_files()
-    sdays, edays = cmp.gtfs_calendar_age(new_cal)
-    feed_version = cmp.get_new_feed_version()
-    feed_dates   = cmp.get_new_feed_dates()
-    is_same_gtfs = cmp.cmp_files(old_info, new_info)
-
-    # warn about old GTFS data
-    if sdays > 60 or edays < 30:
-       msg = "{0} calendar started {1} days ago, and has {2} days remaining till expiration\nFeed Version: {3}, dates {4}".format(cmp.gtfs_url, sdays, edays, feed_version, feed_dates)
-       logging.info(msg)
-       email(msg, "GTFS data warning...is the data up-to-date?")
-
-    if is_same_gtfs:
-        logging.info('GTFS data is the same version: {0}'.format(feed_version))
-    else:
-        logging.info('gtfs files are different ... assume new download (version {0}; dates {1}) has newest schedule data, thus update gtfs cache...'.format(feed_version, feed_dates))
-        cmp.update_gtfs()
-        ret_val = True
-    return ret_val, feed_version, feed_dates
 
 
 def exists_and_sized(file, size=0):
@@ -276,3 +225,66 @@ def main(argv):
 
 if __name__ == '__main__':
     main(sys.argv)
+
+
+
+
+def email(msg, subject="Graph builder info...", mailfrom="build.py"):
+    """ send an email to someone...
+    """
+
+    sender = 'purcellf@trimet.org'
+    receivers = [sender]
+    message = """ <purcellf@trimet.org>
+To:  <mapfeedback@trimet.org>
+Subject: {0}
+
+""".format(subject)
+    try:
+        smtp_obj = smtplib.SMTP('localhost')
+        smtp_obj.sendmail(sender, receivers, "From: " + mailfrom + message + msg)
+        logging.info('MAIL: From: ' + mailfrom + message + msg)
+    except:
+        traceback.print_exc(file=sys.stdout)
+        logging.warn('ERROR: could not send email')
+
+
+def sys_memory(op="-g"):
+    """ linux memory check...how much RAM do we have, defaults to gigs of RAM
+    """
+    ret_val = -111
+    try:
+        ret_val = int(os.popen("free " + op).readlines()[1].split()[1])
+    except:
+        ret_val = -111
+    return ret_val
+
+
+def check_gtfs(cmp):
+    """ grab gtfs data, and see if its got new data (trigger for buiding a new graph)
+        return True if we update the GTFS, and thus the graph needs to be updated
+    """
+    ret_val = False
+
+    cmp.mk_tmp_dir()
+    cmp.cd_tmp_dir()
+    cmp.download_gtfs()
+    old_cal, new_cal, old_info, new_info = cmp.unzip_calendar_and_info_files()
+    sdays, edays = cmp.gtfs_calendar_age(new_cal)
+    feed_version = cmp.get_new_feed_version()
+    feed_dates   = cmp.get_new_feed_dates()
+    is_same_gtfs = cmp.cmp_files(old_info, new_info)
+
+    # warn about old GTFS data
+    if sdays > 60 or edays < 30:
+        msg = "{0} calendar started {1} days ago, and has {2} days remaining till expiration\nFeed Version: {3}, dates {4}".format(cmp.gtfs_url, sdays, edays, feed_version, feed_dates)
+        logging.info(msg)
+        email(msg, "GTFS data warning...is the data up-to-date?")
+
+    if is_same_gtfs:
+        logging.info('GTFS data is the same version: {0}'.format(feed_version))
+    else:
+        logging.info('gtfs files are different ... assume new download (version {0}; dates {1}) has newest schedule data, thus update gtfs cache...'.format(feed_version, feed_dates))
+        cmp.update_gtfs()
+        ret_val = True
+    return ret_val, feed_version, feed_dates
