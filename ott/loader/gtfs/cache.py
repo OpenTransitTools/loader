@@ -93,14 +93,15 @@ class Cache():
 
     @classmethod
     def get_cached_file(cls, gtfs_zip_name, dir=None, def_name="cache"):
-        cache_dir = cls.cache_dir(dir, def_name)
+        cache_dir = cls.get_cache_dir(dir, def_name)
         file = os.path.join(cache_dir, gtfs_zip_name)
         return file
 
     @classmethod
-    def cp_cached_gtfs_zip(cls, gtfs_zip_name, build_cache_dir, dir=None, def_name="cache"):
+    def cp_cached_gtfs_zip(cls, gtfs_zip_name, destination_dir, dir=None, def_name="cache"):
         file = cls.get_cached_file(gtfs_zip_name, dir, def_name)
-        shutil.copyfile(file, build_cache_dir)
+        dest = os.path.join(destination_dir, gtfs_zip_name)
+        shutil.copyfile(file, dest)
 
     @classmethod
     def get_url_filename(cls, gtfs_struct):
