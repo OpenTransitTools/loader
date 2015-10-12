@@ -28,7 +28,7 @@ class Cache():
         self.cache_expire = cache_expire
 
         # step 3: file name
-        self.file_name = self.get_file_name_via_url(url, file_name)
+        self.file_name = file_name
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
         # step 4: download new gtfs file
