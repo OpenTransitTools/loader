@@ -13,16 +13,29 @@ class TestGtfsDiff(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_diff_calendars(self):
+    def test_diff_calendar(self):
+        #import pdb; pdb.set_trace()
         this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
         gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
-        import pdb; pdb.set_trace()
+        d = Diff(gtfsA, gtfsB)
+        self.assertTrue(d.is_different())
+        pass
+
+    def test_diff_info(self):
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        gtfsA = os.path.join(this_module_dir, "gtfsB.zip")
+        gtfsB = os.path.join(this_module_dir, "gtfsC.zip")
         d = Diff(gtfsA, gtfsB)
         self.assertTrue(d.is_different())
         pass
 
     def test_same(self):
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        gtfsA = os.path.join(this_module_dir, "gtfsB.zip")
+        gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
+        d = Diff(gtfsA, gtfsB)
+        self.assertFalse(d.is_different())
         pass
 
 
