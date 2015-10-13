@@ -7,8 +7,7 @@ from ott.loader.gtfs.base import Base
 from ott.loader.gtfs.info import Info
 
 class Diff(Base):
-    """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
-        cached gtfs.zip file
+    """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see differences between them
     """
     old_info = None
     new_info = None
@@ -30,7 +29,7 @@ class Diff(Base):
 
     def is_different(self):
         ''' compare feed_info.txt and calendar_dates.txt between two zips
-            NOTE: we have to handle calendar.txt too...
+            TODO: compare calendar.txt eventually
         '''
         info_diff = utils.diff_files(self.old_info.info_file, self.new_info.info_file)
         if info_diff:
@@ -47,10 +46,11 @@ def main():
     this_module_dir = os.path.join(this_module_dir, "tests")
     gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
     gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
-    diff = Diff(gtfsA, gtfsB)
+    diff = Diff(gtfsB, gtfsA)
     diff.is_different()
-    print diff.old_info.get_feed_version()
+    print diff.new_info.get_feed_info()
     print diff.new_info.get_feed_version()
+    print diff.new_info.get_date_range_of_calendar_dates()
 
 if __name__ == '__main__':
     main()
