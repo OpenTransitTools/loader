@@ -40,6 +40,30 @@ class Info(Base):
         start_date, end_date, tday, tpos = self.get_date_range_of_calendar_dates(self.calendar_dates_file)
         return "{0} to {1}".format(start_date, end_date)
 
+    def is_gtfs_out_of_date(self):
+        """ calculate whether we think gtfs is out of date
+        """
+        ret_val = False
+        start_date,end_date,pos,total=self.get_date_range_of_calendar_dates()
+        pos_diff=pos * 1.0001 / total
+
+        sdays, edays = self.get_calendar_range()
+        if pos_diff > 0.40 or sdays > 30 or edays < 30:
+            ret_val = True
+        return ret_val
+
+    def get_calendar_range(self):
+        """ calculate the number of days since the gtfs was generated, and number of days left within the calendar
+        """
+        start_date,end_date,pos,total=self.get_date_range_of_calendar_dates()
+        sdate = datetime.datetime.strptime(start_date, '%Y%m%d')
+        edate = datetime.datetime.strptime(end_date, '%Y%m%d')
+        sdiff = datetime.datetime.now() - sdate
+        ediff = edate - datetime.datetime.now()
+        logging.info("first - {0} was {1} days ago".format(start_date, sdiff.days))
+        logging.info("last  - {0} is  {1} days after today".format(end_date, ediff.days))
+        return sdiff.days, ediff.days
+
     def get_feed_info(self):
         return self._get_feed_info(self.info_file)
 
@@ -95,35 +119,3 @@ class Info(Base):
 
         logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(file_name, start_date, end_date, today, today_position, total_positions))
         return start_date, end_date, today_position, total_positions
-
-    def gtfs_calendar_age(self):
-        return self.gtfs_calendar_age(self, self.gtfs_path)
-
-    @classmethod
-    def _gtfs_calendar_age(cls, gtfs):
-        """ calculate the number of days since the gtfs was generated, and number of days left within the calendar
-        """
-        start_date,end_date,pos,total=cls.get_date_range_of_calendar_dates(gtfs)
-        sdate = datetime.datetime.strptime(start_date, '%Y%m%d')
-        edate = datetime.datetime.strptime(end_date, '%Y%m%d')
-        sdiff = datetime.datetime.now() - sdate
-        ediff = edate - datetime.datetime.now()
-        logging.info("first - {0} was {1} days ago".format(start_date, sdiff.days))
-        logging.info("last  - {0} is  {1} days after today".format(end_date, ediff.days))
-        return sdiff.days, ediff.days
-
-    def is_gtfs_out_of_date(self):
-        return self._is_gtfs_out_of_date(self.gtfs_path)
-
-    @classmethod
-    def _is_gtfs_out_of_date(cls, gtfs):
-        """ calculate whether we think gtfs is out of date
-        """
-        ret_val = False
-        start_date,end_date,pos,total=cls.get_date_range_of_calendar_dates(gtfs)
-        pos_diff=pos * 1.0001 / total
-
-        sdays, edays = self.gtfs_calendar_age(gtfs)
-        if pos_diff > 0.40 or sdays > 30 or edays < 30:
-            ret_val = True
-        return ret_val

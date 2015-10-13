@@ -1,6 +1,6 @@
-import unittest
 import os
 import inspect
+import unittest
 
 from ott.loader.gtfs.cache import Cache
 from ott.loader.gtfs.info import Info
@@ -53,9 +53,6 @@ class TestGtfsCache(unittest.TestCase):
         c = Cache(url, name)
         self.assertTrue(os.path.exists(c.file_path))
 
-    def test_same(self):
-        pass
-
 
 class TestGtfsInfo(unittest.TestCase):
     def setUp(self):
@@ -81,3 +78,8 @@ class TestGtfsInfo(unittest.TestCase):
         fi = i.get_feed_version()
         fi_match = "20150927-20151006-0140"
         self.assertEqual(fi, fi_match)
+
+        r = i.get_calendar_range()
+        self.assertTrue(r[0] > 3000)
+        self.assertTrue(r[1] < -3000)
+        self.assertTrue(i.is_gtfs_out_of_date())
