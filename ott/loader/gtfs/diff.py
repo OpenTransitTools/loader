@@ -1,7 +1,4 @@
 import os
-import datetime
-import logging
-import csv
 
 from ott.loader.gtfs import utils
 from ott.loader.gtfs.base import Base
@@ -72,88 +69,6 @@ class Diff(Base):
     def get_new_feed_dates(self):
         start_date, end_date, tday, tpos = self.get_date_range_of_calendar_dates(self.new_cal)
         return "{0} to {1}".format(start_date, end_date)
-
-    @classmethod
-    def get_feed_version(cls, file_name):
-        start_date,end_date,id,version = cls.get_feed_info(file_name)
-        return version
-
-    @classmethod
-    def get_feed_info(cls, file_name):
-        """ return feed version, start/end dates and id info from the feed_info.txt file...
-        """
-        version = '???'
-        start_date = 'ZZZ'
-        end_date = ''
-        id = '???'
-
-        logging.info("opening file {0}".format(file_name))
-        file = open(file_name, 'r')
-        reader = csv.DictReader(file)
-        for i, row in enumerate(reader):
-            id = row['feed_id']
-            start_date = row['feed_start_date']
-            end_date = row['feed_end_date']
-            version = row['feed_version']
-
-        logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
-        return start_date, end_date, id, version
-
-    @classmethod
-    def get_date_range_of_calendar_dates(cls, file_name):
-        """ date range of new gtfs file
-        """
-        start_date = 'ZZZ'
-        end_date = ''
-        today = datetime.datetime.now().strftime("%Y%m%d")
-        today_position = -111
-        total_positions = 0
-
-        file = open(file_name, 'r')
-        reader = csv.DictReader(file)
-        for i, row in enumerate(reader):
-            date = row['date']
-            if date < start_date:
-                start_date = date
-            if date > end_date:
-                end_date = date
-            if date == today:
-                today_position = i
-            total_positions = i
-
-        # give total positions some value
-        if today_position < 0:
-            today_position = total_positions
-
-        logging.info(" date range of file " + file_name + ": " + start_date + " to " + end_date +
-                     ", and today " + today + " position is " + str(today_position) + " of " + str(total_positions))
-        return start_date, end_date, today_position, total_positions
-
-    @classmethod
-    def gtfs_calendar_age(cls, gtfs):
-        """ calculate the number of days since the gtfs was generated, and number of days left within the calendar
-        """
-        start_date,end_date,pos,total=cls.get_date_range_of_calendar_dates(gtfs)
-        sdate = datetime.datetime.strptime(start_date, '%Y%m%d')
-        edate = datetime.datetime.strptime(end_date, '%Y%m%d')
-        sdiff = datetime.datetime.now() - sdate
-        ediff = edate - datetime.datetime.now()
-        logging.info("first - {0} was {1} days ago".format(start_date, sdiff.days))
-        logging.info("last  - {0} is  {1} days after today".format(end_date, ediff.days))
-        return sdiff.days, ediff.days
-
-    @classmethod
-    def is_gtfs_out_of_date(cls, gtfs):
-        """ calculate whether we think gtfs is out of date
-        """
-        ret_val = False
-        start_date,end_date,pos,total=cls.get_date_range_of_calendar_dates(gtfs)
-        pos_diff=pos * 1.0001 / total
-
-        sdays, edays = self.gtfs_calendar_age(gtfs)
-        if pos_diff > 0.40 or sdays > 30 or edays < 30:
-            ret_val = True
-        return ret_val
 
 
 def main():
