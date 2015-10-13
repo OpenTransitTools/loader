@@ -1,12 +1,12 @@
 import os
-import inspect
 import datetime
 import logging
 import csv
 
 from ott.loader.gtfs import utils
+from ott.loader.gtfs.base import Base
 
-class Diff():
+class Diff(Base):
     """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see if it's older than
         cached gtfs.zip file
     """
@@ -25,9 +25,7 @@ class Diff():
         self.new_gtfs_zip = new_gtfs_zip
 
         # step 2: make tmp dir and cd into it
-        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        self.tmp_dir = os.path.join(this_module_dir, "tmp")
-        utils.mkdir(self.tmp_dir)
+        self.tmp_dir = self.get_tmp_dir()
         os.chdir(self.tmp_dir)
 
         # step 3: unzip some stuff
