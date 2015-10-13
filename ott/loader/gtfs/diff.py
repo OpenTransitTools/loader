@@ -1,4 +1,5 @@
 import os
+import inspect
 import logging
 
 from ott.loader.gtfs import utils
@@ -24,8 +25,8 @@ class Diff(Base):
         os.chdir(self.tmp_dir)
 
         # step 3: unzip some stuff
-        self.old_info = Info(old_gtfs_zip, "old")
-        self.new_info = Info(new_gtfs_zip, "new")
+        self.old_info = Info(self.old_gtfs_zip, "old_")
+        self.new_info = Info(self.new_gtfs_zip, "new_")
 
     def is_different(self):
         ''' compare feed_info.txt and calendar_dates.txt between two zips
@@ -41,7 +42,7 @@ class Diff(Base):
 
 
 def main():
-    import inspect
+    #import pdb; pdb.set_trace()
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     this_module_dir = os.path.join(this_module_dir, "tests")
     gtfsA = os.path.join(this_module_dir, "gtfsA.zip")

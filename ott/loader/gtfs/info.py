@@ -23,10 +23,10 @@ class Info(Base):
         self.file_prefix = file_prefix
         self.unzip_calendar_and_info_files(file_prefix)
 
-    @classmethod
     def unzip_calendar_and_info_files(self, file_prefix, calendar_dates_file='calendar_dates.txt', info_file='feed_info.txt'):
         """ unzip a file (calendar_dates.txt by default) from our old & new gtfs.zip files
         """
+        #import pdb; pdb.set_trace()
         self.calendar_dates_file = file_prefix + calendar_dates_file
         self.info_file = file_prefix + info_file
         file_utils.unzip_file(self.gtfs_path, self.calendar_dates_file,  calendar_dates_file)
