@@ -45,7 +45,10 @@ class Info(Base):
         """
         ret_val = False
         start_date,end_date,pos,total=self.get_date_range_of_calendar_dates()
-        pos_diff=pos * 1.0001 / total
+        if total > 0:
+            pos_diff = pos * 1.0001 / total
+        else:
+            pos_diff = -111
 
         sdays, edays = self.get_days_since_stats()
         if pos_diff > 0.40 or sdays > 30 or edays < 30:

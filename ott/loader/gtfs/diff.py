@@ -46,7 +46,7 @@ def main():
     this_module_dir = os.path.join(this_module_dir, "tests")
     gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
     gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
-    diff = Diff(gtfsB, gtfsA)
+    diff = Diff(gtfsA, gtfsB)
     diff.is_different()
     print diff.new_info.get_feed_info()
     print diff.new_info.get_feed_version()

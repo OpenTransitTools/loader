@@ -53,6 +53,12 @@ class TestGtfsCache(unittest.TestCase):
         c = Cache(url, name)
         self.assertTrue(os.path.exists(c.file_path))
 
+        i = c.get_info()
+        fi = i.get_date_range_of_calendar_dates()
+        fi_match = ('20070604', '20070604', 0, 0)
+        self.assertEqual(fi, fi_match)
+
+
 
 class TestGtfsInfo(unittest.TestCase):
     def setUp(self):
@@ -63,7 +69,7 @@ class TestGtfsInfo(unittest.TestCase):
 
     def test_basic_info(self):
         this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
+        gtfsA = os.path.join(this_module_dir, "gtfsB.zip")
 
         i = Info(gtfsA)
 
@@ -72,7 +78,7 @@ class TestGtfsInfo(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
         fi = i.get_date_range_of_calendar_dates()
-        fi_match = ('20070604', '20070604', 1, 1)
+        fi_match = ('20070604', '20070604', 0, 0)
         self.assertEqual(fi, fi_match)
 
         fi = i.get_feed_version()

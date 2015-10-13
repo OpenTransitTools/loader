@@ -17,6 +17,7 @@ import subprocess
 import datetime
 
 from ott.loader.gtfs.cache import Cache
+from ott.loader.gtfs.info  import Info
 from ott.loader.gtfs import utils as file_utils
 
 # constants

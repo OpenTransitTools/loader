@@ -3,6 +3,7 @@ import logging
 
 from ott.loader.gtfs import utils
 from ott.loader.gtfs.base import Base
+from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
 
 class Cache(Base):
@@ -48,6 +49,12 @@ class Cache(Base):
             logging.info("move to cache")
             utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)
+
+    def get_info(self, file_prefix=''):
+        ''' :return an info object for this cached gtfs feed
+        '''
+        ret_val = Info(self.file_path, file_prefix)
+        return ret_val
 
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
