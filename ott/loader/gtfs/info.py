@@ -47,12 +47,12 @@ class Info(Base):
         start_date,end_date,pos,total=self.get_date_range_of_calendar_dates()
         pos_diff=pos * 1.0001 / total
 
-        sdays, edays = self.get_calendar_range()
+        sdays, edays = self.get_days_since_stats()
         if pos_diff > 0.40 or sdays > 30 or edays < 30:
             ret_val = True
         return ret_val
 
-    def get_calendar_range(self):
+    def get_days_since_stats(self):
         """ calculate the number of days since the gtfs was generated, and number of days left within the calendar
         """
         start_date,end_date,pos,total=self.get_date_range_of_calendar_dates()

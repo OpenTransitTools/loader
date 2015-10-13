@@ -79,7 +79,7 @@ class TestGtfsInfo(unittest.TestCase):
         fi_match = "20150927-20151006-0140"
         self.assertEqual(fi, fi_match)
 
-        r = i.get_calendar_range()
-        self.assertTrue(r[0] > 3000)
-        self.assertTrue(r[1] < -3000)
+        r = i.get_days_since_stats()
+        self.assertTrue(r[0] > 3050)
+        self.assertTrue(r[1] < -3050)
         self.assertTrue(i.is_gtfs_out_of_date())
