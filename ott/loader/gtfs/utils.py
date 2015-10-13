@@ -23,6 +23,10 @@ def file_age(file):
     diff = now - mtime
     return diff.days
 
+def file_size(file):
+    s = os.stat(file)
+    return s.st_size
+
 def bkup(file):
     #import pdb; pdb.set_trace()
     if os.path.exists(file):

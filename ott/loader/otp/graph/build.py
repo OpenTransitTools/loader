@@ -26,11 +26,10 @@ GRAPH_SIZE = 500000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 
-
 class Build():
     """ build an OTP graph
     """
-    def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds()):
+    def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds(), graph_expire_days=45):
         # step 1: set some params
         rebuild_graph = False
         build_cache_dir = self.get_build_cache_dir()
@@ -38,29 +37,34 @@ class Build():
 
         # step 2: check the cache files
         for g in gtfs_zip_files:
+            # step 2a: check the cached feed for any updates
             url, name = Cache.get_url_filename(g)
             diff = Cache.cmp_file_to_cached(name, build_cache_dir)
             if diff.is_different():
-                rebuild_graph = True
                 Cache.cp_cached_gtfs_zip(name, build_cache_dir)
-            else:
-                feed_version = "FFFIIIXXX meee"
-                logging.info('GTFS data is the same version: {0}'.format(feed_version))
+                rebuild_graph = True
 
+            # step 2b: print feed info
             gtfs_path = os.path.join(build_cache_dir, name)
             info = Info(gtfs_path)
             info.get_feed_info()
-            info.is_gtfs_out_of_date()
             info.get_days_since_stats()
 
-
-        # step 3: check graph file is fairly recent
-        if os.path.exists(graph_path) is False or file_utils.file_time(graph_path) > 30:
+        # step 3: check graph file is fairly recent and properly sized
+        if os.path.exists(graph_path) is False:
+            logging.info("{} doesn't exist ".format(graph_path))
+            rebuild_graph = True
+        elif file_utils.file_age(graph_path) > graph_expire_days:
+            logging.info("{} is older than {} days".format(graph_path, graph_expire_days))
+            rebuild_graph = True
+        elif file_utils.file_size(graph_path) < GRAPH_SIZE:
+            logging.info("{} is smaller than {} bytes in size".format(graph_path, GRAPH_SIZE))
             rebuild_graph = True
 
         # step 4: build graph is needed
         if rebuild_graph:
-            pass
+            logging.info("rebuilding the graph")
+
 
     @classmethod
     def get_build_cache_dir(cls, dir=None, def_name="cache"):
