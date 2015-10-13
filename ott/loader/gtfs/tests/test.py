@@ -54,7 +54,7 @@ class TestGtfsCache(unittest.TestCase):
         self.assertTrue(os.path.exists(c.file_path))
 
         i = c.get_info()
-        fi = i.get_date_range_of_calendar_dates()
+        fi = i.get_feed_date_range()
         fi_match = ('20070604', '20070604', 0, 0)
         self.assertEqual(fi, fi_match)
 
@@ -76,7 +76,7 @@ class TestGtfsInfo(unittest.TestCase):
         fi_match = ('20150927', '20160305', 'TriMet', '20150927-20151006-0140')
         self.assertEqual(fi, fi_match)
 
-        fi = i.get_date_range_of_calendar_dates()
+        fi = i.get_feed_date_range()
         fi_match = ('20070604', '20070604', 0, 0)
         self.assertEqual(fi, fi_match)
 

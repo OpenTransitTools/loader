@@ -50,7 +50,7 @@ def main():
     diff.is_different()
     print diff.new_info.get_feed_info()
     print diff.new_info.get_feed_version()
-    print diff.new_info.get_date_range_of_calendar_dates()
+    print diff.new_info.get_feed_date_range()
     print diff.new_info.get_days_since_stats()
     print diff.new_info.is_gtfs_out_of_date()
 
