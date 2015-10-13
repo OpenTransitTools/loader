@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 
 from ott.loader.gtfs import utils
 
-class Base():
+class Base(object):
 
     @classmethod
     def get_tmp_dir(cls):

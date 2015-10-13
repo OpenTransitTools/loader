@@ -3,6 +3,7 @@ import logging
 import csv
 
 from ott.loader.gtfs import utils as file_utils
+from ott.loader.gtfs.base import Base
 
 class Info(Base):
     """ Get info on a
@@ -32,8 +33,12 @@ class Info(Base):
         file_utils.unzip_file(self.gtfs_path, self.info_file, info_file)
 
     def get_feed_version(self):
-        start_date,end_date,id,version = self.get_feed_info(self.info_file):
+        start_date,end_date,id,version = self.get_feed_info()
         return version
+
+    def get_feed_dates(self):
+        start_date, end_date, tday, tpos = self.get_date_range_of_calendar_dates(self.calendar_dates_file)
+        return "{0} to {1}".format(start_date, end_date)
 
     def get_feed_info(self):
         return self._get_feed_info(self.info_file)
@@ -108,7 +113,6 @@ class Info(Base):
         logging.info("last  - {0} is  {1} days after today".format(end_date, ediff.days))
         return sdiff.days, ediff.days
 
-
     def is_gtfs_out_of_date(self):
         return self._is_gtfs_out_of_date(self.gtfs_path)
 
@@ -124,4 +128,3 @@ class Info(Base):
         if pos_diff > 0.40 or sdays > 30 or edays < 30:
             ret_val = True
         return ret_val
-
