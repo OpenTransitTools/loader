@@ -93,8 +93,7 @@ class Info(Base):
         if today_position < 0:
             today_position = total_positions
 
-        logging.info(" date range of file " + file_name + ": " + start_date + " to " + end_date +
-                     ", and today " + today + " position is " + str(today_position) + " of " + str(total_positions))
+        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(file_name, start_date, end_date, today, today_position, total_positions))
         return start_date, end_date, today_position, total_positions
 
     def gtfs_calendar_age(self):

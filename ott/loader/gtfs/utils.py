@@ -68,7 +68,7 @@ def diff_files(old_name, new_name):
                 break
             k=k+1
     except Exception, e:
-        logging.warn("problems comparing " + old_name + " and " + new_name)
+        logging.warn("problems comparing {} and {}".format(old_name, new_name))
         ret_val = True
     return ret_val
 
@@ -89,7 +89,7 @@ def unzip_file(zip_file, target_file, file_name):
         file.close()
         zip.close()
     except Exception, e:
-        logging.warn("problems extracting " + file_name + " from " + zip_file + " into file " + target_file)
+        logging.warn("problems extracting {} from {} into file {}".format(file_name, zip_file, target_file))
         ret_val = True
 
     return ret_val
