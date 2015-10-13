@@ -29,15 +29,17 @@ class Diff(Base):
 
     def is_different(self):
         ''' compare feed_info.txt and calendar_dates.txt between two zips
-            TODO: compare calendar.txt eventually
         '''
-        info_diff = utils.diff_files(self.old_info.info_file, self.new_info.info_file)
-        if info_diff:
+        feed_info_diff = utils.diff_files(self.old_info.feed_info_file, self.new_info.feed_info_file)
+        if feed_info_diff:
             logging.info("feed_info.txt files are different")
-        cal_diff  = utils.diff_files(self.old_info.calendar_dates_file, self.new_info.calendar_dates_file)
-        if cal_diff:
+        calendar_dates_diff  = utils.diff_files(self.old_info.calendar_dates_file, self.new_info.calendar_dates_file)
+        if calendar_dates_diff:
             logging.info("calender_dates.txt files are different")
-        return info_diff or cal_diff
+        calendar_diff  = utils.diff_files(self.old_info.calendar_file, self.new_info.calendar_file)
+        if calendar_diff:
+            logging.info("calender.txt files are different")
+        return feed_info_diff or calendar_diff or calendar_dates_diff
 
 
 def main():

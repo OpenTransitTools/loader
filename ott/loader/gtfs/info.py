@@ -16,7 +16,7 @@ class Info(Base):
     file_prefix = None
     calendar_file = None
     calendar_dates_file = None
-    info_file = None
+    feed_info_file = None
 
     def __init__(self, gtfs_path, file_prefix=''):
         self.tmp_dir = self.get_tmp_dir()
@@ -30,10 +30,10 @@ class Info(Base):
         #import pdb; pdb.set_trace()
         self.calendar_file = file_prefix + calendar_file
         self.calendar_dates_file = file_prefix + calendar_dates_file
-        self.info_file = file_prefix + info_file
+        self.feed_info_file = file_prefix + info_file
         file_utils.unzip_file(self.gtfs_path, self.calendar_file,calendar_file)
         file_utils.unzip_file(self.gtfs_path, self.calendar_dates_file,calendar_dates_file)
-        file_utils.unzip_file(self.gtfs_path, self.info_file, info_file)
+        file_utils.unzip_file(self.gtfs_path, self.feed_info_file, info_file)
 
     def get_feed_version(self):
         start_date,end_date,id,version = self.get_feed_info()
@@ -69,19 +69,59 @@ class Info(Base):
 
     @classmethod
     def _get_feed_date_range(cls, calendar_name, calendar_dates_name):
-        """ date range of new gtfs file
+        """ date range of new gtfs file based on both calendar.txt and calendar_dates.txt
         """
-        start_date = 'ZZZ'
-        end_date = ''
+
+        # step 1: get dates from the two gtfs calendar files
         start_date, end_date, today_position, total_positions = cls._get_calendar_dates_range(calendar_dates_name)
+        sdate, edate = cls._get_calendar_range(calendar_name)
+
+        # step 2: eliminate null values default values
+        if start_date is None: start_date = sdate
+        if end_date is None:   end_date = edate
+
+        # step 3: set return values based on oldest and youngest dates...
+        if sdate and sdate < start_date:
+            start_date = sdate
+        if edate and edate > end_date:
+            end_date = edate
+
+        return start_date, end_date
+
+    @classmethod
+    def _get_calendar_range(cls, calendar_name):
+        """ get the date range from calendar.txt
+        """
+        start_date = None
+        end_date = None
+
+        file = open(calendar_name, 'r')
+        reader = csv.DictReader(file)
+        for i, row in enumerate(reader):
+            # step 1: grab dates from .csv
+            sdate = row['start_date']
+            edate = row['end_date']
+
+            # step 2: set default dates
+            if start_date is None:  start_date = sdate
+            if end_date is None:    end_date = edate
+
+            # step 3: check and set dates to smaller/larger values
+            if sdate and sdate < start_date:
+                start_date = sdate
+            if edate and edate > end_date:
+                end_date = edate
+
+        logging.info(" date range of file {}: {} to {}".format(calendar_name, start_date, end_date))
+
         return start_date, end_date
 
     @classmethod
     def _get_calendar_dates_range(cls, calendar_dates_name):
-        """ date range of new gtfs file
+        """ get the date range from calendar_dates.txt (as well as today's position, etc...)
         """
-        start_date = 'ZZZ'
-        end_date = ''
+        start_date = None
+        end_date = None
         today = datetime.datetime.now().strftime("%Y%m%d")
         today_position = -111
         total_positions = 0
@@ -89,7 +129,14 @@ class Info(Base):
         file = open(calendar_dates_name, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
+            # step 1: grab date from .csv
             date = row['date']
+
+            # step 2: set default dates
+            if start_date is None:  start_date = date
+            if end_date is None:    end_date = date
+
+            # step 3: check and set dates to smaller/larger values
             if date < start_date:
                 start_date = date
             if date > end_date:
@@ -107,7 +154,7 @@ class Info(Base):
         return start_date, end_date, today_position, total_positions
 
     def get_feed_info(self):
-        return self._get_feed_info(self.info_file)
+        return self._get_feed_info(self.feed_info_file)
 
     @classmethod
     def _get_feed_info(cls, feed_info_name):

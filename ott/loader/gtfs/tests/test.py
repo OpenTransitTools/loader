@@ -55,7 +55,7 @@ class TestGtfsCache(unittest.TestCase):
 
         i = c.get_info()
         fi = i.get_feed_date_range()
-        fi_match = ('20070604', '20070604')
+        fi_match = ('20070101', '20101231')
         self.assertEqual(fi, fi_match)
 
 
@@ -77,7 +77,7 @@ class TestGtfsInfo(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
         fi = i.get_feed_date_range()
-        fi_match = ('20070604', '20070604')
+        fi_match = ('20070101', '20101231')
         self.assertEqual(fi, fi_match)
 
         fi = i.get_feed_version()
@@ -85,6 +85,6 @@ class TestGtfsInfo(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
         r = i.get_days_since_stats()
-        self.assertTrue(r[0] > 3050)
-        self.assertTrue(r[1] < -3050)
+        self.assertTrue(r[0] > 3200)
+        self.assertTrue(r[1] < -1750)
         self.assertTrue(i.is_gtfs_out_of_date())
