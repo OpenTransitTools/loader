@@ -14,6 +14,7 @@ class Info(Base):
     tmp_dir = None
     gtfs_path = None
     file_prefix = None
+    calendar_file = None
     calendar_dates_file = None
     info_file = None
 
@@ -23,13 +24,15 @@ class Info(Base):
         self.file_prefix = file_prefix
         self.unzip_calendar_and_info_files(file_prefix)
 
-    def unzip_calendar_and_info_files(self, file_prefix, calendar_dates_file='calendar_dates.txt', info_file='feed_info.txt'):
+    def unzip_calendar_and_info_files(self, file_prefix, calendar_file='calendar.txt', calendar_dates_file='calendar_dates.txt', info_file='feed_info.txt'):
         """ unzip a file (calendar_dates.txt by default) from our old & new gtfs.zip files
         """
         #import pdb; pdb.set_trace()
+        self.calendar_file = file_prefix + calendar_file
         self.calendar_dates_file = file_prefix + calendar_dates_file
         self.info_file = file_prefix + info_file
-        file_utils.unzip_file(self.gtfs_path, self.calendar_dates_file,  calendar_dates_file)
+        file_utils.unzip_file(self.gtfs_path, self.calendar_file,calendar_file)
+        file_utils.unzip_file(self.gtfs_path, self.calendar_dates_file,calendar_dates_file)
         file_utils.unzip_file(self.gtfs_path, self.info_file, info_file)
 
     def get_feed_version(self):
@@ -71,7 +74,7 @@ class Info(Base):
         return self._get_feed_info(self.info_file)
 
     @classmethod
-    def _get_feed_info(cls, file_name):
+    def _get_feed_info(cls, feed_info_name):
         """ return feed version, start/end dates and id info from the feed_info.txt file...
         """
         version = '???'
@@ -79,8 +82,8 @@ class Info(Base):
         end_date = ''
         id = '???'
 
-        logging.info("opening file {0}".format(file_name))
-        file = open(file_name, 'r')
+        logging.info("opening file {0}".format(feed_info_name))
+        file = open(feed_info_name, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             id = row['feed_id']
@@ -92,10 +95,10 @@ class Info(Base):
         return start_date, end_date, id, version
 
     def get_date_range_of_calendar_dates(self):
-        return self._get_date_range_of_calendar_dates(self.calendar_dates_file)
+        return self._get_date_range_of_calendar_dates(self.calendar_file, self.calendar_dates_file)
 
     @classmethod
-    def _get_date_range_of_calendar_dates(cls, file_name):
+    def _get_date_range_of_calendar_dates(cls, calendar_name, calendar_dates_name):
         """ date range of new gtfs file
         """
         start_date = 'ZZZ'
@@ -104,7 +107,7 @@ class Info(Base):
         today_position = -111
         total_positions = 0
 
-        file = open(file_name, 'r')
+        file = open(calendar_dates_name, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             date = row['date']
@@ -120,5 +123,7 @@ class Info(Base):
         if today_position < 0:
             today_position = total_positions
 
-        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(file_name, start_date, end_date, today, today_position, total_positions))
+        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_name, start_date, end_date, today, today_position, total_positions))
+
+
         return start_date, end_date, today_position, total_positions

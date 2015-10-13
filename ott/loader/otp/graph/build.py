@@ -30,7 +30,6 @@ TEST_HTML  = "otp_report.html"
 class Build():
     """ build an OTP graph
     """
-
     def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds()):
         # step 1: set some params
         rebuild_graph = False
@@ -48,7 +47,8 @@ class Build():
                 feed_version = "FFFIIIXXX meee"
                 logging.info('GTFS data is the same version: {0}'.format(feed_version))
 
-            info = Info(graph_path)
+            gtfs_path = os.path.join(build_cache_dir, name)
+            info = Info(gtfs_path)
             info.get_feed_info()
             info.is_gtfs_out_of_date()
             info.get_days_since_stats()
@@ -61,7 +61,6 @@ class Build():
         # step 4: build graph is needed
         if rebuild_graph:
             pass
-
 
     @classmethod
     def get_build_cache_dir(cls, dir=None, def_name="cache"):
