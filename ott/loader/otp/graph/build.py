@@ -45,7 +45,14 @@ class Build():
                 rebuild_graph = True
                 Cache.cp_cached_gtfs_zip(name, build_cache_dir)
             else:
+                feed_version = "FFFIIIXXX meee"
                 logging.info('GTFS data is the same version: {0}'.format(feed_version))
+
+            info = Info(graph_path)
+            info.get_feed_info()
+            info.is_gtfs_out_of_date()
+            info.get_days_since_stats()
+
 
         # step 3: check graph file is fairly recent
         if os.path.exists(graph_path) is False or file_utils.file_time(graph_path) > 30:

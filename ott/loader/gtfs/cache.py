@@ -50,12 +50,6 @@ class Cache(Base):
             utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)
 
-    def get_info(self, file_prefix=''):
-        ''' :return an info object for this cached gtfs feed
-        '''
-        ret_val = Info(self.file_path, file_prefix)
-        return ret_val
-
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
         '''
@@ -68,6 +62,17 @@ class Cache(Base):
                 ret_val = True
         except:
             ret_val = False
+        return ret_val
+
+    def get_info(self, file_prefix=''):
+        return self._get_info(self.file_path, file_prefix)
+
+    @classmethod
+    def _get_info(cls, gtfs_zip_name, file_prefix=''):
+        ''' :return an info object for this cached gtfs feed
+        '''
+        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
+        ret_val = Info(cache_path, file_prefix)
         return ret_val
 
     @classmethod

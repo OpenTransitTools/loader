@@ -59,7 +59,6 @@ class TestGtfsCache(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
 
-
 class TestGtfsInfo(unittest.TestCase):
     def setUp(self):
         pass
