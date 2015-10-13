@@ -55,7 +55,7 @@ class TestGtfsCache(unittest.TestCase):
 
         i = c.get_info()
         fi = i.get_feed_date_range()
-        fi_match = ('20070604', '20070604', 0, 0)
+        fi_match = ('20070604', '20070604')
         self.assertEqual(fi, fi_match)
 
 
@@ -77,7 +77,7 @@ class TestGtfsInfo(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
         fi = i.get_feed_date_range()
-        fi_match = ('20070604', '20070604', 0, 0)
+        fi_match = ('20070604', '20070604')
         self.assertEqual(fi, fi_match)
 
         fi = i.get_feed_version()

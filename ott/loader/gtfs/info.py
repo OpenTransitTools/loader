@@ -40,28 +40,22 @@ class Info(Base):
         return version
 
     def get_feed_dates(self):
-        start_date, end_date, tday, tpos = self.get_feed_date_range(self.calendar_dates_file)
+        start_date,end_date = self.get_feed_date_range()
         return "{0} to {1}".format(start_date, end_date)
 
     def is_gtfs_out_of_date(self):
         """ calculate whether we think gtfs is out of date
         """
         ret_val = False
-        start_date,end_date,pos,total=self.get_feed_date_range()
-        if total > 0:
-            pos_diff = pos * 1.0001 / total
-        else:
-            pos_diff = -111
-
         sdays, edays = self.get_days_since_stats()
-        if pos_diff > 0.40 or sdays > 30 or edays < 30:
+        if sdays > 30 or edays < 30:
             ret_val = True
         return ret_val
 
     def get_days_since_stats(self):
         """ calculate the number of days since the gtfs was generated, and number of days left within the calendar
         """
-        start_date,end_date,pos,total=self.get_feed_date_range()
+        start_date,end_date=self.get_feed_date_range()
         sdate = datetime.datetime.strptime(start_date, '%Y%m%d')
         edate = datetime.datetime.strptime(end_date, '%Y%m%d')
         sdiff = datetime.datetime.now() - sdate
@@ -70,35 +64,20 @@ class Info(Base):
         logging.info("last  - {0} is  {1} days after today".format(end_date, ediff.days))
         return sdiff.days, ediff.days
 
-    def get_feed_info(self):
-        return self._get_feed_info(self.info_file)
-
-    @classmethod
-    def _get_feed_info(cls, feed_info_name):
-        """ return feed version, start/end dates and id info from the feed_info.txt file...
-        """
-        version = '???'
-        start_date = 'ZZZ'
-        end_date = ''
-        id = '???'
-
-        logging.info("opening file {0}".format(feed_info_name))
-        file = open(feed_info_name, 'r')
-        reader = csv.DictReader(file)
-        for i, row in enumerate(reader):
-            id = row['feed_id']
-            start_date = row['feed_start_date']
-            end_date = row['feed_end_date']
-            version = row['feed_version']
-
-        logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
-        return start_date, end_date, id, version
-
     def get_feed_date_range(self):
         return self._get_feed_date_range(self.calendar_file, self.calendar_dates_file)
 
     @classmethod
     def _get_feed_date_range(cls, calendar_name, calendar_dates_name):
+        """ date range of new gtfs file
+        """
+        start_date = 'ZZZ'
+        end_date = ''
+        start_date, end_date, today_position, total_positions = cls._get_calendar_dates_range(calendar_dates_name)
+        return start_date, end_date
+
+    @classmethod
+    def _get_calendar_dates_range(cls, calendar_dates_name):
         """ date range of new gtfs file
         """
         start_date = 'ZZZ'
@@ -125,5 +104,29 @@ class Info(Base):
 
         logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_name, start_date, end_date, today, today_position, total_positions))
 
-
         return start_date, end_date, today_position, total_positions
+
+    def get_feed_info(self):
+        return self._get_feed_info(self.info_file)
+
+    @classmethod
+    def _get_feed_info(cls, feed_info_name):
+        """ return feed version, start/end dates and id info from the feed_info.txt file...
+        """
+        version = '???'
+        start_date = 'ZZZ'
+        end_date = ''
+        id = '???'
+
+        logging.info("opening file {0}".format(feed_info_name))
+        file = open(feed_info_name, 'r')
+        reader = csv.DictReader(file)
+        for i, row in enumerate(reader):
+            id = row['feed_id']
+            start_date = row['feed_start_date']
+            end_date = row['feed_end_date']
+            version = row['feed_version']
+
+        logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
+        return start_date, end_date, id, version
+
