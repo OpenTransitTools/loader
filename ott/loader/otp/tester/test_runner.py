@@ -93,10 +93,8 @@ class Test(object):
         self.map_url = m
 
     @classmethod
-    def make_hostname(cls):
-        host = envvar('HOSTNAME')
-        if host is None or "maps" not in host:
-            host = 'maps7.trimet.org'
+    def make_hostname(cls, def_host='maps7.trimet.org'):
+        host = file_utils.envvar('HOSTNAME', def_host)
         return host
 
     @classmethod
@@ -345,7 +343,7 @@ class TestSuite(object):
     def __init__(self, dir, file, date=None):
         """
         """
-        self.file_path = dir + file
+        self.file_path = os.path.join(dir, file)
         self.name = file
         self.date = date
         self.params = []
@@ -448,7 +446,6 @@ class TestRunner(object):
 
     @classmethod
     def get_suites_dir(cls, suites_name="suites"):
-        import os
         this_module_dir = cls.get_current_dir()
         suites_path = os.path.join(this_module_dir, suites_name)
         return suites_path
@@ -552,7 +549,7 @@ def xmain(argv=sys.argv):
         date = argv[1]
 
     logging.basicConfig(level=logging.INFO)
-    template = envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
+    template = file_utils.envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
     x = Test({
               'From' : '1',
               'To' : '1',
