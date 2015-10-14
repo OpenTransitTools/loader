@@ -27,6 +27,19 @@ def file_size(file):
     s = os.stat(file)
     return s.st_size
 
+def exists_and_sized(file, size, expire):
+    ret_val = True
+    if os.path.exists(file) is False:
+        logging.info("{} doesn't exist ".format(file))
+        ret_val = False
+    elif file_age(file) > expire:
+        logging.info("{} is {} days old, thus older than the {} day refresh threshold".format(file, file_age(file), expire))
+        ret_val = False
+    elif file_size(file) < size:
+        logging.info("{} is smaller than {} bytes in size".format(file, size))
+        ret_val = False
+    return ret_val
+
 def bkup(file):
     #import pdb; pdb.set_trace()
     if os.path.exists(file):

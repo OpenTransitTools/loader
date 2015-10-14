@@ -9,6 +9,7 @@
 import os
 import inspect
 import sys
+import copy
 import time
 import traceback
 import logging
@@ -29,42 +30,71 @@ TEST_HTML  = "otp_report.html"
 class Build():
     """ build an OTP graph
     """
-    def __init__(self, gtfs_zip_files=Cache.get_gtfs_feeds(), graph_expire_days=45):
+    graph_path = None
+    build_cache_dir = None
+    gtfs_zip_files = None
+
+    graph_name = GRAPH_NAME
+    graph_size = GRAPH_SIZE
+    vlog_name  = VLOG_NAME
+    test_html  = TEST_HTML
+    graph_expire_days = 45
+
+    def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
+        self.gtfs_zip_files = gtfs_zip_files
+        self.build_cache_dir = self.get_build_cache_dir()
+        self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
+
+    def build_graph(self, force_rebuild=False):
         # step 1: set some params
-        rebuild_graph = False
-        build_cache_dir = self.get_build_cache_dir()
-        graph_path = os.path.join(build_cache_dir, GRAPH_NAME)
+        rebuild_graph = force_rebuild
 
-        # step 2: check the cache files
-        for g in gtfs_zip_files:
-            # step 2a: check the cached feed for any updates
-            url, name = Cache.get_url_filename(g)
-            diff = Cache.cmp_file_to_cached(name, build_cache_dir)
-            if diff.is_different():
-                Cache.cp_cached_gtfs_zip(name, build_cache_dir)
-                rebuild_graph = True
-
-            # step 2b: print feed info
-            gtfs_path = os.path.join(build_cache_dir, name)
-            info = Info(gtfs_path)
-            info.get_feed_info()
-            info.get_days_since_stats()
-
-        # step 3: check graph file is fairly recent and properly sized
-        if os.path.exists(graph_path) is False:
-            logging.info("{} doesn't exist ".format(graph_path))
-            rebuild_graph = True
-        elif file_utils.file_age(graph_path) > graph_expire_days:
-            logging.info("{} is older than {} days".format(graph_path, graph_expire_days))
-            rebuild_graph = True
-        elif file_utils.file_size(graph_path) < GRAPH_SIZE:
-            logging.info("{} is smaller than {} bytes in size".format(graph_path, GRAPH_SIZE))
+        # step 2: check graph file is fairly recent and properly sized
+        if not file_utils.exists_and_sized(self.graph_path, self.graph_size, self.graph_expire_days):
             rebuild_graph = True
 
-        # step 4: build graph is needed
+        # step 3: check the cache files
+        if self.check_gtfs_cache_files():
+            rebuild_graph = True
+
+        # step 4: print feed info
+        feed_details = self.get_gtfs_feed_details()
+
+        # step 5: build graph is needed
         if rebuild_graph:
             logging.info("rebuilding the graph")
 
+    def check_gtfs_cache_files(self):
+        ''' returns True if any gtfs files in the cache are out of date
+        '''
+        ret_val = False
+        for g in self.gtfs_zip_files:
+            # step 2a: check the cached feed for any updates
+            url, name = Cache.get_url_filename(g)
+            diff = Cache.cmp_file_to_cached(name, self.build_cache_dir)
+            if diff.is_different():
+                Cache.cp_cached_gtfs_zip(name, self.build_cache_dir)
+                ret_val = True
+        return ret_val
+
+    def get_gtfs_feed_details(self):
+        ''' returns updated [] with feed details
+        '''
+        ret_val = []
+        for g in self.gtfs_zip_files:
+            cp = copy.copy(g)
+            gtfs_path = os.path.join(self.build_cache_dir, cp['name'])
+            info = Info(gtfs_path)
+            r = info.get_feed_date_range()
+            v = info.get_feed_version()
+            d = info.get_days_since_stats()
+            cp['start'] = r[0]
+            cp['end'] = r[1]
+            cp['version'] = v
+            cp['since'] = d[0]
+            cp['until'] = d[1]
+            ret_val.append(cp)
+        return ret_val
 
     @classmethod
     def get_build_cache_dir(cls, dir=None, def_name="cache"):
@@ -78,37 +108,28 @@ class Build():
         return ret_val
 
     @classmethod
-    def XXX_dir(cls, dir=None, def_name="cache"):
-        pass
+    def update_vlog(version, date_range):
+        """ run tests on a graph
+            return True if the tests cause any errors
+        """
+        u = "\nUpdated graph on {0} with GTFS version #{1}, date range: {2}\n".format(datetime.datetime.now(), version, date_range)
+        f = open(VERSION_LOG, 'a')
+        f.write(u)
+        f.flush()
+        f.close()
 
-
-
-
-
-
-
-def exists_and_sized(file, size=0):
-    """ check whether the a file exists and is has some girth
-    """
-    exists = os.path.exists(file)
-    if not exists:
-        logging.info(" file {0} doesn't exist ".format(file))
+def main(argv):
+    b = Build()
+    if "mock" in argv:
+        feed_details = b.get_gtfs_feed_details()
+        b.mock_build("test" in argv)
+        b.mv_failed_graph_to_good()
     else:
-        s = os.stat(file)
-        if s.st_size < size:
-            logging.info(" file {0} appears (at {1} bytes) is less than specified {2} bytes".format(file, s.st_size, size))
-            exists = False
-    return exists
+        b.build_graph()
 
-def update_vlog(version, date_range):
-    """ run tests on a graph
-        return True if the tests cause any errors
-    """
-    u = "\nUpdated graph on {0} with GTFS version #{1}, date range: {2}\n".format(datetime.datetime.now(), version, date_range)
-    f = open(VERSION_LOG, 'a')
-    f.write(u)
-    f.flush()
-    f.close()
+if __name__ == '__main__':
+    main(sys.argv)
+
 
 def build_graph(new_gtfs=True):
     """ build a new graph
@@ -223,19 +244,6 @@ def mock_build(test=False):
     else:
         deploy_graph()
         update_vlog(version, date_range)
-
-def xmain(argv):
-    if "mock" in argv:
-        mock_build("test" in argv)
-        mv_failed_graph_to_good()
-    else:
-        real_build()
-
-def main(argv):
-    b = Build()
-
-if __name__ == '__main__':
-    main(sys.argv)
 
 
 
