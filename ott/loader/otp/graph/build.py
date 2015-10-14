@@ -98,6 +98,11 @@ class Build():
             ret_val.append(cp)
         return ret_val
 
+    def run_graph_tests(self):
+        ''' returns updated [] with feed details
+        '''
+
+
     def mv_failed_graph_to_good(self):
         """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
         """
@@ -107,6 +112,19 @@ class Build():
             exists = os.path.exists(fail_path)
             if exists:
                 file_utils.mv(fail_path, self.graph_path)
+
+    def update_vlog(self, feeds_details):
+        """ print out gtfs feed(s) version numbers and dates to the otp.v log file
+        """
+        if feeds_details and len(feeds_details) > 0:
+            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
+            for f in feeds_details:
+                msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
+            vlog = os.path.join(self.build_cache_dir, self.vlog_name)
+            f = open(vlog, 'a')
+            f.write(msg)
+            f.flush()
+            f.close()
 
     @classmethod
     def get_build_cache_dir(cls, dir=None, def_name="cache"):
@@ -119,26 +137,14 @@ class Build():
         file_utils.mkdir(ret_val)
         return ret_val
 
-    def update_vlog(self, feeds_details):
-        """ print out version number to otp.v file
-        """
-        if feeds_details and len(feeds_details) > 0:
-            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
-            for f in feeds_details:
-                msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
-            vlog = os.path.join(self.build_cache_dir, self.vlog_name)
-            f = open(vlog, 'a')
-            f.write(msg)
-            f.flush()
-            f.close()
-
 def main(argv):
     b = Build()
     if "mock" in argv:
         feed_details = b.get_gtfs_feed_details()
         b.update_vlog(feed_details)
-        #b.mock_build("test" in argv)
         b.mv_failed_graph_to_good()
+    elif "tests" in argv:
+        b.run_graph_tests()
     else:
         b.build_graph()
 
