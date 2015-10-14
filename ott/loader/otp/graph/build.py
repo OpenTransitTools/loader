@@ -33,7 +33,7 @@ TEST_HTML  = "otp_report.html"
 class Build():
     """ build an OTP graph
     """
-    self.this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
     graph_path = None
 

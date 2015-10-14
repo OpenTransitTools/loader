@@ -433,8 +433,7 @@ class TestRunner(object):
         """
         self.test_suites = self.get_test_suites(date)
         if report_template is None:
-            curr_dir = self.this_module_dir
-            report_template = os.path.join(curr_dir, 'templates', 'good_bad.html')
+            report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
         self.report_template = Template(filename=report_template)
 
     @classmethod
