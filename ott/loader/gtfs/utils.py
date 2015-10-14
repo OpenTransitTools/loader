@@ -95,7 +95,6 @@ def diff_files(old_name, new_name):
         ret_val = True
     return ret_val
 
-
 def unzip_file(zip_file, target_file, file_name):
     """ unzips a file from a zip file...
         @returns True if there's a problem...
@@ -115,6 +114,14 @@ def unzip_file(zip_file, target_file, file_name):
         logging.warn("problems extracting {} from {} into file {}".format(file_name, zip_file, target_file))
         ret_val = True
 
+    return ret_val
+
+def envvar(name, def_val=None, suffix=None):
+    """ envvar interface
+    """
+    ret_val = os.environ.get(name, def_val)
+    if suffix is not None:
+        ret_val = ret_val + suffix
     return ret_val
 
 

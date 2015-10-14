@@ -11,14 +11,7 @@ import urllib2
 from mako.template import Template
 from mako import exceptions
 
-
-def envvar(name, defval=None, suffix=None):
-    """ envvar interface -- TODO: put this in a utils api
-    """
-    retval = os.environ.get(name, defval)
-    if suffix is not None:
-        retval = retval + suffix
-    return retval
+from ott.loader.gtfs import utils as file_utils
 
 class TestResult:
     FAIL=000
@@ -108,8 +101,8 @@ class Test(object):
 
     @classmethod
     def make_urls(cls, host):
-        planner_url = envvar('OTP_URL', "http://{0}/prod".format(host))
-        map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
+        planner_url = file_utils.envvar('OTP_URL', "http://{0}/prod".format(host))
+        map_url = file_utils.envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
         return planner_url, map_url
 
     def get_param(self, name, def_val=None):
@@ -438,9 +431,11 @@ class TestRunner(object):
     def __init__(self, report_template=None, date=None):
         """constructor builds the test runner
         """
-        self.test_suites = self.get_test_suites(date, self.dir)
-        if report_template:
-            self.report_template = Template(filename=report_template)
+        self.test_suites = self.get_test_suites(date)
+        if report_template is None:
+            curr_dir = self.get_current_dir()
+            report_template = os.path.join(curr_dir, 'templates', 'good_bad.html')
+        self.report_template = Template(filename=report_template)
 
     @classmethod
     def get_current_dir(cls):
@@ -489,16 +484,29 @@ class TestRunner(object):
         for ts in self.test_suites:
             ts.printer()
 
-    def report(self):
+    def report(self, dir=None, report_name='otp_report.html'):
         """ render a pass/fail report
         """
-        r = None
+        ret_val = None
         try:
+            # step 1: mako render of the report
             r = self.report_template.render(host="http://" + Test.make_hostname(), test_suites=self.test_suites, test_errors=self.has_errors())
-        except:
-            print exceptions.text_error_template().render()
-        return r
+            ret_val = r
 
+            # step 2: stream the report to a file
+            report_path = report_name
+            if dir:
+                report_path = os.path.join(dir, report_name)
+            f = open(report_path, 'w')
+            if r:
+                f.write(r)
+            else:
+                f.write("Sorry, the template was null...")
+            f.flush()
+            f.close()
+        except Exception, e:
+            print exceptions.text_error_template().render()
+        return ret_val
 
 def runner(argv):
     ''' main entry of the test runner
@@ -512,8 +520,7 @@ def runner(argv):
             date = argv[1]
     logging.basicConfig(level=lev)
 
-    template = envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
-    t = TestRunner(template, date)
+    t = TestRunner()
     t.run()
     r = t.report()
 
@@ -521,15 +528,6 @@ def runner(argv):
         print('There were errors')
     else:
         print('Nope, no errors')
-
-    report = envvar('OTP_REPORT',   'otp_report.html')
-    f = open(report, 'w')
-    if r:
-        f.write(r)
-    else:
-        f.write("Sorry, the template was null...")
-    f.flush()
-    f.close()
 
 def stress(argv):
     date = None

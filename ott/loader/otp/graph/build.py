@@ -21,6 +21,8 @@ from ott.loader.gtfs.cache import Cache
 from ott.loader.gtfs.info  import Info
 from ott.loader.gtfs import utils as file_utils
 
+from ott.loader.otp.tester.test_runner import TestRunner
+
 # constants
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
@@ -35,8 +37,8 @@ class Build():
     build_cache_dir = None
     gtfs_zip_files = None
 
-    graph_name = GRAPH_NAME
     graph_failed = GRAPH_FAILD
+    graph_name = GRAPH_NAME
     graph_size = GRAPH_SIZE
     vlog_name  = VLOG_NAME
     test_html  = TEST_HTML
@@ -47,7 +49,6 @@ class Build():
         self.build_cache_dir = self.get_build_cache_dir()
         file_utils.cd(self.build_cache_dir)
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
-
 
     def build_graph(self, force_rebuild=False):
         # step 1: set some params
@@ -102,7 +103,13 @@ class Build():
     def run_graph_tests(self):
         ''' returns updated [] with feed details
         '''
-
+        t = TestRunner()
+        t.run()
+        t.report(self.build_cache_dir)
+        if t.has_errors():
+            logging.info('GRAPH TESTS: There were errors!')
+        else:
+            logging.info('GRAPH TESTS: Nope, no errors')
 
 
     def mv_failed_graph_to_good(self):

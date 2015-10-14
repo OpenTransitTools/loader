@@ -10,7 +10,7 @@ class TestTestSuite(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_diff_calendar(self):
+    def test_suites_exist(self):
         ts = TestRunner.get_test_suites()
         self.assertTrue(len(ts) > 0)
         pass
