@@ -23,6 +23,7 @@ from ott.loader.gtfs import utils as file_utils
 
 # constants
 GRAPH_NAME = "Graph.obj"
+GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 500000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
@@ -35,6 +36,7 @@ class Build():
     gtfs_zip_files = None
 
     graph_name = GRAPH_NAME
+    graph_failed = GRAPH_FAILD
     graph_size = GRAPH_SIZE
     vlog_name  = VLOG_NAME
     test_html  = TEST_HTML
@@ -96,6 +98,16 @@ class Build():
             ret_val.append(cp)
         return ret_val
 
+    def mv_failed_graph_to_good(self):
+        """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
+        """
+        exists = os.path.exists(self.graph_path)
+        if not exists:
+            fail_path = os.path.join(self.build_cache_dir, self.graph_failed)
+            exists = os.path.exists(fail_path)
+            if exists:
+                file_utils.mv(fail_path, self.graph_path)
+
     @classmethod
     def get_build_cache_dir(cls, dir=None, def_name="cache"):
         ''' returns either dir (stupid check) or <current-directory>/$def_name
@@ -108,7 +120,7 @@ class Build():
         return ret_val
 
     @classmethod
-    def update_vlog(version, date_range):
+    def update_vlog(cls, version, date_range):
         """ run tests on a graph
             return True if the tests cause any errors
         """
@@ -117,6 +129,7 @@ class Build():
         f.write(u)
         f.flush()
         f.close()
+
 
 def main(argv):
     b = Build()
@@ -150,15 +163,6 @@ def build_graph(new_gtfs=True):
 
     return ret_val
 
-def mv_failed_graph_to_good():
-    """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
-    """
-    exists = os.path.exists(GRAPH_FILE)
-    if not exists:
-        exists = os.path.exists(GRAPH_FAILD)
-        if exists:
-            f="mv {0} {1}".format(GRAPH_FAILD, GRAPH_FILE)
-            os.system(f)
 
 def deploy_graph(start_tomcat="ant test", sleep=60):
     """ deploy the new graph

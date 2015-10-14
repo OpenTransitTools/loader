@@ -48,6 +48,9 @@ def bkup(file):
         rm(tmp_file)
         os.rename(file, tmp_file)
 
+def mv(src, dst):
+    os.rename(src, dst)
+
 def rm(file):
     if os.path.exists(file):
         os.remove(file)
