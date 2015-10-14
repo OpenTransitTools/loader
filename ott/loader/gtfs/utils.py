@@ -55,6 +55,9 @@ def rm(file):
     if os.path.exists(file):
         os.remove(file)
 
+def cd(dir):
+    os.chdir(dir)
+
 def mkdir(dir):
     if not os.path.exists(dir):
         os.makedirs(dir)

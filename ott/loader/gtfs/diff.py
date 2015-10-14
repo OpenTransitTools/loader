@@ -21,7 +21,7 @@ class Diff(Base):
 
         # step 2: make tmp dir and cd into it
         self.tmp_dir = self.get_tmp_dir()
-        os.chdir(self.tmp_dir)
+        utils.cd(self.tmp_dir)
 
         # step 3: unzip some stuff
         self.old_info = Info(self.old_gtfs_zip, "old_")

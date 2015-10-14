@@ -45,7 +45,9 @@ class Build():
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
         self.build_cache_dir = self.get_build_cache_dir()
+        file_utils.cd(self.build_cache_dir)
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
+
 
     def build_graph(self, force_rebuild=False):
         # step 1: set some params
@@ -67,11 +69,10 @@ class Build():
             logging.info("rebuilding the graph")
 
     def check_gtfs_cache_files(self):
-        ''' returns True if any gtfs files in the cache are out of date
+        ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
         for g in self.gtfs_zip_files:
-            # step 2a: check the cached feed for any updates
             url, name = Cache.get_url_filename(g)
             diff = Cache.cmp_file_to_cached(name, self.build_cache_dir)
             if diff.is_different():
@@ -140,6 +141,7 @@ class Build():
 def main(argv):
     b = Build()
     if "mock" in argv:
+        #import pdb; pdb.set_trace()
         feed_details = b.get_gtfs_feed_details()
         b.update_vlog(feed_details)
         b.mv_failed_graph_to_good()
