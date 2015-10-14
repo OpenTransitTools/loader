@@ -1,4 +1,5 @@
 import os
+import inspect
 import sys
 import time
 import datetime
@@ -425,28 +426,20 @@ class TestRunner(object):
     """ Run .csv tests from ./tests/ by constructing a
         url to the trip planner, calling the url, then printing a report
     """
+    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
     def __init__(self, report_template=None, date=None):
         """constructor builds the test runner
         """
         self.test_suites = self.get_test_suites(date)
         if report_template is None:
-            curr_dir = self.get_current_dir()
+            curr_dir = self.this_module_dir
             report_template = os.path.join(curr_dir, 'templates', 'good_bad.html')
         self.report_template = Template(filename=report_template)
 
     @classmethod
-    def get_current_dir(cls):
-        ''' return the directory where this module lives
-        '''
-        import os
-        import inspect
-        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        return this_module_dir
-
-    @classmethod
     def get_suites_dir(cls, suites_name="suites"):
-        this_module_dir = cls.get_current_dir()
+        this_module_dir = cls.this_module_dir
         suites_path = os.path.join(this_module_dir, suites_name)
         return suites_path
 

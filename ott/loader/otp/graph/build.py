@@ -26,7 +26,7 @@ from ott.loader.otp.tester.test_runner import TestRunner
 # constants
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
-GRAPH_SIZE = 500000000
+GRAPH_SIZE = 50000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 
@@ -34,6 +34,7 @@ class Build():
     """ build an OTP graph
     """
     graph_path = None
+
     build_cache_dir = None
     gtfs_zip_files = None
 
@@ -46,6 +47,7 @@ class Build():
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
+        self.this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.build_cache_dir = self.get_build_cache_dir()
         file_utils.cd(self.build_cache_dir)
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
@@ -68,6 +70,19 @@ class Build():
         # step 5: build graph is needed
         if rebuild_graph:
             logging.info("rebuilding the graph")
+            jar = self.check_otp_jar()
+            print jar
+
+    def check_otp_jar(self, jar="otp.jar", download_url="http://dev.opentripplanner.org/jars/otp-0.19.0-SNAPSHOT-shaded.jar"):
+        """ make sure otp.jar exists ... if not, download it
+            :return full-path to otp.jar
+        """
+        dir = self.this_module_dir
+        jar_path = os.path.join(dir, jar)
+        exists = os.path.exists(jar_path)
+        if not exists or file_utils.file_size(jar_path) < self.graph_size:
+            file_utils.wget(download_url, jar_path)
+        return jar_path
 
     def check_gtfs_cache_files(self):
         ''' check the ott.loader.gtfs cache for any feed updates
@@ -111,7 +126,6 @@ class Build():
         else:
             logging.info('GRAPH TESTS: Nope, no errors')
 
-
     def mv_failed_graph_to_good(self):
         """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
         """
@@ -135,14 +149,10 @@ class Build():
             f.flush()
             f.close()
 
-    @classmethod
-    def get_build_cache_dir(cls, dir=None, def_name="cache"):
-        ''' returns either dir (stupid check) or <current-directory>/$def_name
+    def get_build_cache_dir(self, def_name="cache"):
+        ''' returns either dir
         '''
-        ret_val = dir
-        if dir is None:
-            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-            ret_val = os.path.join(this_module_dir, def_name)
+        ret_val = os.path.join(self.this_module_dir, def_name)
         file_utils.mkdir(ret_val)
         return ret_val
 
