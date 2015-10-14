@@ -9,6 +9,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 requires = [
     'ott.utils',
     'simplejson',
+    'mako'
 ]
 
 extras_require = dict(

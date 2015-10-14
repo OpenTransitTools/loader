@@ -94,6 +94,11 @@ class Test(object):
     def set_hostname(self):
         self.host = self.make_hostname()
 
+    def set_urls(self):
+        p,m = self.make_urls(self.host)
+        self.planner_url = p
+        self.map_url = m
+
     @classmethod
     def make_hostname(cls):
         host = envvar('HOSTNAME')
@@ -101,17 +106,11 @@ class Test(object):
             host = 'maps7.trimet.org'
         return host
 
-    def set_urls(self):
-        p,m = self.make_urls(self.host)
-        self.planner_url = p
-        self.map_url = m
-
     @classmethod
     def make_urls(cls, host):
         planner_url = envvar('OTP_URL', "http://{0}/prod".format(host))
         map_url = envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
         return planner_url, map_url
-
 
     def get_param(self, name, def_val=None):
         ret_val = def_val
@@ -436,17 +435,33 @@ class TestRunner(object):
         url to the trip planner, calling the url, then printing a report
     """
 
-    def __init__(self, report_template=None, date=None, suites='./ott/loader/otp/tester/suites'):
+    def __init__(self, report_template=None, date=None):
         """constructor builds the test runner
         """
-        self.dir = envvar('OTP_CSV_DIR', suites, '/')
         self.test_suites = self.get_test_suites(date, self.dir)
         if report_template:
             self.report_template = Template(filename=report_template)
 
     @classmethod
-    def get_test_suites(cls, date=None, dir='./ott/loader/otp/tester/suites/'):
+    def get_current_dir(cls):
+        ''' return the directory where this module lives
+        '''
+        import os
+        import inspect
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        return this_module_dir
+
+    @classmethod
+    def get_suites_dir(cls, suites_name="suites"):
+        import os
+        this_module_dir = cls.get_current_dir()
+        suites_path = os.path.join(this_module_dir, suites_name)
+        return suites_path
+
+    @classmethod
+    def get_test_suites(cls, date=None):
         test_suites = []
+        dir = cls.get_suites_dir()
         files=os.listdir(dir)
         for f in files:
             if f.lower().endswith('.csv'):
