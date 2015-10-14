@@ -33,6 +33,8 @@ TEST_HTML  = "otp_report.html"
 class Build():
     """ build an OTP graph
     """
+    self.this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
     graph_path = None
 
     build_cache_dir = None
@@ -47,7 +49,6 @@ class Build():
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
-        self.this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         self.build_cache_dir = self.get_build_cache_dir()
         file_utils.cd(self.build_cache_dir)
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
