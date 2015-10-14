@@ -1,0 +1,5 @@
+{
+  useTransfersTxt: true,
+  fetchElevationUS: true,
+  osmCustomNamer: "portland"
+}

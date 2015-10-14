@@ -11,6 +11,7 @@ cache/
 .git/
 .git/*
 *.old
+*.jar
 .*#
 .#*
 *#
