@@ -119,23 +119,25 @@ class Build():
         file_utils.mkdir(ret_val)
         return ret_val
 
-    @classmethod
-    def update_vlog(cls, version, date_range):
-        """ run tests on a graph
-            return True if the tests cause any errors
+    def update_vlog(self, feeds_details):
+        """ print out version number to otp.v file
         """
-        u = "\nUpdated graph on {0} with GTFS version #{1}, date range: {2}\n".format(datetime.datetime.now(), version, date_range)
-        f = open(VERSION_LOG, 'a')
-        f.write(u)
-        f.flush()
-        f.close()
-
+        if feeds_details and len(feeds_details) > 0:
+            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
+            for f in feeds_details:
+                msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
+            vlog = os.path.join(self.build_cache_dir, self.vlog_name)
+            f = open(vlog, 'a')
+            f.write(msg)
+            f.flush()
+            f.close()
 
 def main(argv):
     b = Build()
     if "mock" in argv:
         feed_details = b.get_gtfs_feed_details()
-        b.mock_build("test" in argv)
+        b.update_vlog(feed_details)
+        #b.mock_build("test" in argv)
         b.mv_failed_graph_to_good()
     else:
         b.build_graph()
