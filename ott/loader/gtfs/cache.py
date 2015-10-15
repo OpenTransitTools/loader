@@ -45,6 +45,7 @@ class Cache(Base):
         else:
             update = True
 
+        # step 6: mv old file to backup then mv new file in tmp dir to cache
         if update:
             logging.info("move to cache")
             utils.bkup(self.file_path)

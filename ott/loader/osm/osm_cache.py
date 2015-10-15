@@ -3,7 +3,7 @@ import logging
 
 from ott.loader.gtfs import utils
 
-class OsmCache(object):
+class OsmCache(Base):
     """ Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
@@ -42,6 +42,7 @@ class OsmCache(object):
         else:
             update = True
 
+        # step 6: mv old file to backup then mv new file in tmp dir to cache
         if update:
             logging.info("move to cache")
             utils.bkup(self.file_path)
@@ -81,18 +82,8 @@ class OsmCache(object):
         diff = Diff(cache_path, other_path)
         return diff
 
-    @classmethod
-    def get_gtfs_feeds(cls):
-        gtfs_feeds = [
-            {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
-            {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
-        ]
-        return gtfs_feeds
-
 def main():
-    for g in Cache.get_gtfs_feeds():
-        url,name = Cache.get_url_filename(g)
-        Cache(url, name)
+    pass
 
 if __name__ == '__main__':
     main()
