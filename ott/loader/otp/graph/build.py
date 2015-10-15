@@ -27,6 +27,8 @@ from ott.loader.otp.tester.test_runner import TestRunner
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 50000000
+OSM_NAME   = "streets.osm"
+OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 
@@ -43,9 +45,11 @@ class Build(object):
     graph_failed = GRAPH_FAILD
     graph_name = GRAPH_NAME
     graph_size = GRAPH_SIZE
+    osm_name   = OSM_NAME
+    osm_size   = OSM_SIZE
     vlog_name  = VLOG_NAME
     test_html  = TEST_HTML
-    graph_expire_days = 45
+    expire_days = 45
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
@@ -54,11 +58,16 @@ class Build(object):
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
 
     def build_graph(self, force_rebuild=False):
+        ''' will rebuild the graph...
+            :return: True for success ... fail for pass
+        '''
+        ret_val = False
+
         # step 1: set some params
         rebuild_graph = force_rebuild
 
         # step 2: check graph file is fairly recent and properly sized
-        if not file_utils.exists_and_sized(self.graph_path, self.graph_size, self.graph_expire_days):
+        if not file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
             rebuild_graph = True
 
         # step 3: check the cache files
@@ -72,22 +81,31 @@ class Build(object):
         # step 5: build graph is needed
         if rebuild_graph and len(feed_details) > 0:
             logging.info("rebuilding the graph")
-            jar = self.check_otp_jar()
-            print jar
-            self.deploy_graph()
+            otp_jar = self.check_otp_jar()
+
+            # run the builder multiple times
+            for n in range(1, 21):
+                logging.info(" build attempt {0} of a new graph ".format(n))
+                file_utils.rm(self.graph_path)
+                file_utils.cd(self.this_module_dir)
+                os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(otp_jar, self.build_cache_dir, self.build_cache_dir))
+                time.sleep(10)
+                if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
+                    ret_val = True
+                    break
+        return ret_val
 
     def report_error(self, msg):
         logging.error(msg)
 
-    def deploy_graph(self):
+    def deploy_graph(self, otp_jar):
         print "TBD"
 
     def check_otp_jar(self, jar="otp.jar", download_url="http://dev.opentripplanner.org/jars/otp-0.19.0-SNAPSHOT-shaded.jar"):
         """ make sure otp.jar exists ... if not, download it
             :return full-path to otp.jar
         """
-        dir = self.this_module_dir
-        jar_path = os.path.join(dir, jar)
+        jar_path = os.path.join(self.this_module_dir, jar)
         exists = os.path.exists(jar_path)
         if not exists or file_utils.file_size(jar_path) < self.graph_size:
             file_utils.wget(download_url, jar_path)
@@ -98,11 +116,20 @@ class Build(object):
         '''
         ret_val = False
         try:
+            osm_path = os.path.join(self.this_module_dir, self.osm_name)
+            size = file_utils.file_size(osm_path)
+            age  =  file_utils.file_age(osm_path) < self.expire_days
+            if size > self.osm_size and age < self.expire_days:
+                ret_val = True
+            else:
+                if size < self.osm_size:
+                    self.report_warn("{} (at {}) is smaller than {}".format(self.osm_name, size, self.osm_size))
+                if age > self.expire_days:
+                    self.report_warn("{} (at {} days) is older than {} days".format(self.osm_name, age, self.expire_days))
         except Exception, e:
             logging.warn(e)
             self.report_error("OSM files are in a questionable state")
         return ret_val
-
 
     def check_gtfs_cache_files(self):
         ''' check the ott.loader.gtfs cache for any feed updates
