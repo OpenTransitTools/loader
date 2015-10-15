@@ -62,6 +62,7 @@ class Build(object):
             rebuild_graph = True
 
         # step 3: check the cache files
+        self.check_osm_cache_file()
         if self.check_gtfs_cache_files():
             rebuild_graph = True
 
@@ -69,11 +70,14 @@ class Build(object):
         feed_details = self.get_gtfs_feed_details()
 
         # step 5: build graph is needed
-        if rebuild_graph:
+        if rebuild_graph and len(feed_details) > 0:
             logging.info("rebuilding the graph")
             jar = self.check_otp_jar()
             print jar
             self.deploy_graph()
+
+    def report_error(self, msg):
+        logging.error(msg)
 
     def deploy_graph(self):
         print "TBD"
@@ -89,35 +93,54 @@ class Build(object):
             file_utils.wget(download_url, jar_path)
         return jar_path
 
+    def check_osm_cache_file(self):
+        ''' check the ott.loader.osm cache for any street data updates
+        '''
+        ret_val = False
+        try:
+        except Exception, e:
+            logging.warn(e)
+            self.report_error("OSM files are in a questionable state")
+        return ret_val
+
+
     def check_gtfs_cache_files(self):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
-        for g in self.gtfs_zip_files:
-            url, name = Cache.get_url_filename(g)
-            diff = Cache.cmp_file_to_cached(name, self.build_cache_dir)
-            if diff.is_different():
-                Cache.cp_cached_gtfs_zip(name, self.build_cache_dir)
-                ret_val = True
+        try:
+            for g in self.gtfs_zip_files:
+                url, name = Cache.get_url_filename(g)
+                diff = Cache.cmp_file_to_cached(name, self.build_cache_dir)
+                if diff.is_different():
+                    Cache.cp_cached_gtfs_zip(name, self.build_cache_dir)
+                    ret_val = True
+        except Exception, e:
+            logging.warn(e)
+            self.report_error("GTFS files are in a questionable state")
         return ret_val
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
         '''
         ret_val = []
-        for g in self.gtfs_zip_files:
-            cp = copy.copy(g)
-            gtfs_path = os.path.join(self.build_cache_dir, cp['name'])
-            info = Info(gtfs_path)
-            r = info.get_feed_date_range()
-            v = info.get_feed_version()
-            d = info.get_days_since_stats()
-            cp['start'] = r[0]
-            cp['end'] = r[1]
-            cp['version'] = v
-            cp['since'] = d[0]
-            cp['until'] = d[1]
-            ret_val.append(cp)
+        try:
+            for g in self.gtfs_zip_files:
+                cp = copy.copy(g)
+                gtfs_path = os.path.join(self.build_cache_dir, cp['name'])
+                info = Info(gtfs_path)
+                r = info.get_feed_date_range()
+                v = info.get_feed_version()
+                d = info.get_days_since_stats()
+                cp['start'] = r[0]
+                cp['end'] = r[1]
+                cp['version'] = v
+                cp['since'] = d[0]
+                cp['until'] = d[1]
+                ret_val.append(cp)
+        except Exception, e:
+            logging.warn(e)
+            self.report_error("GTFS files are in a questionable state")
         return ret_val
 
     def run_graph_tests(self):

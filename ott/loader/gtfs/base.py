@@ -7,11 +7,11 @@ logging.basicConfig(level=logging.INFO)
 from ott.loader.gtfs import utils
 
 class Base(object):
+    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
     @classmethod
     def get_tmp_dir(cls):
-        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-        tmp_dir = os.path.join(this_module_dir, "tmp")
+        tmp_dir = os.path.join(cls.this_module_dir, "tmp")
         utils.mkdir(tmp_dir)
         return tmp_dir
 
@@ -21,8 +21,7 @@ class Base(object):
         '''
         ret_val = dir
         if dir is None:
-            this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-            ret_val = os.path.join(this_module_dir, def_name)
+            ret_val = os.path.join(cls.this_module_dir, def_name)
         utils.mkdir(ret_val)
         return ret_val
 

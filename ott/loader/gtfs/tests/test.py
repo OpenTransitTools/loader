@@ -85,6 +85,6 @@ class TestGtfsInfo(unittest.TestCase):
         self.assertEqual(fi, fi_match)
 
         r = i.get_days_since_stats()
-        self.assertTrue(r[0] > 3200)
-        self.assertTrue(r[1] < -1750)
+        self.assertTrue(r[0] >= 3200)
+        self.assertTrue(r[1] <= -1750)
         self.assertTrue(i.is_gtfs_out_of_date())
