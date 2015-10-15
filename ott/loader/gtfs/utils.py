@@ -4,6 +4,7 @@ import datetime
 import urllib2
 import zipfile
 import filecmp
+import shutil
 
 ##
 ## FILE UTILS
@@ -40,16 +41,25 @@ def exists_and_sized(file, size, expire):
         ret_val = False
     return ret_val
 
-def bkup(file):
+def bkup(file, rm_orig=True):
     #import pdb; pdb.set_trace()
     if os.path.exists(file):
         mtime = file_time(file)
         tmp_file = "{}.{:%Y%m%d}".format(file, mtime)
         rm(tmp_file)
-        os.rename(file, tmp_file)
+        if rm_orig:
+            os.rename(file, tmp_file)
+        else:
+            cp(file, tmp_file)
 
 def mv(src, dst):
     os.rename(src, dst)
+
+def cp(src, dst):
+    if os.path.isfile(file):
+        shutil.copy2(src, dst)
+    else:
+        logging.error('could not copy file ' + src)
 
 def rm(file):
     if os.path.exists(file):

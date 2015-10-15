@@ -22,35 +22,6 @@ TMP_API   = TMP_DIR + API_NAME
 TMP_JAR   = TMP_DIR + JAR_NAME
 
 
-def wget(url, to_file, size=10):
-    """ grab file from remote http server, and report back whether
-    """
-    ret_val = True
-    try:
-        # get vlog file from build path url
-        req = urllib2.Request(url)
-        res = urllib2.urlopen(req)
-
-        # write it out
-        f = open(to_file, 'w')
-        f.write(res.read())
-        f.flush()
-        f.close()
-        res.close()
-        logging.info("wget: downloaded {0} into file {1}".format(url, to_file))
-        ret_val = True
-    except:
-        logging.warn("ERROR: could not get data from url: {0}".format(url))
-        traceback.print_exc(file=sys.stdout)
-        ret_val = False
-
-    if ret_val is True and not exists_and_sized(to_file, size):
-        logging.warn("ERROR: tried downloading file {0} from url {1}, but its smaller than {2} bytes. \n".format(to_file, url, size))
-        ret_val = False
-
-    return ret_val
-
-
 def bkup_file(file):
     """ copy a file to a file--YYYY-MM-DD
     """
