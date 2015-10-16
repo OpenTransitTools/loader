@@ -57,11 +57,11 @@ class Build(object):
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
 
-    def build_graph(self, force_rebuild=False):
+    def build_and_test_graph(self, force_rebuild=False):
         ''' will rebuild the graph...
             :return: True for success ... fail for pass
         '''
-        ret_val = False
+        success = True
 
         # step 1: set some params
         rebuild_graph = force_rebuild
@@ -79,33 +79,36 @@ class Build(object):
         feed_details = self.get_gtfs_feed_details()
 
         # step 5: build graph is needed
-        if rebuild_graph and len(feed_details) > 0:
-            logging.info("rebuilding the graph")
-
-            # run the builder multiple times until we get a good looking Graph.obj
+        if rebuild_graph:
+            success = False
+            # step 5a: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
                 logging.info(" build attempt {0} of a new graph ".format(n))
                 self.run_graph_builder()
                 time.sleep(10)
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
-                    ret_val = True
+                    success = True
                     break
-        return ret_val
-
-    def report_error(self, msg):
-        ''' override me to do things like emailing error reports, etc... '''
-        logging.error(msg)
+            # step 5b: test the graph
+            if success:
+                self.deploy_test_graph()
+                success = self.run_graph_tests()
+                if success:
+                    self.update_vlog()
+                    success = True
+        return success
 
     def run_graph_builder(self):
+        logging.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
-    def deploy_graph(self):
+    def deploy_test_graph(self):
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
@@ -215,6 +218,10 @@ class Build(object):
         file_utils.mkdir(ret_val)
         return ret_val
 
+    def report_error(self, msg):
+        ''' override me to do things like emailing error reports, etc... '''
+        logging.error(msg)
+
     @classmethod
     def check_otp_jar(cls, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
         """ make sure otp.jar exists ... if not, download it
@@ -244,7 +251,7 @@ class Build(object):
             b.vizualize_graph()
         else:
             force = ("force" in argv or "rebuild" in argv)
-            b.build_graph(force_rebuild=force)
+            b.build_and_test_graph(force_rebuild=force)
 
 def main(argv):
     Build.options(argv)
