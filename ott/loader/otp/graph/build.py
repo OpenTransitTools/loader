@@ -89,6 +89,7 @@ class Build(object):
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
                     success = True
                     break
+
             # step 5b: test the graph
             if success:
                 self.deploy_test_graph()
@@ -107,10 +108,13 @@ class Build(object):
         os.system(cmd)
 
     def deploy_test_graph(self):
+        ''' todo: launch in a separate thread so we can then run tests... '''
+        ''' launch the server in a separate thread ... then sleep for 75 seconds to give the server time to load the data '''
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --server --port 80 --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
         logging.info(cmd)
         os.system(cmd)
+        time.sleep(75)
 
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
@@ -245,7 +249,8 @@ class Build(object):
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
-        elif "tests" in argv:
+        elif "test" in argv:
+            b.deploy_test_graph()
             b.run_graph_tests()
         elif "viz" in argv:
             b.vizualize_graph()

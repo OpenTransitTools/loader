@@ -533,27 +533,5 @@ def main(argv=sys.argv):
     else:
         runner(argv)
 
-def xmain(argv=sys.argv):
-    ''' test method for developing / debugging the suite.... 
-    '''
-    date = None
-    if len(argv) > 1:
-        date = argv[1]
-
-    logging.basicConfig(level=logging.INFO)
-    template = file_utils.envvar('OTP_TEMPLATE', './ott/loader/otp/tester/templates/good_bad.html')
-    x = Test({
-              'From' : '1',
-              'To' : '1',
-              'Max dist' : '1',
-              'Mode' : '1',
-              'Optimize' : '1',
-              'Service' : '1',
-              'Time' : '1',
-       }, 1, date)
-    print x.get_planner_url()
-    print x.get_map_url()
-    print x.get_ridetrimetorg_url()
-
 if __name__ == '__main__':
     main()
