@@ -11,10 +11,7 @@ import inspect
 import sys
 import copy
 import time
-import traceback
 import logging
-import smtplib
-import subprocess
 import datetime
 
 from ott.loader.gtfs.cache import Cache
@@ -31,6 +28,8 @@ OSM_NAME   = "streets.osm"
 OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
+OTP_DOWNLOAD_URL="http://dev.opentripplanner.org/jars/otp-0.19.0-SNAPSHOT-shaded.jar"
+
 
 class Build(object):
     """ build an OTP graph
@@ -38,9 +37,9 @@ class Build(object):
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
     graph_path = None
-
+    otp_path   = None
     build_cache_dir = None
-    gtfs_zip_files = None
+    gtfs_zip_files  = None
 
     graph_failed = GRAPH_FAILD
     graph_name = GRAPH_NAME
@@ -56,6 +55,7 @@ class Build(object):
         self.build_cache_dir = self.get_build_cache_dir()
         file_utils.cd(self.build_cache_dir)
         self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
+        self.otp_path = self.check_otp_jar()
 
     def build_graph(self, force_rebuild=False):
         ''' will rebuild the graph...
@@ -81,14 +81,13 @@ class Build(object):
         # step 5: build graph is needed
         if rebuild_graph and len(feed_details) > 0:
             logging.info("rebuilding the graph")
-            otp_jar = self.check_otp_jar()
 
-            # run the builder multiple times
+            # run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
                 logging.info(" build attempt {0} of a new graph ".format(n))
                 file_utils.rm(self.graph_path)
                 file_utils.cd(self.this_module_dir)
-                os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(otp_jar, self.build_cache_dir, self.build_cache_dir))
+                os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(self.otp_path, self.build_cache_dir, self.build_cache_dir))
                 time.sleep(10)
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
                     ret_val = True
@@ -96,20 +95,16 @@ class Build(object):
         return ret_val
 
     def report_error(self, msg):
+        ''' override me to do things like emailing error reports, etc... '''
         logging.error(msg)
 
     def deploy_graph(self, otp_jar):
-        print "TBD"
+        os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(self.otp_path, self.build_cache_dir, self.build_cache_dir))
 
-    def check_otp_jar(self, jar="otp.jar", download_url="http://dev.opentripplanner.org/jars/otp-0.19.0-SNAPSHOT-shaded.jar"):
-        """ make sure otp.jar exists ... if not, download it
-            :return full-path to otp.jar
-        """
-        jar_path = os.path.join(self.this_module_dir, jar)
-        exists = os.path.exists(jar_path)
-        if not exists or file_utils.file_size(jar_path) < self.graph_size:
-            file_utils.wget(download_url, jar_path)
-        return jar_path
+    def vizualize_graph(self):
+        viz='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir)
+        logging.info(viz)
+        os.system(viz)
 
     def check_osm_cache_file(self):
         ''' check the ott.loader.osm cache for any street data updates
@@ -212,6 +207,17 @@ class Build(object):
         return ret_val
 
     @classmethod
+    def check_otp_jar(cls, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
+        """ make sure otp.jar exists ... if not, download it
+            :return full-path to otp.jar
+        """
+        jar_path = os.path.join(cls.this_module_dir, jar)
+        exists = os.path.exists(jar_path)
+        if not exists or file_utils.file_size(jar_path) < expected_size:
+            file_utils.wget(download_url, jar_path)
+        return jar_path
+
+    @classmethod
     def factory(cls):
         return Build()
 
@@ -225,6 +231,8 @@ class Build(object):
             b.mv_failed_graph_to_good()
         elif "tests" in argv:
             b.run_graph_tests()
+        elif "viz" in argv:
+            b.vizualize_graph()
         else:
             force = ("force" in argv or "rebuild" in argv)
             b.build_graph(force_rebuild=force)
