@@ -85,9 +85,7 @@ class Build(object):
             # run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
                 logging.info(" build attempt {0} of a new graph ".format(n))
-                file_utils.rm(self.graph_path)
-                file_utils.cd(self.this_module_dir)
-                os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(self.otp_path, self.build_cache_dir, self.build_cache_dir))
+                self.run_graph_builder()
                 time.sleep(10)
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
                     ret_val = True
@@ -98,13 +96,24 @@ class Build(object):
         ''' override me to do things like emailing error reports, etc... '''
         logging.error(msg)
 
-    def deploy_graph(self, otp_jar):
-        os.system("java -Xmx4096m -jar {} --build {} --cache {}".format(self.otp_path, self.build_cache_dir, self.build_cache_dir))
+    def run_graph_builder(self):
+        file_utils.rm(self.graph_path)
+        file_utils.cd(self.this_module_dir)
+        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        logging.info(cmd)
+        os.system(cmd)
+
+    def deploy_graph(self):
+        file_utils.cd(self.this_module_dir)
+        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        logging.info(cmd)
+        os.system(cmd)
 
     def vizualize_graph(self):
-        viz='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir)
-        logging.info(viz)
-        os.system(viz)
+        file_utils.cd(self.this_module_dir)
+        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir)
+        logging.info(cmd)
+        os.system(cmd)
 
     def check_osm_cache_file(self):
         ''' check the ott.loader.osm cache for any street data updates
