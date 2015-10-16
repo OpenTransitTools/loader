@@ -226,7 +226,8 @@ class Build(object):
         elif "tests" in argv:
             b.run_graph_tests()
         else:
-            b.build_graph()
+            force = ("force" in argv or "rebuild" in argv)
+            b.build_graph(force_rebuild=force)
 
 def main(argv):
     Build.options(argv)
