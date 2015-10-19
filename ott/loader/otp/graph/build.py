@@ -107,13 +107,13 @@ class Build(object):
         logging.info(cmd)
         os.system(cmd)
 
-    def deploy_test_graph(self):
-        ''' todo: launch in a separate thread so we can then run tests... '''
-        ''' launch the server in a separate thread ... then sleep for 75 seconds to give the server time to load the data '''
+    def deploy_test_graph(self, port="80"):
+        ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
+        from subprocess import Popen
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --server --port 80 --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir, port, self.build_cache_dir)
         logging.info(cmd)
-        os.system(cmd)
+        Popen(cmd)
         time.sleep(75)
 
     def vizualize_graph(self):
