@@ -14,10 +14,9 @@ dbuser=os.environ.get('PGUSER',   'osm')
 dbpass=os.environ.get('PGPASS',   'osm')
 dbschema=os.environ.get('PGSCHEMA', 'osm')
 print "host=",host,"port=",port,"database=",dbname, "user=",dbuser, "password=",dbpass
-conn = psycopg2.connect(host=host,port=port,database=dbname, user=dbuser, password=dbpass)
 
 def getConnection():
-    return psycopg2.connect(database=dbname, user=dbuser, password=dbpass)
+    return psycopg2.connect(host=host, port=port, database=dbname, user=dbuser, password=dbpass)
 
 
 def escape_str(v):

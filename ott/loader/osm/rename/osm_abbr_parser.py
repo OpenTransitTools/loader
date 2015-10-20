@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
+# DON'T DELETE ^^^ THIS ^^^ LINE ABOVE (needed for crap down below)
+
+import os
+import inspect
 import csv
 from pyparsing import *
 
 class OsmAbbrParser():
     """Convert long OSM types and directions to their proper abbrivated forms
     """
+    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+
     def __init__(self):
         """constructor builds the pyparsing parser
         """
@@ -199,7 +206,8 @@ class OsmAbbrParser():
             from a .csv file, builds mappings that provide both keywords for the parser and a list of text replacement dicts
         """
         # street types -- used for both parser and replacement
-        file = open(fn, 'r')
+        csv_path = os.path.join(self.this_module_dir, fn)
+        file = open(csv_path, 'r')
         reader = csv.DictReader(file)
         strings = ""
         list = []

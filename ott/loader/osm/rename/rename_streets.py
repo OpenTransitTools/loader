@@ -6,8 +6,9 @@
 import sys
 import time
 
-from   ott.loader.osm.rename.osm_abbr_parser import OsmAbbrParser
-import ott.loader.osm.rename.pgdb
+from ott.loader.osm.rename.osm_abbr_parser import OsmAbbrParser
+from ott.loader.osm.rename import pgdb
+from ott.utils import num_utils
 
 MAX=999999999999
 #MAX=20
@@ -22,10 +23,11 @@ class RenameStreets():
         self.debug = debug
         self.limit = limit
         parser = OsmAbbrParser()
+        conn = pgdb.getConnection()
         for t in street_tables:
             table = schema + "." + t
-            self.add_columns(pgdb.getConnection(), table)
-            self.rename_streets(pgdb.getConnection(), table, parser)
+            self.add_columns(conn, table)
+            self.rename_streets(conn, table, parser)
 
 
     def rename_streets(self, conn, table, parser):
@@ -121,8 +123,6 @@ class RenameStreets():
         except:
             if self.debug:
                 print "Exception -- can be ignored if the tables already have new columns...  Continuing..."
-
-from ott.utils import num_utils
 
 def main(argv):
     limit = num_utils.to_int(argv[0], MAX)
