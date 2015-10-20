@@ -5,6 +5,8 @@
 #
 import sys
 import time
+import logging
+logging.basicConfig(level=logging.INFO)
 
 from ott.loader.osm.rename.osm_abbr_parser import OsmAbbrParser
 from ott.loader.osm.rename import pgdb
@@ -17,28 +19,29 @@ class RenameStreets():
     """ Fixup the street labels from various osm streets table(s) in a pgsql database
     """
     limit = MAX
-    debug = False
+    parser = None
 
-    def __init__(self, street_tables=['transit_segments'], schema=pgdb.dbschema, debug=True, limit=MAX):
-        self.debug = debug
+    def __init__(self, street_tables=['transit_segments'], schema=pgdb.dbschema, limit=MAX):
         self.limit = limit
-        parser = OsmAbbrParser()
-        conn = pgdb.getConnection()
+        self.parser = OsmAbbrParser()
         for t in street_tables:
             table = schema + "." + t
-            self.add_columns(conn, table)
-            self.rename_streets(conn, table, parser)
+            self.add_columns(table)
+            self.rename_streets(table)
 
-    def rename_streets(self, conn, table, parser):
+    def rename_streets(self, table):
         """ query the database table for osm_name entries, then update the given column with a parsed set of name, prefix, suffix, type, etc...
         """
-        cursor = conn.cursor()
+        #import pdb; pdb.set_trace()
         try:
-            # step 1 - query database for osm_names/unique row id 
+            # step 0: database connect
+            conn = pgdb.getConnection()
+            cursor = conn.cursor()
+
+            # step 1 - query database for osm_names/unique row id
             q = "SELECT  osm_name, id from " + table
             #q += " where osm_name like '%Vet%' " # for testing minimal set of row updates
-            if self.debug:
-                print q
+            logging.info(q)
             cursor.execute(q)
 
             # step 2a - iterate each row in the database
@@ -56,7 +59,7 @@ class RenameStreets():
                 if name:
                     try:
                         # step 2b - parse the osm_name into its descrete parts
-                        data = parser.dict(name)
+                        data = self.parser.dict(name)
 
                         # step 2c - update the given database row 
                         sql  = pgdb.sql_update_str(table, data)
@@ -66,27 +69,23 @@ class RenameStreets():
                         # step 2d - commit things every so often (and write a tic mark to show things still running)
                         if k % 5000 == 0:
                             conn.commit()
-                            if self.debug:
-                                knum = " {0} of {1} ".format(k, c)
-                                sys.stdout.write(knum)
-                        elif self.debug and k % 100 == 0:                       
-                            sys.stdout.write('.')
-                            sys.stdout.flush()                   
-
+                            knum = " {0} of {1} ".format(k, c)
+                            logging.info(q)
                     except Exception, e:
-                        print "PARSE EXCEPTION: %s: %s" % (e.__class__.__name__, e)
-                        print name, "\n", id, "\n", data, "\n", sql, "\n\n"
+                        logging.info(e)
                         conn.commit()
+
+            # step 3 - cleanup
+            conn.commit()
+            cursor.close()
+            conn = None
+            conn.close()
+            logging.info("\nfinished table", table, "\n")
         except Exception, e:
-            print "SQL EXCEPTION: %s: %s" % (e.__class__.__name__, e)
+            logging.error(e)
 
-        # step 3 - cleanup
-        conn.commit()
-        cursor.close()
-        if self.debug:
-            print "\nfinished table", table, "\n"
 
-    def add_columns(self, conn, table):
+    def add_columns(self, table):
         ''' renames name col in the street tables, and then adds new columns for RLIS like name attributes
             - rename name to osm_name = Southeast Lambert Street
             - name = Lambert
@@ -96,13 +95,15 @@ class RenameStreets():
             - label = BOOLEAN
             - label_text = SE Lambert St
         '''
-        cursor = conn.cursor()
         try:
+            # step 0: database connect
+            conn = pgdb.getConnection()
+            cursor = conn.cursor()
+
             # step 1: rename name to osm_name
             q = "ALTER TABLE " + table + " RENAME name TO osm_name";
             cursor.execute(q)
-            if self.debug:
-                print q
+            logging.info(q)
 
             # step 2: new text columns
             new_cols = ('name', 'prefix', 'suffix', 'type', 'label_text')
@@ -117,12 +118,15 @@ class RenameStreets():
             # step 4: commit
             conn.commit()
             cursor.close()
-        except:
-            if self.debug:
-                print "Exception -- can be ignored if the tables already have new columns...  Continuing..."
+            conn = None
+            conn.close()
+        except Exception, e:
+            logging.debug(e)
+            logging.debug("Exception -- can be ignored if the tables already have new columns...  Continuing...")
+
 
 def main(argv):
-    limit = num_utils.to_int(argv[0], MAX)
+    limit = num_utils.array_item_to_int(argv, 1, MAX)
     if "carto":
         RenameStreets(('_line', '_roads'), 'osmcarto', limit=limit)
     else:

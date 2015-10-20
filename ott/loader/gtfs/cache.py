@@ -18,7 +18,6 @@ class Cache(Base):
     cache_expire = 31
 
     def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
-
         # step 1: temp dir
         tmp_dir = self.get_tmp_dir()
 
