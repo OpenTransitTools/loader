@@ -7,11 +7,14 @@ import psycopg2
 import os
 
 # DB connection with env_var override / default values
-dbname=os.environ.get(  'PGDBNAME', 'osm')
-dbuser=os.environ.get(  'PGUSER',   'osm')
-dbpass=os.environ.get(  'PGPASS',   'osm')
+host=os.environ.get('PGURL',  'localhost')
+port=os.environ.get('PGPORT', '5432')
+dbname=os.environ.get('PGDBNAME', 'osm')
+dbuser=os.environ.get('PGUSER',   'osm')
+dbpass=os.environ.get('PGPASS',   'osm')
 dbschema=os.environ.get('PGSCHEMA', 'osm')
-conn = psycopg2.connect(database=dbname, user=dbuser, password=dbpass)
+print "host=",host,"port=",port,"database=",dbname, "user=",dbuser, "password=",dbpass
+conn = psycopg2.connect(host=host,port=port,database=dbname, user=dbuser, password=dbpass)
 
 def getConnection():
     return psycopg2.connect(database=dbname, user=dbuser, password=dbpass)
