@@ -18,7 +18,6 @@ print "host=",host,"port=",port,"database=",dbname, "user=",dbuser, "password=",
 def getConnection():
     return psycopg2.connect(host=host, port=port, database=dbname, user=dbuser, password=dbpass)
 
-
 def escape_str(v):
     ret_val=v
     if isinstance(v, str) and v.find("'") >= 0:
@@ -40,7 +39,6 @@ def dict_2_str(dict, joiner=','):
             tmplist.append(' '+tmp+' ')
 
     return joiner.join(tmplist)
-
 
 def sql_update_str(table, dict):
     """returns a string that looks like "UPDATE table SET key='value', key2='value2', ... "

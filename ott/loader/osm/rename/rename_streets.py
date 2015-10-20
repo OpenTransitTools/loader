@@ -29,7 +29,6 @@ class RenameStreets():
             self.add_columns(conn, table)
             self.rename_streets(conn, table, parser)
 
-
     def rename_streets(self, conn, table, parser):
         """ query the database table for osm_name entries, then update the given column with a parsed set of name, prefix, suffix, type, etc...
         """
@@ -78,7 +77,6 @@ class RenameStreets():
                         print "PARSE EXCEPTION: %s: %s" % (e.__class__.__name__, e)
                         print name, "\n", id, "\n", data, "\n", sql, "\n\n"
                         conn.commit()
-
         except Exception, e:
             print "SQL EXCEPTION: %s: %s" % (e.__class__.__name__, e)
 
@@ -87,7 +85,6 @@ class RenameStreets():
         cursor.close()
         if self.debug:
             print "\nfinished table", table, "\n"
-
 
     def add_columns(self, conn, table):
         ''' renames name col in the street tables, and then adds new columns for RLIS like name attributes
