@@ -2,7 +2,7 @@ import os
 import inspect
 import logging
 
-from ott.loader.gtfs import utils
+from ott.utils import file_utils
 from ott.loader.gtfs.base import Base
 from ott.loader.gtfs.info import Info
 
@@ -21,7 +21,7 @@ class Diff(Base):
 
         # step 2: make tmp dir and cd into it
         self.tmp_dir = self.get_tmp_dir()
-        utils.cd(self.tmp_dir)
+        file_utils.cd(self.tmp_dir)
 
         # step 3: unzip some stuff
         self.old_info = Info(self.old_gtfs_zip, "old_")
@@ -30,13 +30,13 @@ class Diff(Base):
     def is_different(self):
         ''' compare feed_info.txt and calendar_dates.txt between two zips
         '''
-        feed_info_diff = utils.diff_files(self.old_info.feed_info_file, self.new_info.feed_info_file)
+        feed_info_diff = file_utils.diff_files(self.old_info.feed_info_file, self.new_info.feed_info_file)
         if feed_info_diff:
             logging.info("feed_info.txt files are different")
-        calendar_dates_diff  = utils.diff_files(self.old_info.calendar_dates_file, self.new_info.calendar_dates_file)
+        calendar_dates_diff  = file_utils.diff_files(self.old_info.calendar_dates_file, self.new_info.calendar_dates_file)
         if calendar_dates_diff:
             logging.info("calender_dates.txt files are different")
-        calendar_diff  = utils.diff_files(self.old_info.calendar_file, self.new_info.calendar_file)
+        calendar_diff  = file_utils.diff_files(self.old_info.calendar_file, self.new_info.calendar_file)
         if calendar_diff:
             logging.info("calender.txt files are different")
         return feed_info_diff or calendar_diff or calendar_dates_diff

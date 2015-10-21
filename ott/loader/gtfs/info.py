@@ -2,7 +2,7 @@ import datetime
 import logging
 import csv
 
-from ott.loader.gtfs import utils as file_utils
+from ott.utils import file_utils
 from ott.loader.gtfs.base import Base
 
 class Info(Base):
