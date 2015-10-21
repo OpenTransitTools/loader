@@ -72,15 +72,16 @@ class RenameStreets():
                             knum = " {0} of {1} ".format(k, c)
                             logging.info(q)
                     except Exception, e:
-                        logging.info(e)
                         conn.commit()
+                        logging.info(e)
 
             # step 3 - cleanup
             conn.commit()
             cursor.close()
-            conn = None
             conn.close()
-            logging.info("\nfinished table", table, "\n")
+            cursor = None
+            conn = None
+            logging.info("\nfinished table\n".format(table))
         except Exception, e:
             logging.error(e)
 
@@ -118,8 +119,9 @@ class RenameStreets():
             # step 4: commit
             conn.commit()
             cursor.close()
-            conn = None
             conn.close()
+            cursor = None
+            conn = None
         except Exception, e:
             logging.debug(e)
             logging.debug("Exception -- can be ignored if the tables already have new columns...  Continuing...")
