@@ -54,11 +54,10 @@ class RenameStreets():
 
                 name = rec[0]
                 id   = rec[1]
-
                 if name:
                     k+=1
                     try:
-                        # step 2b - parse the osm_name into its descrete parts
+                        # step 2b - parse the osm_name into its discrete parts
                         data = self.parser.dict(name)
 
                         # step 2c - update the given database row 
