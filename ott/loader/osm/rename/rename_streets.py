@@ -49,7 +49,6 @@ class RenameStreets():
             k = 0
             rows = cursor.fetchall()
             for rec in rows:
-                k+=1
                 if k > c or k > self.limit:
                     break         # something strange happened, let's get out of here
 
@@ -57,6 +56,7 @@ class RenameStreets():
                 id   = rec[1]
 
                 if name:
+                    k+=1
                     try:
                         # step 2b - parse the osm_name into its descrete parts
                         data = self.parser.dict(name)
@@ -69,8 +69,7 @@ class RenameStreets():
                         # step 2d - commit things every so often (and write a tic mark to show things still running)
                         if k % 5000 == 0:
                             conn.commit()
-                            knum = " {0} of {1} ".format(k, c)
-                            logging.info(q)
+                            logging.warn(" {0} of {1} ".format(k, c))
                     except Exception, e:
                         conn.commit()
                         logging.info(e)
@@ -81,7 +80,7 @@ class RenameStreets():
             conn.close()
             cursor = None
             conn = None
-            logging.info("\nfinished table\n".format(table))
+            logging.info("\nfinished table {}\n".format(table))
         except Exception, e:
             logging.error(e)
 
