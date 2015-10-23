@@ -1,5 +1,7 @@
 ott.leaflet.*
 ott.openlayers.*
+otp_report.html
+*.out
 *~
 [a-z].py
 *.py[cod]
