@@ -47,11 +47,13 @@ setup(
     extras_require=extras_require,
     tests_require=requires,
     test_suite="ott.loader.tests",
+    # find ott | grep py$ | xargs grep "def.main"
     entry_points="""
         [console_scripts]
-        otp_tests = ott.loader.otp.test_runner:main
-        ws_tests = ott.loader.otp.tm_ws_runner:main
-        random_trips = ott.loader.otp.random_trip:main
-        random_trips_ws = ott.loader.otp.random_trip:ws_trips
+        update_gtfs = ott.loader.gtfs.cache:main
+        update_osm = ott.loader.osm.osm_cache:main
+        graph_builder = ott.loader.otp.graph.build:main
+        otp_tests = ott.loader.otp.tester.test_runner:main
+        random_trips = ott.loader.otp.tester.random_trip:main
     """,
 )
