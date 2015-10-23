@@ -1,7 +1,7 @@
 import os
 import logging
 
-from ott.loader.gtfs import utils
+from ott.utils import file_utils
 from ott.loader.gtfs.base import Base
 from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
@@ -18,7 +18,6 @@ class Cache(Base):
     cache_expire = 31
 
     def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
-
         # step 1: temp dir
         tmp_dir = self.get_tmp_dir()
 
@@ -33,7 +32,7 @@ class Cache(Base):
         # step 4: download new gtfs file
         self.url = url
         tmp_path = os.path.join(tmp_dir, self.file_name)
-        utils.wget(self.url, tmp_path)
+        file_utils.wget(self.url, tmp_path)
 
         # step 5: check the cache whether we should update or not
         update = False
@@ -48,7 +47,7 @@ class Cache(Base):
         # step 6: mv old file to backup then mv new file in tmp dir to cache
         if update:
             logging.info("move to cache")
-            utils.bkup(self.file_path)
+            file_utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)
 
     def is_fresh_in_cache(self):
@@ -58,7 +57,7 @@ class Cache(Base):
         ret_val = False
         try:
             # NOTE if the file isn't in the cache, we'll get an exception
-            age = utils.file_age(self.file_path)
+            age = file_utils.file_age(self.file_path)
             if age <= self.cache_expire:
                 ret_val = True
         except:

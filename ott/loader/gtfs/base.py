@@ -4,7 +4,7 @@ import shutil
 import logging
 logging.basicConfig(level=logging.INFO)
 
-from ott.loader.gtfs import utils
+from ott.utils import file_utils
 
 class Base(object):
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -12,7 +12,7 @@ class Base(object):
     @classmethod
     def get_tmp_dir(cls):
         tmp_dir = os.path.join(cls.this_module_dir, "tmp")
-        utils.mkdir(tmp_dir)
+        file_utils.mkdir(tmp_dir)
         return tmp_dir
 
     @classmethod
@@ -22,7 +22,7 @@ class Base(object):
         ret_val = dir
         if dir is None:
             ret_val = os.path.join(cls.this_module_dir, def_name)
-        utils.mkdir(ret_val)
+        file_utils.mkdir(ret_val)
         return ret_val
 
     @classmethod
@@ -42,5 +42,5 @@ class Base(object):
         url  = gtfs_struct.get('url')
         name = gtfs_struct.get('name', None)
         if name is None:
-            name = utils.get_file_name_from_url(url)
+            name = file_utils.get_file_name_from_url(url)
         return url, name

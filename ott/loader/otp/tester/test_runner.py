@@ -12,7 +12,7 @@ import urllib2
 from mako.template import Template
 from mako import exceptions
 
-from ott.loader.gtfs import utils as file_utils
+from ott.utils import file_utils
 
 class TestResult:
     FAIL=000

@@ -1,0 +1,13 @@
+str,replace
+Northbound,NB
+Southbound,SB
+Eastbound,EB
+Westbound,WB
+North,N
+South,S
+East,E
+West,W
+Northwest,NW
+Northeast,NE
+Southwest,SW
+Southeast,SE
