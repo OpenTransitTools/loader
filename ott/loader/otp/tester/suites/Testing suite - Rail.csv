@@ -70,7 +70,7 @@ Tests Convention Center MAX Station (8376) departure to Pioneer Courthouse Squar
 Tests Rose Quarter TC MAX Station (8377) departure to Pioneer Courthouse Square,"45.530477,-122.664732","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,8377.*MAX,,,,
 Tests Old Town/Chinatown MAX Station (8378) departure to Pioneer Courthouse Square,"45.524579,-122.671655","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,8378.*MAX,,,,
 Tests Skidmore Fountain MAX Station (8379) departure to Pioneer Courthouse Square,"45.522525,-122.671780","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,840,,,8379.*MAX,,,,
-Tests Oak/SW 1st Ave MAX Station (8380) departure to Pioneer Courthouse Square,"45.519661,-122.672354","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,840,,,8380.*MAX,,,,
+Tests Oak/SW 1st Ave MAX Station (8380) departure to Pioneer Courthouse Square,"45.519661,-122.672354","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,420,,,8380.*MAX,,,,
 Tests Morrison/SW 3rd Ave MAX Station (8381) departure to Hatfield Terminus,"45.518436,-122.675443","45.521918,-122.990675","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,8381.*MAX,,,,"Was walking, changed coords"
 Tests Galleria/SW 10th Ave MAX Station (8383) arrival from Cleveland Ave P&R,"45.502356,-122.417780","45.519864,-122.682197","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*8384,,,,"Was walking, changed coords"
 Tests JELD-WEN Field MAX Station (9757) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.522250,-122.690506","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*9757,,,,
@@ -106,7 +106,7 @@ Tests Parkrose/Sumner TC MAX Station (10573) departure to Pioneer Courthouse Squ
 Tests PSU/SW 6th & Montgomery MAX Station (7774) departure to Pioneer Courthouse Square,"45.511829,-122.682836","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,7774.*MAX,,,,
 Tests SW 6th & Madison MAX Station (13123) departure to Expo Center,"45.515675,-122.680175","45.606842,-122.688194","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,13123.*MAX,,,,"Was walking, changed coords"
 Tests SW 6th & Pine St MAX Station (7787) arrival from PSU,"45.511691,-122.682076","45.522650,-122.676659","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*7787,,,,"Was walking, changed coords"
-Tests NW 6th & Davis St MAX Station (9299) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.524496,-122.676256","TRAINISH,WALK",9:11 AM,,QUICK,840,,,MAX.*9299,,,,
+Tests NW 6th & Davis St MAX Station (9299) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.524496,-122.676256","TRAINISH,WALK",9:11 AM,,QUICK,420,,,MAX.*9299,,,,
 Tests Union Station/NW 6th & Hoyt St MAX Station (7763) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.527333,-122.676889","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*7763,,,,
 Tests Interstate/Rose Quarter MAX Station (11508) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.530641,-122.668290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*11508,,,,
 Tests Albina/Mississippi MAX Station (11509) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.540026,-122.675818","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*11509,,,,
@@ -130,7 +130,7 @@ Tests Overlook Park MAX Station (11505) departure to Pioneer Courthouse Square,"
 Tests Albina/Mississippi MAX Station (11506) departure to Pioneer Courthouse Square,"45.539366,-122.675682","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,11506.*MAX,,,,
 Tests Interstate/Rose Quarter MAX Station (1150[6|7]) departure to Pioneer Courthouse Square,"45.533871,-122.672577","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1260,,,1150[6|7].*MAX,,,,
 Tests Union Station/NW 5th & Glisan St MAX Station (7601) departure to Pioneer Courthouse Square,"45.527348,-122.675323","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,7601.*MAX,,,,
-Tests NW 5th & Couch St MAX Station (9303) departure to Pioneer Courthouse Square,"45.524507,-122.675280","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,840,,,9303.*MAX,,,,
+Tests NW 5th & Couch St MAX Station (9303) departure to Pioneer Courthouse Square,"45.524507,-122.675280","45.518875,-122.679290","TRAINISH,WALK",9:11 AM,,QUICK,420,,,9303.*MAX,,,,
 Tests SW 5th & Oak St MAX Station (7627) departure to PSU,"45.521349,-122.675727","45.511691,-122.682076","TRAINISH,WALK",9:15 AM,,QUICK,1609,,,7627.*MAX,,,,"Was walking, changed coords"
 Tests City Hall/SW Jefferson St MAX Station (7608) arrival from Expo Center,"45.606842,-122.688194","45.514732,-122.679571","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*7608,,,,"Was walking, changed coords"
 Tests PSU/SW 5th & Mill St MAX Station (7618) arrival from Pioneer Courthouse Square,"45.518875,-122.679290","45.511330,-122.681014","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,MAX.*7618,,,,
@@ -177,8 +177,8 @@ Tests SW 10th & Clay (10765) departure to Central Library,"45.514632,-122.684830
 Tests Art Museum (6493) departure to NW 23rd & Marshall,"45.515979,-122.684148","45.530507,-122.698960","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,6493.*Streetcar,,,,"Was walking, changed coords"
 Tests SW 10th & Alder (10768) arrival from OHSU Commons,"45.498554,-122.670648","45.520633,-122.681577","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10768,,,,"Was walking, changed coords"
 Tests SW 10th & Stark (10769) arrival from OHSU Commons,"45.498554,-122.670648","45.522084,-122.681263","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10769,,,,"Was walking, changed coords"
-Tests NW 10th & Couch (10770) arrival from Central Library,"45.518987,-122.682664","45.523696,-122.680976","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10770,,,,
-Tests NW 10th & Everett (10771) arrival from Central Library,"45.518987,-122.682664","45.525122,-122.681319","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10771,,,,
+Tests NW 10th & Couch (10770) arrival from Central Library,"45.518987,-122.682664","45.523696,-122.680976","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10770,,,,
+Tests NW 10th & Everett (10771) arrival from Central Library,"45.518987,-122.682664","45.525122,-122.681319","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10771,,,,
 Tests NW 10th & Glisan (10772) arrival from Central Library,"45.518987,-122.682664","45.526543,-122.681044","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10772,,,,
 Tests NW 10th & Johnson (10773) arrival from Central Library,"45.518987,-122.682664","45.528677,-122.681444","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10773,,,,
 Tests NW 10th & Northrup (13604) arrival from Central Library,"45.518987,-122.682664","45.531657,-122.681425","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*13604,,,,
@@ -205,11 +205,11 @@ Tests NW 11th & Glisan (10754) departure to Central Library,"45.526529,-122.6820
 ",,,,
 Tests NW 11th & Everett (10755) departure to Central Library,"45.525102,-122.682489","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,"10755.*Streetcar
 ",,,,
-Tests NW 11th & Couch (10756) departure to Central Library,"45.523676,-122.682002","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10756,,,,
+Tests NW 11th & Couch (10756) departure to Central Library,"45.523676,-122.682002","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10756,,,,
 Tests SW 11th & Alder (9600) departure to OHSU Commons,"45.521039,-122.683098","45.498554,-122.670648","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,9600.*Streetcar,,,,
 TODO - this test doesn't work anymore ... short walk doesn't bring folks around the EOL Streetcar loop...instead drops them off at Moody and Gibbs (removed .*12883 from the test).  Tests short walk trip from SW 11th & Alder (9600) and around end-of-line loop to OHSU Commons stop 12883,"45.521039,-122.683098","45.498554,-122.670648","TRAINISH,WALK",9:11 AM,,QUICK,160,,,9600.*Streetcar,,,,
 Tests SW 11th & Jefferson (10759) arrival from NW 23rd & Marshall,"45.530507,-122.698960","45.516232,-122.685099","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10759,,,,
-Tests SW 11th & Clay (10760) arrival from Central Library,"45.519054,-122.684220","45.515046,-122.686384","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10760,,,,
+Tests SW 11th & Clay (10760) arrival from Central Library,"45.519054,-122.684220","45.515046,-122.686384","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10760,,,,
 Tests SW Park & Market (11011) arrival from Central Library,"45.519054,-122.684220","45.513864,-122.683691","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*11011,,,,
 Tests SW 5th & Market (10762) arrival from Central Library,"45.519054,-122.684220","45.512749,-122.680635","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10762,,,,
 Tests SW 5th & Montgomery (10763) arrival from Central Library,"45.519054,-122.684220","45.511380,-122.681185","TRAINISH,WALK",9:11 AM,,QUICK,1609,,,Streetcar.*10763,,,,
