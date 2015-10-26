@@ -75,7 +75,7 @@ class Cache(Base):
         ret_val = Info(cache_path, file_prefix)
         return ret_val
 
-    @classpath
+    @classmethod
     def local_get_cache_dir(self, local_dir, cache_dir="cache"):
         ''' returns dir path ... makes the directory if it doesn't exist
         '''
@@ -113,7 +113,7 @@ class Cache(Base):
         '''
         ret_val = False
         for g in gtfs_zip_files:
-            c = Cache.check_gtfs_zip_against_cache()
+            c = Cache.check_gtfs_zip_against_cache(g['name'], local_dir)
             if c:
                 ret_val = True
         return ret_val
