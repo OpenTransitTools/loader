@@ -14,10 +14,9 @@ import time
 import logging
 import datetime
 
+from ott.utils import file_utils
 from ott.loader.gtfs.cache import Cache
 from ott.loader.gtfs.info  import Info
-from ott.loader.gtfs import utils as file_utils
-
 from ott.loader.otp.preflight.test_runner import TestRunner
 
 # constants
@@ -72,7 +71,7 @@ class Build(object):
 
         # step 3: check the cache files
         self.check_osm_cache_file()
-        if self.check_gtfs_cache_files():
+        if self.check_gtfs_cache_files(self.gtfs_zip_files, self.build_cache_dir):
             rebuild_graph = True
 
         # step 4: print feed info
@@ -142,16 +141,17 @@ class Build(object):
             self.report_error("OSM files are in a questionable state")
         return ret_val
 
-    def check_gtfs_cache_files(self):
+    @classmethod
+    def check_gtfs_cache_files(cls, gtfs_zip_files, local_dir):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
         try:
-            for g in self.gtfs_zip_files:
+            for g in gtfs_zip_files:
                 url, name = Cache.get_url_filename(g)
-                diff = Cache.cmp_file_to_cached(name, self.build_cache_dir)
+                diff = Cache.cmp_file_to_cached(name, local_dir)
                 if diff.is_different():
-                    Cache.cp_cached_gtfs_zip(name, self.build_cache_dir)
+                    Cache.cp_cached_gtfs_zip(name, local_dir)
                     ret_val = True
         except Exception, e:
             logging.warn(e)
