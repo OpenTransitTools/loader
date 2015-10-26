@@ -85,6 +85,32 @@ class Cache(Base):
         return diff
 
     @classmethod
+    def check_gtfs_zip_against_cache(cls, gtfs_zip, local_dir):
+        ''' check the ott.loader.gtfs cache for any feed updates
+        '''
+        ret_val = False
+        try:
+            url, name = Cache.get_url_filename(gtfs_zip)
+            diff = Cache.cmp_file_to_cached(name, local_dir)
+            if diff.is_different():
+                Cache.cp_cached_gtfs_zip(name, local_dir)
+                ret_val = True
+        except Exception, e:
+            logging.warn(e)
+        return ret_val
+
+    @classmethod
+    def check_gtfs_files_against_cache(cls, gtfs_zip_files, local_dir):
+        ''' check the ott.loader.gtfs cache for any feed updates
+        '''
+        ret_val = False
+        for g in gtfs_zip_files:
+            c = Cache.check_gtfs_zip_against_cache()
+            if c:
+                ret_val = True
+        return ret_val
+
+    @classmethod
     def get_gtfs_feeds(cls):
         gtfs_feeds = [
             {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},

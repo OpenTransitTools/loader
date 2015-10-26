@@ -18,8 +18,8 @@ class Load(object):
         self.gtfs_zip_files = gtfs_zip_files
         self.build_cache_dir = self.get_build_cache_dir()
 
-def main(argv):
+def main(argv=sys.argv):
     Load()
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()

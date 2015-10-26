@@ -71,8 +71,9 @@ class Build(object):
 
         # step 3: check the cache files
         self.check_osm_cache_file()
-        if self.check_gtfs_cache_files(self.gtfs_zip_files, self.build_cache_dir):
+        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.build_cache_dir):
             rebuild_graph = True
+            self.report_error("GTFS files are in a questionable state")
 
         # step 4: print feed info
         feed_details = self.get_gtfs_feed_details()
@@ -139,23 +140,6 @@ class Build(object):
         except Exception, e:
             logging.warn(e)
             self.report_error("OSM files are in a questionable state")
-        return ret_val
-
-    @classmethod
-    def check_gtfs_cache_files(cls, gtfs_zip_files, local_dir):
-        ''' check the ott.loader.gtfs cache for any feed updates
-        '''
-        ret_val = False
-        try:
-            for g in gtfs_zip_files:
-                url, name = Cache.get_url_filename(g)
-                diff = Cache.cmp_file_to_cached(name, local_dir)
-                if diff.is_different():
-                    Cache.cp_cached_gtfs_zip(name, local_dir)
-                    ret_val = True
-        except Exception, e:
-            logging.warn(e)
-            self.report_error("GTFS files are in a questionable state")
         return ret_val
 
     def get_gtfs_feed_details(self):
@@ -258,8 +242,8 @@ class Build(object):
             force = ("force" in argv or "rebuild" in argv)
             b.build_and_test_graph(force_rebuild=force)
 
-def main(argv):
+def main(argv=sys.argv):
     Build.options(argv)
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
