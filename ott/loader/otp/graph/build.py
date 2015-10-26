@@ -18,7 +18,7 @@ from ott.loader.gtfs.cache import Cache
 from ott.loader.gtfs.info  import Info
 from ott.loader.gtfs import utils as file_utils
 
-from ott.loader.otp.tester.test_runner import TestRunner
+from ott.loader.otp.preflight.test_runner import TestRunner
 
 # constants
 GRAPH_NAME = "Graph.obj"

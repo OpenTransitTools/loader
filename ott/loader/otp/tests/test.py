@@ -1,6 +1,6 @@
 import unittest
 
-from ott.loader.otp.tester.test_runner import TestRunner
+from ott.loader.otp.preflight.test_runner import TestRunner
 
 class TestTestSuite(unittest.TestCase):
 

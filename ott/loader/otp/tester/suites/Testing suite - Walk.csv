@@ -1,5 +1,0 @@
-Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
-Issue 1297: Ex 1 Favoring Longer Walking Routes Instead of Using Steps,"45.506652,-122.686487","45.506978,-122.685971",WALK,,,,,,,<steps>.*?Southwest Elevator Street Walk.*?</steps>,,,,
-Issue 1297: Ex 2 Favoring Longer Walking Routes Instead of Using Steps,"45.530428,-122.667874","45.531899,-122.667797",WALK,,,,,,,<streetName>steps</streetName>,,,,
-Issue 1297: Ex 3 Favoring Longer Walking Routes Instead of Using Steps,"45.509232,-122.679272","45.509087,-122.678441",WALK,,,,,,,<steps>.*?Southwest Hall Street.*?</steps>,,,,
-Issue 1303: Short Walking Trip Not Planning,"45.46735,-122.57679","45.468522,-122.576021",WALK,,,,,,,,,,,

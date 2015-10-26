@@ -52,10 +52,11 @@ setup(
     # find ott | grep py$ | xargs grep "def.main"
     entry_points="""
         [console_scripts]
-        update_gtfs = ott.loader.gtfs.cache:main
-        update_osm = ott.loader.osm.osm_cache:main
-        graph_builder = ott.loader.otp.graph.build:main
-        otp_tests = ott.loader.otp.tester.test_runner:main
-        random_trips = ott.loader.otp.tester.random_trip:main
+        gtfs_update = ott.loader.gtfs.cache:main
+        gtfsdb_load = ott.loader.gtfsdb.load:main
+        osm_update = ott.loader.osm.osm_cache:main
+        otp_graph_builder = ott.loader.otp.graph.build:main
+        otp_preflight = ott.loader.otp.preflight.test_runner:main
+        otp_random_trips = ott.loader.otp.preflight.random_trip:main
     """,
 )
