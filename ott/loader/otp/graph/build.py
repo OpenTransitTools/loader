@@ -22,7 +22,7 @@ from ott.loader.otp.preflight.test_runner import TestRunner
 # constants
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
-GRAPH_SIZE = 50000000
+GRAPH_SIZE = 35000000
 OSM_NAME   = "streets.osm"
 OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
@@ -110,7 +110,7 @@ class Build(object):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
         from subprocess import Popen
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.local_cache_dir, port, self.local_cache_dir)
+        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.local_cache_dir)
         logging.info(cmd)
         Popen(cmd)
         time.sleep(75)
