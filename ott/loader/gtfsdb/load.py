@@ -1,5 +1,6 @@
 
 import os
+import sys
 import inspect
 import logging
 
@@ -16,3 +17,9 @@ class Load(object):
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
         self.build_cache_dir = self.get_build_cache_dir()
+
+def main(argv):
+    Load()
+
+if __name__ == '__main__':
+    main(sys.argv)
