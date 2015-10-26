@@ -37,7 +37,7 @@ class Build(object):
 
     graph_path = None
     otp_path   = None
-    build_cache_dir = None
+    local_cache_dir = None
     gtfs_zip_files  = None
 
     graph_failed = GRAPH_FAILD
@@ -51,9 +51,9 @@ class Build(object):
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
-        self.build_cache_dir = self.get_build_cache_dir()
-        file_utils.cd(self.build_cache_dir)
-        self.graph_path = os.path.join(self.build_cache_dir, self.graph_name)
+        self.local_cache_dir = Cache.local_get_cache_dir(self.this_module_dir)
+        file_utils.cd(self.local_cache_dir)
+        self.graph_path = os.path.join(self.local_cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
 
     def build_and_test_graph(self, force_rebuild=False):
@@ -71,9 +71,8 @@ class Build(object):
 
         # step 3: check the cache files
         self.check_osm_cache_file()
-        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.build_cache_dir):
+        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.local_cache_dir):
             rebuild_graph = True
-            self.report_error("GTFS files are in a questionable state")
 
         # step 4: print feed info
         feed_details = self.get_gtfs_feed_details()
@@ -103,7 +102,7 @@ class Build(object):
         logging.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.build_cache_dir, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.local_cache_dir, self.local_cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
@@ -111,14 +110,14 @@ class Build(object):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
         from subprocess import Popen
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir, port, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.local_cache_dir, port, self.local_cache_dir)
         logging.info(cmd)
         Popen(cmd)
         time.sleep(75)
 
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.build_cache_dir)
+        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.local_cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
@@ -149,7 +148,7 @@ class Build(object):
         try:
             for g in self.gtfs_zip_files:
                 cp = copy.copy(g)
-                gtfs_path = os.path.join(self.build_cache_dir, cp['name'])
+                gtfs_path = os.path.join(self.local_cache_dir, cp['name'])
                 info = Info(gtfs_path)
                 r = info.get_feed_date_range()
                 v = info.get_feed_version()
@@ -170,7 +169,7 @@ class Build(object):
         '''
         t = TestRunner()
         t.run()
-        t.report(self.build_cache_dir)
+        t.report(self.local_cache_dir)
         if t.has_errors():
             logging.info('GRAPH TESTS: There were errors!')
         else:
@@ -181,7 +180,7 @@ class Build(object):
         """
         exists = os.path.exists(self.graph_path)
         if not exists:
-            fail_path = os.path.join(self.build_cache_dir, self.graph_failed)
+            fail_path = os.path.join(self.local_cache_dir, self.graph_failed)
             exists = os.path.exists(fail_path)
             if exists:
                 file_utils.mv(fail_path, self.graph_path)
@@ -193,18 +192,11 @@ class Build(object):
             msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
             for f in feeds_details:
                 msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
-            vlog = os.path.join(self.build_cache_dir, self.vlog_name)
+            vlog = os.path.join(self.local_cache_dir, self.vlog_name)
             f = open(vlog, 'a')
             f.write(msg)
             f.flush()
             f.close()
-
-    def get_build_cache_dir(self, def_name="cache"):
-        ''' returns either dir
-        '''
-        ret_val = os.path.join(self.this_module_dir, def_name)
-        file_utils.mkdir(ret_val)
-        return ret_val
 
     def report_error(self, msg):
         ''' override me to do things like emailing error reports, etc... '''

@@ -16,7 +16,7 @@ class Base(object):
         return tmp_dir
 
     @classmethod
-    def get_cache_dir(cls, dir=None, def_name="cache"):
+    def local_get_cache_dir(cls, dir=None, def_name="cache"):
         ''' returns either dir (stupid check) or <current-directory>/$def_name
         '''
         ret_val = dir
@@ -27,7 +27,7 @@ class Base(object):
 
     @classmethod
     def get_cached_file(cls, gtfs_zip_name, dir=None, def_name="cache"):
-        cache_dir = cls.get_cache_dir(dir, def_name)
+        cache_dir = cls.local_get_cache_dir(dir, def_name)
         file = os.path.join(cache_dir, gtfs_zip_name)
         return file
 

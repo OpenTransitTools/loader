@@ -22,7 +22,7 @@ class Cache(Base):
         tmp_dir = self.get_tmp_dir()
 
         # step 2: cache dir management
-        self.cache_dir = self.get_cache_dir(cache_dir)
+        self.cache_dir = self.local_get_cache_dir(cache_dir)
         self.cache_expire = cache_expire
 
         # step 3: file name
@@ -71,15 +71,23 @@ class Cache(Base):
     def _get_info(cls, gtfs_zip_name, file_prefix=''):
         ''' :return an info object for this cached gtfs feed
         '''
-        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
+        cache_path = os.path.join(cls.local_get_cache_dir(), gtfs_zip_name)
         ret_val = Info(cache_path, file_prefix)
+        return ret_val
+
+    @classpath
+    def local_get_cache_dir(self, local_dir, cache_dir="cache"):
+        ''' returns dir path ... makes the directory if it doesn't exist
+        '''
+        ret_val = os.path.join(local_dir, cache_dir)
+        file_utils.mkdir(ret_val)
         return ret_val
 
     @classmethod
     def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
         '''
-        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
+        cache_path = os.path.join(cls.local_get_cache_dir(), gtfs_zip_name)
         other_path = os.path.join(cmp_dir, gtfs_zip_name)
         diff = Diff(cache_path, other_path)
         return diff
