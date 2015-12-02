@@ -228,6 +228,9 @@ class Build(object):
         elif "test" in argv:
             b.deploy_test_graph()
             b.run_graph_tests()
+        elif "build" in argv:
+            b.run_graph_builder()
+            b.deploy_test_graph()
         elif "viz" in argv:
             b.vizualize_graph()
         else:
