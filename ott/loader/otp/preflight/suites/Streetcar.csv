@@ -1,15 +1,72 @@
 Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
-"Test: from OMSI/SE Water to MLK & Hawthorne","SE_Water/OMSI_(Streetcar)::45.506878,-122.663360","SE_M_L_King_@_Hawthorne::45.512512,-122.661960","TRAINISH,WALK",2:25 PM,Weekday,QUICK,1609,,,Streetcar.*13616
-"Test: from hawthorne & mlk to good samaritan hospital","SE_Hawthorne_Blvd_@_SE_Martin_Luther_King_Jr_Blvd::45.512245,-122.661835","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",10:05 AM,Weekday,QUICK,1260,,,Streetcar.*8989
-"Test: good samaritan hospital to south waterfront","Legacy_Good_Samaritan::45.530296,-122.697530","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",5:00 PM,Weekday,QUICK,1609,,,Streetcar.*12760	
+"Test: from OMSI/SE Water to MLK & Hawthorne","SE_Water/OMSI_(Streetcar)::45.506878,-122.663360","SE_M_L_King_@_Hawthorne::45.512512,-122.661960","TRAINISH,WALK",2:25 PM,Weekday,QUICK,840,,,Streetcar.*13616
+"Test: from hawthorne & mlk to good samaritan hospital","SE_Hawthorne_Blvd_@_SE_Martin_Luther_King_Jr_Blvd::45.512245,-122.661835","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",10:05 AM,Weekday,QUICK,840,,,Streetcar.*8989
+"Test: good samaritan hospital to south waterfront","Legacy_Good_Samaritan::45.530296,-122.697530","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12760	
 "Test: south waterfront to omsi","OHSU_Commons::45.498943,-122.670740","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRANSIT,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*12883
-"Test: PSU urban center to sw 10th and yamhill","PSU_Urban_Center::45.512220,-122.682076","SW_Yamhill_St_@_SW_10th_Ave::45.519333,-122.682480","TRAINISH,WALK",2:00 PM,Weekday,QUICK,1609,,,Streetcar.*10767
-"Test: burnside and Grand to lovejoy and 9th","E_Burnside_St_@_SE_Grand_Ave::45.522930,-122.660720","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","TRANSIT,WALK",12:10 PM,Weekday,QUICK,1609,,,Streetcar.*2167
-"Test: 9th and lovejoy to grand and oregon st","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","NE_Grand_Ave_@_NE_Oregon_St::45.528630,-122.660680","TRANSIT,WALK",1:00 PM,Weekday,QUICK,1609,,,Streetcar.*13606
-"Test: 1st and harrison to grand and taylor","SW_Harrison_St_@_SW_1st_Ave::45.509758,-122.678090","SE_Taylor_St::45.515087,-122.660770","TRAINISH,WALK",5:00 PM,Weekday,QUICK,1609,,,Streetcar.*12376
-"Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAINISH,WALK",3:00 PM,Weekday,QUICK,1609,,,Streetcar.*6493
-"Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,1609,,,Streetcar.*13602
-"Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAINISH,WALK",12:02 PM,Weekday,QUICK,1609,,,Streetcar.*13619
-"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.513527,-122.683641","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
-"Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAINISH,WALK",3:00 PM,Weekday,QUICK,1609,,,Streetcar.*13615
-"Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",11:00 AM,Weekday,QUICK,1260,,,Streetcar.*13604
+"Test: PSU urban center to sw 10th and yamhill","PSU_Urban_Center::45.512220,-122.682076","SW_Yamhill_St_@_SW_10th_Ave::45.519333,-122.682480","TRAINISH,WALK",2:00 PM,Weekday,QUICK,840,,,Streetcar.*10767
+"Test: burnside and Grand to lovejoy and 9th","E_Burnside_St_@_SE_Grand_Ave::45.522930,-122.660720","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","TRANSIT,WALK",12:10 PM,Weekday,QUICK,840,,,Streetcar.*2167
+"Test: 9th and lovejoy to grand and oregon st","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","NE_Grand_Ave_@_NE_Oregon_St::45.528630,-122.660680","TRANSIT,WALK",1:00 PM,Weekday,QUICK,840,,,Streetcar.*13606
+"# CLOSED 2016 - Test: 1st and harrison to grand and taylor","SW_Harrison_St_@_SW_1st_Ave::45.509758,-122.678090","SE_Taylor_St::45.515087,-122.660770","TRAINISH,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12376
+"Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*6493
+"Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,840,,,Streetcar.*13602
+"Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAINISH,WALK",12:02 PM,Weekday,QUICK,840,,,Streetcar.*13619
+"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
+"Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*13615
+"Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",11:00 AM,Weekday,QUICK,840,,,Streetcar.*13604
+#NAME?,,,,,,,,,,,,,,
+Tests SW Lowell & Bond (12881) departure to Central Library,"45.493741,-122.670953","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12881.*Streetcar,,,,NO... why?
+Tests SW Bond & Lane (12882) departure to Central Library,"45.494993,-122.671172","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,160,,,12882.*Streetcar,,,,NO... why?
+Tests OHSU Commons (12883) departure to Central Library,"45.498554,-122.670648","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12883.*Streetcar,,,,
+Tests SW River Parkway & Moody (12379) departure to Central Library,"45.506765,-122.672577","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12379.*Streetcar,,,,
+Tests SW Harrison Street (12380) departure to Central Library,"45.508118,-122.676523","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12380.*Streetcar,,,,
+# CLOSED 2016 - Tests SW 1st & Harrison (12381) departure to Central Library,"45.510204,-122.677865","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12381.*Streetcar,,,,
+Tests SW 3rd & Harrison (12382) departure to Central Library,"45.510482,-122.679796","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12382.*Streetcar,,,,
+Tests PSU Urban Center (10764) departure to Central Library,"45.511689,-122.682084","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,10764.*Streetcar,,,,
+Tests SW Park & Mill (10766) departure to Central Library,"45.513375,-122.684597","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10766,,,,
+Tests SW 10th & Clay (10765) departure to Central Library,"45.514632,-122.684830","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,160,,,10765.*Streetcar,,,,
+Tests Art Museum (6493) departure to NW 23rd & Marshall,"45.515979,-122.684148","45.530507,-122.698960","TRAINISH,WALK",9:11 AM,,QUICK,840,,,6493.*Streetcar,,,,"Was walking, changed coords"
+Tests SW 10th & Alder (10768) arrival from OHSU Commons,"45.498554,-122.670648","45.520633,-122.681577","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10768,,,,"Was walking, changed coords"
+# CLOSED 2016 - Tests SW 10th & Stark (10769) arrival from OHSU Commons,"45.498554,-122.670648","45.522084,-122.681263","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10769,,,,"Was walking, changed coords"
+Tests NW 10th & Couch (10770) arrival from Central Library,"45.518987,-122.682664","45.523696,-122.680976","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10770,,,,
+# CLOSED 2016 - Tests NW 10th & Everett (10771) arrival from Central Library,"45.518987,-122.682664","45.525122,-122.681319","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10771,,,,
+Tests NW 10th & Glisan (10772) arrival from Central Library,"45.518987,-122.682664","45.526543,-122.681044","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10772,,,,
+Tests NW 10th & Johnson (10773) arrival from Central Library,"45.518987,-122.682664","45.528677,-122.681444","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10773,,,,
+Tests NW 10th & Northrup (13604) arrival from Central Library,"45.518987,-122.682664","45.531657,-122.681425","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*13604,,,,
+Tests NW 12th & Northrup (12796) arrival from Central Library,"45.518987,-122.682664","45.531620,-122.683451","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12796,,,,
+Tests NW Northrup & 14th (10775) arrival from Central Library,"45.518987,-122.682664","45.531320,-122.685502","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10775,,,,
+Tests NW Northrup & 18th (10776) arrival from Central Library,"45.518987,-122.682664","45.531576,-122.689576","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10776,,,,
+Tests NW Northrup & 21st (10777) arrival from Central Library,"45.518987,-122.682664","45.531051,-122.694638","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10777,,,,
+Tests NW Northrup & 22nd (10778) arrival from Central Library,"45.518987,-122.682664","45.531526,-122.696653","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10778,,,,
+Tests NW 23rd & Marshall (8989) arrival from Central Library,"45.518987,-122.682664","45.530507,-122.698960","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*8989,,,,
+#NAME?,,,,,,,,,,,,,,
+Tests NW 23rd & Marshall (8989) departure to Central Library,"45.530507,-122.698960","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,"8989.*Streetcar
+",,,,
+Tests NW Lovejoy & 22nd (3596) departure to Central Library,"45.529559,-122.696579","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,"3596.*Streetcar
+",,,,
+Tests NW Lovejoy & 21st (3595) departure to Central Library,"45.530074,-122.694570","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,"3595.*Streetcar
+",,,,
+Tests NW Lovejoy & 18th (10751) departure to Central Library,"45.529683,-122.689493","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,"10751.*Streetcar
+",,,,
+Tests NW Lovejoy & 13th (10752) departure to Central Library,"45.530239,-122.684429","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,840,,,"10752.*Streetcar
+",,,,
+Tests NW 11th & Johnson (10753) departure to Central Library,"45.528653,-122.682676","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,420,,,"10753.*Streetcar
+",,,,
+Tests NW 11th & Glisan (10754) departure to Central Library,"45.526529,-122.682045","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,420,,,"10754.*Streetcar
+",,,,
+# CLOSED 2016 - Tests NW 11th & Everett (10755) departure to Central Library,"45.525102,-122.682489","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,420,,,"10755.*Streetcar
+",,,,
+Tests NW 11th & Couch (10756) departure to Central Library,"45.523676,-122.682002","45.518823,-122.683368","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10756,,,,
+Tests SW 11th & Alder (9600) departure to OHSU Commons,"45.521039,-122.683098","45.498554,-122.670648","TRAINISH,WALK",9:11 AM,,QUICK,420,,,9600.*Streetcar,,,,
+TODO - this test doesn't work anymore ... short walk doesn't bring folks around the EOL Streetcar loop...instead drops them off at Moody and Gibbs (removed .*12883 from the test).  Tests short walk trip from SW 11th & Alder (9600) and around end-of-line loop to OHSU Commons stop 12883,"45.521039,-122.683098","45.498554,-122.670648","TRAINISH,WALK",9:11 AM,,QUICK,160,,,9600.*Streetcar,,,,
+Tests SW 11th & Jefferson (10759) arrival from NW 23rd & Marshall,"45.530507,-122.698960","45.516232,-122.685099","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10759,,,,
+Tests SW 11th & Clay (10760) arrival from Central Library,"45.519054,-122.684220","45.515046,-122.686384","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10760,,,,
+Tests SW Park & Market (11011) arrival from Central Library,"45.519054,-122.684220","45.513864,-122.683691","TRAINISH,WALK",9:11 AM,,QUICK,420,,,Streetcar.*11011,,,,
+Tests SW 5th & Market (10762) arrival from Central Library,"45.519054,-122.684220","45.512749,-122.680635","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10762,,,,
+Tests SW 5th & Montgomery (10763) arrival from Central Library,"45.519054,-122.684220","45.511380,-122.681185","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10763,,,,
+Tests SW 3rd & Harrison (12375) arrival from Central Library,"45.519054,-122.684220","45.510104,-122.679999","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12375,,,,
+# CLOSED 2016 - Tests SW 1st & Harrison (12376) arrival from Central Library,"45.519054,-122.684220","45.510013,-122.677971","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12376,,,,
+Tests SW Harrison Street (12377) arrival from Central Library,"45.519054,-122.684220","45.507194,-122.676496","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12377,,,,
+Tests SW River Parkway & Moody (12378) arrival from Central Library,"45.519054,-122.684220","45.507387,-122.673100","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12378,,,,
+Tests SW Moody & Gibbs (12760) arrival from Central Library,"45.519054,-122.684220","45.499148,-122.671447","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12760,,,,
+Tests SW Moody & Gaines (12880) arrival from Central Library,"45.519054,-122.684220","45.496445,-122.672349","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12880,,,,
+Tests SW Lowell & Bond (12881) arrival from Central Library,"45.519054,-122.684220","45.493741,-122.670953","TRAINISH,WALK",9:11 AM,,QUICK,840,,,Streetcar.*12881,,,,

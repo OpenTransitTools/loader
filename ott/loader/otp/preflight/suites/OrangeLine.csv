@@ -1,15 +1,15 @@
 Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
 "Test: Walk from college & park to stop id 13710","SW_Park_Ave_@_SW_College_St::45.510277,-122.685660","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150",WALK,2:25 PM,Weekday,QUICK,840
 "Test: OHSU life Sciences to eastmoreland golf course","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","SE_27th_Ave_@_SE_Bybee_Blvd::45.474365,-122.636470","TRANSIT,WALK",11:00 AM,Future,QUICK,840
-"Test: lincoln station to milwaukie station","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","Milwaukie/Main_St_MAX_Station::45.441517,-122.639780","TRANSIT,WALK",2:56 PM,Future,QUICK,1609,,,MAX.*13718
+"Test: lincoln station to milwaukie station","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","Milwaukie/Main_St_MAX_Station::45.441517,-122.639780","TRANSIT,WALK",2:56 PM,Future,QUICK,840,,,MAX.*13718
 "Test: lincoln station to OHSU life sciences building","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","TRANSIT,WALK",11:00 AM,Future,QUICK,840
 "Test: lincoln station to OHSU life sciences building, lower walk distance","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","TRANSIT,WALK",11:00 AM,Future,QUICK,420
 "Test: OHSU life sciences building to OMSI","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRANSIT,WALK",11:00 AM,Future,QUICK,1680,,,Streetcar.*13601
 "Test: OMSI to OHSU life sciences building","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","TRANSIT,WALK",11:00 AM,Future,QUICK,1680,,,Streetcar.*13602
 "Test: SE Division and 12th to Se Bybee and 27th","SE_Division_St_@_SE_12th_Ave::45.504852,-122.653730","SE_27th_Ave_@_SE_Bybee_Blvd::45.474365,-122.636470","TRANSIT,WALK",8:46 AM,Future,QUICK,840
-"Test: lincoln station to stop clinton station","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","Clinton_St/SE_12th_Ave_MAX_Station::45.502697,-122.653210","TRANSIT,WALK",9:00 PM,Future,QUICK,1609,,,MAX.*13713
+"Test: lincoln station to stop clinton station","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","Clinton_St/SE_12th_Ave_MAX_Station::45.502697,-122.653210","TRANSIT,WALK",9:00 PM,Future,QUICK,840,,,MAX.*13713
 "Test: se Division and 12th to stop clinton station","SE_Division_St_@_SE_12th_Ave::45.504852,-122.653730","Clinton_St/SE_12th_Ave_MAX_Station::45.502697,-122.653210","WALK",3:00 PM,Today,QUICK,1680
-"Test: Trimet Center st to PSU","TriMet_Operations_Headquarters::45.493874,-122.648340","PSU::45.511536,-122.686180","TRANSIT,WALK",9:00 PM,Future,QUICK,1609,,,MAX.*13724
+"Test: Trimet Center st to PSU","TriMet_Operations_Headquarters::45.493874,-122.648340","PSU::45.511536,-122.686180","TRANSIT,WALK",9:00 PM,Future,QUICK,840,,,MAX.*13724
 "Test: rhine st station to stop moody station","SE_17th_Ave_@_Rhine_St_MAX_Station::45.497597,-122.648224","South_Waterfront/SW_Moody_MAX_Station::45.502820,-122.670840","TRANSIT,WALK",12:01 PM,Future,QUICK,840
 "Test: rhine st station to lake road guy's place(meshugana directions!)","SE_17th_Ave_@_Rhine_St_MAX_Station::45.497597,-122.648224","2725_SE_LAKE_RD,_MILWAUKIE::45.43889,-122.63407","TRANSIT,WALK",2:00 PM,Future,QUICK,1609
 "Test: from se 28th and holgate to holgate station","SE_28th_Ave_@_SE_Holgate_Blvd::45.490303,-122.637610","SE_17th_Ave_@_Holgate_Blvd_MAX_Station::45.490532,-122.648480","WALK",12:01 PM,Weekday,QUICK,840
@@ -17,11 +17,11 @@ Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart b
 "Test: se 20th and bybee to bybee station","SE_20th_Ave_@_SE_Bybee_Blvd::45.473965,-122.644760","SE_Bybee_Blvd_MAX_Station::45.474438,-122.639980","WALK",2:00 PM,Future,QUICK,1680
 "Test: stop bybee station to tacom/johnson creek station","SE_Bybee_Blvd_MAX_Station::45.474438,-122.639980","SE_Tacoma/Johnson_Creek_MAX_Station::45.462630,-122.637420","TRAINISH,WALK",2:00 PM,Future,QUICK,840
 "Test: reed college to se park ave and mcloughlin","6100_SE_REED_COLLEGE_PL::45.478184,-122.628940","SE_Park_Ave_@_SE_McLoughlin_Blvd::45.430200,-122.634660","TRANSIT,WALK",4:19 PM,Future,QUICK,840
-"Test: reed to tacoma station","6100_SE_REED_COLLEGE_PL::45.478184,-122.628940","SE_Tacoma/Johnson_Creek_MAX_Station::45.462630,-122.637420","TRANSIT,WALK",11:00 AM,Future,QUICK,1609,,,MAX.*13717
-"Test: OHSU life sciences building to OMSI","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","TRAINISH,WALK",11:00 AM,Future,QUICK,1609,,,MAX.*13727
-"Test: milwaukie station to lincoln st station","Milwaukie/Main_St_MAX_Station::45.441036,-122.640070","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","TRANSIT,WALK",9:17 AM,Future,QUICK,1609,,,MAX.*13729
-"Test: milwaukie station to tacom/johnson creek station","Milwaukie/Main_St_MAX_Station::45.441036,-122.640070","SE_Tacoma/Johnson_Creek_MAX_Station::45.462948,-122.637794","TRANSIT,WALK",10:00 AM,Future,QUICK,1609,,,MAX.*13722
-"Test: tacoma/johnson creek to bybee max station bus stop","SE_Tacoma/Johnson_Creek_MAX_Station::45.462948,-122.637794","SE_Bybee_@_Bybee_Blvd_MAX_Station::45.474205,-122.639824","TRANSIT,WALK",9:43 AM,Future,QUICK,1609,,,MAX.*13723
+"Test: reed to tacoma station","6100_SE_REED_COLLEGE_PL::45.478184,-122.628940","SE_Tacoma/Johnson_Creek_MAX_Station::45.462630,-122.637420","TRANSIT,WALK",11:00 AM,Future,QUICK,840,,,MAX.*13717
+"Test: OHSU life sciences building to OMSI","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","OHSU_Collaborative_Life_Sciences_Building::45.503162,-122.671814","TRAINISH,WALK",11:00 AM,Future,QUICK,840,,,MAX.*13727
+"Test: milwaukie station to lincoln st station","Milwaukie/Main_St_MAX_Station::45.441036,-122.640070","Lincoln_St/SW_3rd_Ave_MAX_Station::45.507893,-122.680150","TRANSIT,WALK",9:17 AM,Future,QUICK,840,,,MAX.*13729
+"Test: milwaukie station to tacom/johnson creek station","Milwaukie/Main_St_MAX_Station::45.441036,-122.640070","SE_Tacoma/Johnson_Creek_MAX_Station::45.462948,-122.637794","TRANSIT,WALK",10:00 AM,Future,QUICK,840,,,MAX.*13722
+"Test: tacoma/johnson creek to bybee max station bus stop","SE_Tacoma/Johnson_Creek_MAX_Station::45.462948,-122.637794","SE_Bybee_@_Bybee_Blvd_MAX_Station::45.474205,-122.639824","TRANSIT,WALK",9:43 AM,Future,QUICK,840,,,MAX.*13723
 
 
 
