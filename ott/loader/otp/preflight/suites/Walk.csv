@@ -3,5 +3,6 @@ Issue 1297: Ex 1 Favoring Longer Walking Routes Instead of Using Steps,"45.50665
 Issue 1297: Ex 2 Favoring Longer Walking Routes Instead of Using Steps,"45.530428,-122.667874","45.531899,-122.667797",WALK,,,,,,,<streetName>steps</streetName>,,,,
 Issue 1297: Ex 3 Favoring Longer Walking Routes Instead of Using Steps,"45.509232,-122.679272","45.509087,-122.678441",WALK,,,,,,,<steps>.*?Southwest Hall Street.*?</steps>,,,,
 Issue 1303: Short Walking Trip Not Planning,"45.46735,-122.57679","45.468522,-122.576021",WALK,,,,,,,,,,,
-Walk across Morrison Br and use stairs,"45.5173425,-122.66594231","45.51925,-122.672",WALK,,,,,,,<streetName>steps</streetName>,,,,
-NewOTP issue March 2016: Convoluted walking paths,"45.517775,-122.66725","45.5172975,-122.662185",WALK,,,,,,,Morrison Bridge .path.,,,,
+"Walk across Morrison Br and use stairs","45.5173425,-122.66594231","45.51925,-122.672",WALK,,,,,,,<streetName>steps</streetName>,,,,
+"NewOTP issue March 2016 (1 of 2): Why is Water Ave connected to Morrison Br","45.51717,-122.6485","45.51817,-122.66579",WALK,,,,,,,Morrison.*Water Ave,,,,
+"NewOTP issue March 2016 (2 of 2): Why is Water Ave connected to Morrison Br","45.51817,-122.66579","45.51717,-122.6485",WALK,,,,,,,Water Ave.*Morrison St,,,,
