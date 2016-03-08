@@ -11,7 +11,8 @@ Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart b
 "Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*6493
 "Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,840,,,Streetcar.*13602
 "Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAINISH,WALK",12:02 PM,Weekday,QUICK,840,,,Streetcar.*13619
-"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
+"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*10762
+"Test: broadway and benton to PSU park blocks","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_PARK_BLOCKS::45.512702,-122.684627","TRAINISH,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
 "Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAINISH,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*13615
 "Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAINISH,WALK",11:00 AM,Weekday,QUICK,840,,,Streetcar.*13604
 Tests SW Lowell & Bond (12881) departure to Central Library,"45.493741,-122.670953","45.518987,-122.682664","TRAINISH,WALK",9:11 AM,,QUICK,840,,,12881.*Streetcar,,,,NO... why?
