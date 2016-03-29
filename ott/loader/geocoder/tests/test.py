@@ -6,7 +6,7 @@ import json
 
 from ott.utils.parse import csv_reader
 
-HOST="localhost:4444"
+HOST="localhost:44444"
 #HOST="maps7.trimet.org/ride_ws"
 
 class TestGeoCoder(unittest.TestCase):
@@ -25,7 +25,6 @@ class TestGeoCoder(unittest.TestCase):
         s = json.dumps(j)
         self.assertRegexpMatches(s,"-122.71")
         self.assertRegexpMatches(s,"45.51")
-
 
     def test_geocode_csv_data(self):
         for d in self.test_data:
