@@ -1,0 +1,154 @@
+issue,address,city,zip_code,ada_boundary,trimet_boundary,x_coord,y_coord
+One of the units has coordinates for 4380 SW Macadam Ave,1800 SW 1ST AVE,PORTLAND,97201,1,1,7644033.701,679599.1129
+Three of the unit addresses have coordinates for 1320 N Sumner,4134 N VANCOUVER AVE,PORTLAND,97217,1,1,7646985.993,695516.8041
+One of the units has coordinates to 1320 SW Broadway and another unit has coordinates to 1336 E Burnside,1400 SW 5TH AVE,PORTLAND,97201,1,1,7643403.707,680907.0771
+One of the units has coordinates to 1438 NE Alberta,1000 SW BROADWAY,PORTLAND,97205,1,1,7643235.847,682101.0299
+"Add (Address for portion of Hazelwood Station as seen via google streetview, but not a valid address in maf or taxlots **missing from maf**)",14715 E BURNSIDE ST,PORTLAND,97233,1,1,7686505.464,683026.33
+"Add (Address for portion of Hazelwood Station as seen via google streetview, but not a valid address in maf or taxlots **missing from maf**)",30 NE 147TH AVE,PORTLAND,97233,1,1,7686522.637,683172.368
+"One unit maps to 1220 SW 3rd Ave, Two units map to SW 6th and Madison, One unit maps to SW Broadway and Taylor",1220 SW 3RD AVE,PORTLAND,97204,1,1,7644104.404,681181.0732
+"4 units at this address map to 2121 SW Broadway, 1202 NW Davis, 1020 NE 2nd and 555 SW Oak St",825 NE MULTNOMAH ST,PORTLAND,97232,1,1,7649270.384,687642.833
+Maps to 1831 SW Edgewood Dr,1831 SW RIVER DR,PORTLAND,97201,1,1,7644989.376,679063.538
+One unit maps to 9951 SE Ankeny St,5550 SW MACADAM AVE,PORTLAND,97239,1,1,7644830.441,670018.545
+Unit 1230 maps to 319 SW Washington,522 SW 5TH AVE,PORTLAND,97204,1,1,7644230.716,683043.2159
+Unit 103 maps to 1111 NE 99th Ave,507 NE 47TH AVE,PORTLAND,97213,1,1,7659918.86,685235.2349
+Unit C maps to 5107 NE 158th,17721 NE RIVERSIDE PKWY,PORTLAND,97230,1,1,7694867.961,694783.667
+Multiple units map to 850 SW 5th,111 SW 5TH AVE,PORTLAND,97204,1,1,7644393.693,684036.023
+One unit has wrong coordinates,2828 SW CORBETT AVE,PORTLAND,97201,1,1,7644519.639,676790.5079
+Add (part of strip mall),12004 SE SUNNYSIDE RD,CLACKAMAS,97015,1,1,7678276,649172.25
+Add (not in MAF; Metro),600 NE GRAND AVE,PORTLAND,97232,1,1,7648534.5,685688.56
+Add address,3756 SE OAK ST,PORTLAND,97214,1,1,7657596,682792.06
+Add address,700 N ROSA PARKS WAY,PORTLAND,97217,1,1,7645530,701225.7
+Add (new address),7600 SW DARTMOUTH ST,TIGARD,97223,1,1,7623280.5,651713.3
+Add (not in MAF),4204 N MISSISSIPPI,PORTLAND,97217,1,1,7644931,695556.7
+Add (not in MAF; Goodwill in Milwaukie),1740 SE OCHOCO ST,MILWAUKIE,97222,1,1,7651601,660257.1
+Add RideConnection (not in MAF),9955 NE GLISAN ST,Portland,97220,1,1,7673873,684710
+Add to make zoo work without ambiguous geocode list,Zoo,Portland,97221,1,1,7634112,679911
+Add (not in MAF),3027 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3031 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3033 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3035 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3073 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3075 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),3083 SE 20TH AVE,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1903 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1905 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1907 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1909 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1911 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1913 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1915 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),1917 SE TIBBETTS ST,PORTLAND,97202,1,1,7651896.966,676053.815
+Add (not in MAF),422 E BURNSIDE ST,PORTLAND,97214,1,1,7648255.5,684085.8
+Add (not in MAF),3480 NW INDUSTRIAL ST,PORTLAND,97210,1,1,7633838,691156.4
+"One entry has incorrect coordinates (and an incorrect taxlot ID -- verified that address that goes with this ID is also in MAF)  There are several valid coordinates for this address (over 100 units associated), picked the first valid set",311 NW 12TH AVE,PORTLAND,97209,1,1,7642557,685170
+Add (not in MAF; taxlot doesn't list an address),12133 SE 80TH AVE,MILWAUKIE,97222,1,1,7667979,651714
+3421 SE Salmon (Sunnyside Environmental) -- two entries -- RLIS as source maps correctly (Portland as source does not both coord and taxlot ID match 320 SE 16th),3421 SE SALMON ST,PORTLAND,97214,1,1,7656459.293,681054.602
+Add (not in MAF),14255 SW 6th ST,BEAVERTON,97005,1,1,7606195.5,670667.5
+Add (not in MAF),16317 SE 82nd DR,CLACKAMAS,97015,1,1,7670483,640134
+Add address (in apt complex),7368 SE DIVISION,PORTLAND,97206,1,1,7667089,677133
+One entry has incorrect coordinates (and an incorrect taxlot ID -- verified that address that goes with this ID is also in MAF),1130 NW 22ND AVE,PORTLAND,97210,1,1,7639365.147,687362.1572
+One entry has incorrect coordinates (and a different taxlot ID),4701 SE 24TH AVE,PORTLAND,97202,1,1,7652769.868,671444.27
+Add (not in MAF),2716 SW BEAVERTON-HILLSDALE HWY,PORTLAND,97239,1,1,7636592.5,668886.2
+Add (not in MAF),1739 NW COUCH ST,PORTLAND,97209,1,1,7641224.5,684689
+Add (not in MAF),10955 SE JENNIFER ST,CLACKAMAS,97015,1,1,7676800.125,639974.5938
+Add (not in MAF),2243 SE DIVISION ST,PORTLAND,97202,1,1,7652878.625,677494.0938
+Address with bad coordinates in MAF,1523 SE 162ND AVE,PORTLAND,97233,1,1,7689999,679181.5
+Add (not in MAF),1231 NE BROADWAY ST,PORTLAND,97232,1,1,7650450,688595
+Two entries have incorrect coordinates (out of 386!  Atwater Place condos),0841 SW GAINES ST,PORTLAND,97239,1,1,7646021.256,674676.169
+Add (part of Russellville Commons),216 SE 103RD AVE,PORTLAND,97216,1,1,7675029.5,682686
+Add (not in MAF),1322 SE WATER AVE,PORTLAND,97214,1,1,7647012.5,680604.25
+Add (not in MAF),1508 SE 21ST AVE,PORTLAND,97214,1,1,7652588,680013
+Add (not in MAF),4105 SE INTERNATIONAL WAY,MILWAUKIE,97222,1,1,7657862,653600.4
+Add (not in MAF),3268 NE EMERSON ST,PORTLAND,97211,1,1,7656358,697943.55
+"System is picking the lot that is 5330 wi/ NE Glisan St, which is location across the street from the facility (which is the parking lot)",5330 NE GLISAN ST,PORTLAND,97213,1,1,7661807.77,685012.8419
+Add (not in MAF)  ,9345 N FISKE AVE,PORTLAND,97203,1,1,7634623.25,709110.05
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9349 N FISKE AVE,PORTLAND,97203,1,1,7634617,709122.05
+Add (not in MAF)  ,9333 N FISKE AVE,PORTLAND,97203,1,1,7634615.5,709058.8
+Add (not in MAF)  ,9337 N FISKE AVE,PORTLAND,97203,1,1,7634615.5,709077.3
+Add (not in MAF)  ,9341 N FISKE AVE,PORTLAND,97203,1,1,7634621.25,709094.3
+Add (not in MAF),9321 N FISKE AVE,PORTLAND,97203,1,1,7634618.25,708992.75
+Add (not in MAF),9313 N FISKE AVE,PORTLAND,97203,1,1,7634616.5,708960
+Add (not in MAF),9309 N FISKE AVE,PORTLAND,9723,1,1,7634617,708940.5
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9305 N FISKE AVE,PORTLAND,97203,1,1,7634614.5,708923.5
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9325 N FISKE AVE,PORTLAND,97203,1,1,7634615.5,709004
+Add (not in MAF),9133 N FISKE AVE,PORTLAND,97203,1,1,7634603.5,708687.5
+Add (not in MAF),9121 N FISKE AVE,PORTLAND,97203,1,1,7634606,708640.5
+Add (not in MAF),9125 N FISKE AVE,PORTLAND,97203,1,1,7634606,708658.5
+Add (not in MAF),9129 N FISKE AVE,PORTLAND,97203,1,1,7634606.5,708675.5
+Add (not in MAF),9117 N FISKE AVE,PORTLAND,97203,1,1,7634604.5,708621
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9105 N FISKE AVE,PORTLAND,97203,1,1,7634602.5,708558.4
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",4902 N TRENTON ST,PORTLAND,97203,1,1,7634602.5,708460.3
+Incorrect coordinates in MAF,9637 N FISKE AVE,PORTLAND,97203,1,1,7634708.75,709808.7
+Add (not in MAF),9641 N FISKE AVE,PORTLAND,97203,1,1,7634705.25,709820.7
+Add (not in MAF),9645 N FISKE AVE,PORTLAND,97203,1,1,7634707.25,709834.7
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9649 N FISKE AVE,PORTLAND,97203,1,1,7634706.5,709851.06
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9332 N DWIGHT AVE,PORTLAND,97203,1,1,7635194.75,709144.19
+Add (not in MAF),9336 N DWIGHT AVE,PORTLAND,97203,1,1,7635189.5,709163.44
+Add (not in MAF),9340 N DWIGHT AVE,PORTLAND,97203,1,1,7635186.5,709178.69
+Add (not in MAF),9344 N DWIGHT AVE,PORTLAND,97203,1,1,7635182.5,709191.94
+Add (not in MAF),9348 N DWIGHT AVE,PORTLAND,97203,1,1,7635177.75,709208.94
+"Although coordinates aren't wrong per se (map to proper taxlot), these are better",9352 N DWIGHT AVE,PORTLAND,97203,1,1,7635174.5,709226.44
+Add (not in MAF),1721 NE 108TH,PORTLAND,97220,1,1,7676365,687900
+Add (not in MAF),6021 SE 72ND AVE,PORTLAND,97206,1,1,7666176,667717.5
+Add (not in MAF),310 NE 55TH AVE,PORTLAND,97213,1,1,7662119,684593.5
+Add (not in MAF),6834 SE POWELL BLVD,PORTLAND,97206,1,1,7665575,674500.8
+Add (not in MAF),2522 SE CLINTON ST,PORTLAND,97202,1,1,7653526.25,676832
+Add (not in MAF),3689 SE FRANCIS ST,PORTLAND,97202,1,1,7657444,673743.06
+Add (not in MAF),5661 SE HAROLD ST,PORTLAND,97206,1,1,7662286.25,669310
+Add (not in MAF),4015 N ALBINA ST,PORTLAND,97227,1,1,7645068,694975.25
+Add (not in MAF),14359 SE POWELL BLVD,PORTLAND,97236,1,1,7685448,674718.75
+Add (not in MAF),1606 NE 90TH AVE,PORTLAND,97220,1,1,7671397.5,687839.3
+Add (not in MAF),3625 N FARRAGUT ST,PORTLAND,97217,1,1,7637823.5,705076.45
+Add (not in MAF),6236 SE 134TH AVE,PORTLAND,97236,1,1,7682455,666733.25
+Add (not in MAF),3334 SE 7TH AVE,PORTLAND,97202,1,1,7648724.5,675475.7
+"Add (it is in MAF, but not showing in picklist - possibly due to City/Zip in MAF not matching that in taxlot?)",18101 NW EVERGREEN PKWY,BEAVERTON,97006,1,1,7596326.123,691514.2872
+"Add (not in MAF, part of strip mall)",13843 SE MCLOUGHLIN BLVD,MILWAUKIE,97222,1,1,7654246,647531.3
+"Improved coordinates for Ops HQ (mapped to southern end of lot, by Holgate)",4012 SE 17TH AVE,PORTLAND,97202,1,1,7651477,673416.8
+Improved coordinates for Center Garage/Bus Maint (mapped to wrong side of street),4400 SE 17TH AVE,PORTLAND,97202,1,1,7651376,672510.25
+Add (not in MAF),13007 NE GLISAN ST,PORTLAND,97230,1,1,7682100.5,684649.1
+Add (not in MAF),3287 SE RISLEY AVE,MILWAUKIE,97267,1,1,7655387,643045.6
+"Bad coordinates, places address by airport  (one unit is causing this)",1600 SW 4TH AVE,PORTLAND,97201,1,1,7643435,680311
+One unit has wrong coordinates,308 SW 1ST AVE,PORTLAND,97204,1,1,7645464.511,683205.4751
+"There are two entries for this address, each with different coordinates.  Used those that placed it on the bldg in taxlot 7700 NE Airport Way (this is the address for the post office, which is located on this taxlot)",7640 NE AIRPORT WAY,PORTLAND,97238,1,1,7668693.519,705897
+Updated Coordinates,2211 SW 1ST AVE,PORTLAND,97201,1,1,7643482,678683
+Updated Coordinates,2221 SW 1ST AVE,PORTLAND,97201,1,1,7643505,678402
+Add (not in MAF),521 SW 11TH AVE,PORTLAND,97205,1,1,7642658,683680.75
+"Add (not in MAF; well actually, the taxlot says 1406, but the main building address is 1450)",1450 N PRESCOTT ST,PORTLAND,97217,1,1,7643308.529,696037.0618
+One unit has wrong coordinates,6932 SW MACADAM AVE,PORTLAND,97219,1,1,7645181.461,666420.4291
+Add (not in MAF),1743 SE MULBERRY AVE,PORTLAND,97214,1,1,7650136.5,679463.75
+Add (advertised address and taxlot address don't match),10010 NE HALSEY ST,PORTLAND,97220,1,1,7674184,686783.94
+"Add (taxlot is 3436, but address per website is 3400)",3400 SE 43RD AVE,PORTLAND,97206,1,1,7659173.462,674864.3639
+"Improved coordinates (two lots associated with this address and systems are picking the worse of the two, so to speak)",10201 SE MAIN ST,PORTLAND,97216,1,1,7674738.262,680513.481
+"geocoded correctly, but does not appear in drop down menu",3172 SE 136TH AVE,PORTLAND,97236,1,1,7683571,674738.1
+"geocoded correctly, but does not appear in drop down menu",3130 SE 136TH AVE,PORTLAND,97236,1,1,7683571,674738.1
+Add (not in MAF),11935 SE LIEBE STREET,PORTLAND,97226,1,1,7678886.5,670233.56
+"Bad coordinates, places point off cap hwy and taylors ferry",1100 SW 6TH AVE,PORTLAND,97204,1,1,7643445.5,681726.8
+One unit maps to 407 SW Broadway,319 SW WASHINGTON ST,PORTLAND,97204,1,1,7644681.12,683138.9409
+Add  (not in MAF; looks to be part of bldg with Morrison address),720 SE GRAND AVE,PORTLAND,97214,1,1,7648368.5,682187.7
+"Add (not in MAF, but is a taxlot address)",9900 SE WASHINGTON ST,PORTLAND,97216,1,1,7674078.5,680970.3
+"Add (there is a taxlot with this address, but it isn't in the MAF)",12140 SW SCHOLLS FERRY RD,TIGARD,97223,1,1,7611593,656183.9
+Add (not in MAF),30 SW 2ND AVE,PORTLAND,97209,1,1,7645461,684153.06
+Add (not in MAF),8205 SW 24TH AVE,PORTLAND,97219,1,1,7637138.5,663441.3
+Updated Coordinates,524 E BURNSIDE ST,PORTLAND,97214,1,1,7648522,684075.6
+Updated Coordinates,537 SE ASH ST,PORTLAND,97214,1,1,7648506,683649
+"The address is in the MAF with correct coordinates, but not recognized by our systems (location search field, to/from in trip plan, etc)",3825 NE 138TH AVE,PORTLAND,97230,1,1,7684427.141,693534.94
+Add (not in MAF; taxlot shows 3502-3520 NE Broadway),3502 NE BROADWAY,PORTLAND,97232,1,1,7656859.5,688301.06
+"Add (taxlot is 825, but per website of park, address is 815)",815 SW PARK AVE,PORTLAND,97205,1,1,7643059.5,682798.7
+"Add (not in MAF; taxlot says Milwaukie, but using Oak Grove due to a TM issue)",2735 SE PARK AVE,OAK GROVE,97222,1,1,7654052.5,650296.7
+One unit maps to incorrect location,720 SW WASHINGTON ST,PORTLAND,97205,1,1,7643538.255,683436.4259
+Add (not in MAF),3716 NE M L KING BLVD,PORTLAND,97212,1,1,7648503.71,693941.08
+Add (not in MAF),6970 SW BEAVERTON HILLSDALE HWY,PORTLAND,97225,1,1,7625596.5,671194.4
+"Add (taxlot says 5000 NE 6th, with owner at 5004 NE 6th; website lists latter as address, which is not in MAF)",5004 NE 6TH AVE,PORTLAND,97211,1,1,7649125,697395.8625
+Add not in SOLR,309 SE 129TH AVE,PORTLAND,97233,1,1,7681484.5,682340.8
+Add (part of multi-address taxlot and this one isn't in MAF),2242 NE DAVIS ST,PORTLAND,97232,1,1,7653116,684459.25
+Add (not in master address),2817 SE PARK AVE,MILWAUKIE,97222,1,1,7654414.5,650251
+Add (not in MAF; part of multi-address business park),6700 NE 59TH PL,PORTLAND,97218,1,1,7663730,701556.56
+"Alternate address for 14105 SW Tualatin Valley Hwy (this is a car dealership and although taxlot uses TV Hwy, they use Canyon)",14105 SW CANYON RD,BEAVERTON,97005,1,1,7606651,673285.94
+Add (not in MAF),1300 SE STARK ST,PORTLAND,97214,1,1,7650548.5,682715.9
+Add (not in MAF),501 SE 14TH AVE,PORTLAND,97214,1,1,7650612,682723.4
+Trip planner doesn't work with current coordinates (technically three lots associated with address; trip not possible message); adjusting to help resolve this issue,3500 N INTERSTATE AVE,PORTLAND,97227,1,1,7643561,693193.25
+"Add (not in MAF, but is part of a taxlot address)",122 NE BROADWAY,PORTLAND,97232,1,1,7647627,688567
+"Add (not in MAF, but is part of a taxlot address range)",128 NE BROADWAY,PORTLAND,97232,1,1,7647663.25,688567.25
+"Add (not in MAF, but is part of a taxlot address)",140 NE BROADWAY,PORTLAND,97232,1,1,7647693.25,688564.5
+Bad coordinates (and zip code) for one unit which results in general address mapping to SW Portland,2700 SE 138th AVE,PORTLAND,97236,1,1,7683883,675932.5
+"Add (not in MAF, but is a taxlot address)",1800 NE MARKET DR,FAIRVIEW,97024,,,7704773,686612.9
