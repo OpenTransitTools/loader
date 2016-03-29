@@ -14,6 +14,6 @@ build:
   1. git update-index --assume-unchanged .pydevproject
 
 run:
-  1. bin/test ## runs loader tests for geocoder, etc...
+  1. bin/test ## runs loader tests for geocoder, etc... (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)
   1. bin/python ott/loader/gtfs/cache.py <url> ## cache gtfs feeds into ott/loader/gtfs/cache
   1. bin/python ott/loader/gtfs/cache.py ## cache trimet.org's gtfs feed

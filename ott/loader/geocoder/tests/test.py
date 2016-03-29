@@ -1,3 +1,5 @@
+''' http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started
+'''
 import unittest
 
 import urllib
@@ -46,5 +48,5 @@ def call_url(url):
     return ret_json
 
 def call_url_text(url):
-    print url
+    #print url
     return urllib.urlopen(url).read()
