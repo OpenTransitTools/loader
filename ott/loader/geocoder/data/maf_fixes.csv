@@ -152,3 +152,4 @@ Trip planner doesn't work with current coordinates (technically three lots assoc
 "Add (not in MAF, but is part of a taxlot address)",140 NE BROADWAY,PORTLAND,97232,1,1,7647693.25,688564.5
 Bad coordinates (and zip code) for one unit which results in general address mapping to SW Portland,2700 SE 138th AVE,PORTLAND,97236,1,1,7683883,675932.5
 "Add (not in MAF, but is a taxlot address)",1800 NE MARKET DR,FAIRVIEW,97024,1,1,7704773,686612.9
+Add (not in MAF),2935 SE WASHINGTON ST,PORTLAND,97214,1,1,7654906.5,682474.8
