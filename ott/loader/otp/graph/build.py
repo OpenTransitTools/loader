@@ -27,7 +27,7 @@ OSM_NAME   = "streets.osm"
 OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
-OTP_DOWNLOAD_URL="http://dev.opentripplanner.org/jars/otp-0.19.0-SNAPSHOT-shaded.jar"
+OTP_DOWNLOAD_URL="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.19.0/otp-0.19.0-shaded.jar"
 
 
 class Build(object):
