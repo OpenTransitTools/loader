@@ -18,6 +18,9 @@ class Cache(Base):
     cache_expire = 31
 
     def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
+
+        #import pdb; pdb.set_trace()
+
         # step 1: temp dir
         tmp_dir = self.get_tmp_dir()
 
@@ -53,7 +56,6 @@ class Cache(Base):
     def is_fresh_in_cache(self):
         ''' determine if file exists and is newer than the cache expire time
         '''
-        #import pdb; pdb.set_trace()
         ret_val = False
         try:
             # NOTE if the file isn't in the cache, we'll get an exception
@@ -76,12 +78,15 @@ class Cache(Base):
         return ret_val
 
     @classmethod
-    def local_get_cache_dir(self, local_dir, cache_dir="cache"):
+    def local_get_cache_dir(self, cache_dir=None):
         ''' returns dir path ... makes the directory if it doesn't exist
         '''
-        ret_val = os.path.join(local_dir, cache_dir)
-        file_utils.mkdir(ret_val)
-        return ret_val
+        if cache_dir is None:
+            local_dir = os.path.dirname(os.path.realpath(__file__))
+            cache_dir = "cache"
+            cache_dir = os.path.join(local_dir, cache_dir)
+        file_utils.mkdir(cache_dir)
+        return cache_dir
 
     @classmethod
     def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
