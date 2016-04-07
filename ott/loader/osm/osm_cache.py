@@ -1,7 +1,9 @@
 import os
 import logging
 
-from ott.loader.gtfs import utils as file_utils
+from ott.utils import file_utils
+from ott.loader.gtfs.base import Base
+
 
 class OsmCache(Base):
     """ Does a 'smart' cache of a gtfs file
