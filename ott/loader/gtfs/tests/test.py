@@ -39,6 +39,23 @@ class TestGtfsDiff(unittest.TestCase):
         self.assertFalse(d.is_different())
         pass
 
+    def main():
+        ## todo test diff, etc...
+        ## this was from diff.py
+        #import pdb; pdb.set_trace()
+        this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+        this_module_dir = os.path.join(this_module_dir, "tests")
+        gtfsA = os.path.join(this_module_dir, "gtfsA.zip")
+        gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
+        diff = Diff(gtfsA, gtfsB)
+        diff.is_different()
+        print diff.new_info.get_feed_info()
+        print diff.new_info.get_feed_version()
+        print diff.new_info.get_feed_date_range()
+        print diff.new_info.get_days_since_stats()
+        print diff.new_info.is_gtfs_out_of_date()
+
+
 
 class TestGtfsCache(unittest.TestCase):
     def setUp(self):

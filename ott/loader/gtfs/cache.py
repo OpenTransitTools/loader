@@ -132,6 +132,7 @@ class Cache(Base):
         return gtfs_feeds
 
 def main():
+    # todo: allow other gtfs files via cmd line
     for g in Cache.get_gtfs_feeds():
         url,name = Cache.get_url_filename(g)
         Cache(url, name)
