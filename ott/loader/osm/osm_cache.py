@@ -29,7 +29,7 @@ class OsmCache(Base):
         self.file_name = file_name
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
-        # step 4: download new gtfs file
+        # step 4: download new osm file
         self.url = url
         tmp_path = os.path.join(tmp_dir, self.file_name)
         file_utils.wget(self.url, tmp_path)
@@ -50,39 +50,6 @@ class OsmCache(Base):
             file_utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)
 
-    def is_fresh_in_cache(self):
-        ''' determine if file exists and is newer than the cache expire time
-        '''
-        #import pdb; pdb.set_trace()
-        ret_val = False
-        try:
-            # NOTE if the file isn't in the cache, we'll get an exception
-            age = file_utils.file_age(self.file_path)
-            if age <= self.cache_expire:
-                ret_val = True
-        except:
-            ret_val = False
-        return ret_val
-
-    def get_info(self, file_prefix=''):
-        return self._get_info(self.file_path, file_prefix)
-
-    @classmethod
-    def _get_info(cls, gtfs_zip_name, file_prefix=''):
-        ''' :return an info object for this cached gtfs feed
-        '''
-        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
-        ret_val = Info(cache_path, file_prefix)
-        return ret_val
-
-    @classmethod
-    def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
-        ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
-        '''
-        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
-        other_path = os.path.join(cmp_dir, gtfs_zip_name)
-        diff = Diff(cache_path, other_path)
-        return diff
 
 def main():
     pass

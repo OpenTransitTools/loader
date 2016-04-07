@@ -78,17 +78,6 @@ class Cache(Base):
         return ret_val
 
     @classmethod
-    def local_get_cache_dir(self, cache_dir=None):
-        ''' returns dir path ... makes the directory if it doesn't exist
-        '''
-        if cache_dir is None:
-            local_dir = os.path.dirname(os.path.realpath(__file__))
-            cache_dir = "cache"
-            cache_dir = os.path.join(local_dir, cache_dir)
-        file_utils.mkdir(cache_dir)
-        return cache_dir
-
-    @classmethod
     def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
         '''
@@ -130,6 +119,7 @@ class Cache(Base):
             {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
         ]
         return gtfs_feeds
+
 
 def main():
     # todo: allow other gtfs files via cmd line

@@ -44,3 +44,13 @@ class Base(object):
         if name is None:
             name = file_utils.get_file_name_from_url(url)
         return url, name
+
+    @classmethod
+    def local_get_cache_dir(self, cache_dir=None):
+        ''' returns dir path ... makes the directory if it doesn't exist
+        '''
+        if cache_dir is None:
+            local_dir = os.path.dirname(os.path.realpath(__file__))
+            cache_dir = os.path.join(local_dir, "cache")
+        file_utils.mkdir(cache_dir)
+        return cache_dir
