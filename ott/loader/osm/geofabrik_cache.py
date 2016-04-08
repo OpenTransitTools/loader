@@ -22,7 +22,7 @@ class GeoFabrikCache(OsmCache):
 
 
 def main():
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     g = GeoFabrikCache(name="or-wa")
 
 if __name__ == '__main__':

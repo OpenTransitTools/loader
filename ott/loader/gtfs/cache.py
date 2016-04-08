@@ -14,8 +14,6 @@ class Cache(Base):
     url = None
     file_name = None
     file_path = None
-    cache_dir = None
-    cache_expire = 31
 
     def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
 
@@ -39,7 +37,7 @@ class Cache(Base):
 
         # step 5: check the cache whether we should update or not
         update = False
-        if self.is_fresh_in_cache():
+        if self.is_fresh_in_cache(self.file_path):
             logging.info("diff gtfs file")
             diff = Diff(self.file_path, tmp_path)
             if diff.is_different():
@@ -52,19 +50,6 @@ class Cache(Base):
             logging.info("move to cache")
             file_utils.bkup(self.file_path)
             os.rename(tmp_path, self.file_path)
-
-    def is_fresh_in_cache(self):
-        ''' determine if file exists and is newer than the cache expire time
-        '''
-        ret_val = False
-        try:
-            # NOTE if the file isn't in the cache, we'll get an exception
-            age = file_utils.file_age(self.file_path)
-            if age <= self.cache_expire:
-                ret_val = True
-        except:
-            ret_val = False
-        return ret_val
 
     def get_info(self, file_prefix=''):
         return self._get_info(self.file_path, file_prefix)
@@ -115,7 +100,7 @@ class Cache(Base):
     @classmethod
     def get_gtfs_feeds(cls):
         gtfs_feeds = [
-            #{'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
+            {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
             {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
         ]
         return gtfs_feeds

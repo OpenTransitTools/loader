@@ -19,9 +19,6 @@ class OsmCache(Base):
     osm_name  = None
     osm_path  = None
 
-    cache_dir = None
-    cache_expire = 31
-
     def __init__(self, name, pbf_url, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
 
         # step 1: cache dir management
@@ -40,8 +37,8 @@ class OsmCache(Base):
 
         # step 4: download new osm pbf file if it's not new
         if force_download or \
-           not self.is_fresh_in_cache() or \
-           not self.is_fresh_in_cache():
+           not self.is_fresh_in_cache(self.pbf_path) or \
+           not self.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
 
         # step 5: .pbf to .osm
