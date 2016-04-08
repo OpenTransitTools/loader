@@ -16,25 +16,24 @@ class Base(object):
         return tmp_dir
 
     @classmethod
-    def local_get_cache_dir(cls, dir=None, def_name="cache"):
-        ''' returns either dir (stupid check) or <current-directory>/$def_name
-        '''
-        ret_val = dir
-        if dir is None:
-            ret_val = os.path.join(cls.this_module_dir, def_name)
-        file_utils.mkdir(ret_val)
-        return ret_val
-
-    @classmethod
     def get_cached_file(cls, gtfs_zip_name, dir=None, def_name="cache"):
-        cache_dir = cls.local_get_cache_dir(dir, def_name)
+        cache_dir = cls.get_cache_dir(dir, def_name)
         file = os.path.join(cache_dir, gtfs_zip_name)
         return file
 
     @classmethod
-    def cp_cached_gtfs_zip(cls, gtfs_zip_name, destination_dir, dir=None, def_name="cache"):
-        file = cls.get_cached_file(gtfs_zip_name, dir, def_name)
-        dest = os.path.join(destination_dir, gtfs_zip_name)
+    def get_cache_dir(cls, cache_dir=None):
+        ''' returns dir path ... makes the directory if it doesn't exist
+        '''
+        if cache_dir is None:
+            cache_dir = os.path.join(cls.this_module_dir, "cache")
+        file_utils.mkdir(cache_dir)
+        return cache_dir
+
+    @classmethod
+    def cp_cached_file(cls, file_name, destination_dir, dir=None, def_name="cache"):
+        file = cls.get_cached_file(file_name, dir, def_name)
+        dest = os.path.join(destination_dir, file_name)
         shutil.copyfile(file, dest)
 
     @classmethod
@@ -44,13 +43,3 @@ class Base(object):
         if name is None:
             name = file_utils.get_file_name_from_url(url)
         return url, name
-
-    @classmethod
-    def local_get_cache_dir(self, cache_dir=None):
-        ''' returns dir path ... makes the directory if it doesn't exist
-        '''
-        if cache_dir is None:
-            local_dir = os.path.dirname(os.path.realpath(__file__))
-            cache_dir = os.path.join(local_dir, "cache")
-        file_utils.mkdir(cache_dir)
-        return cache_dir

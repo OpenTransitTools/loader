@@ -25,7 +25,7 @@ class Cache(Base):
         tmp_dir = self.get_tmp_dir()
 
         # step 2: cache dir management
-        self.cache_dir = self.local_get_cache_dir(cache_dir)
+        self.cache_dir = self.get_cache_dir(cache_dir)
         self.cache_expire = cache_expire
 
         # step 3: file name
@@ -73,7 +73,7 @@ class Cache(Base):
     def _get_info(cls, gtfs_zip_name, file_prefix=''):
         ''' :return an info object for this cached gtfs feed
         '''
-        cache_path = os.path.join(cls.local_get_cache_dir(), gtfs_zip_name)
+        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
         ret_val = Info(cache_path, file_prefix)
         return ret_val
 
@@ -81,7 +81,7 @@ class Cache(Base):
     def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
         '''
-        cache_path = os.path.join(cls.local_get_cache_dir(), gtfs_zip_name)
+        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
         other_path = os.path.join(cmp_dir, gtfs_zip_name)
         diff = Diff(cache_path, other_path)
         return diff
@@ -95,7 +95,7 @@ class Cache(Base):
             url, name = Cache.get_url_filename(gtfs_zip)
             diff = Cache.cmp_file_to_cached(name, local_dir)
             if diff.is_different():
-                Cache.cp_cached_gtfs_zip(name, local_dir)
+                Cache.cp_cached_file(name, local_dir)
                 ret_val = True
         except Exception, e:
             logging.warn(e)

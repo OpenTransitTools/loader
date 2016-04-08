@@ -51,7 +51,7 @@ class Build(object):
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
-        self.local_cache_dir = Cache.local_get_cache_dir(self.this_module_dir)
+        self.local_cache_dir = Cache.get_cache_dir(self.this_module_dir)
         file_utils.cd(self.local_cache_dir)
         self.graph_path = os.path.join(self.local_cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
