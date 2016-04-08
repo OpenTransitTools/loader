@@ -10,49 +10,46 @@ class OsmCache(Base):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
-    url = None
-    file_name = None
-    file_path = None
+    pbf_url   = None
+    pbf_name  = None
+    pbf_path  = None
+    meta_url  = None
+    meta_name = None
+    meta_path = None
+    osm_name  = None
+    osm_path  = None
+
     cache_dir = None
     cache_expire = 31
 
-    def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
+    def __init__(self, name, pbf_url, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
 
-        # step 1: temp dir
-        tmp_dir = self.get_tmp_dir()
-
-        # step 2: cache dir management
+        # step 1: cache dir management
         self.cache_dir = self.get_cache_dir(cache_dir)
         self.cache_expire = cache_expire
 
-        # step 3: file name
-        self.file_name = file_name
-        self.file_path = os.path.join(self.cache_dir, self.file_name)
+        # step 3: file names
+        self.pbf_name  = name + ".pbf"
+        self.meta_name = name + ".html"
+        self.osm_name  = name + ".osm"
 
-        # step 4: download new osm file
-        self.url = url
-        tmp_path = os.path.join(tmp_dir, self.file_name)
-        file_utils.wget(self.url, tmp_path)
+        # step 3: file cache paths
+        self.pbf_path  = os.path.join(self.cache_dir, self.pbf_name)
+        self.meta_path = os.path.join(self.cache_dir, self.meta_name)
+        self.osm_path  = os.path.join(self.cache_dir, self.osm_name)
 
-        # step 5: check the cache whether we should update or not
-        update = False
-        if self.is_fresh_in_cache():
-            logging.info("diff gtfs file")
-            diff = Diff(self.file_path, tmp_path)
-            if diff.is_different():
-                update = True
-        else:
-            update = True
+        # step 4: download new osm pbf file if it's not new
+        if force_download or \
+           not self.is_fresh_in_cache() or \
+           not self.is_fresh_in_cache():
+            self.download_pbf()
 
-        # step 6: mv old file to backup then mv new file in tmp dir to cache
-        if update:
-            logging.info("move to cache")
-            file_utils.bkup(self.file_path)
-            os.rename(tmp_path, self.file_path)
+        # step 5: .pbf to .osm
+        self.pbf_to_osm()
 
+    def pbf_to_osm(self):
+        pass
 
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
+    def download_pbf(self):
+        logging.info("empty method ... override me")
+        pass
