@@ -11,7 +11,7 @@ requires = [
     'simplejson',
     'mako',
     'psycopg2',
-    'pyparsing'
+    'pyparsing',
 ]
 
 extras_require = dict(
