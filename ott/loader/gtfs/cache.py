@@ -115,7 +115,7 @@ class Cache(Base):
     @classmethod
     def get_gtfs_feeds(cls):
         gtfs_feeds = [
-            {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
+            #{'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
             {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
         ]
         return gtfs_feeds
