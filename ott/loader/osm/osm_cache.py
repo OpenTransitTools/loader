@@ -13,9 +13,13 @@ class OsmCache(Base):
     pbf_url   = None
     pbf_name  = None
     pbf_path  = None
+    pbf_url   = None
+
     meta_url  = None
     meta_name = None
     meta_path = None
+    meta_url  = None
+
     osm_name  = None
     osm_path  = None
 
@@ -25,26 +29,32 @@ class OsmCache(Base):
         self.cache_dir = self.get_cache_dir(cache_dir)
         self.cache_expire = cache_expire
 
+        # step 2: urls
+        self.pbf_url  = pbf_url
+        self.meta_url = meta_url
+
         # step 3: file names
         self.pbf_name  = name + ".pbf"
         self.meta_name = name + ".html"
         self.osm_name  = name + ".osm"
 
-        # step 3: file cache paths
+        # step 4: file cache paths
         self.pbf_path  = os.path.join(self.cache_dir, self.pbf_name)
         self.meta_path = os.path.join(self.cache_dir, self.meta_name)
         self.osm_path  = os.path.join(self.cache_dir, self.osm_name)
 
-        # step 4: download new osm pbf file if it's not new
+        # step 5: download new osm pbf file if it's not new
         if force_download or \
            not self.is_fresh_in_cache(self.pbf_path) or \
            not self.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
 
-        # step 5: .pbf to .osm
-        self.pbf_to_osm()
+        # step 6: .pbf to .osm
+        if self.is_min_sized(self.pbf_path, min_size):
+            self.pbf_to_osm()
 
     def pbf_to_osm(self):
+        logging.info("empty method ... override me")
         pass
 
     def download_pbf(self):
