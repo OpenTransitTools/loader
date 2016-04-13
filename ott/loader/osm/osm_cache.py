@@ -1,4 +1,5 @@
 import os
+import inspect
 import logging
 
 from ott.utils import file_utils
@@ -10,6 +11,8 @@ class OsmCache(Base):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
+    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
     pbf_url   = None
     pbf_name  = None
     pbf_path  = None
@@ -58,5 +61,8 @@ class OsmCache(Base):
         pass
 
     def download_pbf(self):
-        logging.info("empty method ... override me")
-        pass
+        logging.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
+        file_utils.bkup(self.pbf_path)
+        file_utils.wget(self.pbf_url, self.pbf_path)
+        if self.meta_url:
+            file_utils.wget(self.meta_url, self.meta_path)

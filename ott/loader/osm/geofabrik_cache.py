@@ -16,15 +16,9 @@ class GeoFabrikCache(OsmCache):
     def __init__(self, name, force_download=False):
         super(GeoFabrikCache, self).__init__(name, pbf_url=self.meta_url, meta_url=self.meta_url, force_download=force_download)
 
-    def download_pbf(self):
-        file_utils.bkup(self.pbf_path)
-        pass
-
-
 def main():
     #import pdb; pdb.set_trace()
     g = GeoFabrikCache(name="or-wa")
-    print g.__dict__
 
 if __name__ == '__main__':
     main()
