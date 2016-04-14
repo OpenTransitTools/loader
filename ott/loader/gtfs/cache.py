@@ -1,12 +1,14 @@
 import os
 import logging
+import inspect
 
 from ott.utils import file_utils
-from ott.loader.gtfs.base import Base
+from ott.utils.cache_base import CacheBase
+
 from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
 
-class Cache(Base):
+class Cache(CacheBase):
     """ Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
