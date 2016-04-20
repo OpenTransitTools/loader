@@ -3,9 +3,9 @@ import logging
 import csv
 
 from ott.utils import file_utils
-from ott.loader.gtfs.base import Base
+from ott.utils.cache_base import CacheBase
 
-class Info(Base):
+class Info(CacheBase):
     """ Get info on a
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...

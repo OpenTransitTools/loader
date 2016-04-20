@@ -3,10 +3,10 @@ import inspect
 import logging
 
 from ott.utils import file_utils
-from ott.loader.gtfs.base import Base
+from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.info import Info
 
-class Diff(Base):
+class Diff(CacheBase):
     """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see differences between them
     """
     old_info = None
