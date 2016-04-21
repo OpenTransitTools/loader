@@ -14,6 +14,8 @@ class Diff(CacheBase):
     old_gtfs_zip = None
     new_gtfs_zip = None
 
+    tmp_dir  = None
+
     def __init__(self, old_gtfs_zip, new_gtfs_zip):
         # step 1: set up some dirs
         self.old_gtfs_zip = old_gtfs_zip

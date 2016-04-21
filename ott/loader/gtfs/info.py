@@ -10,13 +10,13 @@ class Info(CacheBase):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
-
-    tmp_dir = None
     gtfs_path = None
     file_prefix = None
     calendar_file = None
     calendar_dates_file = None
     feed_info_file = None
+
+    tmp_dir = None
 
     def __init__(self, gtfs_path, file_prefix=''):
         self.tmp_dir = self.get_tmp_dir()

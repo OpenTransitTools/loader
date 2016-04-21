@@ -1,6 +1,5 @@
 import os
 import logging
-import inspect
 
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
@@ -16,6 +15,9 @@ class Cache(CacheBase):
     url = None
     file_name = None
     file_path = None
+
+    cache_dir = None
+    tmp_dir = None
 
     def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
 
