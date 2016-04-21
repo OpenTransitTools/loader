@@ -1,5 +1,8 @@
 import sys
 
+from ott.utils.cache_base import CacheBase
+from ott.loader.gtfs.cache import Cache
+
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
     """
@@ -10,7 +13,6 @@ class Load(CacheBase):
         reload = force_reload
         self.gtfs_zip_files = gtfs_zip_files
 
-        self.cache_dir = self.get_cache_dir()
         if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
             reload_= True
         if reload:

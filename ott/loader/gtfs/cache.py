@@ -12,51 +12,47 @@ class Cache(CacheBase):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
-    url = None
-    file_name = None
-    file_path = None
-
-    cache_dir = None
-    tmp_dir = None
-
-    def __init__(self, url, file_name, cache_dir=None, cache_expire=31):
-
-        #import pdb; pdb.set_trace()
-
-        # step 1: temp dir
-        tmp_dir = self.get_tmp_dir()
-
-        # step 2: cache dir management
-        self.cache_dir = self.get_cache_dir(cache_dir)
+    def __init__(self, cache_expire=31):
         self.cache_expire = cache_expire
 
-        # step 3: file name
-        self.file_name = file_name
-        self.file_path = os.path.join(self.cache_dir, self.file_name)
+    def check_feed(self, url, file_name):
+        ''' download feed from url, and check it against the cache
+            if newer, then replace cached feed .zip file with new version
+        '''
+        #import pdb; pdb.set_trace()
 
-        # step 4: download new gtfs file
-        self.url = url
-        tmp_path = os.path.join(tmp_dir, self.file_name)
-        file_utils.wget(self.url, tmp_path)
+        # step 1: file name
+        file_name = file_name
+        file_path = os.path.join(self.cache_dir, file_name)
 
-        # step 5: check the cache whether we should update or not
+        # step 2: download new gtfs file
+        url = url
+        tmp_path = os.path.join(self.tmp_dir, file_name)
+        file_utils.wget(url, tmp_path)
+
+        # step 3: check the cache whether we should update or not
         update = False
-        if self.is_fresh_in_cache(self.file_path):
-            logging.info("diff gtfs file")
-            diff = Diff(self.file_path, tmp_path)
+        if self.is_fresh_in_cache(file_path):
+            logging.info("diff {} against cached {}".format(tmp_path, file_path))
+            diff = Diff(file_path, tmp_path)
             if diff.is_different():
                 update = True
         else:
             update = True
 
-        # step 6: mv old file to backup then mv new file in tmp dir to cache
+        # step 4: mv old file to backup then mv new file in tmp dir to cache
         if update:
-            logging.info("move to cache")
-            file_utils.bkup(self.file_path)
-            os.rename(tmp_path, self.file_path)
+            logging.info("move {} to cache {}".format(tmp_path, file_path))
+            file_utils.bkup(file_path)
+            os.rename(tmp_path, file_path)
 
-    def get_info(self, file_prefix=''):
-        return self._get_info(self.file_path, file_prefix)
+    def cmp_file_to_cached(self, gtfs_zip_name, cmp_dir):
+        ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
+        '''
+        cache_path = os.path.join(self.cache_dir, gtfs_zip_name)
+        other_path = os.path.join(cmp_dir, gtfs_zip_name)
+        diff = Diff(cache_path, other_path)
+        return diff
 
     @classmethod
     def _get_info(cls, gtfs_zip_name, file_prefix=''):
@@ -67,22 +63,14 @@ class Cache(CacheBase):
         return ret_val
 
     @classmethod
-    def cmp_file_to_cached(cls, gtfs_zip_name, cmp_dir):
-        ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
-        '''
-        cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
-        other_path = os.path.join(cmp_dir, gtfs_zip_name)
-        diff = Diff(cache_path, other_path)
-        return diff
-
-    @classmethod
     def check_gtfs_zip_against_cache(cls, gtfs_zip, local_dir):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
         try:
+            cache = Cache()
             url, name = Cache.get_url_filename(gtfs_zip)
-            diff = Cache.cmp_file_to_cached(name, local_dir)
+            diff = cache.cmp_file_to_cached(name, local_dir)
             if diff.is_different():
                 Cache.cp_cached_file(name, local_dir)
                 ret_val = True
@@ -104,7 +92,7 @@ class Cache(CacheBase):
     @classmethod
     def get_gtfs_feeds(cls):
         gtfs_feeds = [
-            {'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
+            #{'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
             {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
         ]
         return gtfs_feeds
@@ -112,9 +100,10 @@ class Cache(CacheBase):
 
 def main():
     # todo: allow other gtfs files via cmd line
+    cache = Cache()
     for g in Cache.get_gtfs_feeds():
         url,name = Cache.get_url_filename(g)
-        Cache(url, name)
+        cache.check_feed(url, name)
 
 if __name__ == '__main__':
     main()

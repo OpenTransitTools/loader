@@ -16,10 +16,7 @@ class Info(CacheBase):
     calendar_dates_file = None
     feed_info_file = None
 
-    tmp_dir = None
-
     def __init__(self, gtfs_path, file_prefix=''):
-        self.tmp_dir = self.get_tmp_dir()
         self.gtfs_path = gtfs_path
         self.file_prefix = file_prefix
         self.unzip_calendar_and_info_files(file_prefix)
