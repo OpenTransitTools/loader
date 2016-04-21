@@ -72,7 +72,7 @@ class Cache(CacheBase):
             url, name = Cache.get_url_filename(gtfs_zip)
             diff = cache.cmp_file_to_cached(name, local_dir)
             if diff.is_different():
-                Cache.cp_cached_file(name, local_dir)
+                cache.cp_cached_file(name, local_dir)
                 ret_val = True
         except Exception, e:
             logging.warn(e)
@@ -88,6 +88,14 @@ class Cache(CacheBase):
             if c:
                 ret_val = True
         return ret_val
+
+    @classmethod
+    def get_url_filename(cls, gtfs_struct):
+        url  = gtfs_struct.get('url')
+        name = gtfs_struct.get('name', None)
+        if name is None:
+            name = file_utils.get_file_name_from_url(url)
+        return url, name
 
     @classmethod
     def get_gtfs_feeds(cls):
