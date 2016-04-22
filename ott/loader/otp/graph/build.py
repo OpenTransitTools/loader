@@ -89,7 +89,9 @@ class Build(CacheBase):
             # step 5b: test the graph
             if success:
                 self.deploy_test_graph()
-                success = self.run_graph_tests()
+                success = self.run_graph_te
+
+                sts()
                 if success:
                     self.update_vlog()
                     success = True
@@ -103,7 +105,7 @@ class Build(CacheBase):
         logging.info(cmd)
         os.system(cmd)
 
-    def deploy_test_graph(self, port="80"):
+    def deploy_test_graph(self, port="8080"):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
         from subprocess import Popen
         file_utils.cd(self.this_module_dir)
@@ -206,6 +208,8 @@ class Build(CacheBase):
         elif "build" in argv:
             b.run_graph_builder()
             b.deploy_test_graph()
+        elif "dep" in argv:
+            b.deploy_test_graph()
         elif "viz" in argv:
             b.vizualize_graph()
         else:
@@ -213,7 +217,7 @@ class Build(CacheBase):
             b.build_and_test_graph(force_rebuild=force)
 
 def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
     Build.options(argv)
 
 if __name__ == '__main__':
