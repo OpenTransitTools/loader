@@ -16,6 +16,7 @@ import datetime
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.cache import Cache
+from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
 
@@ -23,7 +24,7 @@ from ott.loader.otp.preflight.test_runner import TestRunner
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 35000000
-OSM_NAME   = "or-wa.osm"
+OSM_NAME   = "or-wa"
 OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
@@ -66,7 +67,7 @@ class Build(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        self.check_osm_cache_file()
+        OsmCache.check_osm_file_against_cache(self.osm_name, self.cache_dir)
         if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
             rebuild_graph = True
 
@@ -116,26 +117,6 @@ class Build(CacheBase):
         cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
         logging.info(cmd)
         os.system(cmd)
-
-    def check_osm_cache_file(self):
-        ''' check the ott.loader.osm cache for any street data updates
-        '''
-        ret_val = False
-        try:
-            osm_path = os.path.join(self.this_module_dir, self.osm_name)
-            size = file_utils.file_size(osm_path)
-            age  =  file_utils.file_age(osm_path) < self.expire_days
-            if size > self.osm_size and age < self.expire_days:
-                ret_val = True
-            else:
-                if size < self.osm_size:
-                    self.report_warn("{} (at {}) is smaller than {}".format(self.osm_name, size, self.osm_size))
-                if age > self.expire_days:
-                    self.report_warn("{} (at {} days) is older than {} days".format(self.osm_name, age, self.expire_days))
-        except Exception, e:
-            logging.warn(e)
-            self.report_error("OSM files are in a questionable state")
-        return ret_val
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details

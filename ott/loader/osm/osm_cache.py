@@ -53,7 +53,6 @@ class OsmCache(CacheBase):
             self.download_pbf()
 
         # step 6: .pbf to .osm
-        #import pdb; pdb.set_trace()
         if file_utils.is_min_sized(self.pbf_path, min_size) and \
            (
                not self.is_fresh_in_cache(self.osm_path) or \
@@ -80,11 +79,34 @@ class OsmCache(CacheBase):
     def check_osm_file_against_cache(cls, name, app_dir):
         ''' check the .osm file in this cache against an osm file in another app's directory
         '''
+        import pdb; pdb.set_trace()
         ret_val = False
         try:
-            cache = OsmCache()
-            cache.cp_cached_file(name, app_dir)
+            cache = OsmCache(name)
+            cache.cp_cached_file(cache.osm_name, app_dir)
             ret_val = True
         except Exception, e:
             logging.warn(e)
         return ret_val
+
+
+    def XXXX_check_osm_cache_file(self):
+        ''' check the ott.loader.osm cache for any street data updates
+        '''
+        ret_val = False
+        try:
+            osm_path = os.path.join(self.this_module_dir, self.osm_name)
+            size = file_utils.file_size(osm_path)
+            age  =  file_utils.file_age(osm_path) < self.expire_days
+            if size > self.osm_size and age < self.expire_days:
+                ret_val = True
+            else:
+                if size < self.osm_size:
+                    self.report_warn("{} (at {}) is smaller than {}".format(self.osm_name, size, self.osm_size))
+                if age > self.expire_days:
+                    self.report_warn("{} (at {} days) is older than {} days".format(self.osm_name, age, self.expire_days))
+        except Exception, e:
+            logging.warn(e)
+            self.report_error("OSM files are in a questionable state")
+        return ret_val
+
