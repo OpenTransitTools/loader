@@ -27,14 +27,14 @@ class OsmCache(CacheBase):
     left=-123.8
     right=-121.5
 
-    def __init__(self, name, pbf_url, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
+    def __init__(self, name, pbf_url=None, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
 
         # step 1: cache dir management
         self.cache_expire = cache_expire
 
         # step 2: urls
-        self.pbf_url  = pbf_url
-        self.meta_url = meta_url
+        if pbf_url:  self.pbf_url  = pbf_url
+        if meta_url: self.meta_url = meta_url
 
         # step 3: file names
         self.pbf_name  = name + ".pbf"
@@ -56,7 +56,7 @@ class OsmCache(CacheBase):
         if file_utils.is_min_sized(self.pbf_path, min_size) and \
            (
                not self.is_fresh_in_cache(self.osm_path) or \
-               not file_utils.is_a_newer_than_b(self.osm_path)
+               file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
            ):
             self.pbf_to_osm()
 
