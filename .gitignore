@@ -9,6 +9,7 @@ otp_report.html
 COMMIT_EDITMSG
 tmp/
 cache/
+osmosis/
 *.zip
 .git/
 .git/*
