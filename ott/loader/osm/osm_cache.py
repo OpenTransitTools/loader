@@ -53,6 +53,7 @@ class OsmCache(CacheBase):
             self.download_pbf()
 
         # step 6: .pbf to .osm
+        #import pdb; pdb.set_trace()
         if file_utils.is_min_sized(self.pbf_path, min_size) and \
            (
                not self.is_fresh_in_cache(self.osm_path) or \
