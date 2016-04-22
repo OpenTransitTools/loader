@@ -1,5 +1,5 @@
-
 from ott.loader.otp.graph.build import Build
+
 
 class TriMetBuild(Build):
     """ build an OTP graph
@@ -69,8 +69,6 @@ def deploy_and_test_graph(version=None, date_range=None):
         else:
             print "tests passed ? {0}".format(graph_passed_tests)
 
-
-
 def email(msg, subject="Graph builder info...", mailfrom="build.py"):
     """ send an email to someone...
     """
@@ -89,4 +87,3 @@ Subject: {0}
     except:
         traceback.print_exc(file=sys.stdout)
         logging.warn('ERROR: could not send email')
-
