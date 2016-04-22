@@ -1,6 +1,3 @@
-import os
-import logging
-
 from .osm_cache import OsmCache
 
 
@@ -13,10 +10,10 @@ class GeoFabrikCache(OsmCache):
     meta_url = "http://download.geofabrik.de/north-america/us-west.html"
 
     def __init__(self, name, force_download=False):
-        super(GeoFabrikCache, self).__init__(name, pbf_url=self.meta_url, meta_url=self.meta_url, force_download=force_download)
+        super(GeoFabrikCache, self).__init__(name, pbf_url=self.pbf_url, meta_url=self.meta_url, force_download=force_download)
 
 def main():
-    # TODO: config has or-wa.osm in it
+    # TODO: config has or-wa
     g = GeoFabrikCache(name="or-wa")
 
 if __name__ == '__main__':

@@ -22,6 +22,11 @@ class OsmCache(CacheBase):
     osm_name  = None
     osm_path  = None
 
+    top=45.8
+    bottom=44.68
+    left=-123.8
+    right=-121.5
+
     def __init__(self, name, pbf_url, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
 
         # step 1: cache dir management
@@ -56,8 +61,12 @@ class OsmCache(CacheBase):
             self.pbf_to_osm()
 
     def pbf_to_osm(self):
-        logging.info("empty method ... override me")
-        pass
+        ''' use osmosis to convert .pbf to .osm file
+        '''
+        osmosis = "{}/osmosis/bin/osmosis --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
+        osmosis = osmosis.format(self.this_module_dir, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
+        logging.info(osmosis)
+        os.system(osmosis)
 
     def download_pbf(self):
         logging.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
