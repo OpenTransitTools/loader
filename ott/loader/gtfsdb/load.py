@@ -15,6 +15,7 @@ class Load(CacheBase):
         if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
             reload = True
         if reload:
+            # TODO
             print "TODO ... implement load of gtfsdb"
             pass
 

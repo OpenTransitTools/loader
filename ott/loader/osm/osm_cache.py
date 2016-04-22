@@ -44,11 +44,15 @@ class OsmCache(CacheBase):
         # step 5: download new osm pbf file if it's not new
         if force_download or \
            not self.is_fresh_in_cache(self.pbf_path) or \
-           not self.is_min_sized(self.pbf_path, min_size):
+           not file_utils.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
 
         # step 6: .pbf to .osm
-        if self.is_min_sized(self.pbf_path, min_size):
+        if file_utils.is_min_sized(self.pbf_path, min_size) and \
+           (
+               not self.is_fresh_in_cache(self.osm_path) or \
+               not file_utils.is_a_newer_than_b(self.osm_path)
+           ):
             self.pbf_to_osm()
 
     def pbf_to_osm(self):
