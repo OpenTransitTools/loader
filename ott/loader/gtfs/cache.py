@@ -63,28 +63,28 @@ class Cache(CacheBase):
         return ret_val
 
     @classmethod
-    def check_gtfs_zip_against_cache(cls, gtfs_zip, local_dir):
+    def check_gtfs_zip_against_cache(cls, gtfs_zip, app_dir):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
         try:
             cache = Cache()
             url, name = Cache.get_url_filename(gtfs_zip)
-            diff = cache.cmp_file_to_cached(name, local_dir)
+            diff = cache.cmp_file_to_cached(name, app_dir)
             if diff.is_different():
-                cache.cp_cached_file(name, local_dir)
+                cache.cp_cached_file(name, app_dir)
                 ret_val = True
         except Exception, e:
             logging.warn(e)
         return ret_val
 
     @classmethod
-    def check_gtfs_files_against_cache(cls, gtfs_zip_files, local_dir):
+    def check_gtfs_files_against_cache(cls, gtfs_zip_files, app_dir):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         ret_val = False
         for g in gtfs_zip_files:
-            c = Cache.check_gtfs_zip_against_cache(g, local_dir)
+            c = Cache.check_gtfs_zip_against_cache(g, app_dir)
             if c:
                 ret_val = True
         return ret_val

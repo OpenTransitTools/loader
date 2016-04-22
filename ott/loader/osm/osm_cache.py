@@ -75,3 +75,16 @@ class OsmCache(CacheBase):
         file_utils.wget(self.pbf_url, self.pbf_path)
         if self.meta_url:
             file_utils.wget(self.meta_url, self.meta_path)
+
+    @classmethod
+    def check_osm_file_against_cache(cls, name, app_dir):
+        ''' check the .osm file in this cache against an osm file in another app's directory
+        '''
+        ret_val = False
+        try:
+            cache = OsmCache()
+            cache.cp_cached_file(name, app_dir)
+            ret_val = True
+        except Exception, e:
+            logging.warn(e)
+        return ret_val
