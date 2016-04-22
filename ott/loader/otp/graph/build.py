@@ -23,7 +23,7 @@ from ott.loader.otp.preflight.test_runner import TestRunner
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 35000000
-OSM_NAME   = "streets.osm"
+OSM_NAME   = "or-wa.osm"
 OSM_SIZE   = 5000000
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
@@ -216,7 +216,6 @@ class Build(CacheBase):
     def options(cls, argv):
         b = cls.factory()
         if "mock" in argv:
-            #import pdb; pdb.set_trace()
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
@@ -233,6 +232,7 @@ class Build(CacheBase):
             b.build_and_test_graph(force_rebuild=force)
 
 def main(argv=sys.argv):
+    #import pdb; pdb.set_trace()
     Build.options(argv)
 
 if __name__ == '__main__':

@@ -9,7 +9,6 @@ class Load(CacheBase):
     gtfs_zip_files  = None
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds(), force_reload=False):
-        #import pdb; pdb.set_trace()
         reload = force_reload
         self.gtfs_zip_files = gtfs_zip_files
         if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
@@ -20,6 +19,7 @@ class Load(CacheBase):
             pass
 
 def main(argv=sys.argv):
+    #import pdb; pdb.set_trace()
     Load()
 
 if __name__ == '__main__':
