@@ -1,7 +1,6 @@
 import os
 import logging
 
-from ott.utils import file_utils
 from .osm_cache import OsmCache
 
 
@@ -17,7 +16,7 @@ class GeoFabrikCache(OsmCache):
         super(GeoFabrikCache, self).__init__(name, pbf_url=self.meta_url, meta_url=self.meta_url, force_download=force_download)
 
 def main():
-    #import pdb; pdb.set_trace()
+    # TODO: config has or-wa.osm in it
     g = GeoFabrikCache(name="or-wa")
 
 if __name__ == '__main__':

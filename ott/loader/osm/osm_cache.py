@@ -1,5 +1,4 @@
 import os
-import inspect
 import logging
 
 from ott.utils import file_utils
@@ -26,7 +25,6 @@ class OsmCache(CacheBase):
     def __init__(self, name, pbf_url, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
 
         # step 1: cache dir management
-        self.cache_dir = self.get_cache_dir(cache_dir)
         self.cache_expire = cache_expire
 
         # step 2: urls
