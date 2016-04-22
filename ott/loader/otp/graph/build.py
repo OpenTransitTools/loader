@@ -7,7 +7,6 @@
 """
 
 import os
-import inspect
 import sys
 import copy
 import time
@@ -15,6 +14,7 @@ import logging
 import datetime
 
 from ott.utils import file_utils
+from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.cache import Cache
 from ott.loader.gtfs.info  import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
@@ -30,11 +30,9 @@ TEST_HTML  = "otp_report.html"
 OTP_DOWNLOAD_URL="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.19.0/otp-0.19.0-shaded.jar"
 
 
-class Build(object):
+class Build(CacheBase):
     """ build an OTP graph
     """
-    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-
     graph_path = None
     otp_path   = None
     local_cache_dir = None
@@ -51,9 +49,8 @@ class Build(object):
 
     def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
         self.gtfs_zip_files = gtfs_zip_files
-        self.local_cache_dir = Cache.get_cache_dir(self.this_module_dir)
-        file_utils.cd(self.local_cache_dir)
-        self.graph_path = os.path.join(self.local_cache_dir, self.graph_name)
+        file_utils.cd(self.cache_dir)
+        self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
 
     def build_and_test_graph(self, force_rebuild=False):
@@ -202,12 +199,11 @@ class Build(object):
         ''' override me to do things like emailing error reports, etc... '''
         logging.error(msg)
 
-    @classmethod
-    def check_otp_jar(cls, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
+    def check_otp_jar(self, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
         """ make sure otp.jar exists ... if not, download it
             :return full-path to otp.jar
         """
-        jar_path = os.path.join(cls.this_module_dir, jar)
+        jar_path = os.path.join(self.this_module_dir, jar)
         exists = os.path.exists(jar_path)
         if not exists or file_utils.file_size(jar_path) < expected_size:
             file_utils.wget(download_url, jar_path)

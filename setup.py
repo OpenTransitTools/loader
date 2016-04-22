@@ -55,7 +55,7 @@ setup(
         gtfs_update = ott.loader.gtfs.cache:main
         gtfsdb_load = ott.loader.gtfsdb.load:main
         osm_update = ott.loader.osm.geofabrik_cache:main
-        otp_graph_builder = ott.loader.otp.graph.build:main
+        otp_build_graph = ott.loader.otp.graph.build:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_random_trips = ott.loader.otp.preflight.random_trip:main
     """,
