@@ -84,7 +84,7 @@ class Cache(CacheBase):
         '''
         ret_val = False
         for g in gtfs_zip_files:
-            c = Cache.check_gtfs_zip_against_cache(g['name'], local_dir)
+            c = Cache.check_gtfs_zip_against_cache(g, local_dir)
             if c:
                 ret_val = True
         return ret_val
