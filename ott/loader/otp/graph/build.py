@@ -35,7 +35,6 @@ class Build(CacheBase):
     """
     graph_path = None
     otp_path   = None
-    local_cache_dir = None
     gtfs_zip_files  = None
 
     graph_failed = GRAPH_FAILD
@@ -68,7 +67,7 @@ class Build(CacheBase):
 
         # step 3: check the cache files
         self.check_osm_cache_file()
-        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.local_cache_dir):
+        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
             rebuild_graph = True
 
         # step 4: print feed info
@@ -99,7 +98,7 @@ class Build(CacheBase):
         logging.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.local_cache_dir, self.local_cache_dir)
+        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
@@ -107,14 +106,14 @@ class Build(CacheBase):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
         from subprocess import Popen
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.local_cache_dir)
+        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
         logging.info(cmd)
         Popen(cmd)
         time.sleep(75)
 
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.local_cache_dir)
+        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
         logging.info(cmd)
         os.system(cmd)
 
@@ -145,7 +144,7 @@ class Build(CacheBase):
         try:
             for g in self.gtfs_zip_files:
                 cp = copy.copy(g)
-                gtfs_path = os.path.join(self.local_cache_dir, cp['name'])
+                gtfs_path = os.path.join(self.cache_dir, cp['name'])
                 info = Info(gtfs_path)
                 r = info.get_feed_date_range()
                 v = info.get_feed_version()
@@ -166,7 +165,7 @@ class Build(CacheBase):
         '''
         t = TestRunner()
         t.run()
-        t.report(self.local_cache_dir)
+        t.report(self.cache_dir)
         if t.has_errors():
             logging.info('GRAPH TESTS: There were errors!')
         else:
@@ -177,7 +176,7 @@ class Build(CacheBase):
         """
         exists = os.path.exists(self.graph_path)
         if not exists:
-            fail_path = os.path.join(self.local_cache_dir, self.graph_failed)
+            fail_path = os.path.join(self.cache_dir, self.graph_failed)
             exists = os.path.exists(fail_path)
             if exists:
                 file_utils.mv(fail_path, self.graph_path)
@@ -189,7 +188,7 @@ class Build(CacheBase):
             msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
             for f in feeds_details:
                 msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
-            vlog = os.path.join(self.local_cache_dir, self.vlog_name)
+            vlog = os.path.join(self.cache_dir, self.vlog_name)
             f = open(vlog, 'a')
             f.write(msg)
             f.flush()
