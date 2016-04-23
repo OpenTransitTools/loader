@@ -111,7 +111,10 @@ class Build(CacheBase):
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
         logging.info(cmd)
-        Popen(cmd)
+        try:
+            Popen(cmd)
+        except:
+            os.system(cmd)
         time.sleep(75)
 
     def vizualize_graph(self):
