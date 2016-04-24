@@ -6,12 +6,11 @@ from ott.loader.gtfs.cache import Cache
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
     """
-    gtfs_zip_files  = None
+    gtfs_zip_files = None
+    def_section = 'gtfs'
 
-    def __init__(self, config=None, force_reload=False):
-        super(Load, self).__init__(section='gtfs')
+    def __init__(self, force_reload=False):
         reload = force_reload
-
         feeds = self.config.get_json('feeds')
         if Cache.check_gtfs_files_against_cache(feeds, self.cache_dir):
             reload = True
