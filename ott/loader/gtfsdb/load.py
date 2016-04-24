@@ -11,8 +11,9 @@ class Load(CacheBase):
     gtfs_zip_files  = None
 
     def __init__(self, config=None, force_reload=False):
+        super(CacheBase, self).__init__()
         reload = force_reload
-        if config is None: config = OttConfig.factory(section='gtfs')
+        self.config.section = 'gtfs'
 
         feeds = config.get_json('feeds')
         if Cache.check_gtfs_files_against_cache(feeds, self.cache_dir):
@@ -22,9 +23,8 @@ class Load(CacheBase):
             print "TODO ... implement load of gtfsdb"
 
 def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
-    config = ConfigUtil.factory(argv, section='gtfs')
-    Load(config)
+    import pdb; pdb.set_trace()
+    Load()
 
 if __name__ == '__main__':
     main()
