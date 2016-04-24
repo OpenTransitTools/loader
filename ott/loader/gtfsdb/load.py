@@ -23,9 +23,10 @@ class Load(CacheBase):
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     config.get_parser()
-    feeds = config.get_list('feeds', section='gtfs')
+    feeds = config.get_json('feeds', section='gtfs')
     for f in feeds:
-        print f
+        print f['name']
+
     Load()
 
 if __name__ == '__main__':
