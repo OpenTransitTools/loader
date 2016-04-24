@@ -1,5 +1,6 @@
 import sys
 
+from ott.utils import config
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.cache import Cache
 
@@ -20,6 +21,8 @@ class Load(CacheBase):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
+    config.get_parser()
+    print config.get('fff', section='BBB')
     Load()
 
 if __name__ == '__main__':
