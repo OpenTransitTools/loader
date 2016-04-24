@@ -1,7 +1,7 @@
 import sys
 import json
 
-from ott.utils import config
+from ott.utils import OttConfig
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.cache import Cache
 
@@ -10,9 +10,9 @@ class Load(CacheBase):
     """
     gtfs_zip_files  = None
 
-    def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds(), force_reload=False):
+    def __init__(self, config, force_reload=False):
         reload = force_reload
-        self.gtfs_zip_files = gtfs_zip_files
+        self.gtfs_zip_files = config
         if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
             reload = True
         if reload:
@@ -22,7 +22,7 @@ class Load(CacheBase):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    config.get_parser()
+    config = OttConfig('')
     feeds = config.get_json('feeds', section='gtfs')
     for f in feeds:
         print f['name']
