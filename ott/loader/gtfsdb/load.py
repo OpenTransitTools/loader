@@ -1,4 +1,5 @@
 import sys
+import json
 
 from ott.utils import config
 from ott.utils.cache_base import CacheBase
@@ -22,7 +23,9 @@ class Load(CacheBase):
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     config.get_parser()
-    print config.get('fff', section='BBB')
+    feeds = config.get_list('feeds', section='gtfs')
+    for f in feeds:
+        print f
     Load()
 
 if __name__ == '__main__':
