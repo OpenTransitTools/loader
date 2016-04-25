@@ -6,9 +6,11 @@ from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 
 class Info(CacheBase):
-    """ Get info on a
-         1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
-         2. once cached, it will check to see that the file in the cache is the most up to date data...
+    """ Get info on a gtfs.zip file:
+         1. will unzip the two calendar plus the feed_info .txt files
+         2. will read the calendar .txt files, and provide date ranges and the like
+         3. will calulate based on the calendar how old the feed is (and how many days it has left)
+         4. will read the feed_info and pull out various date ranges and feed ids
     """
     gtfs_path = None
     file_prefix = None
@@ -17,6 +19,9 @@ class Info(CacheBase):
     feed_info_file = None
 
     def __init__(self, gtfs_path, file_prefix=''):
+        ''' note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
+        '''
+        #import pdb; pdb.set_trace()
         self.gtfs_path = gtfs_path
         self.file_prefix = file_prefix
         self.unzip_calendar_and_info_files(file_prefix)
@@ -24,7 +29,6 @@ class Info(CacheBase):
     def unzip_calendar_and_info_files(self, file_prefix, calendar_file='calendar.txt', calendar_dates_file='calendar_dates.txt', info_file='feed_info.txt'):
         """ unzip a file (calendar_dates.txt by default) from our old & new gtfs.zip files
         """
-        #import pdb; pdb.set_trace()
         self.calendar_file = file_prefix + calendar_file
         self.calendar_dates_file = file_prefix + calendar_dates_file
         self.feed_info_file = file_prefix + info_file
