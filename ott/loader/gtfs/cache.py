@@ -12,8 +12,16 @@ class Cache(CacheBase):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
+    feeds = []
+
     def __init__(self):
         super(Cache, self).__init__(section='gtfs')
+        self.feeds = self.config.get_json('feeds')
+
+    def check_cached_feeds(self):
+        for f in self.feeds:
+            url,name = Cache.get_url_filename(f)
+            self.check_feed(url, name)
 
     def check_feed(self, url, file_name):
         ''' download feed from url, and check it against the cache
@@ -98,10 +106,7 @@ class Cache(CacheBase):
 def main():
     #import pdb; pdb.set_trace()
     cache = Cache()
-    feeds = cache.config.get_json('feeds')
-    for f in feeds:
-        url,name = Cache.get_url_filename(f)
-        cache.check_feed(url, name)
+    cache.check_cached_feeds()
 
 if __name__ == '__main__':
     main()

@@ -28,7 +28,9 @@ class OsmCache(CacheBase):
     right=-121.5
 
     def __init__(self, name, pbf_url=None, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
-
+        ''' check osm cache
+        '''
+        #import pdb; pdb.set_trace()
         # step 1: cache dir management
         self.cache_expire = cache_expire
 
@@ -79,7 +81,6 @@ class OsmCache(CacheBase):
     def check_osm_file_against_cache(cls, name, app_dir):
         ''' check the .osm file in this cache against an osm file in another app's directory
         '''
-        import pdb; pdb.set_trace()
         ret_val = False
         try:
             cache = OsmCache(name)

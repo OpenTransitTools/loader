@@ -36,7 +36,7 @@ class Build(CacheBase):
     """
     graph_path = None
     otp_path   = None
-    gtfs_zip_files  = None
+    feeds  = None
 
     graph_failed = GRAPH_FAILD
     graph_name = GRAPH_NAME
@@ -47,8 +47,9 @@ class Build(CacheBase):
     test_html  = TEST_HTML
     expire_days = 45
 
-    def __init__(self, config=None, gtfs_zip_files=Cache.get_gtfs_feeds()):
-        self.gtfs_zip_files = gtfs_zip_files
+    def __init__(self):
+        super(Build, self).__init__('otp')
+        self.feeds = self.config.get_json('feeds', section='gtfs')
         file_utils.cd(self.cache_dir)
         self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
@@ -68,7 +69,7 @@ class Build(CacheBase):
 
         # step 3: check the cache files
         OsmCache.check_osm_file_against_cache(self.osm_name, self.cache_dir)
-        if Cache.check_gtfs_files_against_cache(self.gtfs_zip_files, self.cache_dir):
+        if Cache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
             rebuild_graph = True
 
         # step 4: print feed info
@@ -128,7 +129,7 @@ class Build(CacheBase):
         '''
         ret_val = []
         try:
-            for g in self.gtfs_zip_files:
+            for g in self.feeds:
                 cp = copy.copy(g)
                 gtfs_path = os.path.join(self.cache_dir, cp['name'])
                 info = Info(gtfs_path)
@@ -220,7 +221,7 @@ class Build(CacheBase):
             b.build_and_test_graph(force_rebuild=force)
 
 def main(argv=sys.argv):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     Build.options(argv)
 
 if __name__ == '__main__':
