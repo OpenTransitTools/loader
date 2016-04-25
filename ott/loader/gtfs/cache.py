@@ -12,15 +12,13 @@ class Cache(CacheBase):
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
-    def __init__(self, cache_expire=31):
-        self.cache_expire = cache_expire
+    def __init__(self):
+        super(Cache, self).__init__(section='gtfs')
 
     def check_feed(self, url, file_name):
         ''' download feed from url, and check it against the cache
             if newer, then replace cached feed .zip file with new version
         '''
-        #import pdb; pdb.set_trace()
-
         # step 1: file name
         file_name = file_name
         file_path = os.path.join(self.cache_dir, file_name)
@@ -97,20 +95,12 @@ class Cache(CacheBase):
             name = file_utils.get_file_name_from_url(url)
         return url, name
 
-    @classmethod
-    def get_gtfs_feeds(cls):
-        gtfs_feeds = [
-            #{'url':"http://developer.trimet.org/schedule/gtfs.zip", 'name':"trimet.zip"},
-            {'url':"http://www.c-tran.com/images/Google/GoogleTransitUpload.zip", 'name':"c-tran.zip"},
-        ]
-        return gtfs_feeds
-
-
 def main():
-    # todo: allow other gtfs files via cmd line
+    #import pdb; pdb.set_trace()
     cache = Cache()
-    for g in Cache.get_gtfs_feeds():
-        url,name = Cache.get_url_filename(g)
+    feeds = cache.config.get_json('feeds')
+    for f in feeds:
+        url,name = Cache.get_url_filename(f)
         cache.check_feed(url, name)
 
 if __name__ == '__main__':
