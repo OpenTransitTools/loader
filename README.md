@@ -3,10 +3,13 @@ loader
 
 The loader project contains multiple utilities to load GTFS, OSM and OTP data into various apps and databases. The
 sub projects are:
-  1. otp.loader.gtfs, which contains routines to cache and compare gtfs feeds.
-  1. otp.loader.otp,
+  1. [gtfs](ott/loader/gtfs/README.md), which contains routines to cache and compare gtfs feeds.
+  1. [gtfsdb](ott/loader/gtfsdb/README.md), which loads gtfs files into GTFSDB
+  1. [osm](ott/loader/osm/README.md), which downloads OSM .pdb files, and futher can extract .osm data via OSMOSIS
+  1. [otp](ott/loader/otp/README.md), which builds graphs (Graph.obj) databases for [OpenTripPlanner](http://opentripplanner.org)
+  1. [solr](ott/loader/solr/README.md), which pulls data from 
 
-build:
+install:
   1. install python 2.7, along easy_install, zc.buildout ("zc.buildout==1.5.2") and git
   1. git clone https://github.com/OpenTransitTools/loader.git
   1. cd loader
@@ -14,6 +17,6 @@ build:
   1. git update-index --assume-unchanged .pydevproject
 
 run:
-  1. bin/test ## runs loader tests for geocoder, etc... (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)
-  1. bin/python ott/loader/gtfs/cache.py <url> ## cache gtfs feeds into ott/loader/gtfs/cache
-  1. bin/python ott/loader/gtfs/cache.py ## cache trimet.org's gtfs feed
+  1. bin/test ## runs loader's unit tests (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)
+  1. see individual project README's above to see different app runs
+  1. and check out the bin/ generated after buildout is run (those binaries are created via buildout & setup.py)
