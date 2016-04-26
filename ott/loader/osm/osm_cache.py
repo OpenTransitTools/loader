@@ -22,12 +22,12 @@ class OsmCache(CacheBase):
     osm_name  = None
     osm_path  = None
 
-    top=45.8
-    bottom=44.68
-    left=-123.8
-    right=-121.5
+    top    = 45.8
+    bottom = 44.68
+    left   =-123.8
+    right  =-121.5
 
-    def __init__(self, name, pbf_url=None, meta_url=None, cache_dir=None, cache_expire=2, min_size=1000000000, force_download=False):
+    def __init__(self, force_download=False):
         ''' check osm cache
         '''
         #import pdb; pdb.set_trace()
