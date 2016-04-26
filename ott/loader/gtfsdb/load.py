@@ -13,16 +13,17 @@ class Load(CacheBase):
 
         feeds = self.config.get_json('feeds')
         reload = force_reload
-
         if GtfsCache.check_gtfs_files_against_cache(feeds, self.cache_dir):
             reload = True
         if reload:
             # TODO
             print "TODO ... implement load of gtfsdb"
 
+
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    Load()
+    force = ("force" in argv or "update" in argv)
+    Load(force_reload=force)
 
 if __name__ == '__main__':
     main()

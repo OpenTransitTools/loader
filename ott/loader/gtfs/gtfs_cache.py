@@ -18,12 +18,12 @@ class GtfsCache(CacheBase):
         super(GtfsCache, self).__init__(section='gtfs')
         self.feeds = self.config.get_json('feeds')
 
-    def check_cached_feeds(self):
+    def check_cached_feeds(self, force_update=False):
         for f in self.feeds:
             url,name = GtfsCache.get_url_filename(f)
-            self.check_feed(url, name)
+            self.check_feed(url, name, force_update)
 
-    def check_feed(self, url, file_name):
+    def check_feed(self, url, file_name, force_update=False):
         ''' download feed from url, and check it against the cache
             if newer, then replace cached feed .zip file with new version
         '''
@@ -37,7 +37,7 @@ class GtfsCache(CacheBase):
         file_utils.wget(url, tmp_path)
 
         # step 3: check the cache whether we should update or not
-        update = False
+        update = force_update
         if self.is_fresh_in_cache(file_path):
             logging.info("diff {} against cached {}".format(tmp_path, file_path))
             diff = Diff(file_path, tmp_path)
@@ -50,7 +50,7 @@ class GtfsCache(CacheBase):
         if update:
             logging.info("move {} to cache {}".format(tmp_path, file_path))
             file_utils.bkup(file_path)
-            os.rename(tmp_path, file_path)
+            file_utils.mv(tmp_path, file_path)
 
     def cmp_file_to_cached(self, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
@@ -103,10 +103,12 @@ class GtfsCache(CacheBase):
             name = file_utils.get_file_name_from_url(url)
         return url, name
 
-def main():
+
+def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
+    force = ("force" in argv or "update" in argv)
     cache = GtfsCache()
-    cache.check_cached_feeds()
+    cache.check_cached_feeds(force_update=force)
 
 if __name__ == '__main__':
     main()

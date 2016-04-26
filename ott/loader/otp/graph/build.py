@@ -54,14 +54,14 @@ class Build(CacheBase):
         self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
 
-    def build_and_test_graph(self, force_rebuild=False):
+    def build_and_test_graph(self, force_update=False):
         ''' will rebuild the graph...
             :return: True for success ... fail for pass
         '''
         success = True
 
         # step 1: set some params
-        rebuild_graph = force_rebuild
+        rebuild_graph = force_update
 
         # step 2: check graph file is fairly recent and properly sized
         if not file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
@@ -217,8 +217,8 @@ class Build(CacheBase):
         elif "viz" in argv:
             b.vizualize_graph()
         else:
-            force = ("force" in argv or "rebuild" in argv)
-            b.build_and_test_graph(force_rebuild=force)
+            force = ("force" in argv or "update" in argv)
+            b.build_and_test_graph(force_update=force)
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()

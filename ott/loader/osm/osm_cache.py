@@ -27,7 +27,7 @@ class OsmCache(CacheBase):
     left   = None
     right  = None
 
-    def __init__(self, force_download=False):
+    def __init__(self, force_update=False):
         ''' check osm cache
         '''
         #import pdb; pdb.set_trace()
@@ -53,7 +53,7 @@ class OsmCache(CacheBase):
         self.osm_path  = os.path.join(self.cache_dir, self.osm_name)
 
         # step 5: download new osm pbf file if it's not new
-        if force_download or \
+        if force_update or \
            not self.is_fresh_in_cache(self.pbf_path) or \
            not file_utils.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
@@ -96,8 +96,10 @@ class OsmCache(CacheBase):
         return ret_val
 
 
-def main():
-    c = OsmCache()
+def main(argv=sys.argv):
+    #import pdb; pdb.set_trace()
+    force = ("force" in argv or "update" in argv)
+    c = OsmCache(force_update=force)
 
 if __name__ == '__main__':
     main()
