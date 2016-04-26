@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 
 from ott.utils import file_utils
@@ -52,13 +53,16 @@ class OsmCache(CacheBase):
         self.meta_path = os.path.join(self.cache_dir, self.meta_name)
         self.osm_path  = os.path.join(self.cache_dir, self.osm_name)
 
-        # step 5: download new osm pbf file if it's not new
+        # step 5: get bbox from config
+        self.top, self.bottom, self.left, self.right = self.config.get_bbox()
+
+        # step 6: download new osm pbf file if it's not new
         if force_update or \
            not self.is_fresh_in_cache(self.pbf_path) or \
            not file_utils.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
 
-        # step 6: .pbf to .osm
+        # step 7: .pbf to .osm
         if file_utils.is_min_sized(self.pbf_path, min_size) and \
            (
                not self.is_fresh_in_cache(self.osm_path) or \
@@ -66,11 +70,17 @@ class OsmCache(CacheBase):
            ):
             self.pbf_to_osm()
 
-    def pbf_to_osm(self):
+    def get_osmosis_cmd(self):
         ''' use osmosis to convert .pbf to .osm file
         '''
         osmosis = "{}/osmosis/bin/osmosis --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
         osmosis = osmosis.format(self.this_module_dir, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
+        return osmosis
+
+    def pbf_to_osm(self):
+        ''' use osmosis to convert .pbf to .osm file
+        '''
+        osmosis = self.get_osmosis_cmd()
         logging.info(osmosis)
         os.system(osmosis)
 
