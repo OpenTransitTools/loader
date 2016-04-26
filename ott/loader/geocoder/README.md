@@ -1,9 +1,9 @@
-loader:gtfs
-===========
+loader:geocoder
+===============
 
-Update 
+Load postgres geocoder (or other TBD geocoder).  Test geocoder with a set of known addresses (current 
+[test suite](./tests/geocodes.csv) is for Portland area).
 
-run:
-  1. bin/gtfs_load 
-  1. bin/python ott/loader/gtfs/cache.py <url> ## cache gtfs feeds into ott/loader/gtfs/cache
-  1. bin/python ott/loader/gtfs/cache.py ## cache trimet.org's gtfs feed
+Also is a repo for 'fixes' to addresses in the Portland Metro master address file, via [maf_fixes.csv](./data/maf_fixes.csv)
+
+run: bin/test will run the address tests...

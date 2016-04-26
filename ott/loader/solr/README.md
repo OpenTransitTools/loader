@@ -1,10 +1,10 @@
-loader:gtfs
+loader:solr
 ===========
 
-purpose: to download and cache GTFS .zip files from N number of providers. Compare tools are provided to then determine  
-         whether a feed in a given cache is either the same or newer based on version stamps and calendar dates.
-         The [./config/app.ini](../../../config/app.ini) file controls the list of gtfs feeds cached.
+purpose: query various data sources and databases, and build .XML files that will populate a [SOLR](http://lucene.apache.org/solr/)
+         search engine.  The [./config/app.ini](../../../config/app.ini) file controls the list of data sources.
 
-run: bin/gtfs_load (optional -ini <name>.ini)
+run: bin/solr_load (optional -ini <name>.ini)
+
      
 
