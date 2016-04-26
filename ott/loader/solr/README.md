@@ -1,9 +1,10 @@
 loader:gtfs
 ===========
 
-Update 
+purpose: to download and cache GTFS .zip files from N number of providers. Compare tools are provided to then determine  
+         whether a feed in a given cache is either the same or newer based on version stamps and calendar dates.
+         The [./config/app.ini](../../../config/app.ini) file controls the list of gtfs feeds cached.
 
-run:
-  1. bin/gtfs_load 
-  1. bin/python ott/loader/gtfs/cache.py <url> ## cache gtfs feeds into ott/loader/gtfs/cache
-  1. bin/python ott/loader/gtfs/cache.py ## cache trimet.org's gtfs feed
+run: bin/gtfs_load (optional -ini <name>.ini)
+     
+
