@@ -10,8 +10,10 @@ class Load(CacheBase):
 
     def __init__(self, force_reload=False):
         super(Load, self).__init__(section='gtfs')
-        reload = force_reload
+
         feeds = self.config.get_json('feeds')
+        reload = force_reload
+
         if GtfsCache.check_gtfs_files_against_cache(feeds, self.cache_dir):
             reload = True
         if reload:

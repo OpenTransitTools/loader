@@ -22,23 +22,27 @@ class OsmCache(CacheBase):
     osm_name  = None
     osm_path  = None
 
-    top    = 45.8
-    bottom = 44.68
-    left   =-123.8
-    right  =-121.5
+    top    = None
+    bottom = None
+    left   = None
+    right  = None
 
     def __init__(self, force_download=False):
         ''' check osm cache
         '''
         #import pdb; pdb.set_trace()
+        super(OsmCache, self).__init__(section='osm')
+
         # step 1: cache dir management
-        self.cache_expire = cache_expire
+        self.cache_expire = self.config.get_int('cache_expire', def_val=self.cache_expire)
+        min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 2: urls
-        if pbf_url:  self.pbf_url  = pbf_url
-        if meta_url: self.meta_url = meta_url
+        self.pbf_url  = self.config.get('pbf_url')
+        self.meta_url = self.config.get('meta_url')
 
         # step 3: file names
+        name = self.config.get('name')
         self.pbf_name  = name + ".pbf"
         self.meta_name = name + ".html"
         self.osm_name  = name + ".osm"
@@ -78,12 +82,13 @@ class OsmCache(CacheBase):
             file_utils.wget(self.meta_url, self.meta_path)
 
     @classmethod
-    def check_osm_file_against_cache(cls, name, app_dir):
+    def check_osm_file_against_cache(cls, app_dir):
         ''' check the .osm file in this cache against an osm file in another app's directory
         '''
         ret_val = False
         try:
-            cache = OsmCache(name)
+            cache = OsmCache()
+            logging.info("cp {} to {}".format(cache.osm_name, app_dir))
             cache.cp_cached_file(cache.osm_name, app_dir)
             ret_val = True
         except Exception, e:
@@ -91,23 +96,8 @@ class OsmCache(CacheBase):
         return ret_val
 
 
-    def XXXX_check_osm_cache_file(self):
-        ''' check the ott.loader.osm cache for any street data updates
-        '''
-        ret_val = False
-        try:
-            osm_path = os.path.join(self.this_module_dir, self.osm_name)
-            size = file_utils.file_size(osm_path)
-            age  =  file_utils.file_age(osm_path) < self.expire_days
-            if size > self.osm_size and age < self.expire_days:
-                ret_val = True
-            else:
-                if size < self.osm_size:
-                    self.report_warn("{} (at {}) is smaller than {}".format(self.osm_name, size, self.osm_size))
-                if age > self.expire_days:
-                    self.report_warn("{} (at {} days) is older than {} days".format(self.osm_name, age, self.expire_days))
-        except Exception, e:
-            logging.warn(e)
-            self.report_error("OSM files are in a questionable state")
-        return ret_val
+def main():
+    c = OsmCache()
 
+if __name__ == '__main__':
+    main()
