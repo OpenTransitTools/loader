@@ -14,7 +14,9 @@ import logging
 import datetime
 
 from ott.utils import file_utils
+from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
+
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
@@ -217,8 +219,7 @@ class Build(CacheBase):
         elif "viz" in argv:
             b.vizualize_graph()
         else:
-            force = ("force" in argv or "update" in argv)
-            b.build_and_test_graph(force_update=force)
+            b.build_and_test_graph(force_update=object_utils.is_force_update())
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
