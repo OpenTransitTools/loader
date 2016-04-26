@@ -17,6 +17,6 @@ install:
   1. git update-index --assume-unchanged .pydevproject
 
 run:
-  1. bin/test ## runs loader's unit tests (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)
+  1. bin/test ... this cmd will run loader's unit tests (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)
   1. see individual project README's above to see different app runs
   1. and check out the bin/ generated after buildout is run (those binaries are created via buildout & setup.py)
