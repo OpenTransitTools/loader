@@ -1,8 +1,8 @@
 import os
-import sys
 import logging
 
 from ott.utils import file_utils
+from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 
 class OsmCache(CacheBase):
@@ -106,10 +106,9 @@ class OsmCache(CacheBase):
         return ret_val
 
 
-def main(argv=sys.argv):
+def main():
     #import pdb; pdb.set_trace()
-    force = ("force" in argv or "update" in argv)
-    c = OsmCache(force_update=force)
+    OsmCache(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
     main()

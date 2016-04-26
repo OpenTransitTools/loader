@@ -2,6 +2,7 @@ import os
 import logging
 
 from ott.utils import file_utils
+from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.info import Info
@@ -38,13 +39,14 @@ class GtfsCache(CacheBase):
 
         # step 3: check the cache whether we should update or not
         update = force_update
-        if self.is_fresh_in_cache(file_path):
-            logging.info("diff {} against cached {}".format(tmp_path, file_path))
-            diff = Diff(file_path, tmp_path)
-            if diff.is_different():
+        if not force_update:
+            if self.is_fresh_in_cache(file_path):
+                logging.info("diff {} against cached {}".format(tmp_path, file_path))
+                diff = Diff(file_path, tmp_path)
+                if diff.is_different():
+                    update = True
+            else:
                 update = True
-        else:
-            update = True
 
         # step 4: mv old file to backup then mv new file in tmp dir to cache
         if update:
@@ -104,11 +106,10 @@ class GtfsCache(CacheBase):
         return url, name
 
 
-def main(argv=sys.argv):
+def main():
     #import pdb; pdb.set_trace()
-    force = ("force" in argv or "update" in argv)
     cache = GtfsCache()
-    cache.check_cached_feeds(force_update=force)
+    cache.check_cached_feeds(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
     main()

@@ -1,29 +1,31 @@
-import sys
-
+from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
     """
-    gtfs_zip_files = None
-
-    def __init__(self, force_reload=False):
+    def __init__(self, force_update=False):
         super(Load, self).__init__(section='gtfs')
 
+        # step 1: config
         feeds = self.config.get_json('feeds')
-        reload = force_reload
-        if GtfsCache.check_gtfs_files_against_cache(feeds, self.cache_dir):
-            reload = True
+
+        # step 2: check the cache whether we should update or not
+        reload = force_update
+        if not force_update:
+            if GtfsCache.check_gtfs_files_against_cache(feeds, self.cache_dir):
+                reload = True
+
+        # step 3: reload database
         if reload:
             # TODO
             print "TODO ... implement load of gtfsdb"
 
 
-def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
-    force = ("force" in argv or "update" in argv)
-    Load(force_reload=force)
+def main():
+    import pdb; pdb.set_trace()
+    Load(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
     main()
