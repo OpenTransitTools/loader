@@ -2,7 +2,7 @@ import os
 import inspect
 import unittest
 
-from ott.loader.gtfs.cache import Cache
+from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
 
@@ -67,7 +67,7 @@ class TestGtfsCache(unittest.TestCase):
     def test_cache(self):
         url="https://developers.google.com/transit/gtfs/examples/sample-feed.zip"
         name="google.zip"
-        c = Cache(url, name)
+        c = GtfsCache(url, name)
         self.assertTrue(os.path.exists(c.file_path))
 
         i = c.get_info()

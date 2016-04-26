@@ -7,7 +7,7 @@ from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
 
-class Cache(CacheBase):
+class GtfsCache(CacheBase):
     """ Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
@@ -15,12 +15,12 @@ class Cache(CacheBase):
     feeds = []
 
     def __init__(self):
-        super(Cache, self).__init__(section='gtfs')
+        super(GtfsCache, self).__init__(section='gtfs')
         self.feeds = self.config.get_json('feeds')
 
     def check_cached_feeds(self):
         for f in self.feeds:
-            url,name = Cache.get_url_filename(f)
+            url,name = GtfsCache.get_url_filename(f)
             self.check_feed(url, name)
 
     def check_feed(self, url, file_name):
@@ -74,8 +74,8 @@ class Cache(CacheBase):
         '''
         ret_val = False
         try:
-            cache = Cache()
-            url, name = Cache.get_url_filename(gtfs_zip)
+            cache = GtfsCache()
+            url, name = GtfsCache.get_url_filename(gtfs_zip)
             diff = cache.cmp_file_to_cached(name, app_dir)
             if diff.is_different():
                 cache.cp_cached_file(name, app_dir)
@@ -90,7 +90,7 @@ class Cache(CacheBase):
         '''
         ret_val = False
         for g in gtfs_zip_files:
-            c = Cache.check_gtfs_zip_against_cache(g, app_dir)
+            c = GtfsCache.check_gtfs_zip_against_cache(g, app_dir)
             if c:
                 ret_val = True
         return ret_val
@@ -105,7 +105,7 @@ class Cache(CacheBase):
 
 def main():
     #import pdb; pdb.set_trace()
-    cache = Cache()
+    cache = GtfsCache()
     cache.check_cached_feeds()
 
 if __name__ == '__main__':

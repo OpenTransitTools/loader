@@ -15,7 +15,7 @@ import datetime
 
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
-from ott.loader.gtfs.cache import Cache
+from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
@@ -69,7 +69,7 @@ class Build(CacheBase):
 
         # step 3: check the cache files
         OsmCache.check_osm_file_against_cache(self.osm_name, self.cache_dir)
-        if Cache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
+        if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
             rebuild_graph = True
 
         # step 4: print feed info
