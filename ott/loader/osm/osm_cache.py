@@ -73,8 +73,11 @@ class OsmCache(CacheBase):
     def get_osmosis_cmd(self):
         ''' use osmosis to convert .pbf to .osm file
         '''
-        osmosis = "{}/osmosis/bin/osmosis --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
-        osmosis = osmosis.format(self.this_module_dir, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
+        osmosis_exe = os.path.join(self.this_module_dir, "osmosis", "bin", "osmosis")
+        if ":\\" in osmosis_exe:
+            osmosis_exe = osmosis_exe + ".bat"
+        osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
+        osmosis = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
         return osmosis
 
     def pbf_to_osm(self):
