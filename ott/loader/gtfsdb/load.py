@@ -5,6 +5,9 @@ from ott.loader.gtfs.gtfs_cache import GtfsCache
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
     """
+
+
+
     def __init__(self, force_update=False):
         super(Load, self).__init__(section='gtfs')
 
@@ -19,12 +22,16 @@ class Load(CacheBase):
 
         # step 3: reload database
         if reload:
-            # TODO
-            print "TODO ... implement load of gtfsdb"
+            self.load_db()
 
+
+    def load_db(self):
+        ''' insert
+        '''
+        
 
 def main():
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     Load(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
