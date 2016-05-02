@@ -17,9 +17,9 @@ class Load(CacheBase):
         super(Load, self).__init__(section='gtfs')
 
         # step 1: config
-        self.feeds  = self.config.get_json('feeds', section='gtfs')
-        self.url    = self.config.get('url', section='db')
-        self.is_geospatial = self.config.get_bool('is_geospatial',  section='db')
+        self.feeds = self.config.get_json('feeds', section='gtfs')
+        self.url   = self.config.get('url', section='db')
+        self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
         # step 2: check the cache whether we should update or not
         reload = force_update
