@@ -41,7 +41,7 @@ class Load(CacheBase):
         kwargs['url'] = self.db_url
         for f in self.feeds:
             feed_url = f['url']
-            #kwargs['schema'] = f['name']
+            kwargs['schema'] = f['name']
             database_load(feed_url, **kwargs)
 
 def main():
