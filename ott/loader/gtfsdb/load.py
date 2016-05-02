@@ -2,6 +2,10 @@ from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 
+import logging.config
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__file__)
+
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
     """
@@ -13,9 +17,9 @@ class Load(CacheBase):
         super(Load, self).__init__(section='gtfs')
 
         # step 1: config
-        self.feeds  = self.config.get_json('feeds')
-        self.url    = self.config.get_json('url', section='db')
-        self.is_geospatial = self.config.get_json('is_geospatial',  section='db')
+        self.feeds  = self.config.get_json('feeds', section='gtfs')
+        self.url    = self.config.get('url', section='db')
+        self.is_geospatial = self.config.get_bool('is_geospatial',  section='db')
 
         # step 2: check the cache whether we should update or not
         reload = force_update
