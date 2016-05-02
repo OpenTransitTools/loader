@@ -133,13 +133,13 @@ class Test(object):
         self.itinerary = self.static_call_otp(url)
         end = time.time()
         self.response_time = end - start
-        logging.info("call_otp: response time of " + str(self.response_time) + " seconds for url " + url)
+        logging.info("call_otp: response time of " + str(self.response_time) + " seconds for db_url " + url)
         logging.debug(self.itinerary)
         if self.response_time <= 30:
             self.result = TestResult.PASS
         else:
             self.result = TestResult.WARN
-            logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url " + url)
+            logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for db_url " + url)
 
     @classmethod
     def static_call_otp(cls, url, accept='application/xml'):
@@ -153,7 +153,7 @@ class Test(object):
             ret_val = res.read()
             res.close()
         except:
-            logging.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
+            logging.warn('ERROR: could not get data from db_url (timeout?): {0}'.format(url))
         return ret_val
 
     def test_otp_result(self, strict=True):
@@ -240,7 +240,7 @@ class Test(object):
         self.map_params = self.otp_params
         if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
             if self.coord_from != None or self.coord_to != None:
-                self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:" + str(self.coord_from) + ' to:' + str(self.coord_to)
+                self.error_descript = "no from and/or to coordinate for the otp db_url (skipping test) - from:" + str(self.coord_from) + ' to:' + str(self.coord_to)
                 logging.warn(self.error_descript)
             self.is_valid = False
 
@@ -338,7 +338,7 @@ class Test(object):
 Test.TestClass = Test
 
 class TestSuite(object):
-    """ url
+    """ db_url
     """
 
     def __init__(self, dir, file, date=None):
@@ -424,7 +424,7 @@ class TestSuite(object):
 
 class TestRunner(object):
     """ Run .csv tests from ./tests/ by constructing a
-        url to the trip planner, calling the url, then printing a report
+        db_url to the trip planner, calling the db_url, then printing a report
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 

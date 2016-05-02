@@ -10,8 +10,9 @@ requires = [
     'ott.utils',
     'simplejson',
     'mako',
-    'psycopg2',
     'pyparsing',
+    'psycopg2',
+    'gtfsdb',
 ]
 
 extras_require = dict(
