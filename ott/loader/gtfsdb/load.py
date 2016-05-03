@@ -36,12 +36,13 @@ class Load(CacheBase):
     def load_db(self):
         ''' insert
         '''
-        kwargs = {}
-        kwargs['is_geospatial'] = self.is_geospatial
-        kwargs['url'] = self.db_url
         for f in self.feeds:
+            kwargs = {}
             feed_url = f['url']
-            kwargs['schema'] = f['name']
+            kwargs['url'] = self.db_url
+            if "sqlite:" not in self.db_url:
+                kwargs['is_geospatial'] = self.is_geospatial
+                kwargs['schema'] = f['name']
             database_load(feed_url, **kwargs)
 
 def main():
