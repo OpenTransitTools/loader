@@ -33,7 +33,7 @@ class Load(CacheBase):
             self.load_db()
 
     def load_db(self):
-        ''' insert
+        ''' insert feeds into configured db (see config/app.ini)
         '''
         for f in self.feeds:
             # get cached feed path and feed name (see 'feeds' in config/app.ini)
