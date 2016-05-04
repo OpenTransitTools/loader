@@ -6,14 +6,8 @@ purpose: check to see if the cached GTFS .zip files have been updated, and if so
 
 run: bin/gtfsdb_load (optional -ini <name>.ini | force_update)
 
-PostGIS database:
-     http://postgis.net/docs/postgis_installation.html#create_new_db_extensions
-     createdb ott
-     createuser ott
-     psql  -d ott -c "CREATE EXTENSION postgis;"
-
-     MAC:
-       /Applications/Postgres.app/Contents/Versions/9.4/bin/createdb ott
-       /Applications/Postgres.app/Contents/Versions/9.4/bin/createuser ott
-       /Applications/Postgres.app/Contents/Versions/9.4/bin/psql  -d ott -c "CREATE EXTENSION postgis;"
-
+Note: the config is set up for a PostGIS geo database, where gtfsdb will create route and stop geometry columns
+      http://postgis.net/docs/postgis_installation.html#create_new_db_extensions
+      run this to create the db: 
+        psql -f ott/loader/gtfsdb/create_postgis_db.psql
+        /Applications/Postgres.app/Contents/Versions/9.4/bin/psql -f ott/loader/gtfsdb/create_postgis_db.psql # MACOS
