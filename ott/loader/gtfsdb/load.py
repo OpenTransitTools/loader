@@ -1,3 +1,4 @@
+import os
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
@@ -37,13 +38,21 @@ class Load(CacheBase):
         ''' insert
         '''
         for f in self.feeds:
+            # get cached feed path and feed name (see 'feeds' in config/app.ini)
+            feed_path = os.path.join(self.cache_dir, f['name'])
+            feed_name = f['name'].rstrip(".zip")
+
+            # make args for gtfsdb
             kwargs = {}
-            feed_url = f['url']
             kwargs['url'] = self.db_url
             if "sqlite:" not in self.db_url:
                 kwargs['is_geospatial'] = self.is_geospatial
-                kwargs['schema'] = f['name']
-            database_load(feed_url, **kwargs)
+                kwargs['schema'] = feed_name
+
+            # load this feed into gtfsdb
+            log.info("loading {} ({}) into gtfsdb {}", feed_name, feed_path, self.db_url)
+            database_load(feed_path, **kwargs)
+
 
 def main():
     #import pdb; pdb.set_trace()

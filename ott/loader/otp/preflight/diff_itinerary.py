@@ -1,6 +1,4 @@
-import os
 import sys
-import datetime
 import time
 import logging
 import traceback
@@ -10,7 +8,7 @@ import urllib2
 import socket
 
 class DiffItinerary(object):
-    """ call a given db_url X number of times, strip out the variable pieces (currently the <date>timestamp here</date> stuff
+    """ call a given url X number of times, strip out the variable pieces (currently the <date>timestamp here</date> stuff
         and compare the output to each other...report back 
     """
     def __init__(self, url, name, date=None):
@@ -32,21 +30,21 @@ class DiffItinerary(object):
             res.close()
             end = time.time()
             self.response_time = end - start
-            logging.info("call_otp: response time of " + str(self.response_time) + " seconds for db_url " + url)
+            logging.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
 
             # step 2: remove things like a file timestamp, and add newlines to each element (so we can compare)
             itinerary = self.remove_variable_stuff(itinerary)
             itinerary = self.add_newlines(itinerary)
 
             # step 3: save to a file
-            logging.info("call_otp: writing itin to file " + str(fname))
+            logging.info("call_otp: writing itin to file {}".format(fname))
             f = open(fname, 'w')
             f.write(itinerary)
             f.flush()
             f.close()
 
         except:
-            print 'ERROR: could not get data from db_url:\n', url, '\n(not a friendly place)'
+            print 'ERROR: could not get data from url:\n', url, '\n(not a friendly place)'
             traceback.print_exc(file=sys.stdout)
             pass
 

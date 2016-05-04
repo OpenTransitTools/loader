@@ -48,5 +48,4 @@ def call_url(url):
     return ret_json
 
 def call_url_text(url):
-    #print db_url
     return urllib.urlopen(url).read()

@@ -25,7 +25,7 @@ class GtfsCache(CacheBase):
             self.check_feed(url, name, force_update)
 
     def check_feed(self, url, file_name, force_update=False):
-        ''' download feed from db_url, and check it against the cache
+        ''' download feed from url, and check it against the cache
             if newer, then replace cached feed .zip file with new version
         '''
         # step 1: file name
@@ -99,7 +99,7 @@ class GtfsCache(CacheBase):
 
     @classmethod
     def get_url_filename(cls, gtfs_struct):
-        url  = gtfs_struct.get('db_url')
+        url  = gtfs_struct.get('url')
         name = gtfs_struct.get('name', None)
         if name is None:
             name = file_utils.get_file_name_from_url(url)
