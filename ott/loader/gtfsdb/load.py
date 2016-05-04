@@ -25,10 +25,8 @@ class Load(CacheBase):
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
         # step 2: check the cache whether we should update or not
-        reload = force_update
-        if not force_update:
-            if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
-                reload = True
+        if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir, force_update):
+            reload = True
 
         # step 3: reload database
         if reload:
@@ -50,7 +48,7 @@ class Load(CacheBase):
                 kwargs['schema'] = feed_name
 
             # load this feed into gtfsdb
-            log.info("loading {} ({}) into gtfsdb {}", feed_name, feed_path, self.db_url)
+            log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
             database_load(feed_path, **kwargs)
 
 

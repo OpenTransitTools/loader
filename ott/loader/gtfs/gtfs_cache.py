@@ -75,31 +75,36 @@ class GtfsCache(CacheBase):
         return ret_val
 
     @classmethod
-    def check_gtfs_zip_against_cache(cls, gtfs_zip, app_dir):
+    def check_gtfs_zip_against_cache(cls, gtfs_zip, app_dir, force_update=False):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
-        ret_val = False
+        update_cache = force_update
         try:
             cache = GtfsCache()
             url, name = GtfsCache.get_url_filename(gtfs_zip)
-            diff = cache.cmp_file_to_cached(name, app_dir)
-            if diff.is_different():
+
+            # if we aren't forcing an update, then compare for difference before updating the cache
+            if not force_update:
+                diff = cache.cmp_file_to_cached(name, app_dir)
+                if diff.is_different():
+                    update_cache = True
+
+            # update the local cache
+            if update_cache:
                 cache.cp_cached_file(name, app_dir)
-                ret_val = True
         except Exception, e:
             log.warn(e)
-        return ret_val
+        return update_cache
 
     @classmethod
-    def check_gtfs_files_against_cache(cls, gtfs_zip_files, app_dir):
+    def check_gtfs_files_against_cache(cls, gtfs_zip_files, app_dir, force_update=False):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
-        ret_val = False
+        update_cache = False
         for g in gtfs_zip_files:
-            c = GtfsCache.check_gtfs_zip_against_cache(g, app_dir)
-            if c:
-                ret_val = True
-        return ret_val
+            if GtfsCache.check_gtfs_zip_against_cache(g, app_dir, force_update):
+                update_cache = True
+        return update_cache
 
     @classmethod
     def get_url_filename(cls, gtfs_struct):
