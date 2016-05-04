@@ -25,6 +25,7 @@ class Load(CacheBase):
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
         # step 2: check the cache whether we should update or not
+        reload = force_update
         if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir, force_update):
             reload = True
 
