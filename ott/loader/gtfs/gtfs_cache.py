@@ -1,5 +1,9 @@
 import os
 import logging
+import logging.config
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__file__)
+
 
 from ott.utils import file_utils
 from ott.utils import object_utils
@@ -41,7 +45,7 @@ class GtfsCache(CacheBase):
         update = force_update
         if not force_update:
             if self.is_fresh_in_cache(file_path):
-                logging.info("diff {} against cached {}".format(tmp_path, file_path))
+                log.info("diff {} against cached {}".format(tmp_path, file_path))
                 diff = Diff(file_path, tmp_path)
                 if diff.is_different():
                     update = True
@@ -50,7 +54,7 @@ class GtfsCache(CacheBase):
 
         # step 4: mv old file to backup then mv new file in tmp dir to cache
         if update:
-            logging.info("move {} to cache {}".format(tmp_path, file_path))
+            log.info("move {} to cache {}".format(tmp_path, file_path))
             file_utils.bkup(file_path)
             file_utils.mv(tmp_path, file_path)
 
@@ -83,7 +87,7 @@ class GtfsCache(CacheBase):
                 cache.cp_cached_file(name, app_dir)
                 ret_val = True
         except Exception, e:
-            logging.warn(e)
+            log.warn(e)
         return ret_val
 
     @classmethod
