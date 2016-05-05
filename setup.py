@@ -53,7 +53,8 @@ setup(
     # find ott | grep py$ | xargs grep "def.main"
     entry_points="""
         [console_scripts]
-        run_all = ott.loader.loader:run_all
+        load_all = ott.loader.loader:load_all
+        deploy_all = ott.loader.loader:deploy_all
         osm_update = ott.loader.osm.osm_cache:main
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfsdb_load = ott.loader.gtfsdb.load:main

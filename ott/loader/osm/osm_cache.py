@@ -35,7 +35,6 @@ class OsmCache(CacheBase):
 
         # step 1: cache dir management
         self.cache_expire = self.config.get_int('cache_expire', def_val=self.cache_expire)
-        min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 2: urls
         self.pbf_url  = self.config.get('pbf_url')
@@ -56,6 +55,10 @@ class OsmCache(CacheBase):
         self.top, self.bottom, self.left, self.right = self.config.get_bbox()
 
     def check_cached_osm(self, force_update=False):
+        '''
+        '''
+        min_size = self.config.get_int('min_size', def_val=1000000)
+
         # step 1: download new osm pbf file if it's not new
         if force_update or \
            not self.is_fresh_in_cache(self.pbf_path) or \
