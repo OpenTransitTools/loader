@@ -10,8 +10,9 @@ import os
 import sys
 import copy
 import time
-import logging
 import datetime
+import logging
+log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
 from ott.utils import object_utils
@@ -58,7 +59,6 @@ class Build(CacheBase):
 
     def build_and_test_graph(self, force_update=False):
         ''' will rebuild the graph...
-            :return: True for success ... fail for pass
         '''
         success = True
 
@@ -82,7 +82,7 @@ class Build(CacheBase):
             success = False
             # step 5a: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
-                logging.info(" build attempt {0} of a new graph ".format(n))
+                log.info(" build attempt {0} of a new graph ".format(n))
                 self.run_graph_builder()
                 time.sleep(10)
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
@@ -92,20 +92,18 @@ class Build(CacheBase):
             # step 5b: test the graph
             if success:
                 self.deploy_test_graph()
-                success = self.run_graph_te
-
-                sts()
+                success = self.run_graph_tests()
                 if success:
                     self.update_vlog()
                     success = True
         return success
 
     def run_graph_builder(self):
-        logging.info("building the graph")
+        log.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
-        logging.info(cmd)
+        log.info(cmd)
         os.system(cmd)
 
     def deploy_test_graph(self, port="8080"):
@@ -113,7 +111,7 @@ class Build(CacheBase):
         from subprocess import Popen
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
-        logging.info(cmd)
+        log.info(cmd)
         try:
             Popen(cmd)
         except:
@@ -123,7 +121,7 @@ class Build(CacheBase):
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
-        logging.info(cmd)
+        log.info(cmd)
         os.system(cmd)
 
     def get_gtfs_feed_details(self):
@@ -146,7 +144,7 @@ class Build(CacheBase):
                 cp['until'] = d[1]
                 ret_val.append(cp)
         except Exception, e:
-            logging.warn(e)
+            log.warn(e)
             self.report_error("GTFS files are in a questionable state")
         return ret_val
 
@@ -157,9 +155,9 @@ class Build(CacheBase):
         t.run()
         t.report(self.cache_dir)
         if t.has_errors():
-            logging.info('GRAPH TESTS: There were errors!')
+            log.info('GRAPH TESTS: There were errors!')
         else:
-            logging.info('GRAPH TESTS: Nope, no errors')
+            log.info('GRAPH TESTS: Nope, no errors')
 
     def mv_failed_graph_to_good(self):
         """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
@@ -186,7 +184,7 @@ class Build(CacheBase):
 
     def report_error(self, msg):
         ''' override me to do things like emailing error reports, etc... '''
-        logging.error(msg)
+        log.error(msg)
 
     def check_otp_jar(self, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
         """ make sure otp.jar exists ... if not, download it
@@ -204,6 +202,8 @@ class Build(CacheBase):
 
     @classmethod
     def options(cls, argv):
+        ''' main entry point for command line graph build app
+        '''
         b = cls.factory()
         if "mock" in argv:
             feed_details = b.get_gtfs_feed_details()

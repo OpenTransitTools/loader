@@ -42,7 +42,7 @@ def load_all():
 
     log.info("step 4: load otp (build new graph)")
     otp = Build()
-    otp.run_graph_builder(force_update=force_update)
+    otp.build_and_test_graph(force_update=force_update)
 
 
 def deploy_all():
