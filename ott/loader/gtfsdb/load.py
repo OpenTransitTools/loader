@@ -16,20 +16,21 @@ class Load(CacheBase):
     db_url = None
     is_geospatial = False
 
-    def __init__(self, force_update=False):
+    def __init__(self):
         super(Load, self).__init__(section='gtfs')
 
-        # step 1: config
         self.feeds  = self.config.get_json('feeds', section='gtfs')
         self.db_url = self.config.get('url', section='db')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
-        # step 2: check the cache whether we should update or not
+
+    def check_db(self, force_update=False):
+        ''' check the local cache, and decide whether we should update or not
+        '''
         reload = force_update
         if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir, force_update):
             reload = True
 
-        # step 3: reload database
         if reload:
             self.load_db()
 
@@ -55,7 +56,8 @@ class Load(CacheBase):
 
 def main():
     #import pdb; pdb.set_trace()
-    Load(force_update=object_utils.is_force_update())
+    db = Load()
+    db.check_db(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
     main()
