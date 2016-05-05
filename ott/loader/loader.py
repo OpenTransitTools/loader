@@ -10,7 +10,8 @@ from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.otp.graph.build import Build
 from ott.loader.gtfsdb.load import Load
 
-def run_all():
+
+def load_all():
     ''' will load OTP and gtfsdb
 
         does the following:
@@ -44,7 +45,7 @@ def run_all():
     otp.run_graph_builder(force_update=force_update)
 
 
-def refresh_all():
+def deploy_all():
     ''' load (production) new database extracts and deploy new otp graphs
 
         does the following:
@@ -54,9 +55,11 @@ def refresh_all():
     '''
     print "@TODO @TODO @TODO @TODO @TODO"
 
+
 def main():
     #import pdb; pdb.set_trace()
-    run_all()
+    load_all()
+    deploy_all()
 
 if __name__ == '__main__':
     main()
