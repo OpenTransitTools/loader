@@ -28,10 +28,9 @@ class OsmCache(CacheBase):
     left   = None
     right  = None
 
-    def __init__(self, force_update=False):
+    def __init__(self):
         ''' check osm cache
         '''
-        #import pdb; pdb.set_trace()
         super(OsmCache, self).__init__(section='osm')
 
         # step 1: cache dir management
@@ -56,13 +55,14 @@ class OsmCache(CacheBase):
         # step 5: get bbox from config
         self.top, self.bottom, self.left, self.right = self.config.get_bbox()
 
-        # step 6: download new osm pbf file if it's not new
+    def check_cached_osm(self, force_update=False):
+        # step 1: download new osm pbf file if it's not new
         if force_update or \
            not self.is_fresh_in_cache(self.pbf_path) or \
            not file_utils.is_min_sized(self.pbf_path, min_size):
             self.download_pbf()
 
-        # step 7: .pbf to .osm
+        # step 2: .pbf to .osm
         if file_utils.is_min_sized(self.pbf_path, min_size) and \
            (
                not self.is_fresh_in_cache(self.osm_path) or \
@@ -100,9 +100,9 @@ class OsmCache(CacheBase):
         '''
         ret_val = False
         try:
-            cache = OsmCache()
-            logging.info("cp {} to {}".format(cache.osm_name, app_dir))
-            cache.cp_cached_file(cache.osm_name, app_dir)
+            osm = OsmCache()
+            logging.info("cp {} to {}".format(osm.osm_name, app_dir))
+            osm.cp_cached_file(osm.osm_name, app_dir)
             ret_val = True
         except Exception, e:
             logging.warn(e)
@@ -111,7 +111,8 @@ class OsmCache(CacheBase):
 
 def main():
     #import pdb; pdb.set_trace()
-    OsmCache(force_update=object_utils.is_force_update())
+    osm = OsmCache()
+    osm.check_cached_osm(force_update=object_utils.is_force_update())
 
 if __name__ == '__main__':
     main()

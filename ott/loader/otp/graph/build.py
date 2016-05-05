@@ -70,7 +70,7 @@ class Build(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        OsmCache.check_osm_file_against_cache(self.osm_name, self.cache_dir)
+        OsmCache.check_osm_file_against_cache(self.cache_dir)
         if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
             rebuild_graph = True
 
@@ -128,6 +128,7 @@ class Build(CacheBase):
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
+        TODO: refacotr
         '''
         ret_val = []
         try:

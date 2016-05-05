@@ -1,4 +1,8 @@
 
+from ott.loader.gtfs.gtfs_cache import GtfsCache
+from ott.loader.osm.osm_cache import OsmCache
+from ott.loader.otp.graph.build import Build
+
 def run_all():
     ''' will load OTP and gtfsdb
         does the following:
@@ -10,8 +14,12 @@ def run_all():
     '''
     force_update=object_utils.is_force_update()
 
-    cache = GtfsCache()
-    cache.check_cached_feeds(force_update=force_update)
+    gtfs = GtfsCache()
+    gtfs.check_cached_feeds(force_update=force_update)
+    osm = OsmCache()
+    osm.check_cached_osm(force_update=force_update)
+    otp = Build()
+    otp.run_graph_builder(force_update=force_update)
 
 def main():
     #import pdb; pdb.set_trace()
