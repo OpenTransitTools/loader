@@ -12,6 +12,7 @@ import copy
 import time
 import datetime
 import logging
+import subprocess
 log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
@@ -98,25 +99,38 @@ class Build(CacheBase):
                     success = True
         return success
 
+    def run_java(self, cmd, background=False, big_xmx="-Xmx4096m", small_xmx="-Xmx1500m"):
+        try:
+            java_cmd = "java {} {}".format(big_xmx, cmd)
+            log.info(java_cmd)
+            if background:
+                os.system(java_cmd)
+            else:
+                os.system(java_cmd)
+        except:
+            pass
+
     def run_graph_builder(self):
         log.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
-        log.info(cmd)
-        os.system(cmd)
+        cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
+        run_java()
 
-    def deploy_test_graph(self, port="8080"):
-        ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data '''
-        from subprocess import Popen
+    def deploy_test_graph(self, port="8080", sleep=75):
+        ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
+        '''
         file_utils.cd(self.this_module_dir)
         cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
         log.info(cmd)
         try:
-            Popen(cmd)
+            subprocess.Popen(cmd)
+            #devnull = open(os.devnull, 'wb')
+            #subprocess.Popen(['nohup', 'sleep', '100'], stdout=devnull, stderr=devnull)
+            #subprocess.Popen(['nohup', 'sleep', '100'])
         except:
             os.system(cmd)
-        time.sleep(75)
+        time.sleep(sleep)
 
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
