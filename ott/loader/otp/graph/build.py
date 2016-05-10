@@ -27,8 +27,9 @@ from ott.loader.otp.preflight.test_runner import TestRunner
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 35000000
-OSM_NAME   = "or-wa"
 OSM_SIZE   = 5000000
+OSM_NAME   = "or-wa"
+WEB_PORT   = "55555"
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 OTP_DOWNLOAD_URL="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.19.0/otp-0.19.0-shaded.jar"
@@ -39,7 +40,8 @@ class Build(CacheBase):
     """
     graph_path = None
     otp_path   = None
-    feeds  = None
+    feeds      = None
+    port       = WEB_PORT
 
     graph_failed = GRAPH_FAILD
     graph_name = GRAPH_NAME
@@ -53,6 +55,7 @@ class Build(CacheBase):
     def __init__(self):
         super(Build, self).__init__('otp')
         self.feeds = self.config.get_json('feeds', section='gtfs')
+        self.port  = self.config.get('port')
         file_utils.cd(self.cache_dir)
         self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
@@ -105,11 +108,11 @@ class Build(CacheBase):
         cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
         exe_utils.run_java(cmd, big_xmx=java_mem)
 
-    def deploy_test_graph(self, port="55555", sleep=75, java_mem=None):
+    def deploy_test_graph(self, sleep=75, java_mem=None):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
         '''
         file_utils.cd(self.this_module_dir)
-        cmd='-jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
+        cmd='-jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.port, self.cache_dir)
         exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
         time.sleep(sleep)
 
@@ -200,7 +203,7 @@ class Build(CacheBase):
         '''
         java_mem = None
         if "low_mem" in argv:
-            java_mem = "-Xmx1536m"
+            java_mem = "-Xmx1236m"
 
         b = cls.factory()
         if "mock" in argv:
