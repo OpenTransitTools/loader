@@ -57,7 +57,7 @@ class Build(CacheBase):
         self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()
 
-    def build_and_test_graph(self, force_update=False):
+    def build_and_test_graph(self, force_update=False, java_mem=None):
         ''' will rebuild the graph...
         '''
         success = True
@@ -83,7 +83,7 @@ class Build(CacheBase):
             # step 5a: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
                 log.info(" build attempt {0} of a new graph ".format(n))
-                self.run_graph_builder()
+                self.run_graph_builder(java_mem=java_mem)
                 time.sleep(10)
                 if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
                     success = True
@@ -91,32 +91,32 @@ class Build(CacheBase):
 
             # step 5b: test the graph
             if success:
-                self.deploy_test_graph()
+                self.deploy_test_graph(java_mem=java_mem)
                 success = self.run_graph_tests()
                 if success:
                     self.update_vlog()
                     success = True
         return success
 
-    def run_graph_builder(self):
+    def run_graph_builder(self, java_mem=None):
         log.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
         cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
-        exe_utils.run_java(cmd)
+        exe_utils.run_java(cmd, big_xmx=java_mem)
 
-    def deploy_test_graph(self, port="55555", sleep=75):
+    def deploy_test_graph(self, port="55555", sleep=75, java_mem=None):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
         '''
         file_utils.cd(self.this_module_dir)
         cmd='-jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
-        exe_utils.run_java(cmd, fork=True)
+        exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
         time.sleep(sleep)
 
-    def vizualize_graph(self):
+    def vizualize_graph(self, java_mem=None):
         file_utils.cd(self.this_module_dir)
         cmd='-jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
-        exe_utils.run_java(cmd, fork=True)
+        exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
@@ -198,23 +198,27 @@ class Build(CacheBase):
     def options(cls, argv):
         ''' main entry point for command line graph build app
         '''
+        java_mem = None
+        if "low_mem" in argv:
+            java_mem = "-Xmx1536m"
+
         b = cls.factory()
         if "mock" in argv:
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         elif "test" in argv:
-            b.deploy_test_graph()
+            b.deploy_test_graph(java_mem=java_mem)
             b.run_graph_tests()
         elif "build" in argv:
-            b.run_graph_builder()
-            b.deploy_test_graph()
+            b.run_graph_builder(java_mem=java_mem)
+            b.deploy_test_graph(java_mem=java_mem)
         elif "dep" in argv:
-            b.deploy_test_graph()
+            b.deploy_test_graph(java_mem=java_mem)
         elif "viz" in argv:
-            b.vizualize_graph()
+            b.vizualize_graph(java_mem=java_mem)
         else:
-            b.build_and_test_graph(force_update=object_utils.is_force_update())
+            b.build_and_test_graph(force_update=object_utils.is_force_update(), java_mem=java_mem)
 
 
 def main(argv=sys.argv):
