@@ -12,9 +12,9 @@ import copy
 import time
 import datetime
 import logging
-import subprocess
 log = logging.getLogger(__file__)
 
+from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
@@ -99,44 +99,25 @@ class Build(CacheBase):
                     success = True
         return success
 
-    def run_java(self, cmd, background=False, big_xmx="-Xmx4096m", small_xmx="-Xmx1500m"):
-        try:
-            java_cmd = "java {} {}".format(big_xmx, cmd)
-            log.info(java_cmd)
-            if background:
-                os.system(java_cmd)
-            else:
-                os.system(java_cmd)
-        except:
-            pass
-
     def run_graph_builder(self):
         log.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
         cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
-        run_java()
+        exe_utils.run_java(cmd)
 
-    def deploy_test_graph(self, port="8080", sleep=75):
+    def deploy_test_graph(self, port="55555", sleep=75):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
         '''
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
-        log.info(cmd)
-        try:
-            subprocess.Popen(cmd)
-            #devnull = open(os.devnull, 'wb')
-            #subprocess.Popen(['nohup', 'sleep', '100'], stdout=devnull, stderr=devnull)
-            #subprocess.Popen(['nohup', 'sleep', '100'])
-        except:
-            os.system(cmd)
+        cmd='-jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, port, self.cache_dir)
+        exe_utils.run_java(cmd, fork=True)
         time.sleep(sleep)
 
     def vizualize_graph(self):
         file_utils.cd(self.this_module_dir)
-        cmd='java -Xmx4096m -jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
-        log.info(cmd)
-        os.system(cmd)
+        cmd='-jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
+        exe_utils.run_java(cmd, fork=True)
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
@@ -236,9 +217,10 @@ class Build(CacheBase):
         else:
             b.build_and_test_graph(force_update=object_utils.is_force_update())
 
+
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    Build.options(argv)
+     Build.options(argv)
 
 if __name__ == '__main__':
     main()
