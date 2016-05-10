@@ -1,6 +1,7 @@
 import os
 import logging
 
+from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
@@ -93,9 +94,9 @@ class OsmCache(CacheBase):
     def download_pbf(self):
         logging.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
         file_utils.bkup(self.pbf_path)
-        file_utils.wget(self.pbf_url, self.pbf_path)
+        exe_utils.wget(self.pbf_url, self.pbf_path)
         if self.meta_url:
-            file_utils.wget(self.meta_url, self.meta_path)
+            exe_utils.wget(self.meta_url, self.meta_path)
 
     @classmethod
     def check_osm_file_against_cache(cls, app_dir):

@@ -5,7 +5,6 @@
     @see deploy.py, which is a companion script that runs on the production servers, and
     deploys a new OTP graph into production.
 """
-
 import os
 import sys
 import copy
@@ -188,7 +187,7 @@ class Build(CacheBase):
         jar_path = os.path.join(self.this_module_dir, jar)
         exists = os.path.exists(jar_path)
         if not exists or file_utils.file_size(jar_path) < expected_size:
-            file_utils.wget(download_url, jar_path)
+            exe_utils.wget(download_url, jar_path)
         return jar_path
 
     @classmethod

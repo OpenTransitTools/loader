@@ -1,7 +1,7 @@
-import urllib2
 import filecmp
 import shutil
 
+from ott.utils import exe_utils
 from ott.loader.otp.graph.build import *
 
 # constants
@@ -44,7 +44,7 @@ def diff_vlog(svr, vlog="otp.v"):
     
     # step 1: grab otp.v from build server
     url=svr + vlog
-    ok=wget(url, TMP_VERSION_LOG, 10)
+    ok = exe_utils.wget(url, TMP_VERSION_LOG, 10)
 
     if not ok:
         # step 2: remote server doesn't have otp.v exposed ... send an error email...
@@ -81,9 +81,9 @@ def update_graph():
     if diff_vlog(SVR):
 
         # step 2: grab new graph and api
-        gok = wget(URL_GRAPH, TMP_GRAPH, 1000000)
-        aok = wget(URL_API,   TMP_API,   1000000)
-        jok = wget(URL_JAR,   TMP_JAR,   1000000)
+        gok = exe_utils.wget(URL_GRAPH, TMP_GRAPH, 1000000)
+        aok = exe_utils.wget(URL_API,   TMP_API,   1000000)
+        jok = exe_utils.wget(URL_JAR,   TMP_JAR,   1000000)
 
         # step 3: deploy new binaries
         if gok and aok:
