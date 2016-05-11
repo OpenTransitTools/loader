@@ -1,5 +1,6 @@
 import os
 import logging
+log = logging.getLogger(__file__)
 
 from ott.utils import exe_utils
 from ott.utils import file_utils
@@ -56,8 +57,10 @@ class OsmCache(CacheBase):
         self.top, self.bottom, self.left, self.right = self.config.get_bbox()
 
     def check_cached_osm(self, force_update=False):
+        ''' if OSM .pbf file is out of date, download a new one.
+            convert .pbf to .osm if .pbf file is newer than .osm file
         '''
-        '''
+        import pdb; pdb.set_trace()
         min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 1: download new osm pbf file if it's not new
@@ -67,19 +70,33 @@ class OsmCache(CacheBase):
             self.download_pbf()
 
         # step 2: .pbf to .osm
-        if file_utils.is_min_sized(self.pbf_path, min_size) and \
-           (
+        if not file_utils.is_min_sized(self.pbf_path, min_size):
+            log.warn("OSM PBF file {} is not big enough".format(self.pbf_path))
+        elif(
                not self.is_fresh_in_cache(self.osm_path) or \
                file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
            ):
             self.pbf_to_osm()
 
+        # step 3: .osm file check
+        if not file_utils.is_min_sized(self.osm_path, min_size):
+            raise Exception("OSM file {} is not big enough".format(self.osm_path))
+
+
     def get_osmosis_cmd(self):
-        ''' use osmosis to convert .pbf to .osm file
+        ''' build osmosis cmd line to convert .pbf to .osm file
         '''
+
+        # step 1: get osmosis binary path (for ux or dos, ala c:\\ in path will get you a .bin extension)
         osmosis_exe = os.path.join(self.this_module_dir, "osmosis", "bin", "osmosis")
         if ":\\" in osmosis_exe:
             osmosis_exe = osmosis_exe + ".bat"
+
+        # step 2: osmosis installed?
+        if not os.path.exists(osmosis_exe):
+            raise Exception("OSMOSIS {} doesn't exist".format(osmosis_exe))
+
+        # step 3: build full osmosis cmd line
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
         osmosis = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
         return osmosis
@@ -88,11 +105,11 @@ class OsmCache(CacheBase):
         ''' use osmosis to convert .pbf to .osm file
         '''
         osmosis = self.get_osmosis_cmd()
-        logging.info(osmosis)
+        log.info(osmosis)
         os.system(osmosis)
 
     def download_pbf(self):
-        logging.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
+        log.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
         file_utils.bkup(self.pbf_path)
         exe_utils.wget(self.pbf_url, self.pbf_path)
         if self.meta_url:
@@ -105,11 +122,11 @@ class OsmCache(CacheBase):
         ret_val = False
         try:
             osm = OsmCache()
-            logging.info("cp {} to {}".format(osm.osm_name, app_dir))
+            log.info("cp {} to {}".format(osm.osm_name, app_dir))
             osm.cp_cached_file(osm.osm_name, app_dir)
             ret_val = True
         except Exception, e:
-            logging.warn(e)
+            log.warn(e)
         return ret_val
 
 
