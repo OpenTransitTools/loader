@@ -80,7 +80,8 @@ class OsmCache(CacheBase):
 
         # step 3: .osm file check
         if not file_utils.is_min_sized(self.osm_path, min_size):
-            raise Exception("OSM file {} is not big enough".format(self.osm_path))
+            e = "OSM file {} is not big enough".format(self.osm_path)
+            raise Exception(e)
 
 
     def get_osmosis_cmd(self):
@@ -88,13 +89,15 @@ class OsmCache(CacheBase):
         '''
 
         # step 1: get osmosis binary path (for ux or dos, ala c:\\ in path will get you a .bin extension)
-        osmosis_exe = os.path.join(self.this_module_dir, "osmosis", "bin", "osmosis")
+        osmosis_dir = os.path.join(self.this_module_dir, "osmosis")
+        osmosis_exe = os.path.join(osmosis_dir, "bin", "osmosis")
         if ":\\" in osmosis_exe:
             osmosis_exe = osmosis_exe + ".bat"
 
         # step 2: osmosis installed?
         if not os.path.exists(osmosis_exe):
-            raise Exception("OSMOSIS {} doesn't exist".format(osmosis_exe))
+            e = "OSMOSIS {} doesn't exist...\nMaybe cd into {} and run osmosis.sh".format(osmosis_exe, osmosis_dir)
+            raise Exception(e)
 
         # step 3: build full osmosis cmd line
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
