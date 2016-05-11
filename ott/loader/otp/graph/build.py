@@ -55,7 +55,7 @@ class Build(CacheBase):
     def __init__(self):
         super(Build, self).__init__('otp')
         self.feeds = self.config.get_json('feeds', section='gtfs')
-        self.port  = self.config.get('port')
+        self.port  = self.config.get('port', def_val=WEB_PORT)
         file_utils.cd(self.cache_dir)
         self.graph_path = os.path.join(self.cache_dir, self.graph_name)
         self.otp_path = self.check_otp_jar()

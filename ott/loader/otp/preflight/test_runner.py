@@ -13,11 +13,14 @@ from mako.template import Template
 from mako import exceptions
 
 from ott.utils import file_utils
+from ott.utils.config_util import ConfigUtil
+
 
 class TestResult:
     FAIL=000
     WARN=333
     PASS=111
+
 
 class Test(object):
     """ Params for test, along with run capability -- Test object is typically built from a row in an .csv test suite 
@@ -47,6 +50,10 @@ class Test(object):
               'Description/notes'
             }
         """
+        #import pdb; pdb.set_trace()
+        self.config = ConfigUtil('otp')
+        self.port  = self.config.get('port', def_val="80")
+
         self.csv_line_number = line_number
         self.csv_params      = param_dict
         self.date            = date
@@ -89,7 +96,7 @@ class Test(object):
         self.host = self.make_hostname()
 
     def set_urls(self):
-        p,m = self.make_urls(self.host)
+        p,m = self.make_urls(self.host, self.port)
         self.planner_url = p
         self.map_url = m
 
@@ -99,9 +106,9 @@ class Test(object):
         return host
 
     @classmethod
-    def make_urls(cls, host):
-        planner_url = file_utils.envvar('OTP_URL', "http://{0}/prod".format(host))
-        map_url = file_utils.envvar('OTP_MAP_URL', "http://{0}/otp.html".format(host))
+    def make_urls(cls, host, port, path=""):
+        planner_url = file_utils.envvar('OTP_URL', "http://{}:{}/{}".format(host, port, path))
+        map_url = file_utils.envvar('OTP_MAP_URL', "http://{}/otp.html".format(host))
         return planner_url, map_url
 
     def get_param(self, name, def_val=None):
