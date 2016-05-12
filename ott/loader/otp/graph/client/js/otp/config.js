@@ -130,7 +130,7 @@ otp.config = {
      */
     siteName            : "TriMet Call Taker Tools",
     siteDescription     : "Call Taker Stuff",
-    logoGraphic         : 'images/otp_logo_darkbg_40px.png',
+    logoGraphic         : 'images/agency_logo.png',
     agencyStopLinkText  : "Real Time Arrivals",
     fareDisplayOverride : "$2.50 (A), $1.00 (H), $1.65 (Y)",
 

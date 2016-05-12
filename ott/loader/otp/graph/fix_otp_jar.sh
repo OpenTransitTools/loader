@@ -15,7 +15,11 @@ function build_jar()
     fi
 }
 
-function config_jar()
+
+##
+## add the config.js file to our jar file
+##
+function call_config_jar()
 {
     if [ -f $OTP_JAR ];
     then
@@ -31,5 +35,12 @@ function config_jar()
     fi
 }
 
+## build / copy .jar into place
 build_jar
-config_jar
+
+## if "CALL", then add the config to the jar
+if [[ $* == *"CALL"* ]]
+then
+    call_config_jar
+fi
+
