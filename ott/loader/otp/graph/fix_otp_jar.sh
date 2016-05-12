@@ -19,12 +19,15 @@ function config_jar()
     if [ ! -f $OTP_JAR ];
     then
         rm $EXE_JAR
+        cp $OTP_JAR $EXE_JAR
 
         cd $EXE_DIR
-        jar uf $WAR client/js/otp/config.js
-        jar uf $WAR images/agency_logo.png
+        jar uf otp.jar client/js/otp/config.js
+        jar uf otp.jar images/agency_logo.png
         cd -
-
-    echo scp $WAR otp@$svr:~/archives/
-    scp $WAR otp@$svr:~/archives/
+    fi
 }
+
+build_jar
+config_jar
+
