@@ -52,7 +52,8 @@ class Test(object):
         """
         #import pdb; pdb.set_trace()
         self.config = ConfigUtil('otp')
-        self.port  = self.config.get('port', def_val="80")
+        self.port   = self.config.get('port', def_val="80")
+        self.host   = self.config.get('host', def_val="http://maps7.trimet.org")
 
         self.csv_line_number = line_number
         self.csv_params      = param_dict
@@ -87,23 +88,14 @@ class Test(object):
         if 'Expected number of legs' in param_dict:
             self.expect_num_legs = self.get_param('Expected number of legs')
 
-        self.set_hostname()
         self.set_urls()
         self.init_url_params()
         self.date = self.get_date_param(self.date)
-
-    def set_hostname(self):
-        self.host = self.make_hostname()
 
     def set_urls(self):
         p,m = self.make_urls(self.host, self.port)
         self.planner_url = p
         self.map_url = m
-
-    @classmethod
-    def make_hostname(cls, def_host='maps7.trimet.org'):
-        host = file_utils.envvar('HOSTNAME', def_host)
-        return host
 
     @classmethod
     def make_urls(cls, host, port, path=""):
@@ -535,6 +527,7 @@ def stress(argv):
         ts.printer()
 
 def main(argv=sys.argv):
+    #import pdb; pdb.set_trace()
     if 'STRESS' in argv:
         stress(argv)
     else:
