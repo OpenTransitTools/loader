@@ -50,7 +50,7 @@ class Test(object):
               'Description/notes'
             }
         """
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         self.config = ConfigUtil(section='otp')
         self.port = self.config.get('port', def_val="80")
         self.host = self.config.get('host', def_val="http://maps7.trimet.org")
@@ -65,7 +65,6 @@ class Test(object):
         self.is_valid        = True
         self.error_descript  = None
         self.result          = TestResult.FAIL
-        self.host            = ''
 
         self.coord_from      = self.get_param('From')
         self.coord_to        = self.get_param('To')
@@ -99,8 +98,11 @@ class Test(object):
 
     @classmethod
     def make_urls(cls, host, port, path=""):
-        planner_url = file_utils.envvar('OTP_URL', "http://{}:{}/{}".format(host, port, path))
-        map_url = file_utils.envvar('OTP_MAP_URL', "http://{}/otp.html".format(host))
+        http = ""
+        if "http" not in host:
+            http = "http://"
+        planner_url = file_utils.envvar('OTP_URL', "{}{}:{}/{}".format(http, host, port, path))
+        map_url = file_utils.envvar('OTP_MAP_URL', "{}{}/otp.html".format(http, host))
         return planner_url, map_url
 
     def get_param(self, name, def_val=None):
