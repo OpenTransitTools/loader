@@ -3,16 +3,15 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
-    hostname       : "http://trimet-new.dev.conveyal.com:8001",
-    //hostname       : "http://maps8.trimet.org",
-    datastoreUrl   : "http://trimet.dev.conveyal.com:9000",
+    trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
+    hostname       : "http://localhost:55555",
+    //hostname       : "http://trimet-new.dev.conveyal.com:8001",
+    //hostname       : "http://maps9.trimet.org",
+    datastoreUrl   : "http://maps9.trimet.org:9000",
     basename       : "http://call.trimet.org",
-    //restService    : "opentripplanner-api-webapp",
-    //restService    : "call_otp",
     restService    : "otp/routers/default",
-    solrService    : "http://maps8.trimet.org/solr/select",
-    attribution    : 'Map data &copy; 2014 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+    solrService    : "http://maps.trimet.org/solr/select",
+    attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
 otp.config = {
@@ -57,7 +56,6 @@ otp.config = {
         str += "</ul>";
         return str;
     },
-
 
     /**
      * The OTP web service locations
