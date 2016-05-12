@@ -21,7 +21,7 @@ function config_jar()
         rm $EXE_JAR
 
         cd $EXE_DIR
-        jar uf $WAR js/otp/config.js
+        jar uf $WAR client/js/otp/config.js
         jar uf $WAR images/agency_logo.png
         cd -
 
