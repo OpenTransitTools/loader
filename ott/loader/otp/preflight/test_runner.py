@@ -52,8 +52,8 @@ class Test(object):
         """
         import pdb; pdb.set_trace()
         self.config = ConfigUtil(section='otp')
-        self.port   = self.config.get('port', def_val="80")
-        self.host   = self.config.get('host', def_val="http://maps7.trimet.org")
+        self.port = self.config.get('port', def_val="80")
+        self.host = self.config.get('host', def_val="http://maps7.trimet.org")
 
         self.csv_line_number = line_number
         self.csv_params      = param_dict
@@ -478,7 +478,8 @@ class TestRunner(object):
         ret_val = None
         try:
             # step 1: mako render of the report
-            r = self.report_template.render(host="http://" + Test.make_hostname(), test_suites=self.test_suites, test_errors=self.has_errors())
+            host = "FIX ME"
+            r = self.report_template.render(host, test_suites=self.test_suites, test_errors=self.has_errors())
             ret_val = r
 
             # step 2: stream the report to a file
