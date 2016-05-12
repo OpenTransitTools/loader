@@ -9,6 +9,7 @@ function build_jar()
     if [ ! -f $OTP_JAR ];
     then
         cd $OTP_DIR
+        echo "BUILDING $OTP_JAR"
         mvn package -DskipTests
         cd -
     fi
@@ -16,18 +17,19 @@ function build_jar()
 
 function config_jar()
 {
-    if [ ! -f $OTP_JAR ];
+    if [ -f $OTP_JAR ];
     then
+        echo "ADDING CONFIG TO $EXE_JAR"
+
         rm $EXE_JAR
         cp $OTP_JAR $EXE_JAR
 
         cd $EXE_DIR
         jar uf otp.jar client/js/otp/config.js
-        jar uf otp.jar images/agency_logo.png
+        jar uf otp.jar client/images/agency_logo.png
         cd -
     fi
 }
 
 build_jar
 config_jar
-
