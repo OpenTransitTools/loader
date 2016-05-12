@@ -78,7 +78,6 @@ otp.config = {
      *       applicable
      *       
      */
-
     baseLayers: [
         {
             name: 'TriMet Map',
@@ -155,7 +154,6 @@ otp.config = {
      *
      * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
-    
     modules : [
         {
             id : 'ct',
