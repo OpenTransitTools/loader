@@ -50,8 +50,8 @@ class Test(object):
               'Description/notes'
             }
         """
-        #import pdb; pdb.set_trace()
-        self.config = ConfigUtil('otp')
+        import pdb; pdb.set_trace()
+        self.config = ConfigUtil(section='otp')
         self.port   = self.config.get('port', def_val="80")
         self.host   = self.config.get('host', def_val="http://maps7.trimet.org")
 
