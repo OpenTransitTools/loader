@@ -13,6 +13,13 @@ function build_jar()
         mvn package -DskipTests
         cd -
     fi
+
+    if [ -f $OTP_JAR ];
+    then
+        echo "cp $OTP_JAR $EXE_JAR"
+        rm $EXE_JAR
+        cp $OTP_JAR $EXE_JAR
+    fi
 }
 
 
@@ -21,13 +28,9 @@ function build_jar()
 ##
 function call_config_jar()
 {
-    if [ -f $OTP_JAR ];
+    if [ -f $EXT_JAR ];
     then
-        echo "ADDING CONFIG TO $EXE_JAR"
-
-        rm $EXE_JAR
-        cp $OTP_JAR $EXE_JAR
-
+        echo "ADD CALL config and images to $EXE_JAR"
         cd $EXE_DIR
         jar uf otp.jar client/js/otp/config.js
         jar uf otp.jar client/images/agency_logo.png
@@ -43,4 +46,3 @@ if [[ $* == *"CALL"* ]]
 then
     call_config_jar
 fi
-

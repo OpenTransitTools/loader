@@ -11,6 +11,7 @@ otp_consts = {
     basename       : "http://call.trimet.org",
     restService    : "otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
+    center         : new L.LatLng(45.494833,-122.670376),
     attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
@@ -117,7 +118,7 @@ otp.config = {
      * OTP routerInfo API call to center and zoom the map. The following
      * properties, when set, override that behavioir.
      */
-    initLatLng : new L.LatLng(45.494833,-122.670376),
+    initLatLng : otp_consts.center,
     initZoom : 11,
     minZoom : 10,
     maxZoom : 22,
@@ -132,7 +133,8 @@ otp.config = {
     siteDescription     : "Call Taker Stuff",
     logoGraphic         : 'images/agency_logo.png',
     agencyStopLinkText  : "Real Time Arrivals",
-    fareDisplayOverride : "$2.50 (A), $1.00 (H), $1.65 (Y)",
+    fareDisplayOverride : "$2.50 (A), $1.25 (H), $1.25 (Y)",
+    bikeshareName       : "BIKETOWN",
 
     showLogo            : true,
     showTitle           : true,
@@ -150,6 +152,8 @@ otp.config = {
      *       used by default for this module
      *   - [isDefault]: <boolean> whether this module is shown by default;
      *       should only be 'true' for one module
+     *
+     * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
     
     modules : [
@@ -165,8 +169,7 @@ otp.config = {
 
                 defaultQueryParams : 
                 {
-                    minTransferTime: 5,
-                    maxWalkDistance : 805.672
+                    maxWalkDistance : 804.672
                 },
 
                 mailables : [
@@ -181,16 +184,15 @@ otp.config = {
                     { name : 'Rte 14 Schedule (14-Hawthorne)', largePrint: true },
                     { name : 'Rte 15 Schedule (15-Belmont/NW 23rd)', largePrint: true },
                     { name : 'Rte 17 Schedule (17-Holgate/Broadway)', largePrint: true },
-                    { name : 'Rte 18/63/83 Schedule (18-Hillside, 63-Washington Park/Arlington Hts, 83-Washington Park Loop)', largePrint: true },
+                    { name : 'Rte 18/63 Schedule (18-Hillside, 63-Washington Park/Arlington Hts)', largePrint: true },
                     { name : 'Rte 19 Schedule (19-Woodstock/Glisan)', largePrint: true },
                     { name : 'Rte 20 Schedule (20-Burnside/Stark)', largePrint: true },
                     { name : 'Rte 21 Schedule (21-Sandy Blvd/223rd)', largePrint: true },
                     { name : 'Rte 22/23/25 Schedule (22-Parkrose, 23-San Rafael, 25-Glisan/Rockwood)', largePrint: true },
                     { name : 'Rte 24 Schedule (24-Fremont)', largePrint: true },
-                    { name : 'Rte 28/29 Schedule (28-Linwood, 29-Lake/Webster Rd)', largePrint: true },
-                    { name : 'Rte 30/31 Schedule (30-Estacada, 31-King Rd)', largePrint: true },
-                    { name : 'Rte 32/34 Schedule (32-Oatfield, 34-River Rd)', largePrint: true },
-                    { name : 'Rte 33/99 Schedule (33-McLoughlin, 99-McLoughlin Express)', largePrint: true },
+                    { name : 'Rte 29/30 Schedule (29-Lake/Webster Rd, 30-Estacada)', largePrint: true },
+                    { name : 'Rte 32/34 Schedule (32-Oatfield, 34-Linwood/River Rd)', largePrint: true },
+                    { name : 'Rte 33 (33-McLoughlin/King Rd)', largePrint: true },
                     { name : 'Rte 35 Schedule (35-Macadam/Greeley)', largePrint: true },
                     { name : 'Rte 36 Schedule (36-South Shore)', largePrint: true },
                     { name : 'Rte 37 Schedule (37-Lake Grove)', largePrint: true },
@@ -228,15 +230,15 @@ otp.config = {
                     { name : 'Rte 88 Schedule (88-Hart/198th)', largePrint: true },
                     { name : 'Rte 92 Schedule (92-South Beaverton Express)', largePrint: true },
                     { name : 'Rte 93/94 Schedule (93-Tigard/Sherwoord, 94-Pacific Hwy/Sherwood)', largePrint: true },
-                    { name : 'Rte 96 Schedule (96-Tualatin/I-5)', largePrint: true },
+                    { name : 'Rte 96/97 Schedule (96-Tualatin/I-5, 97-Tualatin-Sherwood Rd)', largePrint: true },
+                    { name : 'Rte 99 Schedule (99-Macadam/McLoughlin)', largePrint: true },
+                    { name : 'Rte 115 Schedule (115-Cherry Blossom Loop)', largePrint: true },
                     { name : 'Rte 152 Schedule (152-Milwaukie)', largePrint: true },
-                    { name : 'Rte 154 Schedule (154-Willamette)', largePrint: true },
+                    { name : 'Rte 154 Schedule (154-Willamette/Clackamas Hts)', largePrint: true },
                     { name : 'Rte 155/156 Schedule (155-Sunnyside, 156-Mather Rd)', largePrint: true },
-                    { name : 'MAX Schedule: Blue, Red, Yellow & Green', largePrint: true },
+                    { name : 'MAX Schedule: Blue, Green, Orange, Red, Yellow & 291-Orange Night Bus', largePrint: true },
                     { name : 'MAX Schedule: Red Line', largePrint: true },
                     { name : 'WES Schedule', largePrint: true },
-                    { name : 'WES schedule pads', largePrint: true },
-                    { name : 'Portland Streetcar Schedule', largePrint: true },
                     { name : 'Destinations Brochure', largePrint: false},
                     { name : 'Accessible Services Brochure', largePrint: false},
                     { name : 'Bikes and TriMet ', largePrint: false},
@@ -246,6 +248,7 @@ otp.config = {
                     { name : 'System Map', largePrint: true},
                     { name : 'Honored Citizen Application', largePrint: false},
                     { name : 'Transit Access Flip-book for the Blind', largePrint: false},
+                    { name : 'Safety light', largePrint: false},
                     { name : 'Earl P. Nutt Safety Coloring Book', largePrint: false},
                     { name : 'Earl P. Nutt Safety Puzzle Book', largePrint: false},
                     { name : 'MAX Safety Posters', largePrint: false},
@@ -253,7 +256,16 @@ otp.config = {
                     { name : 'WES Safety Posters', largePrint: false},
                     { name : 'WES Safety Poster (Spanish)', largePrint: false},
                     { name : 'WES Safety Stickers', largePrint: false},
-                    { name : 'WES Safety DVD', largePrint: false}
+                    { name : 'WES Safety DVD', largePrint: false},
+                    { name : 'MAX Train Bank', largePrint: false},
+                    { name : 'Service Alert - Pamphlet A', largePrint: false},
+                    { name : 'Service Alert - Pamphlet B', largePrint: false},
+                    { name : 'Service Alert - Pamphlet C', largePrint: false},
+                    { name : 'Survey (English)', largePrint: false},
+                    { name : 'Survey (Spanish)', largePrint: false},
+                    { name : 'Survey (Chinese)', largePrint: false},
+                    { name : 'Survey (Russian)', largePrint: false},
+                    { name : 'Survey (Vietnamese)', largePrint: false}
                 ],
 
                 // letter margins in points (1" on page = 72 points)
@@ -285,8 +297,11 @@ otp.config = {
                 module_redirect_url     : otp_consts.basename,
                 defaultQueryParams :
                 {
-                    minTransferTime: 500,
                     maxWalkDistance : 804.672
+                    ,
+                    minTransferTime : 300
+                    //,
+                    //maxHours : 3
                 }
             }
         }
@@ -303,7 +318,6 @@ otp.config = {
      *   - addressParam: <string> the name of the API parameter used to pass in
      *       the user-specifed address string
      */
-
     geocoders : [
         {
             name : 'SOLR',
