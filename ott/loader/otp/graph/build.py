@@ -105,7 +105,7 @@ class Build(CacheBase):
         log.info("building the graph")
         file_utils.rm(self.graph_path)
         file_utils.cd(self.this_module_dir)
-        cmd='-jar "{}" --build "{}" --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
+        cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
         exe_utils.run_java(cmd, big_xmx=java_mem)
 
     def deploy_test_graph(self, sleep=75, java_mem=None):
