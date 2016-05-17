@@ -8,11 +8,11 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'ott.utils',
+    'gtfsdb',
     'simplejson',
     'mako',
     'pyparsing',
     'psycopg2',
-    'gtfsdb',
 ]
 
 extras_require = dict(
@@ -33,12 +33,12 @@ setup(
     classifiers=[
         "Programming Language :: Python",
         "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
     author="Open Transit Tools",
     author_email="info@opentransittools.org",
     dependency_links=[
         'git+https://github.com/OpenTransitTools/utils.git#egg=ott.utils-0.1.0',
+        'git+https://github.com/OpenTransitTools/gtfsdb.git#egg=gtfsdb-1.0.0',
     ],
     license="Mozilla-derived (http://opentransittools.com)",
     url='http://opentransittools.com',
