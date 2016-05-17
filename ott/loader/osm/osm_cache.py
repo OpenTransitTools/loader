@@ -109,7 +109,7 @@ class OsmCache(CacheBase):
         '''
         osmosis = self.get_osmosis_cmd()
         log.info(osmosis)
-        os.system(osmosis)
+        exe_utils.run_cmd(osmosis, shell=True)
 
     def download_pbf(self):
         log.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
