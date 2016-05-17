@@ -60,7 +60,6 @@ class OsmCache(CacheBase):
         ''' if OSM .pbf file is out of date, download a new one.
             convert .pbf to .osm if .pbf file is newer than .osm file
         '''
-        #import pdb; pdb.set_trace()
         min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 1: download new osm pbf file if it's not new
