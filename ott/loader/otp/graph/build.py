@@ -112,7 +112,7 @@ class Build(CacheBase):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
         '''
         file_utils.cd(self.this_module_dir)
-        cmd='-jar {} --server --port {} --router "" --graphs {}'.format(self.otp_path, self.port, self.cache_dir)
+        cmd='-server -jar {} --port {} --router "" --graphs {}'.format(self.otp_path, self.port, self.cache_dir)
         exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
         time.sleep(sleep)
 
