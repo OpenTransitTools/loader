@@ -1,6 +1,7 @@
 ott.leaflet.*
 ott.openlayers.*
 otp_report.html
+lucene
 *.out
 *~
 [a-z].py
