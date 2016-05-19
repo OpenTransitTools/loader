@@ -159,147 +159,14 @@ otp.config = {
             id : 'call',
             className : 'otp.modules.calltaker.CallTakerModule',
             defaultBaseLayer : 'TriMet Map',
-            isDefault: true,
-            options:
-            {
-                trinet_verify_login_url : otp_consts.trinetReDirect,
-                module_redirect_url     : otp_consts.basename,
-
-                defaultQueryParams : 
-                {
-                    maxWalkDistance : 804.672
-                },
-
-                mailables : [
-                    { name : 'Rte 1 Schedule (1-Vermont)', largePrint: true },
-                    { name : 'Rte 4 Schedule (4-Division/Fessenden)', largePrint: true },
-                    { name : 'Rte 6 Schedule (6-Martin Luther King Jr Blvd)', largePrint: true },
-                    { name : 'Rte 8 Schedule (8-Jackson Park/NE 15th)', largePrint: true },
-                    { name : 'Rte 9 Schedule (9-Powell Blvd)', largePrint: true },
-                    { name : 'Rte 10 Schedule (10-Harold St)', largePrint: true },
-                    { name : 'Rte 11/16 Schedule (11-Rivergate/Marine Dr, 16-Front Ave/St Helens Rd)', largePrint: true },
-                    { name : 'Rte 12 Schedule (12-Barbur/Sandy Blvd)', largePrint: true },
-                    { name : 'Rte 14 Schedule (14-Hawthorne)', largePrint: true },
-                    { name : 'Rte 15 Schedule (15-Belmont/NW 23rd)', largePrint: true },
-                    { name : 'Rte 17 Schedule (17-Holgate/Broadway)', largePrint: true },
-                    { name : 'Rte 18/63 Schedule (18-Hillside, 63-Washington Park/Arlington Hts)', largePrint: true },
-                    { name : 'Rte 19 Schedule (19-Woodstock/Glisan)', largePrint: true },
-                    { name : 'Rte 20 Schedule (20-Burnside/Stark)', largePrint: true },
-                    { name : 'Rte 21 Schedule (21-Sandy Blvd/223rd)', largePrint: true },
-                    { name : 'Rte 22/23/25 Schedule (22-Parkrose, 23-San Rafael, 25-Glisan/Rockwood)', largePrint: true },
-                    { name : 'Rte 24 Schedule (24-Fremont)', largePrint: true },
-                    { name : 'Rte 29/30 Schedule (29-Lake/Webster Rd, 30-Estacada)', largePrint: true },
-                    { name : 'Rte 32/34 Schedule (32-Oatfield, 34-Linwood/River Rd)', largePrint: true },
-                    { name : 'Rte 33 (33-McLoughlin/King Rd)', largePrint: true },
-                    { name : 'Rte 35 Schedule (35-Macadam/Greeley)', largePrint: true },
-                    { name : 'Rte 36 Schedule (36-South Shore)', largePrint: true },
-                    { name : 'Rte 37 Schedule (37-Lake Grove)', largePrint: true },
-                    { name : 'Rte 38 Schedule (38-Boones Ferry Rd)', largePrint: true },
-                    { name : 'Rte 39 Schedule (39-Lewis & Clark)', largePrint: true },
-                    { name : 'Rte 43/45 Schedule (43-Taylors Ferry Rd, 45-Garden Home)', largePrint: true },
-                    { name : 'Rte 44 Schedule (44-Capitol Hwy/Mocks Crest)', largePrint: true },
-                    { name : 'Rte 46 Schedule (46-North Hillsboro)', largePrint: true },
-                    { name : 'Rte 47/48 Schedule (47-Baseline/Evergreen)', largePrint: true },
-                    { name : 'Rte 50 Schedule (50-Cedar Mill)', largePrint: true },
-                    { name : 'Rte 51 Schedule (51-Vista)', largePrint: true },
-                    { name : 'Rte 52 Schedule (52-Farmington/185th)', largePrint: true },
-                    { name : 'Rte 53 Schedule (53-Arctic/Allen)', largePrint: true },
-                    { name : 'Rte 54/56 Schedule (54-Beaverton-Hillsdale Hwy, 56-Scholls Ferry Rd)', largePrint: true },
-                    { name : 'Rte 55 Schedule (55-Hamilton )', largePrint: true },
-                    { name : 'Rte 57/59 Schedule (57-TV Hwy/Forest Grove, 59-Walker/Park Way)', largePrint: true },
-                    { name : 'Rte 58 Schedule (58-Canyon Rd)', largePrint: true },
-                    { name : 'Rte 61 Schedule (61-Marquam Hill/Beaverton)', largePrint: true },
-                    { name : 'Rte 62/67 Schedule (62-Murray Blvd, 67-Bethany/158th)', largePrint: true },
-                    { name : 'Rte 64 Schedule (64-Marquam Hill/Tigard)', largePrint: true },
-                    { name : 'Rte 65 Schedule (65-Marquam Hill/Barbur Blvd)', largePrint: true },
-                    { name : 'Rte 66 Schedule (66-Marquam Hill/Hollywood)', largePrint: true },
-                    { name : 'Rte 68 Schedule (68-Marquam Hill/Collins Circle)', largePrint: true },
-                    { name : 'Rte 70 Schedule (70-12th/NE 33rd Ave)', largePrint: true },
-                    { name : 'Rte 71 Schedule (71-60th Ave/122nd Ave)', largePrint: true },
-                    { name : 'Rte 72 Schedule (72-Killingsworth/82nd Ave)', largePrint: true },
-                    { name : 'Rte 75 Schedule (75-Cesar Chavez/Lombard)', largePrint: true },
-                    { name : 'Rte 76/78 Schedule (76-Beaverton/Tualatin, 78-Beaverton/Lake Oswego)', largePrint: true },
-                    { name : 'Rte 77 Schedule (77-Broadway/Halsey)', largePrint: true },
-                    { name : 'Rte 79 Schedule (79-Clackamas/Oregon City)', largePrint: true },
-                    { name : 'Rte 80/81 Schedule (80-Kane/Troutdale Rd, 81-Kane/257th)', largePrint: true },
-                    { name : 'Rte 84 Schedule (84-Powell Valley/Orient Dr)', largePrint: true },
-                    { name : 'Rte 85 Schedule (85-Swan Island)', largePrint: true },
-                    { name : 'Rte 87 Schedule (87-Airport Way/181st)', largePrint: true },
-                    { name : 'Rte 88 Schedule (88-Hart/198th)', largePrint: true },
-                    { name : 'Rte 92 Schedule (92-South Beaverton Express)', largePrint: true },
-                    { name : 'Rte 93/94 Schedule (93-Tigard/Sherwoord, 94-Pacific Hwy/Sherwood)', largePrint: true },
-                    { name : 'Rte 96/97 Schedule (96-Tualatin/I-5, 97-Tualatin-Sherwood Rd)', largePrint: true },
-                    { name : 'Rte 99 Schedule (99-Macadam/McLoughlin)', largePrint: true },
-                    { name : 'Rte 115 Schedule (115-Cherry Blossom Loop)', largePrint: true },
-                    { name : 'Rte 152 Schedule (152-Milwaukie)', largePrint: true },
-                    { name : 'Rte 154 Schedule (154-Willamette/Clackamas Hts)', largePrint: true },
-                    { name : 'Rte 155/156 Schedule (155-Sunnyside, 156-Mather Rd)', largePrint: true },
-                    { name : 'MAX Schedule: Blue, Green, Orange, Red, Yellow & 291-Orange Night Bus', largePrint: true },
-                    { name : 'MAX Schedule: Red Line', largePrint: true },
-                    { name : 'WES Schedule', largePrint: true },
-                    { name : 'Destinations Brochure', largePrint: false},
-                    { name : 'Accessible Services Brochure', largePrint: false},
-                    { name : 'Bikes and TriMet ', largePrint: false},
-                    { name : 'Bikes and TriMet (Spanish)', largePrint: false},
-                    { name : 'Fares & How to Ride (multilingual)', largePrint: false},
-                    { name : 'Trip Tools', largePrint: false},
-                    { name : 'System Map', largePrint: true},
-                    { name : 'Honored Citizen Application', largePrint: false},
-                    { name : 'Transit Access Flip-book for the Blind', largePrint: false},
-                    { name : 'Safety light', largePrint: false},
-                    { name : 'Earl P. Nutt Safety Coloring Book', largePrint: false},
-                    { name : 'Earl P. Nutt Safety Puzzle Book', largePrint: false},
-                    { name : 'MAX Safety Posters', largePrint: false},
-                    { name : 'Bus Safety Posters', largePrint: false},
-                    { name : 'WES Safety Posters', largePrint: false},
-                    { name : 'WES Safety Poster (Spanish)', largePrint: false},
-                    { name : 'WES Safety Stickers', largePrint: false},
-                    { name : 'WES Safety DVD', largePrint: false},
-                    { name : 'MAX Train Bank', largePrint: false},
-                    { name : 'Service Alert - Pamphlet A', largePrint: false},
-                    { name : 'Service Alert - Pamphlet B', largePrint: false},
-                    { name : 'Service Alert - Pamphlet C', largePrint: false},
-                    { name : 'Survey (English)', largePrint: false},
-                    { name : 'Survey (Spanish)', largePrint: false},
-                    { name : 'Survey (Chinese)', largePrint: false},
-                    { name : 'Survey (Russian)', largePrint: false},
-                    { name : 'Survey (Vietnamese)', largePrint: false}
-                ],
-
-                // letter margins in points (1" on page = 72 points)
-                mailables_horizontal_margin: 108,
-                mailables_vertical_margin: 72,
-
-                mailables_introduction : "Thank you for calling us to request TriMet information.  We have enclosed for you the following item(s):",
-                mailables_conclusion : "For personalized trip planning, please call our Customer Service Center from 8:30 AM until 4:30 PM, Monday through Friday, at 238-RIDE (238-7433), TTY 238-5511.  We can also provide fare information, additional schedules, or brochures you may need.\n\nIt's a pleasure to serve your transit needs, and we thank you for riding TriMet.",
-
-                mailables_footer : "Tri-County Metropolitan Transportation District of Oregon â€¢ 503-238-RIDE â€¢ TTY 503-238-5811 â€¢ trimet.org",
-
-                // header graphic location
-                mailables_header_graphic : "images/agency_logo.png",
-
-                // dimensions to render signature graphic, in points (1" on page = 72 points)
-                mailables_signature_graphic_height : 36,
-                mailables_signature_graphic_width : 108
-            }
+            isDefault: true
         }
         ,
         {
             id : 'ft',
             className : 'otp.modules.fieldtrip.FieldTripModule',
             defaultBaseLayer : 'TriMet Map',
-            isDefault: false,
-            options:
-            {
-                trinet_verify_login_url : otp_consts.trinetReDirect,
-                module_redirect_url     : otp_consts.basename,
-                defaultQueryParams :
-                {
-                    maxWalkDistance : 804.672
-                    ,
-                    minTransferTime : 300
-                }
-            }
+            isDefault: true
         }
     ],
 
