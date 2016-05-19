@@ -21,7 +21,7 @@ from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
-from ott.loader.otp.graph import otp_utils
+from ott.loader.otp import otp_utils
 from ott.loader.otp.preflight.test_runner import TestRunner
 
 # constants
@@ -56,6 +56,8 @@ class Build(CacheBase):
         self.graphs = self.get_graphs()
 
     def get_graphs(self):
+        ''' read the config for graph specs, then process those specs to get read to build
+        '''
         graphs = self.config.get_json('graphs')
         if graphs is None or len(graphs) == 0:
             graphs = [otp_utils.get_graph_details(graphs)]
@@ -64,8 +66,7 @@ class Build(CacheBase):
                 dir = otp_utils.config_graph_dir(g, self.this_module_dir)
                 g['dir'] = dir
 
-        for g in graphs:
-
+        return graphs
 
     def build_and_test_graph(self, force_update=False, java_mem=None):
         ''' will rebuild the graph...
@@ -225,7 +226,6 @@ def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     #Build.options(argv)
     b = Build.factory()
-    b.check_otp_jar()
 
 if __name__ == '__main__':
     main()

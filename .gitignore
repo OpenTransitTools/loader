@@ -1,6 +1,8 @@
 ott.leaflet.*
 ott.openlayers.*
 otp_report.html
+build-config.json
+router-config.json
 lucene
 *.out
 *~
