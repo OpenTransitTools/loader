@@ -21,6 +21,7 @@ from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
+from ott.loader.otp.graph import otp_utils
 from ott.loader.otp.preflight.test_runner import TestRunner
 
 # constants
@@ -29,19 +30,16 @@ GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 35000000
 OSM_SIZE   = 5000000
 OSM_NAME   = "or-wa"
-WEB_PORT   = "55555"
+
 VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
-OTP_DOWNLOAD_URL="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.19.0/otp-0.19.0-shaded.jar"
-
 
 class Build(CacheBase):
     """ build an OTP graph
     """
-    graph_path = None
     otp_path   = None
     feeds      = None
-    port       = WEB_PORT
+    graphs     = None
 
     graph_failed = GRAPH_FAILD
     graph_name = GRAPH_NAME
@@ -54,11 +52,20 @@ class Build(CacheBase):
 
     def __init__(self):
         super(Build, self).__init__('otp')
-        self.feeds = self.config.get_json('feeds', section='gtfs')
-        self.port  = self.config.get('port', def_val=WEB_PORT)
-        file_utils.cd(self.cache_dir)
-        self.graph_path = os.path.join(self.cache_dir, self.graph_name)
-        self.otp_path = self.check_otp_jar()
+        self.feeds  = self.config.get_json('feeds', section='gtfs')
+        self.graphs = self.get_graphs()
+
+    def get_graphs(self):
+        graphs = self.config.get_json('graphs')
+        if graphs is None or len(graphs) == 0:
+            graphs = [otp_utils.get_graph_details(graphs)]
+        else:
+            for g in graphs:
+                dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+                g['dir'] = dir
+
+        for g in graphs:
+
 
     def build_and_test_graph(self, force_update=False, java_mem=None):
         ''' will rebuild the graph...
@@ -183,16 +190,6 @@ class Build(CacheBase):
         ''' override me to do things like emailing error reports, etc... '''
         log.error(msg)
 
-    def check_otp_jar(self, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
-        """ make sure otp.jar exists ... if not, download it
-            :return full-path to otp.jar
-        """
-        jar_path = os.path.join(self.this_module_dir, jar)
-        exists = os.path.exists(jar_path)
-        if not exists or file_utils.file_size(jar_path) < expected_size:
-            exe_utils.wget(download_url, jar_path)
-        return jar_path
-
     @classmethod
     def factory(cls):
         return Build()
@@ -226,7 +223,9 @@ class Build(CacheBase):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    Build.options(argv)
+    #Build.options(argv)
+    b = Build.factory()
+    b.check_otp_jar()
 
 if __name__ == '__main__':
     main()
