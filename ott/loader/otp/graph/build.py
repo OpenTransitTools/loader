@@ -13,7 +13,7 @@ import datetime
 import logging
 log = logging.getLogger(__file__)
 
-from ott.utils import exe_utils
+from ott.utils import otp_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
@@ -21,7 +21,6 @@ from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
-from ott.loader.otp import otp_utils
 from ott.loader.otp.preflight.test_runner import TestRunner
 
 # constants
@@ -160,6 +159,7 @@ class Build(CacheBase):
             else:
                 ret_val = False
                 log.warn("graph build failed for graph {}".format(g['name']))
+            return ret_val
 
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
@@ -171,11 +171,11 @@ class Build(CacheBase):
         rebuild_graph = force_update
 
         # step 2: check graph file is fairly recent and properly sized
+        graph_path = os.path.join(graph_dir, self.graph_name)
         if not file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
             rebuild_graph = True
 
         # step 3: check the cache files
-        graph_path = os.path.join(graph_dir, self.graph_name)
         if file_utils.dir_has_newer_files(graph_path, graph_dir):
             rebuild_graph = True
 
@@ -185,9 +185,9 @@ class Build(CacheBase):
             # step 5a: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 21):
                 log.info(" build attempt {0} of a new graph ".format(n))
-                self.run_graph_builder(java_mem=java_mem)
+                otp_utils.run_graph_builder(graph_dir, java_mem=java_mem)
                 time.sleep(10)
-                if file_utils.exists_and_sized(self.graph_path, self.graph_size, self.expire_days):
+                if file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
                     success = True
                     break
         return success
