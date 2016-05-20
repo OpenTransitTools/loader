@@ -82,6 +82,7 @@ def check_otp_jar(graph_dir, jar=OTP_NAME, expected_size=50000000, download_url=
     jar_path = os.path.join(graph_dir, jar)
     exists = os.path.exists(jar_path)
     if not exists or file_utils.file_size(jar_path) < expected_size:
+        log.info("we don't see OTP {} in {}, so will download {} now".format(jar, graph_dir, download_url))
         exe_utils.wget(download_url, jar_path)
     return jar_path
 

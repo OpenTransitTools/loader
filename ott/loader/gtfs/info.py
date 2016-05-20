@@ -68,11 +68,29 @@ class Info(CacheBase):
     def get_feed_date_range(self):
         return self._get_feed_date_range(self.calendar_file, self.calendar_dates_file)
 
+    def get_feed_vlog_info(self, feed_name):
+        r = self.get_feed_date_range()
+        v = self.get_feed_version()
+        d = self.get_days_since_stats()
+        ret_val = {}
+        ret_val['name'] = feed_name
+        ret_val['start'] = r[0]
+        ret_val['end'] = r[1]
+        ret_val['version'] = v
+        ret_val['since'] = d[0]
+        ret_val['until'] = d[1]
+        return ret_val
+
+    def get_feed_vlog_msg(self, feed_name, prefix=" ", suffix="\n"):
+        f = self.get_feed_vlog_info(feed_name)
+        msg += "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
+            .format(prefix, f['name'], f['start'], f['end'], f['until'], f['version'], suffix)
+        return msg
+
     @classmethod
     def _get_feed_date_range(cls, calendar_name, calendar_dates_name):
         """ date range of new gtfs file based on both calendar.txt and calendar_dates.txt
         """
-
         # step 1: get dates from the two gtfs calendar files
         start_date, end_date, today_position, total_positions = cls._get_calendar_dates_range(calendar_dates_name)
         sdate, edate = cls._get_calendar_range(calendar_name)

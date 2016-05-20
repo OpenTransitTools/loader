@@ -45,7 +45,7 @@ class B(object):
     #    feed_details = self.get_gtfs_feed_details()
 
 
-def get_gtfs_feed_details(self):
+    def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
         TODO: refacotr
         '''
@@ -55,14 +55,8 @@ def get_gtfs_feed_details(self):
                 cp = copy.copy(g)
                 gtfs_path = os.path.join(self.cache_dir, cp['name'])
                 info = Info(gtfs_path)
-                r = info.get_feed_date_range()
-                v = info.get_feed_version()
-                d = info.get_days_since_stats()
-                cp['start'] = r[0]
-                cp['end'] = r[1]
-                cp['version'] = v
-                cp['since'] = d[0]
-                cp['until'] = d[1]
+                vlog = info.get_feed_vlog_info(cp['name'])
+                cp.update(vlog)
                 ret_val.append(cp)
         except Exception, e:
             log.warn(e)
