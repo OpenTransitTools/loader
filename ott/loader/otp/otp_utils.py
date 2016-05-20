@@ -13,6 +13,15 @@ OTP_NAME="otp.jar"
 
 GRAPH_NAME = "Graph.obj"
 
+
+def run_otp_server(graph_dir, port="8080", otp_name=OTP_NAME, java_mem=None):
+    ''' launch the server in a separate process
+    '''
+    file_utils.cd(graph_dir)
+    otp_path = os.path.join(graph_dir, otp_name)
+    cmd='-server -jar {} --port {} --router "" --graphs {}'.format(otp_path, port, graph_dir)
+    exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
+
 def run_graph_builder(graph_dir, graph_name=GRAPH_NAME, otp_name=OTP_NAME, java_mem=None):
     ''' run OTP graph builder
     '''
