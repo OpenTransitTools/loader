@@ -41,7 +41,11 @@ class B(object):
     vlog_name  = VLOG_NAME
     test_html  = TEST_HTML
 
-    def get_gtfs_feed_details(self):
+    # step 4: print feed info
+    #    feed_details = self.get_gtfs_feed_details()
+
+
+def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
         TODO: refacotr
         '''
@@ -124,7 +128,6 @@ class Build(CacheBase):
         super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
         self.graphs = self.config_graph_dirs(force_update)
-        self.force_update = force_update
 
     def config_graph_dirs(self, force_update=False):
         ''' read the config for graph specs like graph dir and web port (for running OTP)
@@ -145,28 +148,27 @@ class Build(CacheBase):
 
         return graphs
 
-    def build_and_test_graphs(self, java_mem=None):
-        ''' will rebuild the graph...
+    def build_and_test_graphs(self, java_mem=None, force_update=False):
+        ''' will build and test each of the graphs we have in self.graphs
         '''
         ret_val = True
-        for g in graphs:
-            success = self.build_graph(g.dir, self.force_update)
+        for g in self.graphs:
+            success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
-                otp_utils.run_otp_server(g.dir, g.port, java_mem)
+                otp_utils.run_otp_server(g['dir'], g['port'], java_mem)
                 success = self.run_graph_tests()
                 if success:
                     self.update_vlog()
                     self.update_asset_log()
                 else:
                     ret_val = False
-                    log.warn("graph {} didn't pass it's tests".format(g.name))
+                    log.warn("graph {} didn't pass it's tests".format(g['name']))
             else:
                 ret_val = False
-                log.warn("graph build failed for graph {}".format(g.name))
+                log.warn("graph build failed for graph {}".format(g['name']))
 
 
-
-    def build_graph(self, graph_dir, force_update=False):
+    def build_graph(self, graph_dir, java_mem=None, force_update=False):
         ''' will rebuild the graph...
         '''
         success = True
@@ -179,12 +181,9 @@ class Build(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        graph_date = file_utils.file_date(self.graph_path)
-        if file_utils.dir_has_newer_files(graph_date, graph_dir):
+        graph_path = os.path.join(graph_dir, self.graph_name)
+        if file_utils.dir_has_newer_files(graph_path, graph_dir):
             rebuild_graph = True
-
-        # step 4: print feed info
-        feed_details = self.get_gtfs_feed_details()
 
         # step 5: build graph is needed
         if rebuild_graph:

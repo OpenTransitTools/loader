@@ -126,7 +126,7 @@ class OsmCache(CacheBase):
             osm = OsmCache()
             app_osm_path = os.path.join(app_dir, osm.osm_name)
             refresh = file_utils.is_a_newer_than_b(osm.osm_path, app_osm_path)
-            if force_update or refresh:
+            if refresh or force_update:
                 log.info("cp {} to {}".format(osm.osm_name, app_dir))
                 osm.cp_cached_file(osm.osm_name, app_dir)
                 ret_val = True
