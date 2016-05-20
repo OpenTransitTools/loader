@@ -4,6 +4,9 @@ otp_report.html
 build-config.json
 router-config.json
 lucene
+ned/
+*.tmp
+*.obj
 *.out
 *.osm
 *~
