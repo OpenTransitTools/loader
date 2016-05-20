@@ -5,6 +5,7 @@ build-config.json
 router-config.json
 lucene
 *.out
+*.osm
 *~
 [a-z].py
 *.py[cod]

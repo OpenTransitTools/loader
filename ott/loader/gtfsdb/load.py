@@ -28,7 +28,7 @@ class Load(CacheBase):
         ''' check the local cache, and decide whether we should update or not
         '''
         reload = force_update
-        if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir, force_update):
+        if GtfsCache.check_feeds_against_cache(self.feeds, self.cache_dir, force_update):
             reload = True
 
         if reload:

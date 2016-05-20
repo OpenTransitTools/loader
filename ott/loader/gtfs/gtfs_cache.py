@@ -76,13 +76,13 @@ class GtfsCache(CacheBase):
         return ret_val
 
     @classmethod
-    def check_gtfs_zip_against_cache(cls, gtfs_zip, app_dir, force_update=False):
+    def compare_feed_against_cache(cls, gtfs_feed, app_dir, force_update=False):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         update_cache = force_update
         try:
             cache = GtfsCache()
-            url, name = GtfsCache.get_url_filename(gtfs_zip)
+            url, name = GtfsCache.get_url_filename(gtfs_feed)
 
             # if we aren't forcing an update, then compare for difference before updating the cache
             if not force_update:
@@ -98,12 +98,14 @@ class GtfsCache(CacheBase):
         return update_cache
 
     @classmethod
-    def check_gtfs_files_against_cache(cls, gtfs_zip_files, app_dir, force_update=False):
+    def check_feeds_against_cache(cls, gtfs_feeds, app_dir, force_update=False, filter=None):
         ''' check the ott.loader.gtfs cache for any feed updates
         '''
         update_cache = False
-        for g in gtfs_zip_files:
-            if GtfsCache.check_gtfs_zip_against_cache(g, app_dir, force_update):
+        for feed in gtfs_feeds:
+            if filter and feed.get('name', 'XXX') not in filter:
+                continue
+            if GtfsCache.compare_feed_against_cache(feed, app_dir, force_update):
                 update_cache = True
         return update_cache
 

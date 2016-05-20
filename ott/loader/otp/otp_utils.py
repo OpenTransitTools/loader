@@ -9,7 +9,26 @@ from ott.utils import exe_utils
 DEF_NAME   = "prod"
 DEF_PORT   = "55555"
 OTP_DOWNLOAD_URL="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.19.0/otp-0.19.0-shaded.jar"
+OTP_NAME="otp.jar"
 
+GRAPH_NAME = "Graph.obj"
+
+def run_graph_builder(graph_dir, graph_name=GRAPH_NAME, otp_name=OTP_NAME, java_mem=None):
+    ''' run OTP graph builder
+    '''
+    log.info("building the graph")
+    graph_path = os.path.join(graph_dir, graph_name)
+    otp_path = os.path.join(graph_dir, otp_name)
+    file_utils.rm(graph_path)
+    file_utils.cd(graph_dir)
+    cmd='-jar {} --build {} --cache {}'.format(otp_path, graph_dir, graph_dir)
+    exe_utils.run_java(cmd, big_xmx=java_mem)
+
+def vizualize_graph(graph_dir, java_mem=None):
+    otp_path = os.path.join(graph_dir, otp_name)
+    file_utils.cd(graph_dir)
+    cmd='-jar {} --visualize --router "" --graphs {}'.format(otp_path, graph_dir)
+    exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
 
 def config_graph_dir(graph_config, base_dir):
     ''' utility to make the graph dir, copy OTP config files into the graph directory, etc...
@@ -20,6 +39,7 @@ def config_graph_dir(graph_config, base_dir):
     # step 1: mkdir (makes the dir if it doesn't exist)
     graph_dir = os.path.join(base_dir, dir)
     file_utils.mkdir(graph_dir)
+    graph_config['dir'] = graph_dir  # save off the full graph dir back struct
 
     # step 2: copy OTP config files
     config_dir = os.path.join(base_dir, "config")
@@ -45,7 +65,7 @@ def get_graph_details(graphs, index=0):
         ret_val = graphs[index]
     return ret_val
 
-def check_otp_jar(graph_dir, jar="otp.jar", expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
+def check_otp_jar(graph_dir, jar=OTP_NAME, expected_size=50000000, download_url=OTP_DOWNLOAD_URL):
     """ utility to make sure otp.jar exists in the particular graph dir...
         if not, download it
         :return full-path to otp.jar

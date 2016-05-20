@@ -50,13 +50,14 @@ class Build(CacheBase):
     test_html  = TEST_HTML
     expire_days = 45
 
-    def __init__(self):
+    def __init__(self, force_update=False):
         super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
-        self.graphs = self.config_graphs()
+        self.graphs = self.config_graph_dirs(force_update)
 
-    def config_graphs(self):
-        ''' read the config for graph specs, then process those specs to get read to build
+    def config_graph_dirs(self, force_update=False):
+        ''' read the config for graph specs like graph dir and web port (for running OTP)
+            this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
         '''
         #import pdb; pdb.set_trace()
         graphs = self.config.get_json('graphs')
@@ -65,9 +66,16 @@ class Build(CacheBase):
 
         for g in graphs:
             dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-            g['dir'] = dir
+            filter = g.get('filter', None)
+            OsmCache.check_osm_file_against_cache(dir)
+            GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
 
         return graphs
+
+    def build_and_test_graphs(self, force_update=False, java_mem=None):
+        ''' will rebuild the graph...
+        '''
+
 
     def build_and_test_graph(self, force_update=False, java_mem=None):
         ''' will rebuild the graph...
@@ -82,8 +90,8 @@ class Build(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        OsmCache.check_osm_file_against_cache(self.cache_dir)
-        if GtfsCache.check_gtfs_files_against_cache(self.feeds, self.cache_dir):
+        # graph_date = file_utils.file_date(graph_path)
+        if False: # file_utils.dir_has_newer_files(graph_date, graph_dir)
             rebuild_graph = True
 
         # step 4: print feed info
@@ -107,15 +115,9 @@ class Build(CacheBase):
                 success = self.run_graph_tests()
                 if success:
                     self.update_vlog()
+                    self.update_asset_log()
                     success = True
         return success
-
-    def run_graph_builder(self, java_mem=None):
-        log.info("building the graph")
-        file_utils.rm(self.graph_path)
-        file_utils.cd(self.this_module_dir)
-        cmd='-jar {} --build {} --cache {}'.format(self.otp_path, self.cache_dir, self.cache_dir)
-        exe_utils.run_java(cmd, big_xmx=java_mem)
 
     def deploy_test_graph(self, sleep=75, java_mem=None):
         ''' launch the server in a separate process ... then sleep for 75 seconds to give the server time to load the data
@@ -124,11 +126,6 @@ class Build(CacheBase):
         cmd='-server -jar {} --port {} --router "" --graphs {}'.format(self.otp_path, self.port, self.cache_dir)
         exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
         time.sleep(sleep)
-
-    def vizualize_graph(self, java_mem=None):
-        file_utils.cd(self.this_module_dir)
-        cmd='-jar {} --visualize --router "" --graphs {}'.format(self.otp_path, self.cache_dir)
-        exe_utils.run_java(cmd, fork=True, big_xmx=java_mem)
 
     def get_gtfs_feed_details(self):
         ''' returns updated [] with feed details
@@ -174,6 +171,12 @@ class Build(CacheBase):
             exists = os.path.exists(fail_path)
             if exists:
                 file_utils.mv(fail_path, self.graph_path)
+
+    def update_asset_log(self):
+        ''' TODO see if this is needed to inventory OSM and GTFS
+            note that we do some inventorying in vlog
+        '''
+
 
     def update_vlog(self, feeds_details):
         """ print out gtfs feed(s) version numbers and dates to the otp.v log file
