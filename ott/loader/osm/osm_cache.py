@@ -118,15 +118,18 @@ class OsmCache(CacheBase):
             exe_utils.wget(self.meta_url, self.meta_path)
 
     @classmethod
-    def check_osm_file_against_cache(cls, app_dir):
+    def check_osm_file_against_cache(cls, app_dir, force_update=False):
         ''' check the .osm file in this cache against an osm file in another app's directory
         '''
         ret_val = False
         try:
             osm = OsmCache()
-            log.info("cp {} to {}".format(osm.osm_name, app_dir))
-            osm.cp_cached_file(osm.osm_name, app_dir)
-            ret_val = True
+            app_osm_path = os.path.join(app_dir, osm.osm_name)
+            refresh = file_utils.is_a_newer_than_b(osm.osm_path, app_osm_path)
+            if force_update or refresh:
+                log.info("cp {} to {}".format(osm.osm_name, app_dir))
+                osm.cp_cached_file(osm.osm_name, app_dir)
+                ret_val = True
         except Exception, e:
             log.warn(e)
         return ret_val
