@@ -53,18 +53,19 @@ class Build(CacheBase):
     def __init__(self):
         super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
-        self.graphs = self.get_graphs()
+        self.graphs = self.config_graphs()
 
-    def get_graphs(self):
+    def config_graphs(self):
         ''' read the config for graph specs, then process those specs to get read to build
         '''
+        #import pdb; pdb.set_trace()
         graphs = self.config.get_json('graphs')
         if graphs is None or len(graphs) == 0:
             graphs = [otp_utils.get_graph_details(graphs)]
-        else:
-            for g in graphs:
-                dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-                g['dir'] = dir
+
+        for g in graphs:
+            dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+            g['dir'] = dir
 
         return graphs
 
