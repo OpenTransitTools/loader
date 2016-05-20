@@ -161,7 +161,6 @@ class Build(CacheBase):
                 log.warn("graph build failed for graph {}".format(g['name']))
             return ret_val
 
-
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
         ''' will rebuild the graph...
         '''
@@ -179,7 +178,7 @@ class Build(CacheBase):
         if file_utils.dir_has_newer_files(graph_path, graph_dir):
             rebuild_graph = True
 
-        # step 5: build graph is needed
+        # step 4: build graph is needed
         if rebuild_graph:
             success = False
             # step 5a: run the builder multiple times until we get a good looking Graph.obj
@@ -191,7 +190,6 @@ class Build(CacheBase):
                     success = True
                     break
         return success
-
 
     @classmethod
     def options(cls, argv):
