@@ -134,7 +134,7 @@ class Build(CacheBase):
 
         # run thru the graphs and
         for g in graphs:
-            dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+            dir = otp_utils.config_graph_dir(g, self.this_module_dir, force_update)
             filter = g.get('filter', None)
             OsmCache.check_osm_file_against_cache(dir)
             GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
