@@ -139,7 +139,8 @@ class Build(CacheBase):
             success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
                 otp_utils.run_otp_server(g['dir'], g['port'], java_mem=java_mem)
-                success = TestRunner.test_graph(g['dir'], delay=60)
+                url = "http://127.0.0.1:{}".format(g['port'])
+                success = TestRunner.test_graph(g['dir'], domain, delay=60)
                 if success:
                     self.update_vlog()
                     self.update_asset_log()

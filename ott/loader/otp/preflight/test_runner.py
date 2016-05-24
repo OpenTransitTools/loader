@@ -17,6 +17,7 @@ from ott.utils import file_utils
 from ott.utils.config_util import ConfigUtil
 
 
+
 class TestResult:
     FAIL=000
     WARN=333
@@ -53,7 +54,6 @@ class Test(object):
         """
         #import pdb; pdb.set_trace()
         self.config = ConfigUtil(section='otp')
-        self.port = self.config.get('port', def_val="80")
         self.host = self.config.get('host', def_val="http://maps7.trimet.org")
 
         self.csv_line_number = line_number
@@ -93,7 +93,7 @@ class Test(object):
         self.date = self.get_date_param(self.date)
 
     def set_urls(self):
-        p,m = self.make_urls(self.host, self.port)
+        p,m = self.make_urls(self.host, "55555")
         self.planner_url = p
         self.map_url = m
 
@@ -223,7 +223,7 @@ class Test(object):
 
     def get_map_url(self):
         purl = self.planner_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
+        return "{0}&purl=/{1}&{2}&module=planner".format(self.make_url(self.map_url), purl, self.map_params)
 
     @classmethod
     def make_url(cls, url, separater="?submit"):
@@ -501,7 +501,7 @@ class TestRunner(object):
         return test_suites
 
     @classmethod
-    def test_graph(cls, graph_dir, delay=1):
+    def test_graph(cls, graph_dir, domain=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
         ret_val = False
