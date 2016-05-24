@@ -140,7 +140,7 @@ class Build(CacheBase):
             if success:
                 otp_utils.run_otp_server(g['dir'], g['port'], java_mem=java_mem)
                 url = "http://127.0.0.1:{}".format(g['port'])
-                success = TestRunner.test_graph(g['dir'], domain, delay=60)
+                success = TestRunner.test_graph(g['dir'], url, delay=60)
                 if success:
                     self.update_vlog()
                     self.update_asset_log()
@@ -181,6 +181,11 @@ class Build(CacheBase):
                     success = True
                     break
         return success
+
+    def deploy_test_graph(self, java_mem=None, force_update=False, graph_index=0):
+        '''
+        '''
+        ## TODO ... check for running OTP, then deploy
 
     @classmethod
     def options(cls, argv):

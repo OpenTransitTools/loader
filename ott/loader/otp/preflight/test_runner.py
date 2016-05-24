@@ -501,7 +501,7 @@ class TestRunner(object):
         return test_suites
 
     @classmethod
-    def test_graph(cls, graph_dir, domain=None, delay=1):
+    def test_graph(cls, graph_dir, url=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
         ret_val = False
