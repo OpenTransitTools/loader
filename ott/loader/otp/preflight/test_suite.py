@@ -11,6 +11,7 @@ import socket
 import urllib2
 
 from ott.utils.config_util import ConfigUtil
+from ott.utils import object_utils
 
 
 class TestResult:
@@ -91,23 +92,7 @@ class Test(object):
         return ret_val
 
     def get_param(self, name, def_val=None, strip_all_spaces=False, warn_not_avail=True):
-        return self.get_param_val(self.csv_params, name, def_val, strip_all_spaces, warn_not_avail)
-
-    @classmethod
-    def get_param_val(cls, csv, name, def_val=None, strip_all_spaces=False, warn_not_avail=True):
-        ret_val = def_val
-        try:
-            if name in csv:
-                p = csv[name]
-                if p and len(p) > 0:
-                    ret_val = p.strip()
-                    if strip_all_spaces:
-                        ret_val = ret_val.replace(' ', '')
-            elif warn_not_avail:
-                log.warn("'{0}' was not found as an index in record {1}".format(name, csv))
-        except:
-            log.warn("'{0}' was not found as an index in record {1}".format(name, csv))
-        return ret_val
+        return object_utils.get_striped_dict_val(self.csv_params, name, def_val, strip_all_spaces, warn_not_avail)
 
     def append_note(self, note=None):
         if note:
