@@ -4,6 +4,7 @@ import sys
 import time
 import datetime
 import logging
+log = logging.getLogger(__file__)
 
 import csv
 import re
@@ -112,7 +113,7 @@ class Test(object):
             if p is not None and len(p) > 0:
                 ret_val = p.strip()
         except:
-            logging.warn("WARNING: '{0}' was not found as an index in record {1}".format(name, self.csv_params))
+            log.warn("WARNING: '{0}' was not found as an index in record {1}".format(name, self.csv_params))
 
         return ret_val
 
@@ -134,27 +135,27 @@ class Test(object):
         self.itinerary = self.static_call_otp(url)
         end = time.time()
         self.response_time = end - start
-        logging.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
-        logging.debug(self.itinerary)
+        log.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
+        log.debug(self.itinerary)
         if self.response_time <= 30:
             self.result = TestResult.PASS
         else:
             self.result = TestResult.WARN
-            logging.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
+            log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
 
     @classmethod
     def static_call_otp(cls, url, accept='application/xml'):
         ret_val = None
         try:
             socket.setdefaulttimeout(2000)
-            logging.debug("call_otp: OTP output for " + url)
+            log.debug("call_otp: OTP output for " + url)
             req = urllib2.Request(url, None, {'Accept':accept})
             res = urllib2.urlopen(req)
-            logging.debug("call_otp: OTP output for " + url)
+            log.debug("call_otp: OTP output for " + url)
             ret_val = res.read()
             res.close()
         except:
-            logging.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
+            log.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
         return ret_val
 
     def test_otp_result(self, strict=True):
@@ -163,15 +164,15 @@ class Test(object):
         if self.itinerary == None:
             self.result = TestResult.FAIL if strict else TestResult.WARN
             self.error_descript = "test_otp_result: itinerary is null"
-            logging.info(self.error_descript)
+            log.info(self.error_descript)
         else:
             if len(self.itinerary) < 1000:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
                 self.error_descript = "test_otp_result: itinerary content looks small at " + str(len(self.itinerary)) + " characters."
-                logging.warn(self.error_descript)
+                log.warn(self.error_descript)
             else:
                 self.error_descript = "test_otp_result: itinerary content size is " + str(len(self.itinerary)) + " characters."
-                logging.info(self.error_descript)
+                log.info(self.error_descript)
                 warn = False
                 warn = self.test_expected_response(self.expect_output, warn, strict)
                 if self.expect_duration is not None and len(self.expect_duration) > 0:
@@ -204,7 +205,7 @@ class Test(object):
                         self.error_descript += "expected number of legs test not in 'min|max' format."
                         warn = True
                 if warn:
-                    logging.warn(self.error_descript)
+                    log.warn(self.error_descript)
 
         return self.result
 
@@ -242,7 +243,7 @@ class Test(object):
         if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
             if self.coord_from != None or self.coord_to != None:
                 self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:{} to:{}".format(self.coord_from, self.coord_to)
-                logging.warn(self.error_descript)
+                log.warn(self.error_descript)
             self.is_valid = False
 
     def url_param(self, name, param, default=None):
@@ -295,7 +296,7 @@ class Test(object):
                     date = self.url_service_next_sunday()
                 else:
                     date = datetime.datetime.now().strftime(fmt)
-                    logging.warn("service param '{0}' not valid, using todays date.".format(self.service))
+                    log.warn("service param '{0}' not valid, using todays date.".format(self.service))
             
             self.url_param('date', date)
         return date
@@ -380,14 +381,14 @@ class TestSuite(object):
             if t.result is TestResult.PASS:
                 self.passes += 1
             elif t.result is TestResult.FAIL:
-                logging.info("test_suite: this test failed " + t.get_planner_url() + "\n")
+                log.info("test_suite: this test failed " + t.get_planner_url() + "\n")
                 self.failures += 1
             sys.stdout.write(".")
 
     def run(self):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
-        logging.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
+        log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
             t = Test.TestClass(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
             t.depart_by_check()
@@ -437,31 +438,6 @@ class TestRunner(object):
             report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
         self.report_template = Template(filename=report_template)
 
-    @classmethod
-    def get_suites_dir(cls, suites_name="suites"):
-        this_module_dir = cls.this_module_dir
-        suites_path = os.path.join(this_module_dir, suites_name)
-        return suites_path
-
-    @classmethod
-    def get_test_suites(cls, date=None):
-        test_suites = []
-        dir = cls.get_suites_dir()
-        files=os.listdir(dir)
-        for f in files:
-            if f.lower().endswith('.csv'):
-                t = TestSuite(dir, f, date)
-                test_suites.append(t)
-        return test_suites
-
-    def has_errors(self):
-        ret_val = False
-        for t in self.test_suites:
-            if t.failures > 0 or t.passes <= 0:
-                ret_val = True
-                logging.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
-        return ret_val
-
     def run(self):
         """ execute tests
         """
@@ -499,26 +475,49 @@ class TestRunner(object):
             print exceptions.text_error_template().render()
         return ret_val
 
-def runner(argv):
-    ''' main entry of the test runner
-    '''
-    date = None
-    lev  = logging.INFO
-    if len(argv) > 1:
-        if 'DEBUG' in argv:
-            lev = logging.DEBUG
-        if 'DEBUG' not in argv[1]:
-            date = argv[1]
-    logging.basicConfig(level=lev)
+    def has_errors(self):
+        ret_val = False
+        for t in self.test_suites:
+            if t.failures > 0 or t.passes <= 0:
+                ret_val = True
+                log.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
+        return ret_val
 
-    t = TestRunner()
-    t.run()
-    r = t.report()
+    @classmethod
+    def get_suites_dir(cls, suites_name="suites"):
+        this_module_dir = cls.this_module_dir
+        suites_path = os.path.join(this_module_dir, suites_name)
+        return suites_path
 
-    if t.has_errors():
-        print('There were errors')
-    else:
-        print('Nope, no errors')
+    @classmethod
+    def get_test_suites(cls, date=None):
+        test_suites = []
+        dir = cls.get_suites_dir()
+        files=os.listdir(dir)
+        for f in files:
+            if f.lower().endswith('.csv'):
+                t = TestSuite(dir, f, date)
+                test_suites.append(t)
+        return test_suites
+
+    @classmethod
+    def test_graph(cls, graph_dir, delay=1):
+        ''' run graph tests against whatever server is running
+        '''
+        ret_val = False
+        log.info('GRAPH TESTS: Starting tests!')
+        time.sleep(delay)
+        t = TestRunner()
+        t.run()
+        t.report(graph_dir)
+        if t.has_errors():
+            log.info('GRAPH TESTS: There were errors!')
+            ret_val = False
+        else:
+            log.info('GRAPH TESTS: Nope, no errors')
+            ret_val = True
+        return ret_val
+
 
 def stress(argv):
     date = None
@@ -531,10 +530,13 @@ def stress(argv):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
+    if 'DEBUG' in argv:
+        log.basicConfig(level=log.DEBUG)
+
     if 'STRESS' in argv:
         stress(argv)
     else:
-        runner(argv)
+        TestRunner.test_graph()
 
 if __name__ == '__main__':
     main()

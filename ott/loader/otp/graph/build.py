@@ -62,17 +62,6 @@ class B(object):
             self.report_error("GTFS files are in a questionable state")
         return ret_val
 
-    def run_graph_tests(self):
-        ''' returns updated [] with feed details
-        '''
-        t = TestRunner()
-        t.run()
-        t.report(self.cache_dir)
-        if t.has_errors():
-            log.info('GRAPH TESTS: There were errors!')
-        else:
-            log.info('GRAPH TESTS: Nope, no errors')
-
     def mv_failed_graph_to_good(self):
         """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
         """
@@ -144,12 +133,13 @@ class Build(CacheBase):
     def build_and_test_graphs(self, java_mem=None, force_update=False):
         ''' will build and test each of the graphs we have in self.graphs
         '''
+        #import pdb; pdb.set_trace()
         ret_val = True
         for g in self.graphs:
             success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
-                otp_utils.run_otp_server(g['dir'], g['port'], java_mem)
-                success = self.run_graph_tests()
+                otp_utils.run_otp_server(g['dir'], g['port'], java_mem=java_mem)
+                success = TestRunner.test_graph(g['dir'], delay=60)
                 if success:
                     self.update_vlog()
                     self.update_asset_log()
@@ -205,7 +195,7 @@ class Build(CacheBase):
             b.mv_failed_graph_to_good()
         elif "test" in argv:
             b.deploy_test_graph(java_mem=java_mem)
-            b.run_graph_tests()
+            b.test_graph()
         elif "build" in argv:
             b.run_graph_builder(java_mem=java_mem)
             b.deploy_test_graph(java_mem=java_mem)
