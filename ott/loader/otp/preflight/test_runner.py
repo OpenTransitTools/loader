@@ -8,6 +8,8 @@ log = logging.getLogger(__file__)
 from mako.template import Template
 from mako import exceptions
 
+from .test_suite import TestSuite
+
 
 class TestRunner(object):
     """ Run .csv tests from ./tests/ by constructing a
@@ -99,7 +101,7 @@ class TestRunner(object):
             log.info('GRAPH TESTS: There were errors!')
             ret_val = False
         else:
-            log.info('GRAPH TESTS: Nope, no errors')
+            log.info('GRAPH TESTS: Nope, no errors...')
             ret_val = True
         return ret_val
 

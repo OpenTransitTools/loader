@@ -1,5 +1,4 @@
 import os
-import inspect
 import sys
 import time
 import datetime
@@ -10,12 +9,8 @@ import csv
 import re
 import socket
 import urllib2
-from mako.template import Template
-from mako import exceptions
 
-from ott.utils import file_utils
 from ott.utils.config_util import ConfigUtil
-
 
 
 class TestResult:
@@ -27,9 +22,8 @@ class TestResult:
 class Test(object):
     """ Params for test, along with run capability -- Test object is typically built from a row in an .csv test suite 
     """
-    TestClass = None
 
-    def __init__(self, param_dict, line_number, date=None):
+    def __init__(self, param_dict, line_number, date=None, url="http://127.0.0.1:55555"):
         """ {
             OTP parmas:
               'From'
@@ -52,8 +46,9 @@ class Test(object):
               'Description/notes'
             }
         """
-        #import pdb; pdb.set_trace()
         self.config = ConfigUtil(section='otp')
+
+        self.planner_url     = url
 
         self.csv_line_number = line_number
         self.csv_params      = param_dict
@@ -72,33 +67,22 @@ class Test(object):
         self.mode            = self.get_param('Mode')
         self.optimize        = self.get_param('Optimize')
         self.service         = self.get_param('Service')
-        self.time            = self.get_param('Time')
-        if self.time is not None and self.time.find(' ') > 0:
-            self.time = self.time.replace(' ', '')
-
+        self.time            = self.get_param('Time', strip_all_spaces=True)
         self.description     = self.get_param('Description/notes')
         self.expect_output   = self.get_param('Expected output')
         self.expect_duration = self.get_param('Expected trip duration')
         self.expect_distance = self.get_param('Expected trip distance')
-        self.expect_num_legs = self.get_param('Expected number of legs')
+        self.expect_num_legs = self.get_param('Expected number of legs', warn_not_avail=False)
         self.arrive_by       = self.get_param('Arrive by')
         self.depart_by       = self.get_param('Depart by')
 
-        if 'Expected number of legs' in param_dict:
-            self.expect_num_legs = self.get_param('Expected number of legs')
-
+        # post process the load ... make params and urls, etc...
         self.date = self.get_date_param(self.date)
-
-    def get_param(self, name, def_val=None):
-        ret_val = def_val
-        try:
-            p = self.csv_params[name]
-            if p is not None and len(p) > 0:
-                ret_val = p.strip()
-        except:
-            log.warn("WARNING: '{0}' was not found as an index in record {1}".format(name, self.csv_params))
-
-        return ret_val
+        self.init_url_params()
+        self.url_distance()
+        self.url_mode()
+        self.url_optimize()
+        self.url_time()
 
     def did_test_pass(self):
         ret_val = False
@@ -106,8 +90,28 @@ class Test(object):
             ret_val = True
         return ret_val
 
-    def append_note(self, note=""):
-        self.description += " " + note
+    def get_param(self, name, def_val=None, strip_all_spaces=False, warn_not_avail=True):
+        return self.get_param_val(self.csv_params, name, def_val, strip_all_spaces, warn_not_avail)
+
+    @classmethod
+    def get_param_val(cls, csv, name, def_val=None, strip_all_spaces=False, warn_not_avail=True):
+        ret_val = def_val
+        try:
+            if name in csv:
+                p = csv[name]
+                if p and len(p) > 0:
+                    ret_val = p.strip()
+                    if strip_all_spaces:
+                        ret_val = ret_val.replace(' ', '')
+            elif warn_not_avail:
+                log.warn("'{0}' was not found as an index in record {1}".format(name, csv))
+        except:
+            log.warn("'{0}' was not found as an index in record {1}".format(name, csv))
+        return ret_val
+
+    def append_note(self, note=None):
+        if note:
+            self.description = "{}{}".format(self.description, note)
 
     def test_otp_result(self, strict=True):
         """ regexp test of the itinerary output for certain strings
@@ -160,7 +164,8 @@ class Test(object):
 
         return self.result
 
-    def test_expected_response(self, expected_output, ret_val, strict):
+    def test_expected_response(self, expected_output, initial_val, strict):
+        ret_val = initial_val
         if expected_output is not None and len(expected_output) > 0:
             regres = re.search(expected_output, self.itinerary)
             if regres is None:
@@ -183,8 +188,8 @@ class Test(object):
     def url_param(self, name, param, default=None):
         """
         """
-        p = (param if param != None else default)
-        if p != None and p != '':
+        p = param if param else default
+        if p:
             self.otp_params += '&{0}={1}'.format(name, p)
             self.map_params += '&{0}={1}'.format(name, p)
 
@@ -270,9 +275,7 @@ class Test(object):
         if self.arrive_by == 'FALSE':
             self.is_valid = False
 
-
     #self.host = self.config.get('host', def_val="http://maps7.trimet.org")
-    planner_url = ""
 
     def set_urls(self):
         p,m = self.make_urls(self.host, "55555")
@@ -284,10 +287,9 @@ class Test(object):
         http = ""
         if "http" not in host:
             http = "http://"
-        planner_url = file_utils.envvar('OTP_URL', "{}{}:{}/{}".format(http, host, port, path))
-        map_url = file_utils.envvar('OTP_MAP_URL', "{}{}/otp.html".format(http, host))
+        planner_url = "{}{}:{}/{}".format(http, host, port, path)
+        map_url = "{}{}/otp.html".format(http, host)
         return planner_url, map_url
-
 
     def call_otp(self, url=None):
         ''' calls the trip web service
@@ -338,17 +340,11 @@ class Test(object):
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.map_params
 
-    def prep_url(self):
-        self.url_distance()
-        self.url_mode()
-        self.url_optimize()
-        self.url_time()
-
 
 class TestSuite(object):
 
     def __init__(self, dir, file, date=None):
-        """
+        """ this class corresponds to a single .csv 'test suite'
         """
         self.file_path = os.path.join(dir, file)
         self.name = file
@@ -369,12 +365,11 @@ class TestSuite(object):
             self.params.append(row)
 
     def do_test(self, t, strict=True):
-        t.prep_url()
         if t.is_valid:
             t.call_otp()
             time.sleep(1)
             t.test_otp_result(strict)
-            self.tests.append(t);
+            self.tests.append(t)
             if t.result is TestResult.PASS:
                 self.passes += 1
             elif t.result is TestResult.FAIL:
@@ -405,7 +400,6 @@ class TestSuite(object):
         for i, p in enumerate(self.params):
             t = Test(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
             t.depart_by_check()
-            t.prep_url()
             url = t.get_planner_url()
             if t.is_valid:
                 print url
@@ -419,121 +413,3 @@ class TestSuite(object):
             url = t.get_planner_url()
             if t.is_valid:
                 print url
-
-
-class TestRunner(object):
-    """ Run .csv tests from ./tests/ by constructing a
-        url to the trip planner, calling the url, then printing a report
-    """
-    this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-
-    def __init__(self, report_template=None, date=None):
-        """constructor builds the test runner
-        """
-        self.test_suites = self.get_test_suites(date)
-        if report_template is None:
-            report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
-        self.report_template = Template(filename=report_template)
-
-    def run(self):
-        """ execute tests
-        """
-        for ts in self.test_suites:
-            ts.run()
-
-    def printer(self):
-        """ print test urls...
-        """
-        for ts in self.test_suites:
-            ts.printer()
-
-    def report(self, dir=None, report_name='otp_report.html'):
-        """ render a pass/fail report
-        """
-        ret_val = None
-        try:
-            # step 1: mako render of the report
-            host = "FIX ME"
-            r = self.report_template.render(host, test_suites=self.test_suites, test_errors=self.has_errors())
-            ret_val = r
-
-            # step 2: stream the report to a file
-            report_path = report_name
-            if dir:
-                report_path = os.path.join(dir, report_name)
-            f = open(report_path, 'w')
-            if r:
-                f.write(r)
-            else:
-                f.write("Sorry, the template was null...")
-            f.flush()
-            f.close()
-        except Exception, e:
-            print exceptions.text_error_template().render()
-        return ret_val
-
-    def has_errors(self):
-        ret_val = False
-        for t in self.test_suites:
-            if t.failures > 0 or t.passes <= 0:
-                ret_val = True
-                log.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
-        return ret_val
-
-    @classmethod
-    def get_suites_dir(cls, suites_name="suites"):
-        this_module_dir = cls.this_module_dir
-        suites_path = os.path.join(this_module_dir, suites_name)
-        return suites_path
-
-    @classmethod
-    def get_test_suites(cls, date=None):
-        test_suites = []
-        dir = cls.get_suites_dir()
-        files=os.listdir(dir)
-        for f in files:
-            if f.lower().endswith('.csv'):
-                t = TestSuite(dir, f, date)
-                test_suites.append(t)
-        return test_suites
-
-    @classmethod
-    def test_graph(cls, graph_dir, url=None, delay=1):
-        ''' run graph tests against whatever server is running
-        '''
-        ret_val = False
-        log.info('GRAPH TESTS: Starting tests!')
-        time.sleep(delay)
-        t = TestRunner()
-        t.run()
-        t.report(graph_dir)
-        if t.has_errors():
-            log.info('GRAPH TESTS: There were errors!')
-            ret_val = False
-        else:
-            log.info('GRAPH TESTS: Nope, no errors')
-            ret_val = True
-        return ret_val
-
-
-def stress(argv):
-    date = None
-    if len(argv) > 2:
-        date = argv[1]
-
-    test_suites = TestRunner.get_test_suites(date)
-    for ts in test_suites:
-        ts.printer()
-
-def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
-    if 'DEBUG' in argv:
-        log.basicConfig(level=log.DEBUG)
-
-    if 'STRESS' in argv:
-        stress(argv)
-    else:
-        TestRunner.test_graph()
-
-if __name__ == '__main__':
-    main()
