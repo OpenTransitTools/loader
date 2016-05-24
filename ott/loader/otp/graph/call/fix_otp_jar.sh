@@ -1,7 +1,7 @@
 OTP_DIR=${OTP_DIR:="../OpenTripPlanner"}
 OTP_JAR=${OTP_JAR:="$OTP_DIR/target/otp-*-shaded.jar"}
 
-EXE_DIR=${EXE_DIR:="ott/loader/otp/graph"}
+EXE_DIR=${EXE_DIR:="ott/loader/otp/graph/call"}
 EXE_JAR=${EXE_JAR:="$EXE_DIR/otp.jar"}
 
 ##

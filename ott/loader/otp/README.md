@@ -11,7 +11,7 @@ grab new otp from build:
   1. cd OpenTripPlanner
   1. mvn package
   1. cd ../loader/
-  1. rm ott/loader/otp/graph/cache/Graph.obj
-  1. cp ../OpenTripPlanner/target/otp*shaded.jar ott/loader/otp/graph/otp.jar
+  1. ott/loader/otp/graph/call/fix_otp_jar.sh 
+  1. ott/loader/otp/graph/prod/fix_otp_jar.sh 
   1. bin/otp_build_graph <low_mem>
 
