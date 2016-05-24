@@ -7,10 +7,9 @@ log = logging.getLogger(__file__)
 
 import csv
 import re
-import socket
-import urllib2
 
 from ott.utils.config_util import ConfigUtil
+from ott.utils import otp_utils
 from ott.utils import object_utils
 
 
@@ -230,6 +229,11 @@ class Test(object):
         """
         pass
 
+    def url_service_next_month_weekday(self):
+        """
+        """
+        pass
+
     def url_service_next_saturday(self):
         date = datetime.datetime.now()
         day = date.weekday()
@@ -247,11 +251,6 @@ class Test(object):
         date = date.strftime("%Y-%m-%d")
         return date
 
-    def url_service_next_month_weekday(self):
-        """
-        """
-        pass
-
     def depart_by_check(self):
         if self.depart_by == 'FALSE':
             self.is_valid = False
@@ -260,29 +259,13 @@ class Test(object):
         if self.arrive_by == 'FALSE':
             self.is_valid = False
 
-    #self.host = self.config.get('host', def_val="http://maps7.trimet.org")
-
-    def set_urls(self):
-        p,m = self.make_urls(self.host, "55555")
-        self.planner_url = p
-        self.map_url = m
-
-    @classmethod
-    def make_urls(cls, host, port, path=""):
-        http = ""
-        if "http" not in host:
-            http = "http://"
-        planner_url = "{}{}:{}/{}".format(http, host, port, path)
-        map_url = "{}{}/otp.html".format(http, host)
-        return planner_url, map_url
-
     def call_otp(self, url=None):
         ''' calls the trip web service
         '''
         self.itinerary = None
         start = time.time()
-        url = (url if url != None else self.get_planner_url())
-        self.itinerary = self.static_call_otp(url)
+        url = url if url else self.get_planner_url()
+        self.itinerary = otp_utils.call_planner_svc(url)
         end = time.time()
         self.response_time = end - start
         log.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
@@ -293,30 +276,15 @@ class Test(object):
             self.result = TestResult.WARN
             log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
 
-    @classmethod
-    def static_call_otp(cls, url, accept='application/xml'):
-        ret_val = None
-        try:
-            socket.setdefaulttimeout(2000)
-            log.debug("call_otp: OTP output for " + url)
-            req = urllib2.Request(url, None, {'Accept':accept})
-            res = urllib2.urlopen(req)
-            log.debug("call_otp: OTP output for " + url)
-            ret_val = res.read()
-            res.close()
-        except:
-            log.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
-        return ret_val
-
     def get_planner_url(self):
         return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
 
     def get_map_url(self):
         purl = self.planner_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}&module=planner".format(self.make_url(self.map_url), purl, self.map_params)
+        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
 
     @classmethod
-    def make_url(cls, url, separater="?submit"):
+    def make_url(cls, url, separater="?submit&module=planner"):
         ret_val = url
         if "?" not in url:
             ret_val = url + separater
