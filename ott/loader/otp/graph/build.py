@@ -186,6 +186,13 @@ class Build(CacheBase):
         '''
         '''
         ## TODO ... check for running OTP, then deploy
+        success = TestRunner.test_graph(g['dir'], url, delay=60)
+
+    def vizualize_graph(self, java_mem=None, graph_index=0):
+        '''
+        '''
+        ## TODO ... check for running OTP, then deploy
+        success = TestRunner.test_graph(g['dir'], url, delay=60)
 
     @classmethod
     def options(cls, argv):
@@ -200,12 +207,6 @@ class Build(CacheBase):
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         elif "test" in argv:
-            b.deploy_test_graph(java_mem=java_mem)
-            b.test_graph()
-        elif "build" in argv:
-            b.run_graph_builder(java_mem=java_mem)
-            b.deploy_test_graph(java_mem=java_mem)
-        elif "dep" in argv:
             b.deploy_test_graph(java_mem=java_mem)
         elif "viz" in argv:
             b.vizualize_graph(java_mem=java_mem)
