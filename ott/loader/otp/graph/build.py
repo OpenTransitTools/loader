@@ -185,8 +185,9 @@ class Build(CacheBase):
     def deploy_test_graph(self, java_mem=None, force_update=False, graph_index=0):
         '''
         '''
-        ## TODO ... check for running OTP, then deploy
-        success = TestRunner.test_graph(g['dir'], url, delay=60)
+        dir = ""
+        url = ""
+        success = TestRunner.test_graph(dir, url)
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
         '''

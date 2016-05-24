@@ -54,7 +54,6 @@ class Test(object):
         """
         #import pdb; pdb.set_trace()
         self.config = ConfigUtil(section='otp')
-        self.host = self.config.get('host', def_val="http://maps7.trimet.org")
 
         self.csv_line_number = line_number
         self.csv_params      = param_dict
@@ -88,23 +87,7 @@ class Test(object):
         if 'Expected number of legs' in param_dict:
             self.expect_num_legs = self.get_param('Expected number of legs')
 
-        self.set_urls()
-        self.init_url_params()
         self.date = self.get_date_param(self.date)
-
-    def set_urls(self):
-        p,m = self.make_urls(self.host, "55555")
-        self.planner_url = p
-        self.map_url = m
-
-    @classmethod
-    def make_urls(cls, host, port, path=""):
-        http = ""
-        if "http" not in host:
-            http = "http://"
-        planner_url = file_utils.envvar('OTP_URL', "{}{}:{}/{}".format(http, host, port, path))
-        map_url = file_utils.envvar('OTP_MAP_URL', "{}{}/otp.html".format(http, host))
-        return planner_url, map_url
 
     def get_param(self, name, def_val=None):
         ret_val = def_val
@@ -125,38 +108,6 @@ class Test(object):
 
     def append_note(self, note=""):
         self.description += " " + note
-
-    def call_otp(self, url=None):
-        ''' calls the trip web service
-        '''
-        self.itinerary = None
-        start = time.time()
-        url = (url if url != None else self.get_planner_url())
-        self.itinerary = self.static_call_otp(url)
-        end = time.time()
-        self.response_time = end - start
-        log.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
-        log.debug(self.itinerary)
-        if self.response_time <= 30:
-            self.result = TestResult.PASS
-        else:
-            self.result = TestResult.WARN
-            log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
-
-    @classmethod
-    def static_call_otp(cls, url, accept='application/xml'):
-        ret_val = None
-        try:
-            socket.setdefaulttimeout(2000)
-            log.debug("call_otp: OTP output for " + url)
-            req = urllib2.Request(url, None, {'Accept':accept})
-            res = urllib2.urlopen(req)
-            log.debug("call_otp: OTP output for " + url)
-            ret_val = res.read()
-            res.close()
-        except:
-            log.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
-        return ret_val
 
     def test_otp_result(self, strict=True):
         """ regexp test of the itinerary output for certain strings
@@ -217,23 +168,6 @@ class Test(object):
                 self.error_descript += "test_otp_result: couldn't find " + expected_output + " in otp response."
                 ret_val = True
         return ret_val
-
-    def get_planner_url(self):
-        return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
-
-    def get_map_url(self):
-        purl = self.planner_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}&module=planner".format(self.make_url(self.map_url), purl, self.map_params)
-
-    @classmethod
-    def make_url(cls, url, separater="?submit"):
-        ret_val = url
-        if "?" not in url:
-            ret_val = url + separater
-        return ret_val
-
-    def get_ridetrimetorg_url(self):
-        return "http://ride.trimet.org?submit&" + self.map_params
 
     def init_url_params(self):
         """
@@ -337,11 +271,83 @@ class Test(object):
             self.is_valid = False
 
 
+    #self.host = self.config.get('host', def_val="http://maps7.trimet.org")
+    planner_url = ""
+
+    def set_urls(self):
+        p,m = self.make_urls(self.host, "55555")
+        self.planner_url = p
+        self.map_url = m
+
+    @classmethod
+    def make_urls(cls, host, port, path=""):
+        http = ""
+        if "http" not in host:
+            http = "http://"
+        planner_url = file_utils.envvar('OTP_URL', "{}{}:{}/{}".format(http, host, port, path))
+        map_url = file_utils.envvar('OTP_MAP_URL', "{}{}/otp.html".format(http, host))
+        return planner_url, map_url
+
+
+    def call_otp(self, url=None):
+        ''' calls the trip web service
+        '''
+        self.itinerary = None
+        start = time.time()
+        url = (url if url != None else self.get_planner_url())
+        self.itinerary = self.static_call_otp(url)
+        end = time.time()
+        self.response_time = end - start
+        log.info("call_otp: response time of {} second for url {}".format(self.response_time, url))
+        log.debug(self.itinerary)
+        if self.response_time <= 30:
+            self.result = TestResult.PASS
+        else:
+            self.result = TestResult.WARN
+            log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
+
+    @classmethod
+    def static_call_otp(cls, url, accept='application/xml'):
+        ret_val = None
+        try:
+            socket.setdefaulttimeout(2000)
+            log.debug("call_otp: OTP output for " + url)
+            req = urllib2.Request(url, None, {'Accept':accept})
+            res = urllib2.urlopen(req)
+            log.debug("call_otp: OTP output for " + url)
+            ret_val = res.read()
+            res.close()
+        except:
+            log.warn('ERROR: could not get data from url (timeout?): {0}'.format(url))
+        return ret_val
+
+    def get_planner_url(self):
+        return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
+
+    def get_map_url(self):
+        purl = self.planner_url.split('/')[-1]
+        return "{0}&purl=/{1}&{2}&module=planner".format(self.make_url(self.map_url), purl, self.map_params)
+
+    @classmethod
+    def make_url(cls, url, separater="?submit"):
+        ret_val = url
+        if "?" not in url:
+            ret_val = url + separater
+        return ret_val
+
+    def get_ridetrimetorg_url(self):
+        return "http://ride.trimet.org?submit&" + self.map_params
+
+    def prep_url(self):
+        self.url_distance()
+        self.url_mode()
+        self.url_optimize()
+        self.url_time()
+
+
 Test.TestClass = Test
 
 class TestSuite(object):
-    """ url
-    """
 
     def __init__(self, dir, file, date=None):
         """
@@ -364,15 +370,8 @@ class TestSuite(object):
         for row in reader:
             self.params.append(row)
 
-    @classmethod
-    def prep_url(cls, t):
-        t.url_distance()
-        t.url_mode()
-        t.url_optimize()
-        t.url_time()
-
     def do_test(self, t, strict=True):
-        self.prep_url(t)
+        t.prep_url()
         if t.is_valid:
             t.call_otp()
             time.sleep(1)
@@ -408,7 +407,7 @@ class TestSuite(object):
         for i, p in enumerate(self.params):
             t = Test(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
             t.depart_by_check()
-            self.prep_url(t)
+            t.prep_url()
             url = t.get_planner_url()
             if t.is_valid:
                 print url
