@@ -41,7 +41,7 @@ def load_all():
     db.check_db(force_update=force_update)
 
     log.info("step 4: load otp (build new graph)")
-    otp = Build()
+    otp = Build(force_update=force_update)
     otp.build_and_test_graphs(force_update=force_update)
 
 
