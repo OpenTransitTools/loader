@@ -57,13 +57,14 @@ class TestRunner(object):
         return ret_val
 
     @classmethod
-    def test_graph(cls, graph_dir, base_url=None, dir=None, delay=1):
+    def test_graph(cls, graph_dir, suite_dir=None, base_url=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
+        import pdb; pdb.set_trace()
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(base_url, dir)
+        t = TestRunner(base_url, suite_dir)
         t.test_suites.run()
         t.report(graph_dir)
         if t.has_errors():
@@ -94,7 +95,7 @@ def main(argv=sys.argv):
     if 'STRESS' in argv:
         stress(argv)
     else:
-        TestRunner.test_graph(dir=dir)
+        TestRunner.test_graph(suite_dir=dir)
 
 if __name__ == '__main__':
     main()

@@ -138,9 +138,7 @@ class Build(CacheBase):
         for g in self.graphs:
             success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
-                otp_utils.run_otp_server(g['dir'], g['port'], java_mem=java_mem)
-                url = "http://127.0.0.1:{}".format(g['port'])
-                success = TestRunner.test_graph(g['dir'], url, delay=60)
+                success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
                 if success:
                     self.update_vlog()
                     self.update_asset_log()
@@ -182,18 +180,18 @@ class Build(CacheBase):
                     break
         return success
 
-    def deploy_test_graph(self, java_mem=None, force_update=False, graph_index=0):
+    def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
         '''
         '''
-        dir = ""
-        url = ""
-        success = TestRunner.test_graph(dir, url)
+        #otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)pp
+        url = "http://127.0.0.1:{}".format(graph['port'])
+        success = TestRunner.test_graph(graph_dir=graph['dir'], suite_dir=suite_dir, base_url=url, delay=0) #delay=60)
+        return success
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
         '''
         '''
         ## TODO ... check for running OTP, then deploy
-        success = TestRunner.test_graph(g['dir'], url, delay=60)
 
     @classmethod
     def options(cls, argv):
@@ -208,7 +206,8 @@ class Build(CacheBase):
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         elif "test" in argv:
-            b.deploy_test_graph(java_mem=java_mem)
+            g = {'port':'55555', 'dir':'XXXX'}
+            b.deploy_test_graph(graph=g, java_mem=java_mem)
         elif "viz" in argv:
             b.vizualize_graph(java_mem=java_mem)
         else:
