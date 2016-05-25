@@ -23,7 +23,7 @@ class Test(object):
     """ Params for test, along with run capability -- Test object is typically built from a row in an .csv test suite 
     """
 
-    def __init__(self, param_dict, line_number, date=None, url="http://127.0.0.1:55555"):
+    def __init__(self, param_dict, line_number, url, date=None):
         """ {
             OTP parmas:
               'From'
@@ -295,13 +295,14 @@ class Test(object):
 
 
 class TestSuite(object):
+    """ this class corresponds to a single .csv 'test suite'
+    """
 
-    def __init__(self, dir, file, date=None):
-        """ this class corresponds to a single .csv 'test suite'
-        """
+    def __init__(self, dir, file):
+        self.dir = dir
+        self.file = file
         self.file_path = os.path.join(dir, file)
         self.name = file
-        self.date = date
         self.params = []
         self.tests  = []
         self.failures = 0
@@ -330,28 +331,28 @@ class TestSuite(object):
                 self.failures += 1
             sys.stdout.write(".")
 
-    def run(self):
+    def run(self, base_url, date=None):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
         log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
-            t = Test(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
+            t = Test(p, i+2, base_url, date)
             t.depart_by_check()
             self.do_test(t)
 
             """ arrive by tests
             """
-            t = Test(p, i+2, self.date)
+            t = Test(p, i+2, base_url, date)
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
             self.do_test(t, False)
 
-    def printer(self):
+    def printer(self, base_url, date=None):
         """ iterate the list of tests from the .csv files and print the URLs
         """
         for i, p in enumerate(self.params):
-            t = Test(p, i+2, self.date)  # i+2 is the line number in the .csv file, accounting for the header
+            t = Test(p, i+2, base_url, date)  # i+2 is the line number in the .csv file, accounting for the header
             t.depart_by_check()
             url = t.get_planner_url()
             if t.is_valid:
@@ -359,10 +360,51 @@ class TestSuite(object):
 
             """ arrive by tests
             """
-            t = Test(p, i+2, self.date)
+            t = Test(p, i+2, base_url, date)
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
             url = t.get_planner_url()
             if t.is_valid:
                 print url
+
+
+class ListTestSuites(object):
+    """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
+    """
+    base_url = None
+    dir = None
+    files = None
+    date = None
+    test_suites = []
+
+    def __init__(self, base_url, dir, date=None):
+        """ this class corresponds to a single .csv 'test suite'
+        """
+        self.base_url = base_url
+        self.dir = dir
+        self.date = date
+        self.files = os.listdir(self.dir)
+        for f in self.files:
+            if f.lower().endswith('.csv'):
+                t = TestSuite(self.dir, f)
+                self.test_suites.append(t)
+
+    def has_errors(self):
+        ret_val = False
+        for t in self.test_suites:
+            if t.failures > 0 or t.passes <= 0:
+                ret_val = True
+                log.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
+        return ret_val
+
+    def run(self):
+        for ts in self.test_suites:
+            ts.run(self.base_url, self.date)
+
+    def printer(self):
+        for ts in self.test_suites:
+            ts.printer(self.base_url, self.date)
+
+
+

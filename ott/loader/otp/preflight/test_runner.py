@@ -1,14 +1,14 @@
 import os
-import inspect
 import sys
 import time
+import inspect
 import logging
 log = logging.getLogger(__file__)
 
 from mako.template import Template
 from mako import exceptions
 
-from .test_suite import TestSuite
+from .test_suite import ListTestSuites
 
 
 class TestRunner(object):
@@ -16,26 +16,20 @@ class TestRunner(object):
         url to the trip planner, calling the url, then printing a report
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    base_url = None
 
-    def __init__(self, report_template=None, date=None):
+    def __init__(self, base_url, dir=None, report_template=None, date=None):
         """constructor builds the test runner
         """
-        self.test_suites = self.get_test_suites(date)
+        if base_url:
+            base_url = "http://127.0.0.1:55555"
+        if dir is None:
+            dir = os.path.join(self.this_module_dir, "suites")
         if report_template is None:
             report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
+
+        self.test_suites = ListTestSuites(base_url, dir, date)
         self.report_template = Template(filename=report_template)
-
-    def run(self):
-        """ execute tests
-        """
-        for ts in self.test_suites:
-            ts.run()
-
-    def printer(self):
-        """ print test urls...
-        """
-        for ts in self.test_suites:
-            ts.printer()
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a pass/fail report
@@ -62,40 +56,15 @@ class TestRunner(object):
             print exceptions.text_error_template().render()
         return ret_val
 
-    def has_errors(self):
-        ret_val = False
-        for t in self.test_suites:
-            if t.failures > 0 or t.passes <= 0:
-                ret_val = True
-                log.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
-        return ret_val
-
     @classmethod
-    def get_suites_dir(cls, suites_name="suites"):
-        this_module_dir = cls.this_module_dir
-        suites_path = os.path.join(this_module_dir, suites_name)
-        return suites_path
-
-    @classmethod
-    def get_test_suites(cls, date=None):
-        test_suites = []
-        dir = cls.get_suites_dir()
-        files=os.listdir(dir)
-        for f in files:
-            if f.lower().endswith('.csv'):
-                t = TestSuite(dir, f, date)
-                test_suites.append(t)
-        return test_suites
-
-    @classmethod
-    def test_graph(cls, graph_dir, url=None, delay=1):
+    def test_graph(cls, graph_dir, base_url=None, dir=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner()
-        t.run()
+        t = TestRunner(base_url, dir)
+        t.test_suites.run()
         t.report(graph_dir)
         if t.has_errors():
             log.info('GRAPH TESTS: There were errors!')
@@ -117,13 +86,15 @@ def stress(argv):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
+    dir = None
     if 'DEBUG' in argv:
         log.basicConfig(level=log.DEBUG)
+        dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
     if 'STRESS' in argv:
         stress(argv)
     else:
-        TestRunner.test_graph()
+        TestRunner.test_graph(dir=dir)
 
 if __name__ == '__main__':
     main()
