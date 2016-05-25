@@ -6,7 +6,6 @@ import logging
 log = logging.getLogger(__file__)
 
 from mako.template import Template
-from mako import exceptions
 
 from .test_suite import ListTestSuites
 
@@ -28,8 +27,8 @@ class TestRunner(object):
         if report_template is None:
             report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
 
-        self.test_suites = ListTestSuites(base_url, dir, date)
         self.report_template = Template(filename=report_template)
+        self.test_suites = ListTestSuites(base_url, dir, date)
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a pass/fail report
@@ -37,8 +36,13 @@ class TestRunner(object):
         ret_val = None
         try:
             # step 1: mako render of the report
-            host = "FIX ME"
-            r = self.report_template.render(host, test_suites=self.test_suites, test_errors=self.test_suites.has_errors())
+            data = {
+                "host" : "FIX ME",
+                "test_suites" : self.test_suites,
+                "test_errors" : self.test_suites.has_errors()
+            }
+            r = self.report_template.render(data)
+            #r = self.report_template.render(host)
             ret_val = r
 
             # step 2: stream the report to a file
@@ -53,11 +57,11 @@ class TestRunner(object):
             f.flush()
             f.close()
         except Exception, e:
-            print exceptions.text_error_template().render()
+            log.warn(e)
         return ret_val
 
     @classmethod
-    def test_graph(cls, graph_dir, suite_dir=None, base_url=None, delay=1):
+    def test_graph_factory(cls, graph_dir, suite_dir=None, base_url=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
         #import pdb; pdb.set_trace()
@@ -96,7 +100,7 @@ def main(argv=sys.argv):
     if 'STRESS' in argv:
         stress(argv)
     else:
-        TestRunner.test_graph(suite_dir=dir)
+        TestRunner.test_graph_factory(suite_dir=dir)
 
 if __name__ == '__main__':
     main()

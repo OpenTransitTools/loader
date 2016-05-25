@@ -185,7 +185,7 @@ class Build(CacheBase):
         '''
         #otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)pp
         url = "http://127.0.0.1:{}".format(graph['port'])
-        success = TestRunner.test_graph(graph_dir=graph['dir'], suite_dir=suite_dir, base_url=url, delay=0) #delay=60)
+        success = TestRunner.test_graph_factory(graph_dir=graph['dir'], suite_dir=suite_dir, base_url=url, delay=0) #delay=60)
         return success
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
