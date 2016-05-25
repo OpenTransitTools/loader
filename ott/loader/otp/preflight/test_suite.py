@@ -381,7 +381,7 @@ class ListTestSuites(object):
     def __init__(self, base_url, dir, date=None):
         """ this class corresponds to a single .csv 'test suite'
         """
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         self.base_url = base_url
         self.dir = dir
         self.date = date
@@ -400,7 +400,7 @@ class ListTestSuites(object):
         return ret_val
 
     def run(self):
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         for ts in self.test_suites:
             ts.run(self.base_url, self.date)
 

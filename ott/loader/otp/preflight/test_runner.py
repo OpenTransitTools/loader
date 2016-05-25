@@ -38,7 +38,7 @@ class TestRunner(object):
         try:
             # step 1: mako render of the report
             host = "FIX ME"
-            r = self.report_template.render(host, test_suites=self.test_suites, test_errors=self.has_errors())
+            r = self.report_template.render(host, test_suites=self.test_suites, test_errors=self.test_suites.has_errors())
             ret_val = r
 
             # step 2: stream the report to a file
@@ -60,14 +60,15 @@ class TestRunner(object):
     def test_graph(cls, graph_dir, suite_dir=None, base_url=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
+        suite_dir = "c:/java/DEV/loader/ott/loader/otp/tests/suites"
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
         t = TestRunner(base_url, suite_dir)
         t.test_suites.run()
         t.report(graph_dir)
-        if t.has_errors():
+        if t.test_suites.has_errors():
             log.info('GRAPH TESTS: There were errors!')
             ret_val = False
         else:
