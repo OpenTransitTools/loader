@@ -17,17 +17,17 @@ class TestRunner(object):
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     base_url = None
 
-    def __init__(self, base_url, dir=None, report_template=None, date=None):
+    def __init__(self, base_url, dir=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
         if base_url:
             base_url = "http://127.0.0.1:55555"
         if dir is None:
             dir = os.path.join(self.this_module_dir, "suites")
-        if report_template is None:
-            report_template = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
+        if report_mako_path is None:
+            report_mako_path = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
 
-        self.report_template = Template(filename=report_template)
+        self.report_template = Template(filename=report_mako_path)
         self.test_suites = ListTestSuites(base_url, dir, date)
 
     def report(self, dir=None, report_name='otp_report.html'):
@@ -41,7 +41,9 @@ class TestRunner(object):
                 "test_suites" : self.test_suites,
                 "test_errors" : self.test_suites.has_errors()
             }
-            r = self.report_template.render(data)
+            #r = self.report_template.render(data)
+            #import pdb; pdb.set_trace()
+            r = self.report_template.render(data=data)
             #r = self.report_template.render(host)
             ret_val = r
 
@@ -56,6 +58,8 @@ class TestRunner(object):
                 f.write("Sorry, the template was null...")
             f.flush()
             f.close()
+        except NameError, e:
+            log.warn("This ERROR probably means your template has a variable not being sent down with render: {}".format(e))
         except Exception, e:
             log.warn(e)
         return ret_val
