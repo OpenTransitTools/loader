@@ -206,7 +206,7 @@ class Build(CacheBase):
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         elif "test" in argv:
-            g = {'port':'55555', 'dir':'XXXX'}
+            g = {'port':'55555', 'dir':'/java/DEV/loader/ott/loader/otp/graph/prod'}
             b.deploy_test_graph(graph=g, java_mem=java_mem)
         elif "viz" in argv:
             b.vizualize_graph(java_mem=java_mem)

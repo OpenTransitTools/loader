@@ -69,7 +69,7 @@ class TestRunner(object):
         ''' run graph tests against whatever server is running
         '''
         #import pdb; pdb.set_trace()
-        suite_dir = "c:/java/DEV/loader/ott/loader/otp/tests/suites"
+        suite_dir = "/java/DEV/loader/ott/loader/otp/tests/suites"
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
