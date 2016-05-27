@@ -82,22 +82,26 @@ import datetime
         if test.expect_num_legs != None:
             expect_title += " num_legs: {0}, ".format(test.expect_num_legs)
     %>
-        <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number}) |  <a href="${test.get_ws_url()}" title="${expect_title}" target="#">Planner WS</a> | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a> (<a href="${test.get_ridetrimetorg_url()}" title="${expect_title}" target="#">ride.trimet.org</a>)</div>
+        <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number})
+            | <a href="${test.get_ws_url()}" title="${expect_title}" target="#">Planner WS</a>
+            | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a>
+            (<a href="${test.get_ridetrimetorg_url()}" title="${expect_title}" target="#">ride.trimet.org</a>)</div>
 </%def>
 
 <h1>OTP Build Report: ${datetime.datetime.now().strftime("%m.%d.%Y @ %I:%M %p")}</h1>
 <h3><span class="${content_a_or_b(test_errors,'fail','pass')}">${content_a_or_b(test_errors, 'Some tests FAILED', 'All tests are PASSING')}</span></h3>
-
-% for ts in test_suites:
+%for ts in test_suites:
     <p>
     <h2>${ts.name}</h2>
-    % for t in ts.tests:
+    %if ts.get_tests():
+    %for t in ts.get_tests():
         % if t.did_test_pass():
             ${test_result(test=t, res="pass")}
         % else:
             ${test_result(test=t, res="fail")}
         %endif
-    % endfor
+    %endfor
+    %endif
     </p>
-% endfor
+%endfor
 </body>

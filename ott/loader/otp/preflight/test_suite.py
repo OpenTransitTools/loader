@@ -332,6 +332,9 @@ class TestSuite(object):
                 self.failures += 1
             sys.stdout.write(".")
 
+    def get_tests(self):
+        return self.tests
+
     def run(self, ws_url, map_url, date=None):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """

@@ -21,6 +21,8 @@ class TestRunner(object):
     def __init__(self, port=8001, suite_dir=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
+
+        # step 1: build OTP ws and map urls from config
         self.config = ConfigUtil(section='otp')
         domain = self.config.get('domain', def_val="127.0.0.1")
 
@@ -30,22 +32,25 @@ class TestRunner(object):
         map = self.config.get('map_url_path', def_val="")
         map_url = "http://{}:{}{}".format(domain, port, map)
 
+        # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
             suite_dir = os.path.join(self.this_module_dir, "suites")
         if report_mako_path is None:
             report_mako_path = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
 
+        # step 3: create mako template, and list of test suites
         self.report_template = Template(filename=report_mako_path)
         self.test_suites = ListTestSuites(ws_url=ws_url, map_url=map_url, suite_dir=suite_dir, date=date)
 
     def report(self, dir=None, report_name='otp_report.html'):
-        """ render a pass/fail report
+        """ render a test pass/fail report with mako
         """
         ret_val = None
         try:
             # step 1: mako render of the report
             #import pdb; pdb.set_trace()
-            r = self.report_template.render(test_suites=self.test_suites.get_suites(), test_errors=self.test_suites.has_errors())
+            suites = self.test_suites.get_suites()
+            r = self.report_template.render(test_suites=suites, test_errors=self.test_suites.has_errors())
             ret_val = r
 
             # step 2: stream the report to a file
