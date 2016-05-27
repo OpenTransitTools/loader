@@ -17,27 +17,14 @@ class Info(CacheBase):
     name = None
     gtfs_path = None
     file_prefix = None
-    calendar_file = None
-    calendar_dates_file = None
-    feed_info_file = None
 
     def __init__(self, gtfs_path, file_prefix=''):
         ''' note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
         '''
         #import pdb; pdb.set_trace()
         self.gtfs_path = gtfs_path
+        self.dir_path = os.path.dirname(gtfs_path)
         self.file_prefix = file_prefix
-        self.unzip_calendar_and_info_files(file_prefix)
-
-    def unzip_calendar_and_info_files(self, file_prefix, calendar_file='calendar.txt', calendar_dates_file='calendar_dates.txt', info_file='feed_info.txt'):
-        """ unzip a file (calendar_dates.txt by default) from our old & new gtfs.zip files
-        """
-        self.calendar_file = file_prefix + calendar_file
-        self.calendar_dates_file = file_prefix + calendar_dates_file
-        self.feed_info_file = file_prefix + info_file
-        file_utils.unzip_file(self.gtfs_path, self.calendar_file,calendar_file)
-        file_utils.unzip_file(self.gtfs_path, self.calendar_dates_file,calendar_dates_file)
-        file_utils.unzip_file(self.gtfs_path, self.feed_info_file, info_file)
 
     def get_feed_version(self):
         start_date,end_date,id,version = self.get_feed_info()
@@ -69,7 +56,7 @@ class Info(CacheBase):
         return sdiff.days, ediff.days
 
     def get_feed_date_range(self):
-        return self._get_feed_date_range(self.calendar_file, self.calendar_dates_file)
+        return self._get_feed_date_range()
 
     def get_feed_vlog_info(self, feed_name):
         ''' get feed details dict
@@ -90,14 +77,18 @@ class Info(CacheBase):
         ''' get feed details msg string for the .vlog file
         '''
         f = self.get_feed_vlog_info(feed_name)
-        msg += "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
+        msg = "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
             .format(prefix, f['name'], f['start'], f['end'], f['until'], f['version'], suffix)
         return msg
 
+    def get_feed_info(self):
+        return self._get_feed_info()
+
     @classmethod
-    def get_cache_info_list(cls, cache_dir, feeds, filter=None):
+    def get_cache_vlog_msgs(cls, cache_dir, feeds, filter=None):
         ''' returns string vlog messages based on cached gtfs feeds
         '''
+        #import pdb; pdb.set_trace()
         ret_val = ""
         info = cls.get_cache_info_list(cache_dir, feeds, filter)
         for i in info:
@@ -111,7 +102,7 @@ class Info(CacheBase):
         ret_val = []
         try:
             for f in feeds:
-                if filter and f['name'] in filter:
+                if filter and f['name'] not in filter:
                     continue
                 gtfs_path = os.path.join(cache_dir, f['name'])
                 if os.path.exists(gtfs_path):
@@ -124,13 +115,12 @@ class Info(CacheBase):
             log.warn(e)
         return ret_val
 
-    @classmethod
-    def _get_feed_date_range(cls, calendar_name, calendar_dates_name):
+    def _get_feed_date_range(self):
         """ date range of new gtfs file based on both calendar.txt and calendar_dates.txt
         """
         # step 1: get dates from the two gtfs calendar files
-        start_date, end_date, today_position, total_positions = cls._get_calendar_dates_range(calendar_dates_name)
-        sdate, edate = cls._get_calendar_range(calendar_name)
+        start_date, end_date, today_position, total_positions = self._get_calendar_dates_range()
+        sdate, edate = self._get_calendar_range()
 
         # step 2: eliminate null values default values
         if start_date is None: start_date = sdate
@@ -144,14 +134,15 @@ class Info(CacheBase):
 
         return start_date, end_date
 
-    @classmethod
-    def _get_calendar_range(cls, calendar_name):
+    def _get_calendar_range(self, calendar_name='calendar.txt'):
         """ get the date range from calendar.txt
         """
         start_date = None
         end_date = None
 
-        file = open(calendar_name, 'r')
+        calendar_path = os.path.join(self.dir_path, self.file_prefix + calendar_name)
+        file_utils.unzip_file(self.gtfs_path, calendar_path, calendar_name)
+        file = open(calendar_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             # step 1: grab dates from .csv
@@ -172,8 +163,7 @@ class Info(CacheBase):
 
         return start_date, end_date
 
-    @classmethod
-    def _get_calendar_dates_range(cls, calendar_dates_name):
+    def _get_calendar_dates_range(self, calendar_dates_name='calendar_dates.txt'):
         """ get the date range from calendar_dates.txt (as well as today's position, etc...)
         """
         start_date = None
@@ -182,7 +172,9 @@ class Info(CacheBase):
         today_position = -111
         total_positions = 0
 
-        file = open(calendar_dates_name, 'r')
+        calendar_dates_path = os.path.join(self.dir_path, self.file_prefix + calendar_dates_name)
+        file_utils.unzip_file(self.gtfs_path, calendar_dates_path, calendar_dates_name)
+        file = open(calendar_dates_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
             # step 1: grab date from .csv
@@ -206,29 +198,27 @@ class Info(CacheBase):
             today_position = total_positions
 
         logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_name, start_date, end_date, today, today_position, total_positions))
-
         return start_date, end_date, today_position, total_positions
 
-    def get_feed_info(self):
-        return self._get_feed_info(self.feed_info_file)
-
-    @classmethod
-    def _get_feed_info(cls, feed_info_name):
+    def _get_feed_info(self, feed_info_name='feed_info.txt'):
         """ return feed version, start/end dates and id info from the feed_info.txt file...
         """
+        #import pdb; pdb.set_trace()
         version = '???'
         start_date = 'ZZZ'
         end_date = ''
         id = '???'
 
         logging.info("opening file {0}".format(feed_info_name))
-        file = open(feed_info_name, 'r')
+        feed_info_path = os.path.join(self.dir_path, self.file_prefix + feed_info_name)
+        file_utils.unzip_file(self.gtfs_path, feed_info_path, feed_info_name)
+        file = open(feed_info_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
-            id = row['feed_id']
-            start_date = row['feed_start_date']
-            end_date = row['feed_end_date']
-            version = row['feed_version']
+            id = row.get('feed_id', id)
+            start_date = row.get('feed_start_date', start_date)
+            end_date = row.get('feed_end_date', end_date)
+            version = row.get('feed_version', version)
 
         logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
         return start_date, end_date, id, version

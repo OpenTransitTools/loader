@@ -164,7 +164,7 @@ class Build(CacheBase):
             msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
 
             # get feeds messages
-            feed_msg = Info.get_cache_info_list(dir, self.feeds, graph.get('filter'))
+            feed_msg = Info.get_cache_vlog_msgs(dir, self.feeds, graph.get('filter'))
             if feed_msg and len(feed_msg) > 1:
                 msg = "{}{}\n".format(msg, feed_msg)
 
