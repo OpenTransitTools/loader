@@ -1,1 +1,103 @@
-f
+<!DOCTYPE html> 
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <title>OtpDeployer: Good/Bad Report</title>
+    <link rel="apple-touch-icon" href="/images/ui/trimet.org/tm-logo.png" />
+    <link rel="icon" type="image/ico" href="/favicon.ico">
+
+    <!-- Included CSS Files -->
+    <link rel="stylesheet" href="/foundation/stylesheets/foundation.css">
+    <link rel="stylesheet" href="/foundation/stylesheets/app.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="/foundation/stylesheets/ie.css">
+    <![endif]-->
+
+    <script src="/foundation/javascripts/jquery.min.js"></script>
+    <!-- IE Fix for HTML5 Tags -->
+    <!--[if lt IE 9]>
+        <script src="/foundation/javascripts/html5.js"></script>
+    <![endif]-->
+    <style>
+      div.pass {
+        display: none;
+      }
+      span.pass {
+        color: green;
+      }
+      span.fail {
+        color: red;
+      }
+      span.warn {
+        color: yellow;
+      }
+    </style>
+</head>
+<body>
+
+<a href="#" id="show-button" class="nice small radius green button" >Show Passing Tests</a>
+<script>
+var flip = 0;
+var butt = document.getElementById("show-button");
+$("a").click(function () {
+    $("div").toggle("slow");
+    if(flip++ % 2 == 0)
+        butt.innerHTML = "Show Failing Tests";
+    else
+        butt.innerHTML = "Show Passing Tests";
+});
+</script>
+<%!
+import datetime
+%>
+<%def name="content_a_or_b(test, a, b)"><%
+    if test is not False:
+        c = a
+    else:
+        c = b
+%>${c}</%def>
+
+<%def name="test_result(test, res)">
+    <%
+        expect_title = ""
+        if test.error_descript != None:
+            expect_title = "{0} - ".format(test.error_descript)
+
+        expect_title += "expected - "
+        if test.expect_output != None:
+            expect_title += " output: {0}, ".format(test.expect_output)
+        if test.expect_duration != None:
+            expect_title += " duration: {0}, ".format(test.expect_duration)
+
+        if test.expect_distance != None:
+            expect_title += " distance: {0}, ".format(test.expect_distance)
+
+        if test.expect_num_legs != None:
+            expect_title += " num_legs: {0}, ".format(test.expect_num_legs)
+    %>
+        <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number}) |  <a href="${test.get_planner_url()}" title="${expect_title}" target="#">Planner WS</a> | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a> (<a href="${test.get_ridetrimetorg_url()}" title="${expect_title}" target="#">ride.trimet.org</a>)</div>
+</%def>
+
+<h1>OTP Build Report: ${datetime.datetime.now().strftime("%m.%d.%Y @ %I:%M %p")}</h1>
+<h3><span class="${content_a_or_b(test_errors,'fail','pass')}">${content_a_or_b(test_errors, 'Some tests FAILED', 'All tests are PASSING')}</span></h3>
+
+% for ts in test_suites:
+    <p>
+    <h2>${ts.name}</h2>
+    % for t in ts.tests:
+        % if t.did_test_pass():
+            ${test_result(test=t, res="pass")}
+        % else:
+            ${test_result(test=t, res="fail")}
+        %endif
+    % endfor
+    </p>
+% endfor
+</body>

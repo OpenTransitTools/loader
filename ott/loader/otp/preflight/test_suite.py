@@ -49,6 +49,7 @@ class Test(object):
         self.config = ConfigUtil(section='otp')
 
         self.planner_url     = url
+        self.map_url         = url
 
         self.csv_line_number = line_number
         self.csv_params      = param_dict
@@ -276,19 +277,19 @@ class Test(object):
             self.result = TestResult.WARN
             log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
 
-    def get_planner_url(self):
-        return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
-
-    def get_map_url(self):
-        purl = self.planner_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
-
     @classmethod
     def make_url(cls, url, separater="?submit&module=planner"):
         ret_val = url
         if "?" not in url:
             ret_val = url + separater
         return ret_val
+
+    def get_planner_url(self):
+        return "{0}&{1}".format(self.make_url(self.planner_url), self.otp_params)
+
+    def get_map_url(self):
+        purl = self.planner_url.split('/')[-1]
+        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
 
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.map_params
@@ -408,5 +409,6 @@ class ListTestSuites(object):
         for ts in self.test_suites:
             ts.printer(self.base_url, self.date)
 
-
+    def get_suites(self):
+        return self.test_suites
 

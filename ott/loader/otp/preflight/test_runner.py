@@ -43,7 +43,7 @@ class TestRunner(object):
             }
             #r = self.report_template.render(data)
             #import pdb; pdb.set_trace()
-            r = self.report_template.render(data=data)
+            r = self.report_template.render(test_suites=self.test_suites.get_suites(), test_errors=self.test_suites.has_errors())
             #r = self.report_template.render(host)
             ret_val = r
 
