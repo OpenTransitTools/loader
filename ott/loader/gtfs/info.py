@@ -117,7 +117,7 @@ class Info(CacheBase):
 
     def unzip_gtfs_file(self, file_name):
         file_path = os.path.join(self.dir_path, self.file_prefix + file_name)
-        logging.info("unzipping file {} from {} (into file {})".format(file_name, self.gtfs_path, file_path))
+        logging.debug("unzipping file {} from {} (into file {})".format(file_name, self.gtfs_path, file_path))
         file_utils.unzip_file(self.gtfs_path, file_path, file_name)
         return file_path
 
@@ -154,7 +154,7 @@ class Info(CacheBase):
             if edate and edate > end_date:
                 end_date = edate
 
-        logging.info(" date range of file {}: {} to {}".format(calendar_path, start_date, end_date))
+        logging.debug(" date range of file {}: {} to {}".format(calendar_path, start_date, end_date))
         return start_date, end_date
 
     def _get_calendar_dates_range(self):
@@ -190,7 +190,7 @@ class Info(CacheBase):
         if today_position < 0:
             today_position = total_positions
 
-        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_path, start_date, end_date, today, today_position, total_positions))
+        logging.debug(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_path, start_date, end_date, today, today_position, total_positions))
         return start_date, end_date, today_position, total_positions
 
     def _get_feed_info(self):
@@ -211,7 +211,7 @@ class Info(CacheBase):
             end_date = row.get('feed_end_date', end_date)
             version = row.get('feed_version', version)
 
-        logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
+        logging.debug("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
         return start_date, end_date, id, version
 
     def _get_feed_date_range(self):
