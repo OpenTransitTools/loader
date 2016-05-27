@@ -376,7 +376,7 @@ class ListTestSuites(object):
     def __init__(self, ws_url, map_url, suite_dir, date=None):
         """ this class corresponds to a single .csv 'test suite'
         """
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         self.ws_url = ws_url
         self.map_url = map_url
         self.suite_dir = suite_dir

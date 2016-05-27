@@ -1,6 +1,8 @@
+import os
+import csv
 import datetime
 import logging
-import csv
+log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
@@ -12,6 +14,7 @@ class Info(CacheBase):
          3. will calulate based on the calendar how old the feed is (and how many days it has left)
          4. will read the feed_info and pull out various date ranges and feed ids
     """
+    name = None
     gtfs_path = None
     file_prefix = None
     calendar_file = None
@@ -69,6 +72,8 @@ class Info(CacheBase):
         return self._get_feed_date_range(self.calendar_file, self.calendar_dates_file)
 
     def get_feed_vlog_info(self, feed_name):
+        ''' get feed details dict
+        '''
         r = self.get_feed_date_range()
         v = self.get_feed_version()
         d = self.get_days_since_stats()
@@ -82,10 +87,42 @@ class Info(CacheBase):
         return ret_val
 
     def get_feed_vlog_msg(self, feed_name, prefix=" ", suffix="\n"):
+        ''' get feed details msg string for the .vlog file
+        '''
         f = self.get_feed_vlog_info(feed_name)
         msg += "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
             .format(prefix, f['name'], f['start'], f['end'], f['until'], f['version'], suffix)
         return msg
+
+    @classmethod
+    def get_cache_info_list(cls, cache_dir, feeds, filter=None):
+        ''' returns string vlog messages based on cached gtfs feeds
+        '''
+        ret_val = ""
+        info = cls.get_cache_info_list(cache_dir, feeds, filter)
+        for i in info:
+            ret_val = "{}{}".format(ret_val, i.get_feed_vlog_msg(i.name))
+        return ret_val
+
+    @classmethod
+    def get_cache_info_list(cls, cache_dir, feeds, filter=None):
+        ''' returns updated [] of Info objects, based on a directory of feeds
+        '''
+        ret_val = []
+        try:
+            for f in feeds:
+                if filter and f['name'] in filter:
+                    continue
+                gtfs_path = os.path.join(cache_dir, f['name'])
+                if os.path.exists(gtfs_path):
+                    info = Info(gtfs_path)
+                    info.name = f['name']
+                    ret_val.append(info)
+                else:
+                    log.info("feed {} doesn't exist".format(gtfs_path))
+        except Exception, e:
+            log.warn(e)
+        return ret_val
 
     @classmethod
     def _get_feed_date_range(cls, calendar_name, calendar_dates_name):

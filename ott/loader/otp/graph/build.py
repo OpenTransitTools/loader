@@ -7,7 +7,6 @@
 """
 import os
 import sys
-import copy
 import time
 import datetime
 import logging
@@ -44,24 +43,6 @@ class B(object):
     #    feed_details = self.get_gtfs_feed_details()
 
 
-    def get_gtfs_feed_details(self):
-        ''' returns updated [] with feed details
-        TODO: refacotr
-        '''
-        ret_val = []
-        try:
-            for g in self.feeds:
-                cp = copy.copy(g)
-                gtfs_path = os.path.join(self.cache_dir, cp['name'])
-                info = Info(gtfs_path)
-                vlog = info.get_feed_vlog_info(cp['name'])
-                cp.update(vlog)
-                ret_val.append(cp)
-        except Exception, e:
-            log.warn(e)
-            self.report_error("GTFS files are in a questionable state")
-        return ret_val
-
     def mv_failed_graph_to_good(self):
         """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
         """
@@ -76,19 +57,6 @@ class B(object):
         ''' TODO see if this is needed to inventory OSM and GTFS
             note that we do some inventorying in vlog
         '''
-
-    def update_vlog(self, feeds_details):
-        """ print out gtfs feed(s) version numbers and dates to the otp.v log file
-        """
-        if feeds_details and len(feeds_details) > 0:
-            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
-            for f in feeds_details:
-                msg += "  {} - date range {} to {} ({:>3} more calendar days), version {}\n".format(f['name'], f['start'], f['end'], f['until'], f['version'])
-            vlog = os.path.join(self.cache_dir, self.vlog_name)
-            f = open(vlog, 'a')
-            f.write(msg)
-            f.flush()
-            f.close()
 
     def report_error(self, msg):
         ''' override me to do things like emailing error reports, etc... '''
@@ -124,7 +92,7 @@ class Build(CacheBase):
         # run thru the graphs and
         for g in graphs:
             dir = otp_utils.config_graph_dir(g, self.this_module_dir, force_update)
-            filter = g.get('filter', None)
+            filter = g.get('filter')
             OsmCache.check_osm_file_against_cache(dir)
             GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
 
@@ -141,7 +109,6 @@ class Build(CacheBase):
                 success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
                 if success:
                     self.update_vlog()
-                    self.update_asset_log()
                 else:
                     ret_val = False
                     log.warn("graph {} didn't pass it's tests".format(g['name']))
@@ -187,6 +154,27 @@ class Build(CacheBase):
         suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites"
         success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=0) #delay=60)
         return success
+
+    def update_vlog(self, graph, vlog_name=VLOG_NAME):
+        """ print out gtfs feed(s) version numbers and dates to the otp.v log file
+        """
+        dir = graph.get('dir')
+        if dir:
+            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
+
+            # get feeds messages
+            feed_msg = Info.get_cache_info_list(dir, self.feeds, graph.get('filter'))
+            if feed_msg and len(feed_msg) > 1:
+                msg = "{}{}\n".format(msg, feed_msg)
+
+            # write message to vlog file
+            vlog = os.path.join(g['cache_dir'], vlog_name)
+            f = open(vlog, 'a')
+            f.write(msg)
+            f.flush()
+            f.close()
+        else:
+            log.warn("no graph build directory given to write vlog to")
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
         '''

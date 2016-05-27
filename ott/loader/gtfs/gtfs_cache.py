@@ -1,7 +1,6 @@
 import os
 import logging
 import logging.config
-logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__file__)
 
 
