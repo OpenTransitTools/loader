@@ -82,7 +82,7 @@ import datetime
         if test.expect_num_legs != None:
             expect_title += " num_legs: {0}, ".format(test.expect_num_legs)
     %>
-        <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number}) |  <a href="${test.get_planner_url()}" title="${expect_title}" target="#">Planner WS</a> | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a> (<a href="${test.get_ridetrimetorg_url()}" title="${expect_title}" target="#">ride.trimet.org</a>)</div>
+        <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number}) |  <a href="${test.get_ws_url()}" title="${expect_title}" target="#">Planner WS</a> | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a> (<a href="${test.get_ridetrimetorg_url()}" title="${expect_title}" target="#">ride.trimet.org</a>)</div>
 </%def>
 
 <h1>OTP Build Report: ${datetime.datetime.now().strftime("%m.%d.%Y @ %I:%M %p")}</h1>
