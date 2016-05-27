@@ -19,23 +19,20 @@ class Diff(CacheBase):
         self.old_gtfs_zip = old_gtfs_zip
         self.new_gtfs_zip = new_gtfs_zip
 
-        # step 2: make tmp dir and cd into it
-        file_utils.cd(self.tmp_dir)
-
-        # step 3: unzip some stuff
+        # step 2: make our  stuff
         self.old_info = Info(self.old_gtfs_zip, "old_")
         self.new_info = Info(self.new_gtfs_zip, "new_")
 
     def is_different(self):
         ''' compare feed_info.txt and calendar_dates.txt between two zips
         '''
-        feed_info_diff = file_utils.diff_files(self.old_info.feed_info_file, self.new_info.feed_info_file)
+        feed_info_diff = file_utils.diff_files(self.old_info.unzip_feed_info_txt(), self.new_info.unzip_feed_info_txt())
         if feed_info_diff:
             logging.info("feed_info.txt files are different")
-        calendar_dates_diff  = file_utils.diff_files(self.old_info.calendar_dates_file, self.new_info.calendar_dates_file)
+        calendar_dates_diff = file_utils.diff_files(self.old_info.unzip_calendar_dates_txt(), self.new_info.unzip_calendar_dates_txt())
         if calendar_dates_diff:
             logging.info("calender_dates.txt files are different")
-        calendar_diff  = file_utils.diff_files(self.old_info.calendar_file, self.new_info.calendar_file)
+        calendar_diff = file_utils.diff_files(self.old_info.unzip_calendar_txt(), self.new_info.unzip_calendar_txt())
         if calendar_diff:
             logging.info("calender.txt files are different")
         return feed_info_diff or calendar_diff or calendar_dates_diff

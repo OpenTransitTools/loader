@@ -115,33 +115,28 @@ class Info(CacheBase):
             log.warn(e)
         return ret_val
 
-    def _get_feed_date_range(self):
-        """ date range of new gtfs file based on both calendar.txt and calendar_dates.txt
-        """
-        # step 1: get dates from the two gtfs calendar files
-        start_date, end_date, today_position, total_positions = self._get_calendar_dates_range()
-        sdate, edate = self._get_calendar_range()
+    def unzip_gtfs_file(self, file_name):
+        file_path = os.path.join(self.dir_path, self.file_prefix + file_name)
+        logging.info("unzipping file {} from {} (into file {})".format(file_name, self.gtfs_path, file_path))
+        file_utils.unzip_file(self.gtfs_path, file_path, file_name)
+        return file_path
 
-        # step 2: eliminate null values default values
-        if start_date is None: start_date = sdate
-        if end_date is None:   end_date = edate
+    def unzip_calendar_txt(self, calendar_name='calendar.txt'):
+        return self.unzip_gtfs_file(file_name=calendar_name)
 
-        # step 3: set return values based on oldest and youngest dates...
-        if sdate and sdate < start_date:
-            start_date = sdate
-        if edate and edate > end_date:
-            end_date = edate
+    def unzip_calendar_dates_txt(self,  calendar_dates_name='calendar_dates.txt'):
+        return self.unzip_gtfs_file(file_name=calendar_dates_name)
 
-        return start_date, end_date
+    def unzip_feed_info_txt(self, feed_info_name='feed_info.txt'):
+        return self.unzip_gtfs_file(file_name=feed_info_name)
 
-    def _get_calendar_range(self, calendar_name='calendar.txt'):
+    def _get_calendar_range(self):
         """ get the date range from calendar.txt
         """
         start_date = None
         end_date = None
 
-        calendar_path = os.path.join(self.dir_path, self.file_prefix + calendar_name)
-        file_utils.unzip_file(self.gtfs_path, calendar_path, calendar_name)
+        calender_path = self.unzip_calendar_txt()
         file = open(calendar_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
@@ -159,11 +154,10 @@ class Info(CacheBase):
             if edate and edate > end_date:
                 end_date = edate
 
-        logging.info(" date range of file {}: {} to {}".format(calendar_name, start_date, end_date))
-
+        logging.info(" date range of file {}: {} to {}".format(calendar_path, start_date, end_date))
         return start_date, end_date
 
-    def _get_calendar_dates_range(self, calendar_dates_name='calendar_dates.txt'):
+    def _get_calendar_dates_range(self):
         """ get the date range from calendar_dates.txt (as well as today's position, etc...)
         """
         start_date = None
@@ -172,8 +166,7 @@ class Info(CacheBase):
         today_position = -111
         total_positions = 0
 
-        calendar_dates_path = os.path.join(self.dir_path, self.file_prefix + calendar_dates_name)
-        file_utils.unzip_file(self.gtfs_path, calendar_dates_path, calendar_dates_name)
+        calendar_dates_path = self.unzip_calendar_dates_txt()
         file = open(calendar_dates_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
@@ -197,10 +190,10 @@ class Info(CacheBase):
         if today_position < 0:
             today_position = total_positions
 
-        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_name, start_date, end_date, today, today_position, total_positions))
+        logging.info(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_path, start_date, end_date, today, today_position, total_positions))
         return start_date, end_date, today_position, total_positions
 
-    def _get_feed_info(self, feed_info_name='feed_info.txt'):
+    def _get_feed_info(self):
         """ return feed version, start/end dates and id info from the feed_info.txt file...
         """
         #import pdb; pdb.set_trace()
@@ -209,9 +202,7 @@ class Info(CacheBase):
         end_date = ''
         id = '???'
 
-        logging.info("opening file {0}".format(feed_info_name))
-        feed_info_path = os.path.join(self.dir_path, self.file_prefix + feed_info_name)
-        file_utils.unzip_file(self.gtfs_path, feed_info_path, feed_info_name)
+        feed_info_path = self.unzip_feed_info_txt()
         file = open(feed_info_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
@@ -223,3 +214,21 @@ class Info(CacheBase):
         logging.info("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
         return start_date, end_date, id, version
 
+    def _get_feed_date_range(self):
+        """ date range of new gtfs file based on both calendar.txt and calendar_dates.txt
+        """
+        # step 1: get dates from the two gtfs calendar files
+        start_date, end_date, today_position, total_positions = self._get_calendar_dates_range()
+        sdate, edate = self._get_calendar_range()
+
+        # step 2: eliminate null values default values
+        if start_date is None: start_date = sdate
+        if end_date is None:   end_date = edate
+
+        # step 3: set return values based on oldest and youngest dates...
+        if sdate and sdate < start_date:
+            start_date = sdate
+        if edate and edate > end_date:
+            end_date = edate
+
+        return start_date, end_date
