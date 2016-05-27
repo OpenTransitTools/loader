@@ -74,12 +74,12 @@ class Build(CacheBase):
     graph_size = GRAPH_SIZE
     graph_failed = GRAPH_FAILD
 
-    def __init__(self, force_update=False):
+    def __init__(self, force_update=False, dont_update=False):
         super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
-        self.graphs = self.config_graph_dirs(force_update)
+        self.graphs = self.config_graph_dirs(force_update, dont_update)
 
-    def config_graph_dirs(self, force_update=False):
+    def config_graph_dirs(self, force_update=False, dont_update=False):
         ''' read the config for graph specs like graph dir and web port (for running OTP)
             this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
         '''
@@ -93,8 +93,9 @@ class Build(CacheBase):
         for g in graphs:
             dir = otp_utils.config_graph_dir(g, self.this_module_dir, force_update)
             filter = g.get('filter')
-            OsmCache.check_osm_file_against_cache(dir)
-            GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
+            if force_update or not dont_update:
+                OsmCache.check_osm_file_against_cache(dir)
+                GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
 
         return graphs
 
@@ -168,7 +169,7 @@ class Build(CacheBase):
                 msg = "{}{}\n".format(msg, feed_msg)
 
             # write message to vlog file
-            vlog = os.path.join(g['cache_dir'], vlog_name)
+            vlog = os.path.join(graph['dir'], vlog_name)
             f = open(vlog, 'a')
             f.write(msg)
             f.flush()
@@ -203,6 +204,13 @@ class Build(CacheBase):
 
 
 def main(argv=sys.argv):
+    #import pdb; pdb.set_trace()
+    b = Build(dont_update=True)
+    for g in b.graphs:
+        log.warn(g['name'])
+        b.update_vlog(g)
+
+def xmain(argv=sys.argv):
     #import pdb; pdb.set_trace()
     Build.options(argv)
 
