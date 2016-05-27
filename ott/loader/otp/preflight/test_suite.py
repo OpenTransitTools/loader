@@ -280,16 +280,17 @@ class Test(object):
     @classmethod
     def make_url(cls, url, separater="?submit&module=planner"):
         ret_val = url
+        if url is None:
+            url = "ERROR ERROR ERROR in test_suite.py line 284 ERROR ERROR ERROR"
         if "?" not in url:
-            ret_val = url + separater
+            ret_val = "{}{}".format(url, separater)
         return ret_val
 
     def get_ws_url(self):
-        return "{0}&{1}".format(self.make_url(self.ws_url), self.otp_params)
+        return "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
 
     def get_map_url(self):
-        purl = self.ws_url.split('/')[-1]
-        return "{0}&purl=/{1}&{2}".format(self.make_url(self.map_url), purl, self.map_params)
+        return "{}&{}".format(self.make_url(self.map_url), self.map_params)
 
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.map_params
@@ -335,14 +336,17 @@ class TestSuite(object):
     def get_tests(self):
         return self.tests
 
-    def run(self, ws_url, map_url, date=None):
+    def run(self, ws_url, map_url, date=None, printer=False):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
         log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
             t = Test(p, i+2, ws_url, map_url, date)
             t.depart_by_check()
-            self.do_test(t)
+            if printer:
+                print t.get_ws_url()
+            else:
+                self.do_test(t)
 
             """ arrive by tests
             """
@@ -350,27 +354,13 @@ class TestSuite(object):
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
-            self.do_test(t, False)
+            if printer:
+                print t.get_ws_url()
+            else:
+                self.do_test(t, False)
 
-    def printer(self, ws_url, date=None):
-        """ iterate the list of tests from the .csv files and print the URLs
-        """
-        for i, p in enumerate(self.params):
-            t = Test(p, i+2, ws_url, date)  # i+2 is the line number in the .csv file, accounting for the header
-            t.depart_by_check()
-            url = t.get_ws_url()
-            if t.is_valid:
-                print url
-
-            """ arrive by tests
-            """
-            t = Test(p, i+2, ws_url, date)
-            t.url_arrive_by()
-            t.append_note(" ***NOTE***: arrive by test ")
-            t.arrive_by_check()
-            url = t.get_ws_url()
-            if t.is_valid:
-                print url
+    def printer(self, ws_url, map_url, date=None):
+        self.run(ws_url, map_url, date, printer=True)
 
 
 class ListTestSuites(object):
@@ -386,6 +376,7 @@ class ListTestSuites(object):
     def __init__(self, ws_url, map_url, suite_dir, date=None):
         """ this class corresponds to a single .csv 'test suite'
         """
+        import pdb; pdb.set_trace()
         self.ws_url = ws_url
         self.map_url = map_url
         self.suite_dir = suite_dir
@@ -405,13 +396,12 @@ class ListTestSuites(object):
         return ret_val
 
     def run(self):
-        #import pdb; pdb.set_trace()
         for ts in self.test_suites:
-            ts.run(self.ws_url, self.date)
+            ts.run(self.ws_url, self.map_url, self.date)
 
     def printer(self):
         for ts in self.test_suites:
-            ts.printer(self.ws_url, self.date)
+            ts.printer(self.ws_url, self.map_url, self.date)
 
     def get_suites(self):
         return self.test_suites
