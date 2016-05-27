@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import re
 import inspect
 import logging
 log = logging.getLogger(__file__)
@@ -15,20 +16,23 @@ class TestRunner(object):
         url to the trip planner, calling the url, then printing a report
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    base_url = None
 
-    def __init__(self, base_url, dir=None, report_mako_path=None, date=None):
+    def __init__(self, port=8001, dir=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
-        if base_url:
-            base_url = "http://127.0.0.1:55555"
+        self.config = ConfigUtil(section='otp')
+        ws_url  = self.config.get('ws_url_path',  "http://127.0.0.1:80/otp/routers/default/plan")
+        map_url = self.config.get('map_url_path', "http://127.0.0.1:80/")
+        ws_url  = ws_url.replace("")
+
+            ws_url =
         if dir is None:
             dir = os.path.join(self.this_module_dir, "suites")
         if report_mako_path is None:
             report_mako_path = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
 
         self.report_template = Template(filename=report_mako_path)
-        self.test_suites = ListTestSuites(base_url, dir, date)
+        self.test_suites = ListTestSuites(ws_url, dir, date)
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a pass/fail report
