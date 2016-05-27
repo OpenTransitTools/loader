@@ -1,12 +1,13 @@
 import os
 import sys
 import time
-import re
 import inspect
 import logging
 log = logging.getLogger(__file__)
 
 from mako.template import Template
+
+from ott.utils.config_util import ConfigUtil
 
 from .test_suite import ListTestSuites
 
@@ -17,22 +18,25 @@ class TestRunner(object):
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, port=8001, dir=None, report_mako_path=None, date=None):
+    def __init__(self, port=8001, suite_dir=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
         self.config = ConfigUtil(section='otp')
-        ws_url  = self.config.get('ws_url_path',  "http://127.0.0.1:80/otp/routers/default/plan")
-        map_url = self.config.get('map_url_path', "http://127.0.0.1:80/")
-        ws_url  = ws_url.replace("")
+        domain = self.config.get('domain', def_val="127.0.0.1")
 
-            ws_url =
-        if dir is None:
-            dir = os.path.join(self.this_module_dir, "suites")
+        ws = self.config.get('ws_url_path', def_val="/otp/routers/default/plan")
+        ws_url  = "http://{}:{}{}".format(domain, port, ws)
+
+        map = self.config.get('map_url_path', def_val="")
+        map_url = "http://{}:{}{}".format(domain, port, map)
+
+        if suite_dir is None:
+            suite_dir = os.path.join(self.this_module_dir, "suites")
         if report_mako_path is None:
             report_mako_path = os.path.join(self.this_module_dir, 'templates', 'good_bad.html')
 
         self.report_template = Template(filename=report_mako_path)
-        self.test_suites = ListTestSuites(ws_url, dir, date)
+        self.test_suites = ListTestSuites(ws_url=ws_url, map_url=map_url, suite_dir=suite_dir, date=date)
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a pass/fail report
@@ -40,15 +44,8 @@ class TestRunner(object):
         ret_val = None
         try:
             # step 1: mako render of the report
-            data = {
-                "host" : "FIX ME",
-                "test_suites" : self.test_suites,
-                "test_errors" : self.test_suites.has_errors()
-            }
-            #r = self.report_template.render(data)
             #import pdb; pdb.set_trace()
             r = self.report_template.render(test_suites=self.test_suites.get_suites(), test_errors=self.test_suites.has_errors())
-            #r = self.report_template.render(host)
             ret_val = r
 
             # step 2: stream the report to a file
@@ -69,7 +66,7 @@ class TestRunner(object):
         return ret_val
 
     @classmethod
-    def test_graph_factory(cls, graph_dir, suite_dir=None, base_url=None, delay=1):
+    def test_graph_factory(cls, graph_dir, suite_dir, port=None, delay=1):
         ''' run graph tests against whatever server is running
         '''
         #import pdb; pdb.set_trace()
@@ -77,7 +74,7 @@ class TestRunner(object):
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(base_url, suite_dir)
+        t = TestRunner(port=port, suite_dir=suite_dir)
         t.test_suites.run()
         t.report(graph_dir)
         if t.test_suites.has_errors():

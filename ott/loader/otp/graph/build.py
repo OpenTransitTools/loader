@@ -183,10 +183,9 @@ class Build(CacheBase):
     def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
         '''
         '''
-        #otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)pp
-        map_url = "http://127.0.0.1:{}".format(graph['port'])
-        ws_url  = "http://127.0.0.1:{}/otp/routers/default/plan".format(graph['port'])
-        success = TestRunner.test_graph_factory(graph_dir=graph['dir'], suite_dir=suite_dir, ws_url=ws_url, map_url=map_url, delay=0) #delay=60)
+        #otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)
+        suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites"
+        success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=0) #delay=60)
         return success
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
