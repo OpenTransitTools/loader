@@ -151,8 +151,8 @@ class Build(CacheBase):
     def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
         '''
         '''
-        #otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)
-        suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites"
+        #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
+        otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)
         success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=0) #delay=60)
         return success
 
