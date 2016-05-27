@@ -74,7 +74,7 @@ class OsmCache(CacheBase):
         else:
             fresh = self.is_fresh_in_cache(self.osm_path)
             newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
-            if fresh or newer:
+            if force_update or not fresh or newer:
                 self.pbf_to_osm()
 
         # step 3: .osm file check
