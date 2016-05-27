@@ -63,19 +63,19 @@ class OsmCache(CacheBase):
         min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 1: download new osm pbf file if it's not new
-        if force_update or \
-           not self.is_fresh_in_cache(self.pbf_path) or \
-           not file_utils.is_min_sized(self.pbf_path, min_size):
+        fresh = self.is_fresh_in_cache(self.pbf_path)
+        sized = file_utils.is_min_sized(self.pbf_path, min_size)
+        if force_update or not fresh or not sized:
             self.download_pbf()
 
         # step 2: .pbf to .osm
         if not file_utils.is_min_sized(self.pbf_path, min_size):
             log.warn("OSM PBF file {} is not big enough".format(self.pbf_path))
-        elif(
-               not self.is_fresh_in_cache(self.osm_path) or \
-               file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
-           ):
-            self.pbf_to_osm()
+        else:
+            fresh = self.is_fresh_in_cache(self.osm_path)
+            newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
+            if fresh or newer:
+                self.pbf_to_osm()
 
         # step 3: .osm file check
         if not file_utils.is_min_sized(self.osm_path, min_size):
