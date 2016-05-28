@@ -73,8 +73,9 @@ class OsmCache(CacheBase):
             log.warn("OSM PBF file {} is not big enough".format(self.pbf_path))
         else:
             fresh = self.is_fresh_in_cache(self.osm_path)
-            newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
-            if force_update or not fresh or newer:
+            sized = file_utils.is_min_sized(self.osm_path, min_size)
+            pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
+            if force_update or pbf_newer or not fresh or not sized:
                 self.pbf_to_osm()
 
         # step 3: .osm file check
