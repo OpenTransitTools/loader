@@ -10,6 +10,7 @@ import re
 
 from ott.utils.config_util import ConfigUtil
 from ott.utils import otp_utils
+from ott.utils import date_utils
 from ott.utils import object_utils
 
 
@@ -287,6 +288,10 @@ class Test(object):
         return ret_val
 
     def get_ws_url(self):
+        # OTP 1.0 needs a date parameter if there's a time parameter
+        if "time" in self.otp_params and "date" not in self.otp_params:
+            d = date_utils.today_str()
+            self.url_param('date', d)
         return "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
 
     def get_map_url(self):
