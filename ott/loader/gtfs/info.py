@@ -136,7 +136,7 @@ class Info(CacheBase):
         start_date = None
         end_date = None
 
-        calender_path = self.unzip_calendar_txt()
+        calendar_path = self.unzip_calendar_txt()
         file = open(calendar_path, 'r')
         reader = csv.DictReader(file)
         for i, row in enumerate(reader):
