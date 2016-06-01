@@ -4,9 +4,9 @@ import logging.config
 log = logging.getLogger(__file__)
 
 
-from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
+from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.info import Info
@@ -39,7 +39,7 @@ class GtfsCache(CacheBase):
         # step 2: download new gtfs file
         url = url
         tmp_path = os.path.join(self.tmp_dir, file_name)
-        exe_utils.wget(url, tmp_path)
+        web_utils.wget(url, tmp_path)
 
         # step 3: check the cache whether we should update or not
         update = force_update
