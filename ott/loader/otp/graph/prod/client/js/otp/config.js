@@ -1,3 +1,19 @@
+otp_consts = {
+    /**
+     * The OTP web service locations
+     */
+    trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
+    hostname       : "http://localhost:55555",
+    //hostname       : "http://trimet-new.dev.conveyal.com:8001",
+    //hostname       : "http://maps9.trimet.org",
+    datastoreUrl   : "http://maps9.trimet.org:9000",
+    basename       : "http://call.trimet.org",
+    restService    : "otp/routers/default",
+    solrService    : "http://maps.trimet.org/solr/select",
+    center         : new L.LatLng(45.494833,-122.670376),
+    attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+};
+
 otp.config = {
     //If enabled it shows popup window with all planner responses in JSON
     //Can be also enabled in URL parameters as ?debug=true
@@ -90,12 +106,6 @@ otp.config = {
             tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
             subdomains : ['otile1','otile2','otile3','otile4'],
             attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },
-        {
-            name: 'TriMet Map',
-            tileUrl: 'http://{s}.trimet.org/tilecache/tilecache.py/1.0.0/currentOSM/{z}/{x}/{y}',
-            subdomains : ["tilea","tileb","tilec","tiled"],
-            attribution : otp_consts.attribution
         }
     ],
 
@@ -166,16 +176,15 @@ otp.config = {
      *   - addressParam: <string> the name of the API parameter used to pass in
      *       the user-specifed address string
      */
-
     geocoders : [
         {
-            name: 'OTP built-in geocoder',
-            className: 'otp.core.GeocoderBuiltin'
-            // URL and query parameter do not need to be set for built-in geocoder.
+            name : 'SOLR',
+            className    : 'otp.core.SOLRGeocoder',
+            url          : otp_consts.solrService,
+            addressParam : 'q'
         }
     ],
 
-    
 
     //This is shown if showLanguageChooser is true
     infoWidgetLangChooser : {
