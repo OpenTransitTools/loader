@@ -109,14 +109,27 @@ class Build(CacheBase):
             if success:
                 success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
                 if success:
-                    self.update_vlog()
+                    self.update_vlog(graph=g)
                 else:
                     ret_val = False
                     log.warn("graph {} didn't pass it's tests".format(g['name']))
             else:
                 ret_val = False
                 log.warn("graph build failed for graph {}".format(g['name']))
-            return ret_val
+        return ret_val
+
+    def only_test_graphs(self, java_mem=None, force_update=False):
+        ''' will test each of the graphs we have in self.graphs
+        '''
+        ret_val = True
+        for g in self.graphs:
+            success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
+            if success:
+                self.update_vlog(graph=g)
+            else:
+                ret_val = False
+                log.warn("graph {} didn't pass it's tests".format(g['name']))
+        return ret_val
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
         ''' will rebuild the graph...
@@ -180,7 +193,9 @@ class Build(CacheBase):
     def vizualize_graph(self, java_mem=None, graph_index=0):
         '''
         '''
-        ## TODO ... check for running OTP, then deploy
+        if graph_index >= len(self.graphs):
+            graph_index = 0
+        otp_utils.vizualize_graph(graph_dir=self.graphs[graph_index]['dir'], java_mem=java_mem)
 
     @classmethod
     def options(cls, argv):
@@ -195,22 +210,21 @@ class Build(CacheBase):
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         elif "test" in argv:
-            g = {'port':'55555', 'dir':'/java/DEV/loader/ott/loader/otp/graph/prod'}
-            b.deploy_test_graph(graph=g, java_mem=java_mem)
+            b.only_test_graphs(java_mem=java_mem, force_update=force_update)
         elif "viz" in argv:
             b.vizualize_graph(java_mem=java_mem)
         else:
-            b.build_and_test_graphs(force_update=force_update, java_mem=java_mem)
+            b.build_and_test_graphs(java_mem=java_mem, force_update=force_update)
 
 
-def main(argv=sys.argv):
+def xmain(argv=sys.argv):
     #import pdb; pdb.set_trace()
     b = Build(dont_update=True)
     for g in b.graphs:
         log.warn(g['name'])
         b.update_vlog(g)
 
-def xmain(argv=sys.argv):
+def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     Build.options(argv)
 
