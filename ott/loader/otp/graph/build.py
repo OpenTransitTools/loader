@@ -164,10 +164,10 @@ class Build(CacheBase):
     def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
         '''
         '''
-        suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
+        #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
         success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
         if success:
-            success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=0) #delay=60)
+            success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=60)
         return success
 
     def update_vlog(self, graph, vlog_name=VLOG_NAME):
