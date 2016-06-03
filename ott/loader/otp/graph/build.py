@@ -165,7 +165,7 @@ class Build(CacheBase):
         '''
         '''
         #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
-        otp_utils.run_otp_server(graph['dir'], graph['port'], java_mem=java_mem)
+        otp_utils.run_otp_server(java_mem=java_mem, **graph)
         success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=0) #delay=60)
         return success
 
