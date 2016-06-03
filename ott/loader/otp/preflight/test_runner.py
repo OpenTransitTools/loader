@@ -8,7 +8,7 @@ log = logging.getLogger(__file__)
 from mako.template import Template
 
 from ott.utils.config_util import ConfigUtil
-from ott.utils import html_utils
+from ott.utils import web_utils
 
 from .test_suite import ListTestSuites
 
@@ -25,7 +25,7 @@ class TestRunner(object):
 
         # step 1: build OTP ws and map urls from config
         self.config = ConfigUtil(section='otp')
-        host = self.config.get('host', def_val=html_utils.get_hostname())
+        host = self.config.get('host', def_val=web_utils.get_hostname())
 
         ws = self.config.get('ws_url_path', def_val="/otp/routers/default/plan")
         ws_url  = "http://{}:{}{}".format(host, port, ws)
