@@ -8,20 +8,31 @@ from ott.utils.cache_base import CacheBase
 class Fix(CacheBase):
     """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see differences between them
     """
-    gtfs_zip = None
+    gtfs_name = None
+    gtfs_path = None
 
-    def __init__(self, gtfs_zip):
-        self.gtfs_zip = gtfs_zip
+    def __init__(self, gtfs_name):
+        self.gtfs_name = gtfs_name
+        self.gtfs_path = os.path.join(self.cache_dir, gtfs_name)
 
-    def cp(self, filter_file_names=None):
-        if cp_file_name:
-            pass
+    def cp(cls, to_gtfs_path, filter_file_names):
+        pass
 
     def rename_agency(self, agency_name="TRIMET", cp_file_name=None):
         '''
         '''
-        file_path = os.path.join(self.dir_path, self.file_prefix + file_name)
-        file_utils.unzip_file(self.gtfs_path, file_path, file_name)
-        if calendar_diff:
-            logging.info("calender.txt files are different")
-        return feed_info_diff or calendar_diff or calendar_dates_diff
+        file_utils.cp(self.gtfs_path, self.gtfs_path + '.zip')
+        self.gtfs_path = self.gtfs_path + '.zip'
+
+        file_utils.unzip_file(self.gtfs_path, file_name="routes.txt")
+        file_utils.remove_file_from_zip(self.gtfs_path, file_name="routes.txt")
+
+
+def main():
+    #import pdb; pdb.set_trace()
+    # fix = Fix("TRIMET.zip")
+    fix = Fix("SAM.zip")
+    fix.rename_agency()
+
+if __name__ == '__main__':
+    main()
