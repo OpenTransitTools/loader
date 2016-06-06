@@ -116,20 +116,14 @@ class Info(CacheBase):
             log.warn(e)
         return ret_val
 
-    def unzip_gtfs_file(self, file_name):
-        file_path = os.path.join(self.dir_path, self.file_prefix + file_name)
-        logging.debug("unzipping file {} from {} (into file {})".format(file_name, self.gtfs_path, file_path))
-        file_utils.unzip_file(self.gtfs_path, file_path, file_name)
-        return file_path
-
     def unzip_calendar_txt(self, calendar_name='calendar.txt'):
-        return self.unzip_gtfs_file(file_name=calendar_name)
+        return file_utils.unzip_file(self.gtfs_path, file_name=calendar_name)
 
     def unzip_calendar_dates_txt(self,  calendar_dates_name='calendar_dates.txt'):
-        return self.unzip_gtfs_file(file_name=calendar_dates_name)
+        return file_utils.unzip_file(self.gtfs_path, file_name=calendar_dates_name)
 
     def unzip_feed_info_txt(self, feed_info_name='feed_info.txt'):
-        return self.unzip_gtfs_file(file_name=feed_info_name)
+        return file_utils.unzip_file(self.gtfs_path, file_name=feed_info_name)
 
     def _get_calendar_range(self):
         """ get the date range from calendar.txt

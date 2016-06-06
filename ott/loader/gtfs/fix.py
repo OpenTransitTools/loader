@@ -15,24 +15,40 @@ class Fix(CacheBase):
         self.gtfs_name = gtfs_name
         self.gtfs_path = os.path.join(self.cache_dir, gtfs_name)
 
-    def cp(cls, to_gtfs_path, filter_file_names):
-        pass
-
-    def rename_agency(self, agency_name="TRIMET", cp_file_name=None):
+    def cp(self, to_gtfs_path=None):
+        ''' copy gtfs file to new file (good for testing, so you don't harm original gtfs.zip)
         '''
-        '''
-        file_utils.cp(self.gtfs_path, self.gtfs_path + '.zip')
-        self.gtfs_path = self.gtfs_path + '.zip'
+        if to_gtfs_path is None:
+            to_gtfs_path = self.gtfs_path + '.zip'
+        file_utils.cp(self.gtfs_path, to_gtfs_path)
+        self.gtfs_path = to_gtfs_path
 
-        file_utils.unzip_file(self.gtfs_path, file_name="routes.txt")
-        file_utils.remove_file_from_zip(self.gtfs_path, file_name="routes.txt")
+    def rename_agency_in_routes_txt(self, regex_str, replace_str):
+        file_utils.replace_strings_in_zipfile(self.gtfs_path, "routes.txt", regex_str, replace_str)
+
+    def rename_agency_in_agency_txt(self, regex_str, replace_str):
+        file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
+
+    @classmethod
+    def rename_sam_agency(cls):
+        fix = Fix("SAM.zip")
+        fix.rename_agency_in_routes_txt("^86", "SAM")
+        fix.rename_agency_in_agency_txt("^86", "SAM")
+
+    @classmethod
+    def rename_trimet_agency(cls):
+        ''' don't rename the agency.txt ... just rename routes (good for OTP) '''
+        fix = Fix("TRIMET.zip")
+        fix.rename_agency_in_routes_txt("PSC",  "TRIMET")
+        fix.rename_agency_in_routes_txt("TRAM", "TRIMET")
 
 
 def main():
-    #import pdb; pdb.set_trace()
-    # fix = Fix("TRIMET.zip")
-    fix = Fix("SAM.zip")
-    fix.rename_agency()
+    
+    fix = Fix()
+    fix.cp()
+    fix.rename_agency_in_routes_txt("^101", "SMART")
+    fix.rename_agency_in_agency_txt("^101", "SMART")
 
 if __name__ == '__main__':
     main()
