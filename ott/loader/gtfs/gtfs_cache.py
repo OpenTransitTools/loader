@@ -12,6 +12,7 @@ from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.info import Info
 from ott.loader.gtfs.diff import Diff
 
+
 class GtfsCache(CacheBase):
     """ Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not

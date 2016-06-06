@@ -7,6 +7,7 @@ log = logging.getLogger(__file__)
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 
+
 class Info(CacheBase):
     """ Get info on a gtfs.zip file:
          1. will unzip the two calendar plus the feed_info .txt files
