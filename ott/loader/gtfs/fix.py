@@ -30,26 +30,12 @@ class Fix(CacheBase):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
     @classmethod
-    def rename_sam_agency(cls):
-        ''' rename both routes and agecy .txt files
-            bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
-            bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
-        '''
-        fix = Fix("SAM.zip")
-        fix.rename_agency_in_routes_txt("^86", "SAM")
-        fix.rename_agency_in_agency_txt("^86", "SAM")
-
-    @classmethod
-    def rename_trimet_agency(cls):
-        ''' just rename routes.txt (good for OTP alerts) ... don't rename the agency.txt
-            bin/gtfs_fix TRIMET.zip -r -f "(PSC|TRAM)" -t "TRIMET"
-        '''
-        fix = Fix("TRIMET.zip")
-        fix.rename_agency_in_routes_txt("(PSC|TRAM)",  "TRIMET")
-
-    @classmethod
     def get_args(cls):
         ''' database load command-line arg parser and help util...
+
+            examples:
+               bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
+               bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
         '''
         import argparse
         parser = argparse.ArgumentParser(prog='gtfs-fix', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -62,6 +48,13 @@ class Fix(CacheBase):
         args = parser.parse_args()
         return args
 
+
+def rename_trimet_agency():
+    ''' just rename routes.txt (good for OTP alerts) ... don't rename the agency.txt
+        bin/gtfs_fix TRIMET.zip -r -f "(PSC|TRAM)" -t "TRIMET"
+    '''
+    fix = Fix("TRIMET.zip")
+    fix.rename_agency_in_routes_txt("(PSC|TRAM)",  "TRIMET")
 
 def main():
     args = Fix.get_args()

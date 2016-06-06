@@ -58,6 +58,7 @@ setup(
         osm_update = ott.loader.osm.osm_cache:main
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_fix = ott.loader.gtfs.fix:main
+        gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
         gtfsdb_load = ott.loader.gtfsdb.load:main
         otp_build_graph = ott.loader.otp.graph.build:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
