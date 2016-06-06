@@ -31,24 +31,47 @@ class Fix(CacheBase):
 
     @classmethod
     def rename_sam_agency(cls):
+        ''' rename both routes and agecy .txt files
+            bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
+            bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
+        '''
         fix = Fix("SAM.zip")
         fix.rename_agency_in_routes_txt("^86", "SAM")
         fix.rename_agency_in_agency_txt("^86", "SAM")
 
     @classmethod
     def rename_trimet_agency(cls):
-        ''' don't rename the agency.txt ... just rename routes (good for OTP) '''
+        ''' just rename routes.txt (good for OTP alerts) ... don't rename the agency.txt
+            bin/gtfs_fix TRIMET.zip -r -f "(PSC|TRAM)" -t "TRIMET"
+        '''
         fix = Fix("TRIMET.zip")
-        fix.rename_agency_in_routes_txt("PSC",  "TRIMET")
-        fix.rename_agency_in_routes_txt("TRAM", "TRIMET")
+        fix.rename_agency_in_routes_txt("(PSC|TRAM)",  "TRIMET")
+
+    @classmethod
+    def get_args(cls):
+        ''' database load command-line arg parser and help util...
+        '''
+        import argparse
+        parser = argparse.ArgumentParser(prog='gtfs-fix', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        parser.add_argument('gtfs', help="Name of GTFS zip that is in the 'cache' (e.g., TRIMET.zip)")
+        parser.add_argument('--regex',   '-f', required=True, help="string (regex) to find in files")
+        parser.add_argument('--replace', '-t', required=True, help="string to replace found regex strings")
+        parser.add_argument('--routes',  '-r', default=True,  action='store_true', help='fix routes.txt')
+        parser.add_argument('--agency',  '-a', default=False, action='store_true', help='fix agency.txt')
+        parser.add_argument('--copy',    '-c', default=False, action='store_true', help="make a copy of the gtfs.zip (don't edit original")
+        args = parser.parse_args()
+        return args
 
 
 def main():
-    
-    fix = Fix()
-    fix.cp()
-    fix.rename_agency_in_routes_txt("^101", "SMART")
-    fix.rename_agency_in_agency_txt("^101", "SMART")
+    args = Fix.get_args()
+    fix = Fix(args.gtfs)
+    if args.copy:
+        fix.cp()
+    if args.routes:
+        fix.rename_agency_in_routes_txt(args.regex, args.replace)
+    if args.agency:
+        fix.rename_agency_in_agency_txt(args.regex, args.replace)
 
 if __name__ == '__main__':
     main()
