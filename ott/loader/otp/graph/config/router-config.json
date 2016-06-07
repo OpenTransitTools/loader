@@ -19,7 +19,19 @@
             type: "real-time-alerts",
             frequencySec: 30,
             url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
-            defaultAgencyId: "TriMet"
+            defaultAgencyId: "TRIMET"
+        },
+        {
+            type: "real-time-alerts",
+            frequencySec: 30,
+            url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
+            defaultAgencyId: "PSC"
+        },
+        {
+            type: "real-time-alerts",
+            frequencySec: 30,
+            url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
+            defaultAgencyId: "TRAM"
         }
     ]
 }
