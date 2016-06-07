@@ -210,6 +210,8 @@ class Build(CacheBase):
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
+        elif "svr" in argv:
+            success = otp_utils.run_otp_server(java_mem=java_mem, **b.graphs[0])
         elif "test" in argv:
             b.only_test_graphs(java_mem=java_mem, force_update=force_update)
         elif "viz" in argv:
