@@ -4,6 +4,9 @@ OTP_JAR=${OTP_JAR:="$OTP_DIR/target/otp-*-shaded.jar"}
 EXE_DIR=${EXE_DIR:="ott/loader/otp/graph/call"}
 EXE_JAR=${EXE_JAR:="$EXE_DIR/otp.jar"}
 
+CFG_DIR=${CFG_DIR:="ott/loader/otp/graph/config"}
+TILE_DIR=${TILE_DIR:="../ned-tiles/"}
+
 ##
 ## build OTP.jar and copy it to a given location
 ##
@@ -39,7 +42,32 @@ function fix_config_jar()
     fi
 }
 
+
+##
+## add the config.js file to our jar file
+##
+function misc()
+{
+    # cp config
+    for x in build-config.json router-config.json
+    do
+        if [ ! -f $EXT_DIR/$x ];
+        then
+            cp $CFG_DIR/$x $EXE_DIR/
+        fi
+    done
+
+    # cp cached tiles to ned dir
+    if [ ! -f $TILE_DIR ];
+    then
+        mkdir $EXE_DIR/ned
+        cp $TILE_DIR/* $EXE_DIR/ned/
+    fi
+}
+
+
+
 ## build / copy .jar into place
 build_jar
 fix_config_jar
-
+misc
