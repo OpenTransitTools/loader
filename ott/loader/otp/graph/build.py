@@ -8,7 +8,6 @@
 import os
 import sys
 import time
-import datetime
 import logging
 log = logging.getLogger(__file__)
 
@@ -33,36 +32,6 @@ VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 
 
-class B(object):
-    osm_name   = OSM_NAME
-    osm_size   = OSM_SIZE
-    vlog_name  = VLOG_NAME
-    test_html  = TEST_HTML
-
-    # step 4: print feed info
-    #    feed_details = self.get_gtfs_feed_details()
-
-
-    def mv_failed_graph_to_good(self):
-        """ move the failed graph to prod graph name if prod graph doesn't exist and failed does exist
-        """
-        exists = os.path.exists(self.graph_path)
-        if not exists:
-            fail_path = os.path.join(self.cache_dir, self.graph_failed)
-            exists = os.path.exists(fail_path)
-            if exists:
-                file_utils.mv(fail_path, self.graph_path)
-
-    def update_asset_log(self):
-        ''' TODO see if this is needed to inventory OSM and GTFS
-            note that we do some inventorying in vlog
-        '''
-
-    def report_error(self, msg):
-        ''' override me to do things like emailing error reports, etc... '''
-        log.error(msg)
-
-
 class Build(CacheBase):
     """ build an OTP graph
     """
@@ -73,6 +42,7 @@ class Build(CacheBase):
     graph_name = GRAPH_NAME
     graph_size = GRAPH_SIZE
     graph_failed = GRAPH_FAILD
+
 
     def __init__(self, force_update=False, dont_update=False):
         super(Build, self).__init__('otp')
@@ -170,26 +140,12 @@ class Build(CacheBase):
             success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=60)
         return success
 
-    def update_vlog(self, graph, vlog_name=VLOG_NAME):
+    def update_vlog(self, graph):
         """ print out gtfs feed(s) version numbers and dates to the otp.v log file
         """
-        dir = graph.get('dir')
-        if dir:
-            msg = "\nUpdated graph on {} with GTFS feed(s):\n".format(datetime.datetime.now().strftime("%B %d, %Y @ %I:%M %p"))
-
-            # get feeds messages
-            feed_msg = Info.get_cache_vlog_msgs(dir, self.feeds, graph.get('filter'))
-            if feed_msg and len(feed_msg) > 1:
-                msg = "{}{}\n".format(msg, feed_msg)
-
-            # write message to vlog file
-            vlog = os.path.join(graph['dir'], vlog_name)
-            f = open(vlog, 'a')
-            f.write(msg)
-            f.flush()
-            f.close()
-        else:
-            log.warn("no graph build directory given to write vlog to")
+        dir = graph.get('dir', self.cache_dir)
+        feed_msg = Info.get_cache_vlog_msgs(dir, self.feeds, graph.get('filter'))
+        file_utils.update_vlog(dir, feed_msg)
 
     def vizualize_graph(self, java_mem=None, graph_index=0):
         '''

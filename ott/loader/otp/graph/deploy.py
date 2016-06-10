@@ -1,8 +1,10 @@
-import filecmp
 import shutil
+import logging
+log = logging.getLogger(__file__)
 
-from ott.utils import exe_utils
 from ott.utils import web_utils
+from ott.utils import file_utils
+from ott.utils import otp_utils
 from ott.loader.otp.graph.build import *
 
 # constants
@@ -23,63 +25,13 @@ TMP_API   = TMP_DIR + API_NAME
 TMP_JAR   = TMP_DIR + JAR_NAME
 
 
-def bkup_file(file):
-    """ copy a file to a file--YYYY-MM-DD
-    """
-    try:
-        if os.path.isfile(file):
-            today = datetime.datetime.now().strftime("%Y-%m-%d")
-            shutil.copy2(file, file + "--" + today)
-    except:
-        logging.warn('ERROR: could not copy file ' + file)
-
-
-def diff_vlog(svr, vlog="otp.v"):
-    """ return True if the files are different and need to be redeployed ...
-    
-        - grab vlog from remote server that builds new OTP graphs
-        - compare it to our local vlog
-        - send email if we can't find remote vlog...
-    """
-    ret_val = False
-    
-    # step 1: grab otp.v from build server
-    url=svr + vlog
-    ok = web_utils.wget(url, TMP_VERSION_LOG, 10)
-
-    if not ok:
-        # step 2: remote server doesn't have otp.v exposed ... send an error email...
-        msg = "No vlog available at {0}".format(url)
-        email(msg, msg)
-        ret_val = False
-    else:
-        # step 3: make sure the otp.v we just downloaded has content ... if note, send an error email
-        if not exists_and_sized(TMP_VERSION_LOG, 20):
-            msg = "vlog file {0} (grabbed from {1}) isn't right ".format(TMP_VERSION_LOG, url)
-            email(msg, msg)
-            ret_val = False
-        else:
-            # step 4a: we currently don't have a vlog, so assume we don't have an existing OTP ... let's deploy new download...
-            if not exists_and_sized(VERSION_LOG, 20):
-                ret_val = True
-                logging.info("{0} doesn't exist ... try to grab new OTP from {1} and deploy".format(VERSION_LOG, SVR))
-            else:
-                # step 4b: check if the vlog files are different...if so, we'll assume the remote is newer and start a new deploy...                
-                if filecmp.cmp(TMP_VERSION_LOG, VERSION_LOG):
-                    logging.info("{0} == {1} ... we're done, going to keep the current graph running".format(VERSION_LOG, TMP_VERSION_LOG))
-                else:
-                    ret_val = True
-                    logging.info("{0} != {1} ... will try to grab new OTP from {2} and deploy".format(VERSION_LOG, TMP_VERSION_LOG, SVR))
-
-    return ret_val
-
 
 def update_graph():
     """ update the graph,  and other 
     """
 
     # step 1: see if our vlog is different (older) than the one from the build server
-    if diff_vlog(SVR):
+    if otp_utils.diff_vlog(SVR):
 
         # step 2: grab new graph and api
         gok = web_utils.wget(URL_GRAPH, TMP_GRAPH, 1000000)
@@ -94,12 +46,12 @@ def update_graph():
             time.sleep(10)
 
             # step 3b: backup the old stuff
-            bkup_file(GRAPH_FILE)
-            bkup_file(API_FILE)
-            bkup_file(VERSION_LOG)
-            bkup_file(JAR_FILE)
+            file_utils.bkup(GRAPH_FILE)
+            file_utils.bkup(API_FILE)
+            file_utils.bkup(VERSION_LOG)
+            file_utils.bkup(JAR_FILE)
 
-            # step 3c: move the new stuff into place
+            # step 3c: moved the new stuff into place
             shutil.copy2(TMP_GRAPH, GRAPH_FILE)
             shutil.copy2(TMP_API,   API_FILE)
             shutil.copy2(TMP_JAR,   JAR_FILE)
@@ -119,10 +71,8 @@ def update_graph():
             deploy_graph(tomcat_cmd)
 
 
-
 def main():
-    logging.basicConfig(level=logging.INFO)
-    logging.info("\nRunning deploy.py on {0}\n".format(datetime.datetime.now()))
+    log.info("\nRunning deploy.py on {0}\n".format(datetime.datetime.now()))
     update_graph()
 
 if __name__ == '__main__':

@@ -61,6 +61,7 @@ setup(
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
         gtfsdb_load = ott.loader.gtfsdb.load:main
         otp_build_graph = ott.loader.otp.graph.build:main
+        otp_deploy_graph = ott.loader.otp.graph.deploy:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_random_trips = ott.loader.otp.preflight.random_trip:main
     """,
