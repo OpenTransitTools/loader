@@ -273,7 +273,7 @@ otp.config = {
                 mailables_introduction : "Thank you for calling us to request TriMet information.  We have enclosed for you the following item(s):",
                 mailables_conclusion : "For personalized trip planning, please call our Customer Service Center from 8:30 AM until 4:30 PM, Monday through Friday, at 238-RIDE (238-7433), TTY 238-5511.  We can also provide fare information, additional schedules, or brochures you may need.\n\nIt's a pleasure to serve your transit needs, and we thank you for riding TriMet.",
 
-                mailables_footer : "Tri-County Metropolitan Transportation District of Oregon â€¢ 503-238-RIDE â€¢ TTY 503-238-5811 â€¢ trimet.org",
+                mailables_footer : "Tri-County Metropolitan Transportation District of Oregon • 503-238-RIDE • TTY 503-238-5811 • trimet.org",
 
                 // header graphic location
                 mailables_header_graphic : "images/agency_logo.png",
@@ -454,17 +454,17 @@ otp.config.modes = {
         "WALK"                : _tr('Walk Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-        "CAR"                 : _tr('Drive Only'),
+      //  "CAR"                 : _tr('Drive Only'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
-    "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
+    //"CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) http://en.wikipedia.org/wiki/Park_and_ride#Kiss_and_ride
-    "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
+    //"CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets) (Park bicycle at Public transit station and take a
     //transit
-    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
+    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     //uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //       (note that we've been broken for awhile here, since many agencies don't have a 'Train' mode either...this needs attention)
