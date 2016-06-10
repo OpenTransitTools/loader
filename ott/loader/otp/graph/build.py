@@ -66,8 +66,16 @@ class Build(CacheBase):
             if force_update or not dont_update:
                 OsmCache.check_osm_file_against_cache(dir)
                 GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
-
         return graphs
+
+    def is_old_otp(self, graph):
+        ret_val = False
+        if graph and graph.get('old'):
+            ## TODO look at graph to determine if we should buidl old otp
+            v = graph.get('old')
+            if len(v) > 0:
+                ret_val = True
+        return ret_val
 
     def build_and_test_graphs(self, java_mem=None, force_update=False):
         ''' will build and test each of the graphs we have in self.graphs
