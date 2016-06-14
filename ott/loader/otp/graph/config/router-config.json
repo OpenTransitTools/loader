@@ -13,25 +13,24 @@
     },
 
     updaters: [
-
         // GTFS-RT service alerts (frequent polling)
         {
             type: "real-time-alerts",
-            frequencySec: 30,
+            frequencySec: 60,
             url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
             defaultAgencyId: "TRIMET"
         },
         {
             type: "real-time-alerts",
-            frequencySec: 30,
+            frequencySec: 160,
             url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
-            defaultAgencyId: "PSC"
+            defaultAgencyId: "TRAM"
         },
         {
             type: "real-time-alerts",
-            frequencySec: 30,
+            frequencySec: 300,
             url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
-            defaultAgencyId: "TRAM"
+            defaultAgencyId: "PSC"
         }
     ]
 }
