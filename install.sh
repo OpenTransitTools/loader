@@ -13,6 +13,12 @@ cd ott/loader/osm/osmosis/
 ./install.sh
 cd -
 
+# remove OpenTripPlanner target directory and git pull latest code
+cd ../OpenTripPlanner/
+rm -rf ./target
+git pull
+cd -
+
 # get OTP .jar file put into each folder
 for x in ott/loader/otp/graph/*/install.sh
 do 
