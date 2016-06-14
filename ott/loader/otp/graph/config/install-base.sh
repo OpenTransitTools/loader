@@ -3,7 +3,7 @@ WEB_JAR=${WEB_JAR:="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplann
 OTP_DIR=${OTP_DIR:="../OpenTripPlanner"}
 OTP_JAR=${OTP_JAR:="$OTP_DIR/target/otp-*-shaded.jar"}
 
-EXE_DIR=${EXE_DIR:="ott/loader/otp/graph/prod"}
+EXE_DIR=${EXE_DIR:="ott/loader/otp/graph/$GRAPH_NAME"}
 EXE_JAR=${EXE_JAR:="$EXE_DIR/otp.jar"}
 
 CFG_DIR=${CFG_DIR:="ott/loader/otp/graph/config"}
