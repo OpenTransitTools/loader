@@ -13,16 +13,10 @@ cd ott/loader/osm/osmosis/
 ./install.sh
 cd -
 
-# rebuild OpenTripPlanner with latest code
-cd ../OpenTripPlanner/
-rm -rf ./target
-mvn package -Dmaven.test.skip=true
-cd -
-
 # get OTP .jar file put into each folder
 for x in ott/loader/otp/graph/*/install.sh
 do 
-echo $x
-$x
+  echo $x
+  $x
 done
 
