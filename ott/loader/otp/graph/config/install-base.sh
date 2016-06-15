@@ -5,9 +5,10 @@ OTP_JAR=${OTP_JAR:="$OTP_DIR/target/otp-*-shaded.jar"}
 
 EXE_DIR=${EXE_DIR:="ott/loader/otp/graph/$GRAPH_NAME"}
 EXE_JAR=${EXE_JAR:="$EXE_DIR/otp.jar"}
+CACHE_JAR=${CACHE_JAR:="../cache/otp.jar"}
 
 CFG_DIR=${CFG_DIR:="ott/loader/otp/graph/config"}
-TILE_DIR=${TILE_DIR:="../ned-tiles/"}
+TILE_DIR=${TILE_DIR:="../cache/ned/"}
 
 
 ##
@@ -35,7 +36,12 @@ function build_jar()
 ##
 function wget_jar()
 {
-    wget -O $EXE_JAR $WEB_JAR
+    if [ ! -f $CACHE_JAR ];
+    then
+        wget -O $EXE_JAR $WEB_JAR
+    else
+        cp $CACHE_JAR $EXE_JAR
+    fi
 }
 
 ##
@@ -83,3 +89,4 @@ function misc()
         cp $TILE_DIR/* $EXE_DIR/ned/
     fi
 }
+
