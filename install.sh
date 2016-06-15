@@ -13,6 +13,10 @@ cd ott/loader/osm/osmosis/
 ./install.sh
 cd -
 
+# get a leg up on the load by copying a cache'd OSM .pbf into place
+mkdir ott/loader/osm/cache/
+cp ../osm/*.pbf ott/loader/osm/cache/
+
 # remove OpenTripPlanner target directory and git pull latest code
 cd ../OpenTripPlanner/
 rm -rf ./target
