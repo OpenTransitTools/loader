@@ -1,6 +1,6 @@
 {
   useTransfersTxt: true,
-  osmCustomNamer: "portland",
+  osmNaming: "portland",
   fetchElevationUS: true,
   "elevationBucket" : {
     "accessKey" : "AKIAI5DKXIBQAUDA2S3A",
