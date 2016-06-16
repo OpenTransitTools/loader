@@ -12,9 +12,9 @@ git update-index --assume-unchanged .pydevproject
 # OSMOSIS is the OpenStreetMap .pbf to .osm converter and db loader
 if [ ! -f "ott/loader/osm/osmosis/bin/osmosis" ];
 then
-  cd ott/loader/osm/osmosis/
-  ./install.sh
-  cd -
+    cd ott/loader/osm/osmosis/
+    ./install.sh
+    cd -
 fi
 
 # get a leg up on the load by copying a cache'd OSM .pbf into place
@@ -29,7 +29,10 @@ cd -
 
 # get OTP .jar file put into each folder
 for x in ott/loader/otp/graph/*/install.sh
-do 
-  echo $x
-  $x
+do
+    echo $x
+    $x
 done
+
+# FINALLY ... run the load all script to execute the loader for the first time...
+bin/load_all
