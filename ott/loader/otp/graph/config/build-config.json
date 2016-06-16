@@ -1,5 +1,10 @@
 {
   useTransfersTxt: true,
-  //fetchElevationUS: true,
-  osmCustomNamer: "portland"
+  osmCustomNamer: "portland",
+  fetchElevationUS: true,
+  "elevationBucket" : {
+    "accessKey" : "AKIAI5DKXIBQAUDA2S3A",
+    "secretKey" : "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",
+    "bucketName" : "ned13"
+  }
 }
