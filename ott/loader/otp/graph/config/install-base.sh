@@ -53,6 +53,8 @@ function fix_config_jar()
     then
         echo "config and images to $EXE_JAR"
         cd $EXE_DIR
+        cp $CFG_DIR/logback.xml .
+        jar uf otp.jar logback.xml
         jar uf otp.jar client/js/otp/config.js
         jar uf otp.jar client/images/agency_logo.png
         cd -
