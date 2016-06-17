@@ -52,7 +52,7 @@ class Build(CacheBase):
         ''' read the config for graph specs like graph dir and web port (for running OTP)
             this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
         '''
-        graphs = self.config.get_json('graphs')
+        graphs = otp_utils.get_graphs(self)
 
         # check for config list of graphs ... create a default if nothing exists
         if graphs is None or len(graphs) == 0:

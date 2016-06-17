@@ -21,8 +21,8 @@ class Run(CacheBase):
     graphs = None
 
     def __init__(self):
-        super(Build, self).__init__('otp')
-        self.graphs = self.config.get_json('graphs')
+        super(Run, self).__init__('otp')
+        self.graphs = otp_utils.get_graphs(self)
 
     def find_graph(self, graph_name):
         ''' will build and test each of the graphs we have in self.graphs
@@ -54,8 +54,6 @@ class Run(CacheBase):
             success = otp_utils.run_otp_server(java_mem=java_mem, **b.graphs[0])
         elif "viz" in argv:
             b.vizualize_graph(java_mem=java_mem)
-        else:
-            b.build_and_test_graphs(java_mem=java_mem, force_update=force_update)
 
 
 def main(argv=sys.argv):

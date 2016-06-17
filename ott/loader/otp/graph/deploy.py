@@ -23,6 +23,7 @@ class Deploy(Build):
     force_update = False
     def __init__(self):
         super(Deploy, self).__init__(dont_update=True)
+        self.graphs = otp_utils.get_graphs(self)
 
     def update_new_otp(self):
         gok = web_utils.wget(URL_GRAPH, TMP_GRAPH, 1000000)
