@@ -43,7 +43,6 @@ class Build(CacheBase):
     graph_size = GRAPH_SIZE
     graph_failed = GRAPH_FAILD
 
-
     def __init__(self, force_update=False, dont_update=False):
         super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
@@ -67,15 +66,6 @@ class Build(CacheBase):
                 OsmCache.check_osm_file_against_cache(dir)
                 GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
         return graphs
-
-    def is_old_otp(self, graph):
-        ret_val = False
-        if graph and graph.get('old'):
-            ## TODO look at graph to determine if we should buidl old otp
-            v = graph.get('old')
-            if len(v) > 0:
-                ret_val = True
-        return ret_val
 
     def build_and_test_graphs(self, java_mem=None, force_update=False):
         ''' will build and test each of the graphs we have in self.graphs
@@ -137,7 +127,7 @@ class Build(CacheBase):
                 if file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
                     success = True
                     break
-        return success
+        return success and rebuild_graph
 
     def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
         '''
@@ -155,13 +145,6 @@ class Build(CacheBase):
         feed_msg = Info.get_cache_vlog_msgs(dir, self.feeds, graph.get('filter'))
         file_utils.update_vlog(dir, feed_msg)
 
-    def vizualize_graph(self, java_mem=None, graph_index=0):
-        '''
-        '''
-        if graph_index >= len(self.graphs):
-            graph_index = 0
-        otp_utils.vizualize_graph(graph_dir=self.graphs[graph_index]['dir'], java_mem=java_mem)
-
     @classmethod
     def options(cls, argv):
         ''' main entry point for command line graph build app
@@ -174,22 +157,11 @@ class Build(CacheBase):
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
-        elif "svr" in argv:
-            success = otp_utils.run_otp_server(java_mem=java_mem, **b.graphs[0])
         elif "test" in argv:
             b.only_test_graphs(java_mem=java_mem, force_update=force_update)
-        elif "viz" in argv:
-            b.vizualize_graph(java_mem=java_mem)
         else:
             b.build_and_test_graphs(java_mem=java_mem, force_update=force_update)
 
-
-def xmain(argv=sys.argv):
-    #import pdb; pdb.set_trace()
-    b = Build(dont_update=True)
-    for g in b.graphs:
-        log.warn(g['name'])
-        b.update_vlog(g)
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
