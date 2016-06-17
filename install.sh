@@ -20,6 +20,8 @@ fi
 # get a leg up on the load by copying a cache'd OSM .pbf into place
 mkdir ott/loader/osm/cache/
 cp ../cache/osm/*.* ott/loader/osm/cache/
+sleep 5
+touch ott/loader/osm/cache/*.osm
 
 # remove OpenTripPlanner target directory and git pull latest code
 cd ../OpenTripPlanner/
