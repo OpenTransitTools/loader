@@ -34,7 +34,7 @@ class Run(CacheBase):
         '''
         import argparse
         parser = argparse.ArgumentParser(prog='otp-run', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., TRIMET)")
+        parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., 'prod', 'test' or 'call')")
         parser.add_argument('--server',     '-s', required=False, action='store_true', help="string (regex) to find in files")
         parser.add_argument('--viz',        '-v', required=False, action='store_true',  help="string to replace found regex strings")
         parser.add_argument('--mem', '-lm', '-m', required=False, action='store_true',  help="string to replace found regex strings")
@@ -43,6 +43,7 @@ class Run(CacheBase):
 
     @classmethod
     def run(cls):
+        #import pdb; pdb.set_trace()
         success = False
 
         r = Run()
