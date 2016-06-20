@@ -24,40 +24,44 @@ class Run(CacheBase):
         super(Run, self).__init__('otp')
         self.graphs = otp_utils.get_graphs(self)
 
-    def find_graph(self, graph_name):
-        ''' will build and test each of the graphs we have in self.graphs
-        '''
-        #import pdb; pdb.set_trace()
-        ret_val = None
-        for g in self.graphs:
-            if graph_name in g['name']:
-                ret_val = g
-                break
-        return ret_val
+    @classmethod
+    def get_args(cls):
+        ''' database load command-line arg parser and help util...
 
-    def vizualize_graph(self, java_mem=None, graph_index=0):
+            examples:
+               bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
+               bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
         '''
-        '''
-        if graph_index >= len(self.graphs):
-            graph_index = 0
-        otp_utils.vizualize_graph(graph_dir=self.graphs[graph_index]['dir'], java_mem=java_mem)
+        import argparse
+        parser = argparse.ArgumentParser(prog='otp-run', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., TRIMET)")
+        parser.add_argument('--server',     '-s', required=False, action='store_true', help="string (regex) to find in files")
+        parser.add_argument('--viz',        '-v', required=False, action='store_true',  help="string to replace found regex strings")
+        parser.add_argument('--mem', '-lm', '-m', required=False, action='store_true',  help="string to replace found regex strings")
+        args = parser.parse_args()
+        return args, parser
 
     @classmethod
-    def options(cls, argv):
-        ''' main entry point for command line graph build app
-        '''
-        #import pdb; pdb.set_trace()
-        java_mem = "-Xmx1236m" if "low_mem" in argv else None
+    def run(cls):
+        success = False
 
-        b = Run()
-        if "svr" in argv:
-            success = otp_utils.run_otp_server(java_mem=java_mem, **b.graphs[0])
-        elif "viz" in argv:
-            b.vizualize_graph(java_mem=java_mem)
+        r = Run()
+        args, parser = r.get_args()
+
+        graph = otp_utils.find_graph(r.graphs, args.name)
+        java_mem = "-Xmx1236m" if args.mem else None
+        if args.server:
+            success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+        elif args.viz:
+            success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
+        else:
+            print "PLEASE select a option to either serve or vizualize graph {}".format(graph['name'])
+            parser.print_help()
+        return success
 
 
 def main(argv=sys.argv):
-    Run.options(argv)
+    Run.run()
 
 if __name__ == '__main__':
     main()
