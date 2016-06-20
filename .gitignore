@@ -11,8 +11,9 @@ ned/
 *.obj
 *.out
 *.osm
-**/call/*.txt
-**/prod/*.txt
+**/call/*.*
+**/prod/*.*
+**/test/*.*
 *~
 [a-z].py
 *.py[cod]
