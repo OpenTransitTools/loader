@@ -68,5 +68,7 @@ setup(
         otp_run = ott.loader.otp.graph.run:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_random_trips = ott.loader.otp.preflight.random_trip:main
+
+        gbfs_sobi = ott.loader.sum.sobi.sobi_cache:main
     """,
 )
