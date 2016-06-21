@@ -19,7 +19,7 @@ class SobiCache(CacheBase):
     def __init__(self):
         super(SobiCache, self).__init__(section='sobi')
         self.url = self.config.get('download_url')
-        self.name = self.config.get_json('name')
+        self.name = self.config.get('name')
         self.file_name = self.name + ".json"
         self.file_path = os.path.join(self.cache_dir, self.file_name)
 
