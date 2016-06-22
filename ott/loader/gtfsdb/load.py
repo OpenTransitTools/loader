@@ -51,7 +51,10 @@ class Load(CacheBase):
 
             # load this feed into gtfsdb
             log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
-            database_load(feed_path, **kwargs)
+            try:
+                database_load(feed_path, **kwargs)
+            except Exception, e:
+                log.error("DATABASE ERROR : {}".format(e))
 
 
 def main():
