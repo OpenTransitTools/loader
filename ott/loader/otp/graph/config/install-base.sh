@@ -1,3 +1,12 @@
+#
+# loader install
+#
+# preps each graph directory by adding config stuff to otp.jar, as well as
+# (possibly) copying cached data (like NED tiles)
+#
+# June 2016
+#
+
 WEB_JAR=${WEB_JAR:="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.20.0/otp-0.20.0-shaded.jar"}
 
 OTP_DIR=${OTP_DIR:="../OpenTripPlanner"}
@@ -10,6 +19,10 @@ CACHE_JAR=${CACHE_JAR:="../cache/otp.jar"}
 CFG_DIR=${CFG_DIR:="ott/loader/otp/graph/config"}
 TILE_DIR=${TILE_DIR:="../cache/ned/"}
 
+link=false
+if [[ $1 == "link" ]]; then
+  link=true
+fi
 
 ##
 ## build OTP.jar and copy it to a given location
@@ -47,6 +60,7 @@ function wget_jar()
 ##
 ## add the config.js file to our jar file
 ##
+# test
 function fix_config_jar()
 {
     if [ -f $EXT_JAR ];
@@ -67,6 +81,8 @@ function fix_config_jar()
 ##
 function misc()
 {
+    echo "misc..."
+
     # cp config
     for x in build-config.json router-config.json
     do
@@ -77,7 +93,7 @@ function misc()
     done
 
     # make ned dir if doesn't exist
-    if [ ! -f $EXE_DIR/ned/ ];
+    if [ ! -d $EXE_DIR/ned/ ];
     then
         mkdir $EXE_DIR/ned/
     else
@@ -87,9 +103,22 @@ function misc()
     fi
 
     # cp cached tiles to ned dir
-    if [ -f $TILE_DIR ];
+    if [ -d $TILE_DIR ];
     then
-        cp $TILE_DIR/* $EXE_DIR/ned/
+        if "$link"; then
+            echo "ln -s $TILE_DIR/* $EXE_DIR/ned/"
+            ln -s $TILE_DIR/* $EXE_DIR/ned/
+        else
+            echo "copying $TILE_DIR/* $EXE_DIR/ned/"
+            cp $TILE_DIR/* $EXE_DIR/ned/
+        fi
     fi
 }
 
+};
+
+# BELOW is for TESTING...
+#function misc()  {
+#function build_jar() { echo "TEST fix jar" }
+#function wget_jar()  { echo "TEST wget jar" }
+#function fix_config_jar() { echo "TEST fix jar" }

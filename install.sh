@@ -39,8 +39,6 @@ else
     touch ott/loader/osm/cache/*.osm
 fi
 
-
-
 # remove OpenTripPlanner target directory and git pull latest code
 cd ../OpenTripPlanner/
 rm -rf ./target
@@ -51,8 +49,8 @@ cd -
 for x in ott/loader/otp/graph/*/install.sh
 do
     echo $x $*
-    #$x $*
+    $x $*
 done
 
 # FINALLY ... run the load all script to execute the loader for the first time...
-#bin/load_all
+bin/load_all
