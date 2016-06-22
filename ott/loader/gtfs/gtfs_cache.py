@@ -60,7 +60,7 @@ class GtfsCache(CacheBase):
         if update:
             log.info("move {} to cache {}".format(tmp_path, file_path))
             file_utils.bkup(file_path)
-            file_utils.mv(tmp_path, file_path)
+            file_utils.cp(tmp_path, file_path)
 
     def cmp_file_to_cached(self, gtfs_zip_name, cmp_dir):
         ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
