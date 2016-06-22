@@ -41,8 +41,9 @@ class GtfsCache(CacheBase):
         url = url
         tmp_path = os.path.join(self.tmp_dir, file_name)
 
-        # step 2b: don't keep downloading a file ... make sure the tmp file is at least 3 hours
-        if os.path.exists(tmp_path) is False or file_utils.file_age_seconds(tmp_path) > 10000:
+        # step 2b: don't keep downloading a file ... make sure the tmp file is at least 2 hours
+        if os.path.exists(tmp_path) is False or \
+           file_utils.file_age_seconds(tmp_path) > 7200:
             web_utils.wget(url, tmp_path)
 
         # step 3: check the cache whether we should update or not
@@ -58,7 +59,7 @@ class GtfsCache(CacheBase):
 
         # step 4: mv old file to backup then mv new file in tmp dir to cache
         if update:
-            log.info("move {} to cache {}".format(tmp_path, file_path))
+            log.info("cp {} to cache {}".format(tmp_path, file_path))
             file_utils.bkup(file_path)
             file_utils.cp(tmp_path, file_path)
 
