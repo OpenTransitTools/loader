@@ -10,7 +10,7 @@ if [[ $1 == "link" ]]; then
 fi
 
 # run buildout (and ignore .pydev)
-buildout
+#buildout
 git update-index --assume-unchanged .pydevproject
 
 # install OSMOSIS if necessary
@@ -23,27 +23,37 @@ then
 fi
 
 # get a leg up on the load by copying a cache'd OSM .pbf into place
-
-# first make sure .osm is 'newer' than any *.pbf files
-touch ../cache/osm/*.*
-sleep 5
-touch ../cache/osm/*.osm
-
-mkdir ott/loader/osm/cache
-
-if "$link"; then
-    ln -s ../cache/osm/*.* ott/loader/osm/cache/
-else
-    cp ../cache/osm/*.* ott/loader/osm/cache/
+if [ -d "../cache/osm/" ]
+then
+    # first make sure .osm is 'newer' than any *.pbf files
+    touch ../cache/osm/*.*
     sleep 5
-    touch ott/loader/osm/cache/*.osm
-fi
+    touch ../cache/osm/*.osm
 
-# remove OpenTripPlanner target directory and git pull latest code
-cd ../OpenTripPlanner/
-rm -rf ./target
-git pull
-cd -
+    mkdir ott/loader/osm/cache
+
+
+    if "$link"; then
+        cd ../cache/osm/
+        DIR=$PWD
+        cd -
+        ln -s $DIR/*.* ott/loader/osm/cache/
+    else
+        cp ../cache/osm/*.* ott/loader/osm/cache/
+        sleep 5
+        touch ott/loader/osm/cache/*.osm
+    fi
+fi
+exit
+
+# remove OpenTripPlanner target directory and git pull latest code (in case we have to build)
+if [ -d "../OpenTripPlanner/" ]
+then
+    cd ../OpenTripPlanner/
+    rm -rf ./target
+    git pull
+    cd -
+fi
 
 # get OTP .jar file put into each folder
 for x in ott/loader/otp/graph/*/install.sh
