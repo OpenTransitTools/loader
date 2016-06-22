@@ -106,8 +106,11 @@ function misc()
     if [ -d $TILE_DIR ];
     then
         if "$link"; then
-            echo "ln -s $TILE_DIR/* $EXE_DIR/ned/"
-            ln -s $TILE_DIR/* $EXE_DIR/ned/
+            cd $TILE_DIR
+            DIR=$PWD
+            cd -
+            echo "ln -s $DIR/* $EXE_DIR/ned/"
+            ln -s $DIR/* $EXE_DIR/ned/
         else
             echo "copying $TILE_DIR/* $EXE_DIR/ned/"
             cp $TILE_DIR/* $EXE_DIR/ned/
