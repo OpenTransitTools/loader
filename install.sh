@@ -10,7 +10,7 @@ if [[ $1 == "link" ]]; then
 fi
 
 # run buildout (and ignore .pydev)
-#buildout
+buildout
 git update-index --assume-unchanged .pydevproject
 
 # install OSMOSIS if necessary
@@ -44,7 +44,6 @@ then
         touch ott/loader/osm/cache/*.osm
     fi
 fi
-exit
 
 # remove OpenTripPlanner target directory and git pull latest code (in case we have to build)
 if [ -d "../OpenTripPlanner/" ]
