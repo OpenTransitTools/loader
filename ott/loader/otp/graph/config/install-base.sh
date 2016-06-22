@@ -115,10 +115,9 @@ function misc()
     fi
 }
 
-};
-
 # BELOW is for TESTING...
 #function misc()  {
 #function build_jar() { echo "TEST fix jar" }
 #function wget_jar()  { echo "TEST wget jar" }
 #function fix_config_jar() { echo "TEST fix jar" }
+
