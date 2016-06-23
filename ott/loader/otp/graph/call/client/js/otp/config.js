@@ -141,7 +141,9 @@ otp.config = {
     showLogo            : true,
     showTitle           : true,
     showModuleSelector  : true,
-    infoWidgets         : [],
+    showWheelchairOption: false,
+    infoWidgets         : [],     // turns off about and contact top-nav items
+
     metric              : false,
 
 
@@ -334,39 +336,28 @@ otp.config = {
         title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>', 
         languages: true
     },
-    
-    
-    /**
-     * Support for the "AddThis" display for sharing to social media sites, etc.
-     */
-     
+
     showAddThis     : false,
     //addThisPubId    : 'your-addthis-id',
     //addThisTitle    : 'Your title for AddThis sharing messages',
 
-
-    /**
-     * Formats to use for date and time displays, expressed as ISO-8601 strings.
-     */    
-     
     timeFormat  : "h:mma",
     dateFormat  : "MMM Do YYYY"
-
 };
 var options = {
-	resGetPath: 'js/otp/locale/__lng__.json',
-	fallbackLng: 'en',
-        nsseparator: ';;', //Fixes problem when : is in translation text
-        keyseparator: '_|_',
-	preload: ['en'],
+    resGetPath: 'js/otp/locale/__lng__.json',
+    fallbackLng: 'en',
+    nsseparator: ';;', //Fixes problem when : is in translation text
+    keyseparator: '_|_',
+    preload: ['en'],
         //TODO: Language choosing works only with this disabled
         /*lng: otp.config.locale_short,*/
         /*postProcess: 'add_nekaj', //Adds | around every string that is translated*/
         /*shortcutFunction: 'sprintf',*/
         /*postProcess: 'sprintf',*/
-	debug: true,
-	getAsync: false, //TODO: make async
-	fallbackOnEmpty: true,
+    debug: true,
+    getAsync: false, //TODO: make async
+    fallbackOnEmpty: true,
 };
 var _tr = null; //key
 var ngettext = null; // singular, plural, value
@@ -468,4 +459,4 @@ otp.config.modes = {
     //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
     //Options widgets)
     //    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle')
-    };
+};
