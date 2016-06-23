@@ -3,15 +3,18 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
-    hostname       : "http://localhost:55555",
+    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
+    //hostname       : "http://localhost:51115",
     //hostname       : "http://trimet-new.dev.conveyal.com:8001",
-    //hostname       : "http://maps9.trimet.org",
-    datastoreUrl   : "http://maps9.trimet.org:9000",
+    hostname       : "http://maps7.trimet.org",
+    datastoreUrl   : "http://maps8.trimet.org:9000",
     basename       : "http://call.trimet.org",
     restService    : "otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
+    maxWalk        : 804.672, // 1/2 mile walk
+    //maxWalk        : 1207.008, // 3/4 mile walk
+    //maxWalk        : 1609.344, // 1 mile walk
     attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
@@ -138,6 +141,7 @@ otp.config = {
     showLogo            : true,
     showTitle           : true,
     showModuleSelector  : true,
+    infoWidgets         : [],
     metric              : false,
 
 
@@ -167,7 +171,8 @@ otp.config = {
 
                 defaultQueryParams : 
                 {
-                    maxWalkDistance : 804.672
+                    maxWalkDistance : otp_consts.maxWalk
+
                 },
 
                 mailables : [
@@ -295,7 +300,7 @@ otp.config = {
                 module_redirect_url     : otp_consts.basename,
                 defaultQueryParams :
                 {
-                    maxWalkDistance : 804.672
+                    maxWalkDistance : otp_consts.maxWalk,
                     ,
                     minTransferTime : 300
                 }
@@ -381,17 +386,6 @@ i18n.init(options, function(t) {
         //Conditionally load datepicker-lang.js?
     } 
 
-    //Use infoWidgets from locale
-    //Default locale is English which has infoWidgets
-    if ("infoWidgets" in otp.config.locale) {
-        otp.config.infoWidgets=otp.config.locale.infoWidgets;
-    } else {
-        otp.config.infoWidgets=otp.locale.English.infoWidgets;
-    }
-
-    if (otp.config.showLanguageChooser) {
-        otp.config.infoWidgets.push(otp.config.infoWidgetLangChooser);
-    }
     //Accepts Key, value or key, value1 ... valuen
     //Key is string to be translated
     //Value is used for sprintf parameter values
