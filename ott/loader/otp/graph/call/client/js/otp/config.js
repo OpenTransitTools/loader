@@ -301,7 +301,6 @@ otp.config = {
                 defaultQueryParams :
                 {
                     maxWalkDistance : otp_consts.maxWalk,
-                    ,
                     minTransferTime : 300
                 }
             }
