@@ -1,0 +1,81 @@
+[
+    {
+      "id" : 1512,
+      "name" : "SW 10th at Stark",
+      "racks_amount" : 18,
+      "description" : "APPROVED LAND OWNER: PBOTTYPE: OFF-STREETSIGN TYPE: SMALL",
+
+      "network_id" : 92,
+      "has_kiosk" : false,
+      "public" : false,
+      "display_method" : "auto",
+      "collapse_bikes" : true,
+      "middle_point" :
+      {
+        "type" : "Point",
+        "coordinates" :
+        [
+          -122.68106728792189,
+          45.52179463696349
+        ]
+      },
+      "area_id" : "241",
+      "address" : "404 Southwest 10th Avenue, Portland",
+      "distance" : null,
+      "current_bikes" : 0,
+      "available_bikes" : 0,
+      "free_racks" : 18
+    },
+    {
+      "id" : 1513,
+      "name" : "SE Gideon at 12th Ave MAX station",
+      "racks_amount" : 18,
+      "description" : "APPROVED LAND OWNER: PBOTTYPE: OFF-STREETSIGN TYPE: SMALL",
+      "network_id" : 92,
+      "has_kiosk" : false,
+      "public" : false,
+      "display_method" : "auto",
+      "collapse_bikes" : true,
+      "middle_point" :
+      {
+        "type" : "Point",
+        "coordinates" :
+        [
+          -122.65274047851562,
+          45.50234848146126
+        ]
+      },
+      "area_id" : "241",
+      "address" : "1305 Southeast Gideon Street, Portland",
+      "distance" : null,
+      "current_bikes" : 0,
+      "available_bikes" : 0,
+      "free_racks" : 18
+    },
+    {
+      "id" : 1514,
+      "name" : "SE Clinton at 26th",
+      "racks_amount" : 18,
+      "description" : "APPROVED LAND OWNER: PBOTTYPE: ON-STREETSIGN TYPE: SMALL",
+      "network_id" : 92,
+      "has_kiosk" : false,
+      "public" : false,
+      "display_method" : "auto",
+      "collapse_bikes" : true,
+      "middle_point" :
+      {
+        "type" : "Point",
+        "coordinates" :
+        [
+          -122.6395493745804,
+          45.50356006831213
+        ]
+      },
+      "area_id" : "241",
+      "address" : "2615 Southeast Clinton Street, Portland",
+      "distance" : null,
+      "current_bikes" : 0,
+      "available_bikes" : 0,
+      "free_racks" : 18
+    }
+]

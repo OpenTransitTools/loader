@@ -1,0 +1,26 @@
+<add>
+    <doc boost='1.0'>
+        <field name='id'>bikeshare-1</field>
+        <field name='vtype'>111</field>
+        <field name='type'>bikeshare-rack</field>
+        <field name='begin_date'>2016-09-04</field>
+        <field name='end_date'>9999-12-31</field>
+        <field name='stop_id'>10037</field>
+        <field name='name'>10200 Block SW Park Way</field>
+
+        <field name='ada_boundary'>true</field>
+        <field name='trimet_boundary'>true</field>
+        <field name='pseudo_timepoint'>false</field>
+        <field name='neighborhood'>CENTRAL BEAVERTON</field>
+        <field name='city'>Beaverton</field>
+        <field name='county'>Washington</field>
+        <field name='lon'>-122.782033220798</field>
+        <field name='lat'>45.5083943368378</field>
+        <field name='x'>7617147.6</field>
+        <field name='y'>679709.4</field>
+        <field name='amenities'>Curbcut;Front-door Landing Paved;Sidewalk;Bench;;Back-door Landing Paved;Telephone</field>
+        <field name='providers'>American Red Cross Washington County</field>
+        <field name='routes'>59:59:Walker/Park Way:snow</field>
+        <field name='route_stops'>59,"Walker/Park Way",0,"To Willow Creek/SW 185th Ave Transit Center",false,false,false</field>
+    </doc>
+</add>
