@@ -59,8 +59,8 @@ class Info(CacheBase):
     def get_feed_date_range(self):
         return self._get_feed_date_range()
 
-    def get_feed_vlog_info(self, feed_name):
-        ''' get feed details dict
+    def get_feed_details(self, feed_name):
+        '''
         '''
         r = self.get_feed_date_range()
         v = self.get_feed_version()
@@ -74,10 +74,10 @@ class Info(CacheBase):
         ret_val['until'] = d[1]
         return ret_val
 
-    def get_feed_vlog_msg(self, feed_name, prefix=" ", suffix="\n"):
+    def get_feed_msg(self, feed_name, prefix=" ", suffix="\n"):
         ''' get feed details msg string for the .vlog file
         '''
-        f = self.get_feed_vlog_info(feed_name)
+        f = self.get_feed_details(feed_name)
         msg = "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
             .format(prefix, f['name'], f['start'], f['end'], f['until'], f['version'], suffix)
         return msg
@@ -86,14 +86,14 @@ class Info(CacheBase):
         return self._get_feed_info()
 
     @classmethod
-    def get_cache_vlog_msgs(cls, cache_dir, feeds, filter=None):
-        ''' returns string vlog messages based on cached gtfs feeds
+    def get_cache_msgs(cls, cache_dir, feeds, filter=None):
+        ''' returns string .vlog messages based on all cached gtfs feeds
         '''
         #import pdb; pdb.set_trace()
         ret_val = ""
         info = cls.get_cache_info_list(cache_dir, feeds, filter)
         for i in info:
-            ret_val = "{}{}".format(ret_val, i.get_feed_vlog_msg(i.name))
+            ret_val = "{}{}".format(ret_val, i.get_feed_msg(i.name))
         return ret_val
 
     @classmethod

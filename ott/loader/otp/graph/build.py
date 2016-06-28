@@ -28,7 +28,6 @@ GRAPH_SIZE = 35000000
 OSM_SIZE   = 5000000
 OSM_NAME   = "or-wa"
 
-VLOG_NAME  = "otp.v"
 TEST_HTML  = "otp_report.html"
 
 
@@ -142,8 +141,8 @@ class Build(CacheBase):
         """ print out gtfs feed(s) version numbers and dates to the otp.v log file
         """
         dir = graph.get('dir', self.cache_dir)
-        feed_msg = Info.get_cache_vlog_msgs(dir, self.feeds, graph.get('filter'))
-        file_utils.update_vlog(dir, feed_msg)
+        feed_msg = Info.get_cache_msgs(dir, self.feeds, graph.get('filter'))
+        otp_utils.append_vlog_file(dir, feed_msg)
 
     @classmethod
     def options(cls, argv):
