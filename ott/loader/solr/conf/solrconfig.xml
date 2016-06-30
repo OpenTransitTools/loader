@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  TriMet SOLA Config
+  v2: from scratch on 3-15-2008
+  v3: upgrade to SOLR 3.5 on 1-10-2012  
+  v4: upgrade to SOLR 4.7 on 4-15-2014  (but lucene set at 3.6)
+-->
+
+<config>
+  <luceneMatchVersion>LUCENE_35</luceneMatchVersion>
+  <abortOnConfigurationError>${solr.abortOnConfigurationError:false}</abortOnConfigurationError>
+  <dataDir>${solr.data.dir:/home/geoserve/solr/data}</dataDir>
+
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+
+ <!-- 
+     INDEX & STUFF: really important, else SOLR will lock the index when multiple JAMs run
+     NOTE: this stuff is depricated in 4.0+, so needs to move to new format.  
+ -->
+ <indexDefaults>
+    <!-- Values here affect all index writers and act as a default unless overridden. -->
+    <useCompoundFile>false</useCompoundFile>
+    <mergeFactor>10</mergeFactor>
+    <!-- Tell Lucene when to flush documents to disk.
+         Giving Lucene more memory for indexing means faster indexing at the cost of more RAM
+         If both ramBufferSizeMB and maxBufferedDocs is set, then Lucene will flush based on whichever limit is hit first.
+    -->
+    <ramBufferSizeMB>256</ramBufferSizeMB>
+    <maxMergeDocs>2147483647</maxMergeDocs>
+    <maxFieldLength>10000</maxFieldLength>
+    <writeLockTimeout>1000</writeLockTimeout>
+    <commitLockTimeout>10000</commitLockTimeout>
+
+    <!--
+      As long as Solr is the only process modifying your index, it is
+      safe to use Lucene's in process locking mechanism.  But you may
+      specify one of the other Lucene LockFactory implementations in
+      the event that you have a custom situation.
+      
+      none = NoLockFactory (typically only used with read only indexes)
+      single = SingleInstanceLockFactory (suggested)
+      native = NativeFSLockFactory
+    -->
+    <lockType>single</lockType>
+  </indexDefaults>
+  <mainIndex>
+    <!-- options specific to the main on-disk lucene index -->
+    <useCompoundFile>false</useCompoundFile>
+    <ramBufferSizeMB>128</ramBufferSizeMB>
+    <mergeFactor>10</mergeFactor>
+    <maxMergeDocs>2147483647</maxMergeDocs>
+    <maxFieldLength>10000</maxFieldLength>
+
+    <!-- If true, unlock any held write or commit locks on startup. 
+         This defeats the locking mechanism that allows multiple
+         processes to safely access a lucene index, and should be
+         used with care.
+         NOTE This is not needed if lock type is 'none' or 'single'
+     -->
+    <unlockOnStartup>false</unlockOnStartup>
+  </mainIndex>
+
+
+  <!-- the default high-performance update handler -->
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <maxPendingDeletes>100000</maxPendingDeletes>
+  </updateHandler>
+
+
+  <query>
+    <maxBooleanClauses>1024</maxBooleanClauses>
+    <filterCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="256"/>
+
+    <queryResultCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="256"/>
+
+    <documentCache
+      class="solr.LRUCache"
+      size="512"
+      initialSize="512"
+      autowarmCount="0"/>
+
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+    <queryResultWindowSize>50</queryResultWindowSize>
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+    <HashDocSet maxSize="3000" loadFactor="0.75"/>
+    <useColdSearcher>false</useColdSearcher>
+    <maxWarmingSearchers>4</maxWarmingSearchers>
+
+    <!-- FXP: NEW as of SOLR 3.5 -->
+    <!-- a newSearcher event is fired whenever a new searcher is being prepared
+         and there is a current searcher handling requests (aka registered). -->
+    <!-- QuerySenderListener takes an array of NamedList and executes a
+         local query request for each NamedList in sequence. -->
+    <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst> <str name="q">solr</str> <str name="start">0</str> <str name="rows">10</str> </lst>
+        <lst> <str name="q">rocks</str> <str name="start">0</str> <str name="rows">10</str> </lst>
+        <lst><str name="q">static newSearcher warming query from solrconfig.xml</str></lst>
+      </arr>
+    </listener>
+
+    <!-- a firstSearcher event is fired whenever a new searcher is being
+         prepared but there is no current registered searcher to handle
+         requests or to gain autowarming data from. -->
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+      </arr>
+    </listener>
+  </query>
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="3000000" /> <!-- max upload filesize == ~100MB -->
+    <httpCaching never304="true"></httpCaching>    
+  </requestDispatcher>
+
+  <requestHandler name="dismax" class="solr.StandardRequestHandler" default="true">
+    <lst name="defaults">
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+        type_name^0.30 front_type^0.15 exact_name^0.30 front_name^0.11 partial_name^0.08 stop_id^0.15 searcher^0.25 soundex^0.08
+     </str>
+     <str name="pf">
+        type_name^0.30 front_type^0.15 exact_name^0.30 front_name^0.11 partial_name^0.08 stop_id^0.15 searcher^0.25 soundex^0.08
+     </str>
+     <str name="mm">99%</str>
+     <str name="bf"></str>
+     <str name="fl">*,score</str>
+     <int name="ps">100</int>
+     <str name="defType">edismax</str>
+     <str name="q.alt">*:*</str>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="/update" class="solr.UpdateRequestHandler" >
+  </requestHandler>
+
+  <!-- config for the admin interface --> 
+  <admin>
+    <defaultQuery>solr</defaultQuery>
+  </admin>
+</config>
