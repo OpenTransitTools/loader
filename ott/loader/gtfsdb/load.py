@@ -1,13 +1,12 @@
 import os
+import logging
+log = logging.getLogger(__file__)
+
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 
 from gtfsdb.api import database_load
-
-import logging.config
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger(__file__)
 
 class Load(CacheBase):
     """ load GTFS data into a gtfsdb
