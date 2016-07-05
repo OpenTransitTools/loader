@@ -2,6 +2,8 @@ import os
 import logging
 log = logging.getLogger(__file__)
 
+
+
 from ott.utils.cache_base import CacheBase
 
 
@@ -28,7 +30,6 @@ class SobiCache(CacheBase):
         self.solr_file_path = os.path.join(self.cache_dir, self.solr_file_name)
 
     def check_feed(self, force_update=False):
-        ret_val = False
         ret_val = self.simple_cache_item_update(self.file_name, self.url, force_update)
         if ret_val:
             ret_val = self.to_solr()
@@ -38,5 +39,27 @@ class SobiCache(CacheBase):
         '''
         '''
         success = False
+
+        from xml.etree.ElementTree import Element, SubElement, Comment
+        #from ElementTree_pretty import prettify
+
+        top = Element('top')
+
+        comment = Comment('Generated for PyMOTW')
+        top.append(comment)
+
+        child = SubElement(top, 'child')
+        child.text = 'This child contains text.'
+
+        child_with_tail = SubElement(top, 'child_with_tail')
+        child_with_tail.text = 'This child has regular text.'
+        child_with_tail.tail = 'And "tail" text.'
+
+        child_with_entity_ref = SubElement(top, 'child_with_entity_ref')
+        child_with_entity_ref.text = 'This & that'
+
+        #print prettify(top)
+        print top
+
         success = True
         return success
