@@ -31,7 +31,7 @@ class SobiCache(CacheBase):
 
     def check_feed(self, force_update=False):
         ret_val = self.simple_cache_item_update(self.file_name, self.url, force_update)
-        if ret_val:
+        if True or ret_val:
             ret_val = self.to_solr()
         return ret_val
 
@@ -41,6 +41,7 @@ class SobiCache(CacheBase):
         success = False
 
         from xml.etree.ElementTree import Element, SubElement, Comment
+        from xml.etree import ElementTree
         #from ElementTree_pretty import prettify
 
         top = Element('top')
@@ -59,7 +60,7 @@ class SobiCache(CacheBase):
         child_with_entity_ref.text = 'This & that'
 
         #print prettify(top)
-        print top
+        print ElementTree.tostring(top, encoding='utf8', method='xml')
 
         success = True
         return success

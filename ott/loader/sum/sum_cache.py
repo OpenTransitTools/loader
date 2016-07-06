@@ -17,7 +17,7 @@ class SumCache(CacheBase):
         super(SumCache, self).__init__(section='sum')
 
         # check sobi
-        if True or self.config.get('name', 'sobi'):
+        if self.config.get('name', 'sobi'):
             sobi = SobiCache()
             sobi.check_feed(force_update)
 
