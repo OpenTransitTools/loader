@@ -6,6 +6,7 @@ log = logging.getLogger(__file__)
 
 
 from ott.utils.cache_base import CacheBase
+from ott.loader.solr.solr_add import SolrAdd
 
 
 class SobiCache(CacheBase):
@@ -40,17 +41,10 @@ class SobiCache(CacheBase):
         '''
         '''
         success = False
-
-        from xml.etree.ElementTree import Element, SubElement, Comment
-        from xml.etree import ElementTree
-
-        rec = ElementTree.Element('add')
-        comment = ElementTree.Comment('Generated on {}'.format(datetime.date.today()))
-        rec.append(comment)
-        doc = SubElement(rec, 'doc', attrib={'boost':'1.0'})
-        field = SubElement(doc, 'field', attrib={'name':'id'})
-        field.text = '1'
-        print ElementTree.tostring(rec, encoding='utf8', method='xml')
+        s = SolrAdd()
+        s.add_field('id', 'xxx')
+        s.add_field('id', 'zzz')
+        print s.document_to_string()
 
         success = True
         return success
