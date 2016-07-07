@@ -5,8 +5,12 @@ from xml.etree import ElementTree
 
 class SolrAdd(object):
     """ will create an XML document that conforms to SOLR's REST service for adding items to the index
+        @see http://lucene.apache.org/solr/quickstart.html#indexing-solr-xml
+        @see http://lucene.apache.org/solr/quickstart.html#indexing-json  (@todo maybe move to json)
+
         @todo investigate using SolrPy (not sure why I didn't think of this before)
-        @see
+        @todo I think using .xml docs is a good short term solution, but better to populate SOLR (or elasticsearch)
+        @see https://pypi.python.org/pypi/pysolr/3.5.0
     """
     rec = None
     doc = None
