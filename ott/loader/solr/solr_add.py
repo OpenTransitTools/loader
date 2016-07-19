@@ -1,9 +1,12 @@
+import os
 import datetime
 
 from xml.etree.ElementTree import Element, SubElement, Comment
 from xml.etree import ElementTree
 
 from ott.utils import num_utils
+
+from .solr_del import SolrDel
 
 
 class SolrAdd(object):
@@ -19,13 +22,15 @@ class SolrAdd(object):
     doc = None
     type = None
     type_name = None
+    file_name = None
     boost='1.0'
 
-    def __init__(self, type, type_name=None, boost='1.0', comment=''):
+    def __init__(self, type, type_name=None, file_name=None, boost='1.0', comment=''):
         self.header(comment)
         self.boost = boost
         self.type = type
         self.type_name = type_name if type_name else self.type
+        self.file_name = "{}_add.xml".format(file_name if file_name else self.type_name)
 
     def header(self, comment):
         self.rec = ElementTree.Element('add')
@@ -65,3 +70,14 @@ class SolrAdd(object):
 
     def document_to_string(self):
         return ElementTree.tostring(self.rec, encoding='utf8', method='xml')
+
+    def to_file(self, path=""):
+        # step 1: output XML to _add.xml file
+        file_path = os.path.join(path, self.file_name)
+        doc = ElementTree.tostring(self.rec, encoding='utf8', method='xml')
+        with open(file_path, 'w') as f:
+            f.write(doc)
+
+        # step 2: create a _del.xml file to go along with this add
+        sd = SolrDel(type=self.type, type_name=self.type_name)
+        sd.to_file(path)

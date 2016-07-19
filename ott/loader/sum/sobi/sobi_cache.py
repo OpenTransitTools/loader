@@ -53,8 +53,8 @@ class SobiCache(CacheBase):
             solr.new_doc(id=str(i), name=r.get('address'))
             solr.add_point(r.get('middle_point'))
 
-        print solr.document_to_string()
         #import pdb; pdb.set_trace()
+        solr.to_file(path=self.cache_dir)
         return solr
 
 
