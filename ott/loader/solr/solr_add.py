@@ -25,7 +25,7 @@ class SolrAdd(object):
         self.header(comment)
         self.boost = boost
         self.type = type
-        self.type_name = type_name if type_name else self.type.capitalize()
+        self.type_name = type_name if type_name else self.type
 
     def header(self, comment):
         self.rec = ElementTree.Element('add')
