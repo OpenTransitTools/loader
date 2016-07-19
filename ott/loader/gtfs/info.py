@@ -150,6 +150,7 @@ class Info(CacheBase):
                 end_date = edate
 
         logging.debug(" date range of file {}: {} to {}".format(calendar_path, start_date, end_date))
+        file.close()
         return start_date, end_date
 
     def _get_calendar_dates_range(self):
@@ -186,6 +187,7 @@ class Info(CacheBase):
             today_position = total_positions
 
         logging.debug(" date range of file {}: {} to {}, and today {} position is {} of {}".format(calendar_dates_path, start_date, end_date, today, today_position, total_positions))
+        file.close()
         return start_date, end_date, today_position, total_positions
 
     def _get_feed_info(self):
@@ -207,6 +209,7 @@ class Info(CacheBase):
             version = row.get('feed_version', version)
 
         logging.debug("feed version {0} ... date range {1} to {2}".format(version, start_date, end_date))
+        file.close()
         return start_date, end_date, id, version
 
     def _get_feed_date_range(self):
