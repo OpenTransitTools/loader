@@ -41,9 +41,13 @@ class SobiCache(CacheBase):
         '''
         '''
         success = False
-        s = SolrAdd()
-        s.add_field('id', 'xxx')
-        s.add_field('id', 'zzz')
+        s = SolrAdd('bikeshare')
+        s.new_doc(id='xxx')
+        s.add_lon_lat('-122.5', '45.5')
+
+        s.new_doc(id='zzz')
+        s.add_lon_lat('-122.5', '45.5')
+
         print s.document_to_string()
 
         success = True
