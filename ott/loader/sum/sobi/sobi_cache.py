@@ -49,8 +49,8 @@ class SobiCache(CacheBase):
 
     def to_solr(self):
         solr = SolrAdd(type=self.type, type_name=self.name)
-        for r in self.get_racks():
-            solr.new_doc(id="1", name=r.get('address'))
+        for i,r in enumerate(self.get_racks()):
+            solr.new_doc(id=str(i), name=r.get('address'))
             solr.add_point(r.get('middle_point'))
 
         print solr.document_to_string()
