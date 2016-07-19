@@ -45,16 +45,20 @@ class SolrAdd(object):
         field = SubElement(self.doc, 'field', attrib={'name':name})
         field.text = value
 
+    def add_point(self, point, add_xy=True):
+        coords = point.get('coordinates')
+        self.add_lon_lat(lon=coords[0], lat=coords[1], add_xy=add_xy)
+
     def add_lon_lat(self, lon, lat, add_xy=True):
-        self.add_field('lon', lon)
-        self.add_field('lat', lat)
+        self.add_field('lon', str(lon))
+        self.add_field('lat', str(lat))
         if add_xy:
             x,y = num_utils.lon_lat_to_ospn(lon, lat)
             self.add_x_y(x, y, False)
 
     def add_x_y(self, x, y, add_ll=True):
-        self.add_field('x', x)
-        self.add_field('y', y)
+        self.add_field('x', str(x))
+        self.add_field('y', str(y))
         if add_ll:
             lon,lat = num_utils.lon_lat_to_ospn(x, y)
             self.add_lon_lat(lon, lat, False)

@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 log = logging.getLogger(__file__)
 
@@ -30,32 +31,30 @@ class SobiCache(CacheBase):
         self.solr_file_path = os.path.join(self.cache_dir, self.solr_file_name)
 
     def check_feed(self, force_update=False):
-        #import pdb; pdb.set_trace()
         ret_val = self.simple_cache_item_update(self.file_name, self.url, force_update)
         if True or ret_val:
             ret_val = self.to_solr()
         return ret_val
 
-    def get_active_racks(self):
+    def get_racks(self, filter_active=True):
         ret_val = []
-        f = None
-        try:
-            f = open(self.file_path)
-
-        finally:
-            if f:
-                f.close()
-        pass
+        with open(self.file_path) as json_file:
+            json_data = json.load(json_file)
+            for rack in json_data:
+                if filter_active:
+                    if rack.get('available_bikes', -1) < 1 and rack.get('free_racks', -1) < 1:
+                        continue
+                ret_val.append(rack)
+        return ret_val
 
     def to_solr(self):
-        '''
-        '''
         solr = SolrAdd(type=self.type, type_name=self.name)
+        for r in self.get_racks():
+            solr.new_doc(id="1", name=r.get('address'))
+            solr.add_point(r.get('middle_point'))
 
-        for r in self.get_rack_data():
-            solr.new_doc(id='xxx')
-            solr.add_lon_lat('-122.5', '45.5')
-
+        print solr.document_to_string()
+        #import pdb; pdb.set_trace()
         return solr
 
 
