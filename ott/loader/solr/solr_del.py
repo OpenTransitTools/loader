@@ -16,6 +16,7 @@ class SolrDel(object):
     type = None
     type_name = None
     file_name = None
+    file_path = None
 
     def __init__(self, type, type_name=None, file_name=None):
         self.type = type
@@ -27,7 +28,7 @@ class SolrDel(object):
         field = SubElement(doc, 'query')
         field.text = "type_name:{}".format(self.type_name)
 
-        file_path = os.path.join(path, self.file_name)
+        self.file_path = os.path.join(path, self.file_name)
         doc = ElementTree.tostring(doc, encoding='utf8', method='xml')
-        with open(file_path, 'w') as f:
+        with open(self.file_path, 'w') as f:
             f.write(doc)

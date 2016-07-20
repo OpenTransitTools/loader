@@ -23,6 +23,7 @@ class SolrAdd(object):
     type = None
     type_name = None
     file_name = None
+    file_path = None
     boost='1.0'
 
     def __init__(self, type, type_name=None, file_name=None, boost='1.0', comment=''):
@@ -73,9 +74,9 @@ class SolrAdd(object):
 
     def to_file(self, path=""):
         # step 1: output XML to _add.xml file
-        file_path = os.path.join(path, self.file_name)
+        self.file_path = os.path.join(path, self.file_name)
         doc = ElementTree.tostring(self.rec, encoding='utf8', method='xml')
-        with open(file_path, 'w') as f:
+        with open(self.file_path, 'w') as f:
             f.write(doc)
 
         # step 2: create a _del.xml file to go along with this add

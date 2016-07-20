@@ -16,8 +16,6 @@ class SobiCache(CacheBase):
     type = 'bikeshare'
     file_name = None
     file_path = None
-    solr_file_name = None
-    solr_file_path = None
 
     def __init__(self):
         super(SobiCache, self).__init__(section='sobi')
@@ -26,9 +24,6 @@ class SobiCache(CacheBase):
 
         self.file_name = self.name + ".json"
         self.file_path = os.path.join(self.cache_dir, self.file_name)
-
-        self.solr_file_name = self.name + "-solr.xml"
-        self.solr_file_path = os.path.join(self.cache_dir, self.solr_file_name)
 
     def check_feed(self, force_update=False):
         ret_val = self.simple_cache_item_update(self.file_name, self.url, force_update)
@@ -50,7 +45,8 @@ class SobiCache(CacheBase):
     def to_solr(self):
         solr = SolrAdd(type=self.type, type_name=self.name)
         for i,r in enumerate(self.get_racks()):
-            solr.new_doc(id=str(i), name=r.get('address'))
+            solr.new_doc(id=str(r.get('id', i)), name=r.get('name'))
+            solr.add_field('address', r.get('address'))
             solr.add_point(r.get('middle_point'))
 
         #import pdb; pdb.set_trace()
