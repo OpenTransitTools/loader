@@ -1,3 +1,8 @@
+// make sure we have otp.config and otp.config.locale defined
+if(typeof(otp) == "undefined" || otp == null) otp = {};
+if(typeof(otp.config) == "undefined" || otp.config == null) otp.config = {};
+if(typeof(otp.locale) == "undefined" || otp.locale == null) otp.locale = {};
+if(typeof(otp.locale.English) == "undefined" || otp.locale.English == null) otp.locale.English = {};
 
 otp_consts = {
     /**
@@ -19,17 +24,9 @@ etMap</a> and contributors.'
 
 
 otp.config = {
-    //If enabled it shows popup window with all planner responses in JSON
-    //Can be also enabled in URL parameters as ?debug=true
-    debug: false,
-    //If enabled it shows inspector layers overlays which can be used for Graph
-    //debugging
-    //Can be also enabled in URL parameters as ?debug_layers=true
-    debug_layers: false,
 
-    //This is default locale when wanted locale isn't found
-    //Locale language is set based on wanted language in url >
-    //user cookie > language set in browser (Not accept-language) 
+    debug: false,
+    debug_layers: false,
     locale: otp.locale.English,
 
     //All avalible locales
@@ -95,25 +92,13 @@ otp.config = {
             attribution : otp_consts.attribution
         },
         {
-            name: 'MapQuest OSM',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },
-        {
-            name: 'MapQuest Aerial',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },           
-        {
-            name: 'TriMet Map',
-            tileUrl: 'http://{s}.trimet.org/tilecache/tilecache.py/1.0.0/currentOSM/{z}/{x}/{y}',
-            subdomains : ["tilea","tileb","tilec","tiled"],
-            attribution : otp_consts.attribution
+            name: 'OSM Tiles',
+            tileUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            subdomains : ['a','b'],
+            attribution : 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }
     ],
-    
+
 
     /**
      * Map start location and zoom settings: by default, the client uses the
@@ -124,8 +109,6 @@ otp.config = {
     initZoom : 11,
     minZoom : 10,
     maxZoom : 22,
-    
-    /* Whether the map should be moved to contain the full itinerary when a result is received. */
     zoomToFitResults    : true,
 
     /**
@@ -173,8 +156,9 @@ otp.config = {
 
                 defaultQueryParams : 
                 {
-                    maxWalkDistance : otp_consts.maxWalk
-
+                    maxWalkDistance : 804.672
+                    //,
+                    //maxHours : 3
                 },
 
                 mailables : [
@@ -304,6 +288,8 @@ otp.config = {
                 {
                     maxWalkDistance : otp_consts.maxWalk,
                     minTransferTime : 300
+                    //,
+                    //maxHours : 3
                 }
             }
         }
