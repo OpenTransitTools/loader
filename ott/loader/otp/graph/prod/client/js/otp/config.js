@@ -1,31 +1,31 @@
+// make sure we have otp.config and otp.config.locale defined
+if(typeof(otp) == "undefined" || otp == null) otp = {};
+if(typeof(otp.config) == "undefined" || otp.config == null) otp.config = {};
+if(typeof(otp.locale) == "undefined" || otp.locale == null) otp.locale = {};
+if(typeof(otp.locale.English) == "undefined" || otp.locale.English == null) otp.locale.English = {};
+
 otp_consts = {
     /**
      * The OTP web service locations
      */
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
-    hostname       : "http://localhost:55555",
-    //hostname       : "http://trimet-new.dev.conveyal.com:8001",
-    //hostname       : "http://maps9.trimet.org",
-    datastoreUrl   : "http://maps9.trimet.org:9000",
-    basename       : "http://call.trimet.org",
+    //trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
+    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
+    datastoreUrl   : "http://maps8.trimet.org:9000",
+    hostname       : "http://call-test.trimet.org",
+    basename       : "http://call-test.trimet.org",
     restService    : "otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
+    maxWalk        : 804.672, // 1/2 mile walk
+    //maxWalk        : 1207.008, // 3/4 mile walk
+    //maxWalk        : 1609.344, // 1 mile walk
     attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
 otp.config = {
-    //If enabled it shows popup window with all planner responses in JSON
-    //Can be also enabled in URL parameters as ?debug=true
-    debug: false,
-    //If enabled it shows inspector layers overlays which can be used for Graph
-    //debugging
-    //Can be also enabled in URL parameters as ?debug_layers=true
-    debug_layers: false,
 
-    //This is default locale when wanted locale isn't found
-    //Locale language is set based on wanted language in url >
-    //user cookie > language set in browser (Not accept-language) 
+    debug: false,
+    debug_layers: false,
     locale: otp.locale.English,
 
     //All avalible locales
@@ -57,17 +57,12 @@ otp.config = {
         return str;
     },
 
-
     /**
      * The OTP web service locations
      */
-    hostname : "",
-    //municoderHostname : "http://localhost:8080",
-    //datastoreUrl : 'http://localhost:9000',
-    // In the 0.10.x API the base path is "otp-rest-servlet/ws"
-    // From 0.11.x onward the routerId is a required part of the base path.
-    // If using a servlet container, the OTP WAR should be deployed to context path /otp
-    restService: "otp/routers/default",
+    hostname       : otp_consts.hostname,
+    restService    : otp_consts.restService,
+    datastoreUrl   : otp_consts.datastoreUrl,
 
     /**
      * Base layers: the base map tile layers available for use by all modules.
@@ -96,47 +91,41 @@ otp.config = {
             attribution : otp_consts.attribution
         },
         {
-            name: 'MapQuest OSM',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
-        },
-        {
-            name: 'MapQuest Aerial',
-            tileUrl: 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png',
-            subdomains : ['otile1','otile2','otile3','otile4'],
-            attribution : 'Data, imagery and map information provided by <a href="http://open.mapquest.com" target="_blank">MapQuest</a>, <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+            name: 'OSM Tiles',
+            tileUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            subdomains : ['a','b'],
+            attribution : 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }
     ],
+
 
     /**
      * Map start location and zoom settings: by default, the client uses the
      * OTP routerInfo API call to center and zoom the map. The following
      * properties, when set, override that behavioir.
      */
-     
-    // initLatLng : new L.LatLng(<lat>, <lng>),
-    // initZoom : 14,
-    // minZoom : 10,
-    // maxZoom : 20,
-    
-    /* Whether the map should be moved to contain the full itinerary when a result is received. */
+    initLatLng : otp_consts.center,
+    initZoom : 11,
+    minZoom : 10,
+    maxZoom : 22,
     zoomToFitResults    : true,
 
     /**
      * Site name / description / branding display options
      */
-
-    siteName            : "My OTP Instance",
-    siteDescription     : "An OpenTripPlanner deployment.",
-    logoGraphic         : 'images/otp_logo_darkbg_40px.png',
-    // bikeshareName    : "",
-    //Enable this if you want to show frontend language chooser
-    showLanguageChooser : true,
+    siteName            : "TriMet OTP",
+    siteDescription     : "Basic OTP",
+    logoGraphic         : 'images/agency_logo.png',
+    agencyStopLinkText  : "Real Time Arrivals",
+    fareDisplayOverride : "$2.50 (A), $1.25 (H), $1.25 (Y)",
+    bikeshareName       : "BIKETOWN",
 
     showLogo            : true,
     showTitle           : true,
     showModuleSelector  : true,
+    showWheelchairOption: false,
+    infoWidgets         : [],     // turns off about and contact top-nav items
+
     metric              : false,
 
 
@@ -150,6 +139,8 @@ otp.config = {
      *       used by default for this module
      *   - [isDefault]: <boolean> whether this module is shown by default;
      *       should only be 'true' for one module
+     *
+     * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
     
     modules : [
@@ -299,14 +290,14 @@ otp.config.modes = {
     "TRAINISH,WALK"       : _tr("Rail Only"),
     "BICYCLE"             : _tr('Bicycle Only'),
     "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
-    "WALK"                : _tr('Walk Only'),
     //"AIRPLANE,WALK"       : _tr("Airplane Only"),
-    //"CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
-    //"CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
-    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride')
+    "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
+    "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
+    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride')
     // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
-    //'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle'),
-    "CAR"                 : _tr('Drive Only')
+    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle'),
+    "CAR"                 : _tr('Drive Only'),
+    "WALK"                : _tr('Walk Only')
 };

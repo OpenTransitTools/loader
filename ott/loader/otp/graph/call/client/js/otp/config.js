@@ -404,45 +404,19 @@ i18n.init(options, function(t) {
 });
 
 otp.config.modes = {
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "TRANSIT,WALK"        : _tr("Transit"), 
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "BUSISH,WALK"         : _tr("Bus Only"), 
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "TRAINISH,WALK"       : _tr("Rail Only"), 
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "BICYCLE"             : _tr('Bicycle Only'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-        "WALK"                : _tr('Walk Only'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-      //  "CAR"                 : _tr('Drive Only'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
+    "TRANSIT,WALK"        : _tr("Transit"),
+    "BUSISH,WALK"         : _tr("Bus Only"),
+    "TRAINISH,WALK"       : _tr("Rail Only"),
+    "BICYCLE"             : _tr('Bicycle Only'),
+    "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
+    //"AIRPLANE,WALK"       : _tr("Airplane Only"),
     //"CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets) http://en.wikipedia.org/wiki/Park_and_ride#Kiss_and_ride
     //"CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets) (Park bicycle at Public transit station and take a
-    //transit
-    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
-    //uncomment only if bike rental exists in a map
+    //"BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride')
+    // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
-    //       (note that we've been broken for awhile here, since many agencies don't have a 'Train' mode either...this needs attention)
-    // IDEA: maybe we start with a big array (like below), and the pull out modes from this array when turning off various modes...
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-    //    'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
-    //TRANSLATORS: Travel by: mode of transport (Used in selection in Travel
-    //Options widgets)
-    //    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle')
+    //'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
+    //'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle'),
+    //"CAR"                 : _tr('Drive Only'),
+    "WALK"                : _tr('Walk Only')
 };
