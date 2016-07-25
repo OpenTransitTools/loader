@@ -293,7 +293,7 @@ otp.config.modes = {
     //"AIRPLANE,WALK"       : _tr("Airplane Only"),
     "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
-    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride')
+    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
