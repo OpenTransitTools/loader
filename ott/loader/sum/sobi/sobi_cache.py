@@ -27,7 +27,7 @@ class SobiCache(CacheBase):
 
     def check_feed(self, force_update=False):
         ret_val = self.simple_cache_item_update(self.file_name, self.url, force_update)
-        if True or ret_val:
+        if ret_val:
             ret_val = self.to_solr()
         return ret_val
 
