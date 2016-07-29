@@ -86,7 +86,7 @@ class Build(CacheBase):
         '''
         ret_val = True
         for g in self.graphs:
-            success = self.test_graph(graph=g, java_mem=java_mem, force_update=force_update)
+            success = self.test_graph(graph=g, java_mem=java_mem)
             if not success:
                 ret_val = False
                 if break_on_fail:
@@ -117,17 +117,19 @@ class Build(CacheBase):
             for n in range(1, 21):
                 log.info(" build attempt {0} of a new graph ".format(n))
                 otp_utils.run_graph_builder(graph_dir, java_mem=java_mem)
-                time.sleep(10)
+                time.sleep(3)
                 if file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
                     success = True
                     break
+                else:
+                    log.warn("\n\nGRAPH DIDN'T BUILD ... WILL TRY TO BUILD AGAIN\n\n")
+                    time.sleep(3)
         return success and rebuild_graph
 
-    def test_graph(self, graph, java_mem=None):
+    def test_graph(self, graph, suite_dir=None, java_mem=None):
         ''' will test a given graph against a suite of tests
         '''
         #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
-        suite_dir = ""
         success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
         if success:
             success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=60)
@@ -177,14 +179,20 @@ class Build(CacheBase):
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
-        elif args.test:
-            b.only_test_graphs(java_mem=java_mem, force_update=args.force)
         else:
             graph = otp_utils.find_graph(b.graphs, args.name)
             if args.name != "all" and graph:
-                b.build_graph()
+                # either build and/or test a single named graph
+                if not args.test:
+                    b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
+                if not args.no_tests:
+                    b.test_graph(graph, java_mem=java_mem)
             else:
-                b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
+                # build and/or test all graphs in the config file
+                if args.test:
+                    b.only_test_graphs(java_mem=java_mem, force_update=args.force)
+                else:
+                    b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
 
         return success
 
