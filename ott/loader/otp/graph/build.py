@@ -74,28 +74,23 @@ class Build(CacheBase):
         for g in self.graphs:
             success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
-                success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
-                if success:
-                    self.update_vlog(graph=g)
-                else:
-                    ret_val = False
-                    log.warn("graph {} didn't pass it's tests".format(g['name']))
+                success = self.test_graph(graph=g, java_mem=java_mem, force_update=force_update)
+                ret_val = success
             else:
                 ret_val = False
                 log.warn("graph build failed for graph {}".format(g['name']))
         return ret_val
 
-    def only_test_graphs(self, java_mem=None, force_update=False):
+    def only_test_graphs(self, java_mem=None, force_update=False, break_on_fail=False):
         ''' will test each of the graphs we have in self.graphs
         '''
         ret_val = True
         for g in self.graphs:
-            success = self.deploy_test_graph(graph=g, java_mem=java_mem, force_update=force_update)
-            if success:
-                self.update_vlog(graph=g)
-            else:
+            success = self.test_graph(graph=g, java_mem=java_mem, force_update=force_update)
+            if not success:
                 ret_val = False
-                log.warn("graph {} didn't pass it's tests".format(g['name']))
+                if break_on_fail:
+                    break
         return ret_val
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
@@ -128,13 +123,20 @@ class Build(CacheBase):
                     break
         return success and rebuild_graph
 
-    def deploy_test_graph(self, graph, suite_dir=None, java_mem=None, force_update=False):
-        '''
+    def test_graph(self, graph, java_mem=None):
+        ''' will test a given graph against a suite of tests
         '''
         #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
+        suite_dir = ""
         success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
         if success:
             success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=60)
+            if success:
+                self.update_vlog(graph=graph)
+            else:
+                log.warn("graph {} didn't pass it's tests".format(graph['name']))
+        else:
+            log.warn("was unable to run OTP server for graph {}".format(graph['name']))
         return success
 
     def update_vlog(self, graph):
@@ -145,26 +147,51 @@ class Build(CacheBase):
         otp_utils.append_vlog_file(dir, feed_msg)
 
     @classmethod
-    def options(cls, argv):
-        ''' main entry point for command line graph build app
-        '''
-        java_mem = "-Xmx1236m" if "low_mem" in argv else None
-        force_update = object_utils.is_force_update()
+    def get_args(cls):
+        ''' build a certain graph or just run tests (or no tests), etc...
 
-        b = Build(force_update)
-        if "mock" in argv:
+            examples:
+        '''
+        import argparse
+        parser = argparse.ArgumentParser(prog='otp-build', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+        parser.add_argument('name', default="all", help="Name of GTFS graph folder in the 'cache' build (e.g., 'all', 'prod', 'test' or 'call')")
+        parser.add_argument('--test',       '-t',  action='store_true', help="to just run tests vs. building the graph")
+        parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
+        parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
+        parser.add_argument('--dont_update', '-d', action='store_true', help="don't update data regardless of state")
+        parser.add_argument('--mock',        '-m', required=False, action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
+        parser.add_argument('--mem',        '-lm', required=False, action='store_true', help="string to replace found regex strings")
+        args = parser.parse_args()
+        return args, parser
+
+    @classmethod
+    def build(cls):
+        #import pdb; pdb.set_trace()
+        success = False
+
+        args, parser = Build.get_args()
+        b = Build(force_update=args.force, dont_update=args.dont_update)
+        java_mem = "-Xmx1236m" if args.mem else None
+
+        if args.mock:
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
-        elif "test" in argv:
-            b.only_test_graphs(java_mem=java_mem, force_update=force_update)
+        elif args.test:
+            b.only_test_graphs(java_mem=java_mem, force_update=args.force)
         else:
-            b.build_and_test_graphs(java_mem=java_mem, force_update=force_update)
+            graph = otp_utils.find_graph(b.graphs, args.name)
+            if args.name != "all" and graph:
+                b.build_graph()
+            else:
+                b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
+
+        return success
 
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    Build.options(argv)
+    Build.build()
 
 if __name__ == '__main__':
     main()

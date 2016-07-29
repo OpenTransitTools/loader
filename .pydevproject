@@ -1,10 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse-pydev version="1.0"?>
-
-<pydev_project>
+<?xml version="1.0" ?><?eclipse-pydev version="1.0"?><pydev_project>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/utils</path>
 </pydev_pathproperty>
-</pydev_project>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH"><path>c:\java\dev\loader</path><path>c:\python27\lib\site-packages</path><path>c:\java\dev\loader\eggs\pyparsing-2.1.5-py2.7.egg</path><path>c:\java\dev\loader\eggs\mako-1.0.4-py2.7.egg</path><path>c:\java\dev\loader\eggs\simplejson-3.8.2-py2.7-win-amd64.egg</path><path>c:\java\dev\gtfsdb</path><path>c:\java\dev\utils</path><path>c:\java\dev\loader\eggs\markupsafe-0.23-py2.7.egg</path><path>c:\java\dev\loader\eggs\sqlalchemy-1.0.14-py2.7.egg</path><path>c:\java\dev\loader\eggs\geoalchemy2-0.3.0-py2.7.egg</path><path>c:\java\dev\loader\eggs\wget-3.2-py2.7.egg</path></pydev_pathproperty></pydev_project>
