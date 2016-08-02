@@ -13,7 +13,6 @@ log = logging.getLogger(__file__)
 
 from ott.utils import otp_utils
 from ott.utils import file_utils
-from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
@@ -59,7 +58,7 @@ class Build(CacheBase):
 
         # run thru the graphs and
         for g in graphs:
-            dir = otp_utils.config_graph_dir(g, self.this_module_dir, force_update)
+            dir = otp_utils.config_graph_dir(g, self.this_module_dir)
             filter = g.get('filter')
             if force_update or not dont_update:
                 OsmCache.check_osm_file_against_cache(dir)
