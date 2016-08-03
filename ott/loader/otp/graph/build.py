@@ -73,14 +73,14 @@ class Build(CacheBase):
         for g in self.graphs:
             success = self.build_graph(g['dir'], java_mem, force_update)
             if success:
-                success = self.test_graph(graph=g, java_mem=java_mem, force_update=force_update)
+                success = self.test_graph(graph=g, java_mem=java_mem)
                 ret_val = success
             else:
                 ret_val = False
                 log.warn("graph build failed for graph {}".format(g['name']))
         return ret_val
 
-    def only_test_graphs(self, java_mem=None, force_update=False, break_on_fail=False):
+    def only_test_graphs(self, java_mem=None, break_on_fail=False):
         ''' will test each of the graphs we have in self.graphs
         '''
         ret_val = True
@@ -189,7 +189,7 @@ class Build(CacheBase):
             else:
                 # build and/or test all graphs in the config file
                 if args.test:
-                    b.only_test_graphs(java_mem=java_mem, force_update=args.force)
+                    b.only_test_graphs(java_mem=java_mem)
                 else:
                     b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
 
