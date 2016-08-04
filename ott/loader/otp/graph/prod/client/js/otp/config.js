@@ -142,12 +142,13 @@ otp.config = {
     modules : [
         {
             id : 'planner',
-            className : 'otp.modules.multimodal.MultimodalPlannerModule',
-            defaultBaseLayer : 'MapQuest OSM',
-            isDefault: true
+            defaultBaseLayer : 'TriMet Map',
+            isDefault: true,
+            className : 'otp.modules.multimodal.MultimodalPlannerModule'
         },
         {
             id : 'analyst',
+            defaultBaseLayer : 'TriMet Map',
             className : 'otp.modules.analyst.AnalystModule'
         }
     ],
@@ -281,19 +282,19 @@ i18n.init(options, function(t) {
 });
 
 otp.config.modes = {
-    "TRANSIT,WALK"        : _tr("Transit"),
-    "BUSISH,WALK"         : _tr("Bus Only"),
-    "TRAINISH,WALK"       : _tr("Rail Only"),
-    "BICYCLE"             : _tr('Bicycle Only'),
-    "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
-    //"AIRPLANE,WALK"       : _tr("Airplane Only"),
+    "TRANSIT,WALK"              : _tr("Transit"),
+    "BUS,WALK"                  : _tr("Bus Only"),
+    "TRAM,RAIL,GONDOLA,WALK"    : _tr("Rail Only"),
+    "BICYCLE"                   : _tr('Bicycle Only'),
+    "TRANSIT,BICYCLE"           : _tr("Bicycle &amp; Transit"),
+    //"AIRPLANE,WALK"           : _tr("Airplane Only"),
     "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
     "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
-    //'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
-    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle'),
-    "CAR"                 : _tr('Drive Only'),
-    "WALK"                : _tr('Walk Only')
+    //'WALK,BICYCLE_RENT'       :_tr('Rented Bicycle'),
+    'TRANSIT,WALK,BICYCLE_RENT' : _tr('Transit & Rented Bicycle'),
+    "CAR"                       : _tr('Drive Only'),
+    "WALK"                      : _tr('Walk Only')
 };
