@@ -138,7 +138,6 @@ otp.config = {
      *
      * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
-    
     modules : [
         {
             id : 'planner',
@@ -179,12 +178,11 @@ otp.config = {
         title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>', 
         languages: true
     },
-    
-    
+
+
     /**
      * Support for the "AddThis" display for sharing to social media sites, etc.
      */
-     
     showAddThis     : false,
     //addThisPubId    : 'your-addthis-id',
     //addThisTitle    : 'Your title for AddThis sharing messages',
@@ -192,8 +190,7 @@ otp.config = {
 
     /**
      * Formats to use for date and time displays, expressed as ISO-8601 strings.
-     */    
-     
+     */
     timeFormat  : "h:mma",
     dateFormat  : "MMM Do YYYY"
 };

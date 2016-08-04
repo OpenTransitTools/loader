@@ -139,7 +139,6 @@ otp.config = {
      *
      * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
-    
     modules : [
         {
             id : 'planner',
@@ -193,8 +192,7 @@ otp.config = {
 
     /**
      * Formats to use for date and time displays, expressed as ISO-8601 strings.
-     */    
-     
+     */
     timeFormat  : "h:mma",
     dateFormat  : "MMM Do YYYY"
 };
