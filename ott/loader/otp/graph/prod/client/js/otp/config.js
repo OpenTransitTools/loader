@@ -8,11 +8,7 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    //trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
-    datastoreUrl   : "http://maps8.trimet.org:9000",
-    hostname       : "http://call-test.trimet.org",
-    basename       : "http://call-test.trimet.org",
+    hostname       : "http://maps8.trimet.org:55555",
     restService    : "otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
