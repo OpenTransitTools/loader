@@ -5,6 +5,7 @@ import logging
 log = logging.getLogger(__file__)
 
 from ott.utils import otp_utils
+from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 
 
@@ -14,7 +15,7 @@ class Run(CacheBase):
     graphs = None
 
     def __init__(self):
-        super(Run, self).__init__('otp')
+        super(self.__class__, self).__init__('otp')
         self.graphs = otp_utils.get_graphs(self)
 
     @classmethod
@@ -53,6 +54,21 @@ class Run(CacheBase):
             parser.print_help()
         return success
 
+    @classmethod
+    def static_server_cfg(cls):
+        r = Run()
+        port = r.config.get('port', 'web', '50080')
+        dir  = r.config.get('dir',  'web', 'ott/loader/otp/graph')
+        return port, dir
+
+    @classmethod
+    def static_server(cls):
+        ''' start a static server where
+        '''
+        success = False
+        port, dir = Run.static_server_cfg()
+        success = web_utils.background_web_server(dir, port)
+        return success
 
 def main(argv=sys.argv):
     Run.run()
