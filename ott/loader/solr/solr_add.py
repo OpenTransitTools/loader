@@ -5,6 +5,7 @@ from xml.etree.ElementTree import Element, SubElement, Comment
 from xml.etree import ElementTree
 
 from ott.utils import num_utils
+from ott.utils import geo_utils
 
 from .solr_del import SolrDel
 
@@ -59,14 +60,14 @@ class SolrAdd(object):
         self.add_field('lon', str(lon))
         self.add_field('lat', str(lat))
         if add_xy:
-            x,y = num_utils.lon_lat_to_ospn(lon, lat)
+            x,y = geo_utils.to_OSPN(lon, lat)
             self.add_x_y(x, y, False)
 
     def add_x_y(self, x, y, add_ll=True):
         self.add_field('x', str(x))
         self.add_field('y', str(y))
         if add_ll:
-            lon,lat = num_utils.lon_lat_to_ospn(x, y)
+            lon,lat = num_utils.to_lon_lat(x, y)
             self.add_lon_lat(lon, lat, False)
 
     def document_to_string(self):
