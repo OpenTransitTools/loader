@@ -22,7 +22,7 @@ class Deploy(Build):
     """
     force_update = False
     def __init__(self):
-        super(self.__class__, self).__init__(dont_update=True)
+        super(Deploy, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
 
     def update_new_otp(self):

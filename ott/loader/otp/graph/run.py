@@ -15,7 +15,7 @@ class Run(CacheBase):
     graphs = None
 
     def __init__(self):
-        super(self.__class__, self).__init__('otp')
+        super(Run, self).__init__('otp')
         self.graphs = otp_utils.get_graphs(self)
 
     @classmethod

@@ -42,7 +42,7 @@ class Build(CacheBase):
     graph_failed = GRAPH_FAILD
 
     def __init__(self, force_update=False, dont_update=False):
-        super(self.__class__, self).__init__('otp')
+        super(Build, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
         self.graphs = self.config_graph_dirs(force_update, dont_update)
 
