@@ -5,6 +5,7 @@ log = logging.getLogger(__file__)
 
 from ott.utils.cache_base import CacheBase
 from ott.loader.solr.solr_add import SolrAdd
+from ott.loader.solr.load import Load
 
 from ott.gbfsdb.stations import Stations
 
@@ -28,15 +29,25 @@ class GbfsCache(CacheBase):
             ret_val = self.to_solr(stations)
         return ret_val
 
+    def to_solr_loader(self, solr_add):
+        ''' copy solr files to the cache where the SOLR loader will find and load them into SOLR
+        '''
+        from ott.loader.solr.load import Load
+        Load()
+        solr_add.to_file(
+
+
     def to_solr(self, stations):
-        solr = SolrAdd(type=self.type, type_name=self.name)
+        solr_add = SolrAdd(type=self.type, type_name=self.name)
         for i, s in enumerate(stations.active_stations()):
             #status = s.get('status')
             station = s.get('station')
-            solr.new_doc(id=str(station.get('station_id', i)), name=station.get('name'))
-            solr.add_field('address', station.get('address'))
-            solr.add_lon_lat(station.get('lon'), station.get('lat'))
+            solr_add.new_doc(id=str(station.get('station_id', i)), name=station.get('name'))
+            solr_add.add_field('address', station.get('address'))
+            solr_add.add_lon_lat(station.get('lon'), station.get('lat'))
 
         #import pdb; pdb.set_trace()
-        solr.to_file(path=self.cache_dir)
-        return solr
+        # doulbe cache the file ... once here, and once over in the SOLR loader
+        solr_add.to_file(path=self.cache_dir)
+        self.to_solr_loader(solr_add)
+        return solr_add
