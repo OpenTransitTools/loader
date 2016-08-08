@@ -3,18 +3,18 @@ import logging
 log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
-from ott.utils import object_utils
-from ott.utils.cache_base import CacheBase
+from ott.loader.solr.solr_cache import SolrCache
 
-class Load(CacheBase):
+
+class Load(object):
     """ load GTFS data into a gtfsdb
     """
+    cache = None
     post_process_dir = None
 
     def __init__(self):
-        super(Load, self).__init__(section='solr')
-
-        self.post_process_dir = os.path.join(self.this_cache_dir, 'processed')
+        self.cache = SolrCache()
+        self.post_process_dir = os.path.join(self.cache.cache_dir, 'processed')
         file_utils.mkdir(self.post_process_dir)
 
     def refresh(self):
