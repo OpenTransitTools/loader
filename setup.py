@@ -70,6 +70,8 @@ setup(
         otp_run = ott.loader.otp.graph.run:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
 
+        solr_load = ott.loader.solr.load:Load.solr_loader
+
         sum_update = ott.loader.sum.sum_cache:main
     """,
 )
