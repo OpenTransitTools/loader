@@ -43,15 +43,24 @@ class Load(object):
             self._process_file(f)
 
     def _process_file(self, file_name):
-        ''' 
+        '''
         '''
 
         # step 1: load file
         file_path = os.path.join(self.cache.cache_dir, file_name)
+        print file_path
+
+        url   = self.config.get('url')
+        if ":{}" in url or ":{0}" in url:
+            ports = self.config.get_list('ports', def_val='80')
+            for p in ports:
+                print url.format(p)
+        else:
+            print url
 
         # step 2: mv file to processed folder
         to_path = os.path.join(self.post_process_dir, file_name)
-        file_utils.mv(file_path, to_path)
+        #file_utils.mv(file_path, to_path)
 
         # step 3:
 
