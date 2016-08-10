@@ -42,26 +42,41 @@ class Load(object):
         for f in files:
             self._process_file(f)
 
+    def commit(self):
+        ''' send solr_commit.xml to SOLR to commit any index changes
+        '''
+
+    def optimize(self):
+        ''' send solr_optimize.xml (<optimize/>) to SOLR to commit any index changes
+        '''
+
     def _process_file(self, file_name):
         '''
         '''
 
-        # step 1: load file
+        # step 1: grab file path
         file_path = os.path.join(self.cache.cache_dir, file_name)
         print file_path
 
-        url   = self.config.get('url')
+        # step 2: grab SOLR properties for url (and optionally the web ports where SOLR instance(es) run
+        url  = self.config.get('url')
+        port = None
         if ":{}" in url or ":{0}" in url:
             ports = self.config.get_list('ports', def_val='80')
+
+        # step 3: update SOLR
+        if ports:
+            # step 3a: update one instance of SOLR (assumes they use a shared index)
+            print url.format(ports[0])
+
+            # step 3b: refresh all instances of SOLR
             for p in ports:
                 print url.format(p)
         else:
+            # step 3c: update and refresh the single instance of SOLR
+            print url
             print url
 
-        # step 2: mv file to processed folder
+        # step 4: mv file to processed folder
         to_path = os.path.join(self.post_process_dir, file_name)
         #file_utils.mv(file_path, to_path)
-
-        # step 3:
-
-
