@@ -164,7 +164,7 @@ otp.config = {
                     { name : 'Rte 66 Schedule (66-Marquam Hill/Hollywood)', largePrint: true },
                     { name : 'Rte 68 Schedule (68-Marquam Hill/Collins Circle)', largePrint: true },
                     { name : 'Rte 70 Schedule (70-12th/NE 33rd Ave)', largePrint: true },
-                    { name : 'Rte 71 Schedule (71-60th Ave/122nd Ave)', largePrint: true },
+                    { name : 'Rte 71/73 Schedule (71-60th Ave, 73-122nd Ave)', largePrint: true },
                     { name : 'Rte 72 Schedule (72-Killingsworth/82nd Ave)', largePrint: true },
                     { name : 'Rte 75 Schedule (75-Cesar Chavez/Lombard)', largePrint: true },
                     { name : 'Rte 76/78 Schedule (76-Beaverton/Tualatin, 78-Beaverton/Lake Oswego)', largePrint: true },
