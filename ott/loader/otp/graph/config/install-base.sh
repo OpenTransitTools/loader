@@ -65,7 +65,10 @@ function fix_config_jar()
 {
     if [ -f $EXT_JAR ];
     then
-        cp $CFG_DIR/logback.xml $EXE_DIR
+        if [ ! -f $EXE_DIR/logback.xml ];
+        then
+            cp $CFG_DIR/logback.xml $EXE_DIR
+        fi
 
         echo "config and images inserted into $EXE_JAR"
         cd $EXE_DIR
