@@ -80,12 +80,12 @@ class Build(CacheBase):
                 log.warn("graph build failed for graph {}".format(g['name']))
         return ret_val
 
-    def only_test_graphs(self, java_mem=None, break_on_fail=False):
+    def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True):
         ''' will test each of the graphs we have in self.graphs
         '''
         ret_val = True
         for g in self.graphs:
-            success = self.test_graph(graph=g, java_mem=java_mem)
+            success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
             if not success:
                 ret_val = False
                 if break_on_fail:
@@ -125,13 +125,17 @@ class Build(CacheBase):
                     time.sleep(3)
         return success and rebuild_graph
 
-    def test_graph(self, graph, suite_dir=None, java_mem=None):
+    def test_graph(self, graph, suite_dir=None, java_mem=None, start_server=True):
         ''' will test a given graph against a suite of tests
         '''
         #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
-        success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+        success = True
+        delay = 1
+        if start_server:
+            success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+            delay = 60
         if success:
-            success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=60)
+            success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=delay)
             if success:
                 self.update_vlog(graph=graph)
             else:
@@ -186,14 +190,14 @@ class Build(CacheBase):
                     if not args.test:
                         success = b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
                     if not args.no_tests:
-                        success = b.test_graph(graph, java_mem=java_mem)
+                        success = b.test_graph(graph, java_mem=java_mem, start_server=args.force)
                 else:
                     log.warn("I don't know how to build graph '{}'".format(args.name))
                     success = False
             else:
                 # build and/or test all graphs in the config file
                 if args.test:
-                    success = b.only_test_graphs(java_mem=java_mem)
+                    success = b.only_test_graphs(java_mem=java_mem, start_server=args.force)
                 else:
                     success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
         return success
