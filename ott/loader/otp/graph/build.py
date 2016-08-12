@@ -179,20 +179,23 @@ class Build(CacheBase):
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
         else:
-            graph = otp_utils.find_graph(b.graphs, args.name)
-            if args.name != "all" and graph:
-                # either build and/or test a single named graph
-                if not args.test:
-                    b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
-                if not args.no_tests:
-                    b.test_graph(graph, java_mem=java_mem)
+            if args.name != "all":
+                graph = otp_utils.find_graph(b.graphs, args.name)
+                if graph:
+                    # either build and/or test a single named graph
+                    if not args.test:
+                        success = b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
+                    if not args.no_tests:
+                        success = b.test_graph(graph, java_mem=java_mem)
+                else:
+                    log.warn("I don't know how to build graph {}".format(args.name))
+                    success = False
             else:
                 # build and/or test all graphs in the config file
                 if args.test:
-                    b.only_test_graphs(java_mem=java_mem)
+                    success = b.only_test_graphs(java_mem=java_mem)
                 else:
-                    b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
-
+                    success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
         return success
 
 
