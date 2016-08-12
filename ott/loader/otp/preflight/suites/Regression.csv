@@ -12,4 +12,4 @@ Issue 1056: 1 of 3 -- transfers.txt (17th & Center) ignored,"Holgate+@+53nd::45.
 Issue 1056: 2 of 3 -- transfers.txt (Gateway TC) ignored,"Lents::45.480673,-122.566722","PDX::45.587647,-122.593173",,9:00 PM,,,840,,,8370.*8347,,,,
 Issue 1056: 3 of 3 -- transfers.txt (Uses transfer stop 7025),"Line_59_Stop_9151::45.522394,-122.854291","Line_52_Stop_7003::45.479777,-122.867630",,4:00 PM,,,840,,,Walker/Park.*7025.*Farmington/185th.*7025,,,,
 "RQTC Snap Issue","RQTC::45.530080,-122.665767","EXPO_CENTER::45.606226,-122.687193",,5:20 PM,Yellow.*EXPO CENTER,,,,,,,,,
-"REALLY LONG bike ride (NOTE NewOTP doesn't plan trips far into WA state so moved original end point of 45.7650299,-122.6684565)","45.420597,-122.675674","45.73111,-122.64931","TRANSIT,BICYCLE",6:00 PM,,SAFE,32187,,,,,,,
+"REALLY LONG bike ride (NOTE: NewOTP doesn't plan trips far into WA state so moved original end point of 45.7650299,-122.6684565)","45.420597,-122.675674","45.73111,-122.64931","TRANSIT,BICYCLE",6:00 PM,,SAFE,32187,,,,,,,

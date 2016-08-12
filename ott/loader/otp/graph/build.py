@@ -188,7 +188,7 @@ class Build(CacheBase):
                     if not args.no_tests:
                         success = b.test_graph(graph, java_mem=java_mem)
                 else:
-                    log.warn("I don't know how to build graph {}".format(args.name))
+                    log.warn("I don't know how to build graph '{}'".format(args.name))
                     success = False
             else:
                 # build and/or test all graphs in the config file
