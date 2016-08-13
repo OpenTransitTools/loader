@@ -164,15 +164,19 @@ class Build(CacheBase):
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
         parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
         parser.add_argument('--dont_update', '-d', action='store_true', help="don't update data regardless of state")
-        parser.add_argument('--mock',        '-m', required=False, action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
-        parser.add_argument('--mem',        '-lm', required=False, action='store_true', help="string to replace found regex strings")
+        parser.add_argument('--mock',        '-m', action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
+        parser.add_argument('--mem',        '-lm', action='store_true', help="should we run otp/java with smaller memory footprint?")
+        parser.add_argument('--email',       '-e', help="email address(es) to be contacted if we can't build a graph, or the tests don't pass.")
         args = parser.parse_args()
         return args, parser
 
     @classmethod
     def build(cls):
-        #import pdb; pdb.set_trace()
         success = False
+
+        build_success = True
+        test_success = True
+        server_success = True
 
         args, parser = Build.get_args()
         b = Build(force_update=args.force, dont_update=args.dont_update)
@@ -182,6 +186,7 @@ class Build(CacheBase):
             feed_details = b.get_gtfs_feed_details()
             b.update_vlog(feed_details)
             b.mv_failed_graph_to_good()
+            success = True
         else:
             if args.name != "all":
                 graph = otp_utils.find_graph(b.graphs, args.name)
@@ -200,6 +205,11 @@ class Build(CacheBase):
                     success = b.only_test_graphs(java_mem=java_mem, start_server=args.force)
                 else:
                     success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
+
+        if args.email and (not success or args.force):
+            #otp_utils.build_test_email(emails=args.email, build_status=build_success, test_status=test_success, server_status=server_success)
+            otp_utils.send_build_test_email(args.email)
+
         return success
 
 
