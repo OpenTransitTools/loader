@@ -112,6 +112,6 @@ class Load(object):
         # step 4: mv file to processed folder
         if is_success:
             to_path = os.path.join(self.post_process_dir, file_name)
-            file_utils.mv(file_path, to_path)
+            file_utils.mv(solr_xml_file_path, to_path)
 
         return is_success
