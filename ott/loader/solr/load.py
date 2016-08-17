@@ -22,18 +22,19 @@ class Load(object):
 
     @classmethod
     def solr_loader(cls):
-        '''
+        ''' run the SOLR loader, which post all cahce/*_add.xml files into SOLR
+            NOTE: this is effectively a main method for sending solr/cache/*_add.xml files to SOLR
         '''
         loader = Load()
         loader.process_del_files()
         loader.process_add_files()
 
     def process_add_files(self):
-        '''
+        ''' find all cache/*_add.xml files and send them to SOLR
         '''
         files = file_utils.ls(self.cache.cache_dir, "_add.xml")
         for f in files:
-            self._process_file(f)
+            self._process_file(f, do_optimize=True)
 
     def process_del_files(self):
         ''' run thru all the <name_del.xml> files in the cache
@@ -41,7 +42,7 @@ class Load(object):
         '''
         files = file_utils.ls(self.cache.cache_dir, "_del.xml")
         for f in files:
-            self._process_file(f)
+            self._process_file(f, do_optimize=False)
 
     @classmethod
     def commit(cls, url):
@@ -71,17 +72,21 @@ class Load(object):
         return status
 
     @classmethod
-    def update_index(cls, url, solr_xml_file_path):
+    def update_index(cls, url, solr_xml_file_path, do_optimize=False):
         ''' update a SOLR index via a single instance
             NOTE: if multiple instances of SOLR point to the same instance, only instance needs to call this routine
         '''
         status = cls.post_file(url, solr_xml_file_path)
         cls.commit(url)
-        cls.optimize(url)
+        if do_optimize:
+            cls.optimize(url)
         return status == 200
 
-    def _process_file(self, file_name):
-        '''
+    def _process_file(self, file_name, do_optimize):
+        ''' does the meat of the work in posting files to SOLR.
+            the paths to SOLR instances are pulled from config/app.ini
+            this routine will post to either a single SOLR instance, or manage multiple SOLR instances running
+            on different ports.
         '''
         is_success = False
 
@@ -99,7 +104,7 @@ class Load(object):
         if ports:
             # step 3a: update one instance of SOLR (assumes they use a shared index)
             u = url.format(ports[0])
-            is_success = self.update_index(u, solr_xml_file_path)
+            is_success = self.update_index(u, solr_xml_file_path, do_optimize)
 
             # step 3b: refresh all instances of SOLR
             for p in ports[:-1]:
@@ -107,7 +112,7 @@ class Load(object):
                 self.commit(u)
         else:
             # step 3c: update and refresh the single instance of SOLR
-            is_success = self.update_index(url, solr_xml_file_path)
+            is_success = self.update_index(url, solr_xml_file_path, do_optimize)
 
         # step 4: mv file to processed folder
         if is_success:
