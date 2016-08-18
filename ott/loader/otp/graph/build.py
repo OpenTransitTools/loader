@@ -116,7 +116,7 @@ class Build(CacheBase):
             for n in range(1, 21):
                 log.info(" build attempt {0} of a new graph ".format(n))
                 otp_utils.run_graph_builder(graph_dir, java_mem=java_mem)
-                time.sleep(3)
+                time.sleep(60)
                 if file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
                     success = True
                     break

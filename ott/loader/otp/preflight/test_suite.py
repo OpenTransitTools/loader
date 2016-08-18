@@ -371,12 +371,6 @@ class TestSuite(object):
 class ListTestSuites(object):
     """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
     """
-    ws_url = None
-    map_url = None
-    suite_dir = None
-    files = None
-    date = None
-    test_suites = []
 
     def __init__(self, ws_url, map_url, suite_dir, date=None):
         """ this class corresponds to a single .csv 'test suite'
@@ -387,6 +381,7 @@ class ListTestSuites(object):
         self.suite_dir = suite_dir
         self.date = date
         self.files = os.listdir(self.suite_dir)
+        self.test_suites = []
         for f in self.files:
             if f.lower().endswith('.csv'):
                 t = TestSuite(self.suite_dir, f)
@@ -397,7 +392,7 @@ class ListTestSuites(object):
         for t in self.test_suites:
             if t.failures > 0 or t.passes <= 0:
                 ret_val = True
-                log.info("test_suite {0} has {1} error(s) and {2} passes".format(t, t.failures, t.passes))
+                log.info("test suite '{0}' has {1} error(s) and {2} passes".format(t.name, t.failures, t.passes))
         return ret_val
 
     def run(self):
