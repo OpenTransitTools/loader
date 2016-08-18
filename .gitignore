@@ -15,6 +15,7 @@ ned/
 **/graph/call/*.*
 **/graph/prod/*.*
 **/graph/test/*.*
+**/gtfs/tests/*.txt
 tmp/
 cache/
 osmosis/
