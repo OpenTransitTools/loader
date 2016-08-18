@@ -405,4 +405,3 @@ class ListTestSuites(object):
 
     def get_suites(self):
         return self.test_suites
-
