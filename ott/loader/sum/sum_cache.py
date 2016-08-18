@@ -28,10 +28,10 @@ class SumCache(CacheBase):
             sobi = SobiCache()
             sobi.check_feed(force_update)
 
-
-def main():
-    #import pdb; pdb.set_trace()
-    sum = SumCache(force_update=object_utils.is_force_update())
-
-if __name__ == '__main__':
-    main()
+    @classmethod
+    def loader(cls):
+        ''' run the SUM loader routines
+        '''
+        #import pdb; pdb.set_trace()
+        sum = SumCache(force_update=object_utils.is_force_update())
+        return sum

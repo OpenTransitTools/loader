@@ -58,7 +58,7 @@ setup(
         load_all = ott.loader.loader:load_all
         deploy_all = ott.loader.loader:deploy_all
 
-        osm_update = ott.loader.osm.osm_cache:main
+        osm_update = ott.loader.osm.osm_cache:OsmCache.loader
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_fix = ott.loader.gtfs.fix:main
@@ -70,8 +70,8 @@ setup(
         otp_run = ott.loader.otp.graph.run:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
 
-        solr_load = ott.loader.solr.load:Load.solr_loader
+        sum_update = ott.loader.sum.sum_cache:SumCache.loader
 
-        sum_update = ott.loader.sum.sum_cache:main
+        solr_load = ott.loader.solr.load:Load.solr_loader
     """,
 )

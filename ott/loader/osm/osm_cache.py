@@ -84,7 +84,6 @@ class OsmCache(CacheBase):
             e = "OSM file {} is not big enough".format(self.osm_path)
             raise Exception(e)
 
-
     def get_osmosis_cmd(self):
         ''' build osmosis cmd line to convert .pbf to .osm file
         '''
@@ -136,11 +135,10 @@ class OsmCache(CacheBase):
             log.warn(e)
         return ret_val
 
-
-def main():
-    #import pdb; pdb.set_trace()
-    osm = OsmCache()
-    osm.check_cached_osm(force_update=object_utils.is_force_update())
-
-if __name__ == '__main__':
-    main()
+    @classmethod
+    def loader(cls):
+        ''' run the SUM loader routines
+        '''
+        #import pdb; pdb.set_trace()
+        osm = OsmCache()
+        osm.check_cached_osm(force_update=object_utils.is_force_update())
