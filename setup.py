@@ -68,7 +68,8 @@ setup(
 
         otp_build = ott.loader.otp.graph.build:main
         otp_deploy = ott.loader.otp.graph.deploy:main
-        otp_run = ott.loader.otp.graph.run:main
+        otp_run = ott.loader.otp.graph.run:Run.run
+        otp_static_server = ott.loader.otp.graph.run:Run.static_server
         otp_preflight = ott.loader.otp.preflight.test_runner:main
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load

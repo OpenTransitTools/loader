@@ -1,18 +1,12 @@
 """ Run
 """
-import os
 import sys
-import time
 import logging
 log = logging.getLogger(__file__)
 
 from ott.utils import otp_utils
-from ott.utils import file_utils
-from ott.utils import object_utils
+from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
-
-from ott.loader.gtfs.gtfs_cache import GtfsCache
-from ott.loader.osm.osm_cache import OsmCache
 
 
 class Run(CacheBase):
@@ -26,18 +20,18 @@ class Run(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' database load command-line arg parser and help util...
+        ''' run the OTP server
 
             examples:
-               bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
-               bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
+               bin/otp_run -s call (run the call server)
+               bin/otp_run -v test (run the vizualizer with the test graph)
         '''
         import argparse
         parser = argparse.ArgumentParser(prog='otp-run', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., 'prod', 'test' or 'call')")
         parser.add_argument('--server',     '-s', required=False, action='store_true', help="string (regex) to find in files")
         parser.add_argument('--viz',        '-v', required=False, action='store_true',  help="string to replace found regex strings")
-        parser.add_argument('--mem', '-lm', '-m', required=False, action='store_true',  help="string to replace found regex strings")
+        parser.add_argument('--mem',       '-lm', required=False, action='store_true',  help="string to replace found regex strings")
         args = parser.parse_args()
         return args, parser
 
@@ -60,6 +54,21 @@ class Run(CacheBase):
             parser.print_help()
         return success
 
+    @classmethod
+    def static_server_cfg(cls):
+        r = Run()
+        port = r.config.get('port', 'web', '50080')
+        dir  = r.config.get('dir',  'web', 'ott/loader/otp/graph')
+        return port, dir
+
+    @classmethod
+    def static_server(cls):
+        ''' start a static server where
+        '''
+        success = False
+        port, dir = Run.static_server_cfg()
+        success = web_utils.background_web_server(dir, port)
+        return success
 
 def main(argv=sys.argv):
     Run.run()

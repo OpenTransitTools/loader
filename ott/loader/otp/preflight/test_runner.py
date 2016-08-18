@@ -9,6 +9,7 @@ from mako.template import Template
 
 from ott.utils.config_util import ConfigUtil
 from ott.utils import web_utils
+from ott.utils import file_utils
 
 from .test_suite import ListTestSuites
 
@@ -51,6 +52,7 @@ class TestRunner(object):
             # step 1: mako render of the report
             #import pdb; pdb.set_trace()
             suites = self.test_suites.get_suites()
+
             r = self.report_template.render(test_suites=suites, test_errors=self.test_suites.has_errors())
             ret_val = r
 
@@ -58,6 +60,7 @@ class TestRunner(object):
             report_path = report_name
             if dir:
                 report_path = os.path.join(dir, report_name)
+            file_utils.mv(report_path, report_path + "-old")
             f = open(report_path, 'w')
             if r:
                 f.write(r)

@@ -8,11 +8,7 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    //trinetReDirect : "https://trinet.trimet.org/verify_login/host0",
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
-    datastoreUrl   : "http://maps8.trimet.org:9000",
-    hostname       : "http://call-test.trimet.org",
-    basename       : "http://call-test.trimet.org",
+    hostname       : "http://maps8.trimet.org:55555",
     restService    : "otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
@@ -142,16 +138,16 @@ otp.config = {
      *
      * @see: http://trimet.dev.conveyal.com/js/otp/config.js
      */
-    
     modules : [
         {
             id : 'planner',
-            className : 'otp.modules.multimodal.MultimodalPlannerModule',
-            defaultBaseLayer : 'MapQuest OSM',
-            isDefault: true
+            defaultBaseLayer : 'TriMet Map',
+            isDefault: true,
+            className : 'otp.modules.multimodal.MultimodalPlannerModule'
         },
         {
             id : 'analyst',
+            defaultBaseLayer : 'TriMet Map',
             className : 'otp.modules.analyst.AnalystModule'
         }
     ],
@@ -182,12 +178,11 @@ otp.config = {
         title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>', 
         languages: true
     },
-    
-    
+
+
     /**
      * Support for the "AddThis" display for sharing to social media sites, etc.
      */
-     
     showAddThis     : false,
     //addThisPubId    : 'your-addthis-id',
     //addThisTitle    : 'Your title for AddThis sharing messages',
@@ -195,8 +190,7 @@ otp.config = {
 
     /**
      * Formats to use for date and time displays, expressed as ISO-8601 strings.
-     */    
-     
+     */
     timeFormat  : "h:mma",
     dateFormat  : "MMM Do YYYY"
 };
@@ -285,19 +279,19 @@ i18n.init(options, function(t) {
 });
 
 otp.config.modes = {
-    "TRANSIT,WALK"        : _tr("Transit"),
-    "BUSISH,WALK"         : _tr("Bus Only"),
-    "TRAINISH,WALK"       : _tr("Rail Only"),
-    "BICYCLE"             : _tr('Bicycle Only'),
-    "TRANSIT,BICYCLE"     : _tr("Bicycle &amp; Transit"),
-    //"AIRPLANE,WALK"       : _tr("Airplane Only"),
+    "TRANSIT,WALK"              : _tr("Transit"),
+    "BUS,WALK"                  : _tr("Bus Only"),
+    "TRAM,RAIL,GONDOLA,WALK"    : _tr("Rail Only"),
+    "BICYCLE"                   : _tr('Bicycle Only'),
+    "TRANSIT,BICYCLE"           : _tr("Bicycle &amp; Transit"),
+    //"AIRPLANE,WALK"           : _tr("Airplane Only"),
     "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
     "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
-    //'WALK,BICYCLE_RENT'        :_tr('Rented Bicycle'),
-    'TRANSIT,WALK,BICYCLE_RENT': _tr('Transit & Rented Bicycle'),
-    "CAR"                 : _tr('Drive Only'),
-    "WALK"                : _tr('Walk Only')
+    //'WALK,BICYCLE_RENT'       :_tr('Rented Bicycle'),
+    'TRANSIT,WALK,BICYCLE_RENT' : _tr('Transit & Rented Bicycle'),
+    "CAR"                       : _tr('Drive Only'),
+    "WALK"                      : _tr('Walk Only')
 };

@@ -1,8 +1,8 @@
 Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
 Two Interlines at 4pm & 5pm: 12 -> 21,"SAND_42nd_5087::45.536,-122.619","Sand_223rd_9776::45.5425,-122.434",,4:45 PM,,,,FALSE,,interlineWithPreviousLeg,,,,
 Late night (11:45pm) 12->94,"Burnside_689::45.523,-122.671","King_City_8728::45.407,-122.795",,11:40 PM,,,,FALSE,,interlineWithPreviousLeg,,,,
-47->48,"9790::45.549,-122.91","8550::45.528,-122.969","BUSISH,WALK",7:55 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
-72 out->in at swan is stop 115,"8496::45.563,-122.7185","N_Going::45.556,-122.692","BUSISH,WALK",7:55 AM,,,840,FALSE,,interlineWithPreviousLeg,,,,
-17 end of route loop,"2696::45.4898,-122.548","6731::45.4954,-122.523","BUSISH,WALK",7:00 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
-22 end of route loop,"6682::45.553,-122.5334","4960::45.5444,-122.516","BUSISH,WALK",7:00 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
+47->48,"9790::45.549,-122.91","8550::45.528,-122.969","BUS,WALK",7:55 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
+72 out->in at swan is stop 115,"8496::45.563,-122.7185","N_Going::45.556,-122.692","BUS,WALK",7:55 AM,,,840,FALSE,,interlineWithPreviousLeg,,,,
+17 end of route loop,"2696::45.4898,-122.548","6731::45.4954,-122.523","BUS,WALK",7:00 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
+22 end of route loop,"6682::45.553,-122.5334","4960::45.5444,-122.516","BUS,WALK",7:00 AM,,,420,FALSE,,interlineWithPreviousLeg,,,,
 PDX has a Red-to-Blue change at Gateway,"PDX::45.587647,-122.593173","ZOO::45.509700,-122.716290",,4:40 PM,,,,FALSE,,interlineWithPreviousLeg,,,,

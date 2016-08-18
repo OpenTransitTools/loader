@@ -11,6 +11,7 @@ ned/
 *.obj
 *.out
 *.osm
+*.pid
 **/graph/call/*.*
 **/graph/prod/*.*
 **/graph/test/*.*
