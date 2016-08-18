@@ -29,7 +29,7 @@ class SumCache(CacheBase):
             sobi.check_feed(force_update)
 
     @classmethod
-    def loader(cls):
+    def load(cls):
         ''' run the SUM loader routines
         '''
         #import pdb; pdb.set_trace()

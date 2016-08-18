@@ -58,20 +58,21 @@ setup(
         load_all = ott.loader.loader:load_all
         deploy_all = ott.loader.loader:deploy_all
 
-        osm_update = ott.loader.osm.osm_cache:OsmCache.loader
+        osm_update = ott.loader.osm.osm_cache:OsmCache.load
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_fix = ott.loader.gtfs.fix:main
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
-        gtfsdb_load = ott.loader.gtfsdb.load:main
+
+        gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
 
         otp_build = ott.loader.otp.graph.build:main
         otp_deploy = ott.loader.otp.graph.deploy:main
         otp_run = ott.loader.otp.graph.run:main
         otp_preflight = ott.loader.otp.preflight.test_runner:main
 
-        sum_update = ott.loader.sum.sum_cache:SumCache.loader
+        sum_update = ott.loader.sum.sum_cache:SumCache.load
 
-        solr_load = ott.loader.solr.load:Load.solr_loader
+        solr_load = ott.loader.solr.solr_loader:SolrLoader.load
     """,
 )

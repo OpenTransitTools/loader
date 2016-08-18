@@ -7,7 +7,7 @@ from ott.utils import web_utils
 from ott.loader.solr.solr_cache import SolrCache
 
 
-class Load(object):
+class SolrLoader(object):
     """ load GTFS data into a gtfsdb
     """
     cache = None
@@ -21,11 +21,11 @@ class Load(object):
         file_utils.mkdir(self.post_process_dir)
 
     @classmethod
-    def solr_loader(cls):
+    def load(cls):
         ''' run the SOLR loader, which post all cahce/*_add.xml files into SOLR
             NOTE: this is effectively a main method for sending solr/cache/*_add.xml files to SOLR
         '''
-        loader = Load()
+        loader = SolrLoader()
         loader.process_del_files()
         loader.process_add_files()
 

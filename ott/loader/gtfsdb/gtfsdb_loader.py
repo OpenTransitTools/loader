@@ -5,10 +5,10 @@ log = logging.getLogger(__file__)
 from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
-
 from gtfsdb.api import database_load
 
-class Load(CacheBase):
+
+class GtfsdbLoader(CacheBase):
     """ load GTFS data into a gtfsdb
     """
     feeds = []
@@ -16,12 +16,11 @@ class Load(CacheBase):
     is_geospatial = False
 
     def __init__(self):
-        super(Load, self).__init__(section='gtfs')
+        super(GtfsdbLoader, self).__init__(section='gtfs')
 
         self.feeds  = self.config.get_json('feeds', section='gtfs')
         self.db_url = self.config.get('url', section='db')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
-
 
     def check_db(self, force_update=False):
         ''' check the local cache, and decide whether we should update or not
@@ -31,9 +30,9 @@ class Load(CacheBase):
             reload = True
 
         if reload:
-            self.load_db()
+            self.load_feeds()
 
-    def load_db(self):
+    def load_feeds(self):
         ''' insert feeds into configured db (see config/app.ini)
         '''
         for f in self.feeds:
@@ -55,11 +54,11 @@ class Load(CacheBase):
             except Exception, e:
                 log.error("DATABASE ERROR : {}".format(e))
 
-
-def main():
-    #import pdb; pdb.set_trace()
-    db = Load()
-    db.check_db(force_update=object_utils.is_force_update())
-
-if __name__ == '__main__':
-    main()
+    @classmethod
+    def load(cls):
+        ''' run the gtfsdb loader against all the specified feeds from config/app.ini
+            NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
+        '''
+        #import pdb; pdb.set_trace()
+        db = GtfsdbLoader()
+        db.check_db(force_update=object_utils.is_force_update())

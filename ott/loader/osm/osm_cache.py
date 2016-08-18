@@ -136,7 +136,7 @@ class OsmCache(CacheBase):
         return ret_val
 
     @classmethod
-    def loader(cls):
+    def load(cls):
         ''' run the SUM loader routines
         '''
         #import pdb; pdb.set_trace()

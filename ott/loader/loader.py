@@ -8,7 +8,9 @@ from ott.utils import object_utils
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.otp.graph.build import Build
-from ott.loader.gtfsdb.load import Load
+from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader
+from ott.loader.sum.sum_cache import SumCache
+from ott.loader.solr.solr_loader import SolrLoader
 
 
 def load_all():
@@ -37,12 +39,20 @@ def load_all():
     osm.check_cached_osm(force_update=force_update)
 
     log.info("step 3: load gtfsdb")
-    db = Load()
+    db = GtfsdbLoader()
     db.check_db(force_update=force_update)
 
     log.info("step 4: load otp (build new graph)")
     otp = Build(force_update=force_update)
     otp.build_and_test_graphs(force_update=force_update)
+
+    log.info("step 5: load SUM data (BIKETOWN)")
+    sum_update = SumCache.load
+
+    log.info("step 6: load various data layers into SOLR")
+
+    log.info("step 7: load SOLR")
+    solr_load = SolrLoader.load
 
 
 def deploy_all():
@@ -56,10 +66,10 @@ def deploy_all():
     print "@TODO @TODO @TODO @TODO @TODO"
 
 
-def main():
-    #import pdb; pdb.set_trace()
-    load_all()
-    deploy_all()
 
-if __name__ == '__main__':
-    main()
+
+
+
+
+
+
