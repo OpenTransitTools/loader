@@ -18,7 +18,6 @@ otp_consts = {
     attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
-
 otp.config = {
 
     debug: false,
@@ -179,12 +178,11 @@ otp.config = {
         title: '<img src="/images/language_icon.svg" onerror="this.onerror=\'\';this.src=\'/images/language_icon.png\'" width="30px" height="30px"/>', 
         languages: true
     },
-    
-    
+
+
     /**
      * Support for the "AddThis" display for sharing to social media sites, etc.
      */
-     
     showAddThis     : false,
     //addThisPubId    : 'your-addthis-id',
     //addThisTitle    : 'Your title for AddThis sharing messages',
@@ -289,7 +287,7 @@ otp.config.modes = {
     //"AIRPLANE,WALK"           : _tr("Airplane Only"),
     "CAR_PARK,WALK,TRANSIT"     : _tr('Park and Ride'),
     "CAR,WALK,TRANSIT"          : _tr('Kiss and Ride'),
-    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride')
+    "BICYCLE_PARK,WALK,TRANSIT" : _tr('Bike and Ride'),
     // uncomment only if bike rental exists in a map
     // TODO: remove this hack, and provide code that allows the mode array to be configured with different transit modes.
     //'WALK,BICYCLE_RENT'       :_tr('Rented Bicycle'),

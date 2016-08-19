@@ -109,8 +109,8 @@ otp.config = {
     /**
      * Site name / description / branding display options
      */
-    siteName            : "TriMet OTP",
-    siteDescription     : "Basic OTP",
+    siteName            : "PROD Single Agency OTP",
+    siteDescription     : "PROD Single Agency OTP",
     logoGraphic         : 'images/agency_logo.png',
     agencyStopLinkText  : "Real Time Arrivals",
     fareDisplayOverride : "$2.50 (A), $1.25 (H), $1.25 (Y)",
