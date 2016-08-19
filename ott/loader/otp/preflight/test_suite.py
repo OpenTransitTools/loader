@@ -392,7 +392,17 @@ class ListTestSuites(object):
         for t in self.test_suites:
             if t.failures > 0 or t.passes <= 0:
                 ret_val = True
-                log.info("test suite '{0}' has {1} error(s) and {2} passes".format(t.name, t.failures, t.passes))
+                break
+        return ret_val
+
+    def list_errors(self):
+        ret_val = ""
+        if self.has_errors():
+            for t in self.test_suites:
+                if t.failures > 0 or t.passes <= 0:
+                    err = "test suite '{0}' has {1} error(s) and {2} passes\n".format(t.name, t.failures, t.passes)
+                    ret_val = ret_val + err
+                    log.info(err)
         return ret_val
 
     def run(self):
