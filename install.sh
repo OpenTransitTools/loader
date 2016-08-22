@@ -17,7 +17,6 @@ git update-index --assume-unchanged .pydevproject
 # OSMOSIS is the OpenStreetMap .pbf to .osm converter and db loader
 if [ ! -f "ott/loader/osm/osmosis/bin/osmosis" ];
 then
-    cp ../cache/osmosis-latest.tgz ott/loader/osm/osmosis/
     cd ott/loader/osm/osmosis/
     ./install.sh
     cd -
