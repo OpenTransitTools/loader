@@ -4,6 +4,7 @@ log = logging.getLogger(__file__)
 
 from ott.utils import object_utils
 from ott.utils import db_utils
+from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from gtfsdb.api import database_load
@@ -20,8 +21,7 @@ class GtfsdbLoader(CacheBase):
         super(GtfsdbLoader, self).__init__(section='gtfs')
 
         self.feeds   = self.config.get_json('feeds', section='gtfs')
-        self.db_url  = self.config.get('url', section='db', def_val='postgresql+psycopg2://127.0.0.1:5432/ott')
-        self.db_user = self.config.get('user', section='db')
+        self.db_url  = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
     def check_db(self, force_update=False):
@@ -33,8 +33,7 @@ class GtfsdbLoader(CacheBase):
 
         if reload:
             # step 1: check the database
-            db_utils.check_create_db(self.db_url, self.db_user, self.is_geospatial)
-
+            db_utils.check_create_db(self.db_url, self.is_geospatial)
             self.load_feeds()
 
     def load_feeds(self):
@@ -57,6 +56,7 @@ class GtfsdbLoader(CacheBase):
             try:
                 database_load(feed_path, **kwargs)
             except Exception, e:
+                file_utils.mv(feed_path, feed_path + "-error_loading")
                 log.error("DATABASE ERROR : {}".format(e))
 
     @classmethod
