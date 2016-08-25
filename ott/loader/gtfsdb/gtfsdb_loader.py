@@ -32,13 +32,19 @@ class GtfsdbLoader(CacheBase):
             reload = True
 
         if reload:
-            # step 1: check the database
             db_utils.check_create_db(self.db_url, self.is_geospatial)
             self.load_feeds()
 
     def load_feeds(self):
         ''' insert feeds into configured db (see config/app.ini)
         '''
+        #import pdb; pdb.set_trace()
+        ret_val = True
+        err_ext = "-error_loading"
+
+        # get rid of any previously cached error files
+        file_utils.purge(self.cache_dir, ".*" + err_ext)
+
         for f in self.feeds:
             # get cached feed path and feed name (see 'feeds' in config/app.ini)
             feed_path = os.path.join(self.cache_dir, f['name'])
@@ -56,8 +62,10 @@ class GtfsdbLoader(CacheBase):
             try:
                 database_load(feed_path, **kwargs)
             except Exception, e:
-                file_utils.mv(feed_path, feed_path + "-error_loading")
+                ret_val = False
+                file_utils.mv(feed_path, feed_path + err_ext)
                 log.error("DATABASE ERROR : {}".format(e))
+        return ret_val
 
     @classmethod
     def load(cls):
