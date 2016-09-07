@@ -71,11 +71,11 @@ class Build(CacheBase):
         #import pdb; pdb.set_trace()
         ret_val = True
         for g in self.graphs:
-            success = self.build_graph(g['dir'], java_mem, force_update)
-            if success:
+            success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
+            if success and rebuilt:
                 success = self.test_graph(graph=g, java_mem=java_mem)
                 ret_val = success
-            else:
+            elif not success:
                 ret_val = False
                 log.warn("graph build failed for graph {}".format(g['name']))
         return ret_val
@@ -123,7 +123,7 @@ class Build(CacheBase):
                 else:
                     log.warn("\n\nGRAPH DIDN'T BUILD ... WILL TRY TO BUILD AGAIN\n\n")
                     time.sleep(3)
-        return success and rebuild_graph
+        return success, rebuild_graph
 
     def test_graph(self, graph, suite_dir=None, java_mem=None, start_server=True):
         ''' will test a given graph against a suite of tests
@@ -193,7 +193,7 @@ class Build(CacheBase):
                 if graph:
                     # either build and/or test a single named graph
                     if not args.test:
-                        success = b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
+                        success, rebuilt = b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
                     if not args.no_tests:
                         success = b.test_graph(graph, java_mem=java_mem, start_server=args.force)
                 else:
