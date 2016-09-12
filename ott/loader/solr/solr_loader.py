@@ -112,12 +112,12 @@ class SolrLoader(object):
             for p in ports:
                 u = url.format(p)
                 ru = reload_url.format(p) if reload_url else None
-                for _ in range(2):
-                    self.commit(u)
-                    if do_optimize:
-                        self.optimize(u)
-                    if ru:
-                        urllib2.urlopen(ru)
+
+                # have to call commit a couple of times to make SOLR instances refresh
+                self.commit(u)
+                urllib2.urlopen(ru)
+                self.commit(u)
+                urllib2.urlopen(ru)
         else:
             # step 3c: update and refresh the single instance of SOLR
             is_success = self.update_index(url, solr_xml_file_path, do_optimize)
