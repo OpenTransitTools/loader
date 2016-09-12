@@ -102,21 +102,30 @@ class SolrLoader(object):
 
         # step 3: update SOLR
         if ports:
-            # step 3a: update one instance of SOLR (assumes they use a shared index)
-            u = url.format(ports[0])
-            is_success = self.update_index(u, solr_xml_file_path, do_optimize)
+            is_success = True
 
-            # step 3b: refresh all instances of SOLR
+            # step 3a: refresh all instances of SOLR
+            u = None
             for p in ports[:-1]:
                 u = url.format(p)
+                s = self.update_index(u, solr_xml_file_path)
+                if s is False:
+                    is_success = False
                 self.commit(u)
+
+            # step 3b: if optimize, opt one of the instances
+            if u and do_optimize:
+                self.optimize(u)
         else:
             # step 3c: update and refresh the single instance of SOLR
             is_success = self.update_index(url, solr_xml_file_path, do_optimize)
 
-        # step 4: mv file to processed folder
-        if is_success:
+        # step 4: either warn us, or mv file to processed folder so it's not processed again...
+        if not is_success:
+            log.warn("something happened loading {} into SOLR".format(solr_xml_file_path))
+        else:
             to_path = os.path.join(self.post_process_dir, file_name)
             file_utils.mv(solr_xml_file_path, to_path)
 
         return is_success
+
