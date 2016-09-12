@@ -1,5 +1,6 @@
 import os
 import logging
+import urllib2
 log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
@@ -96,6 +97,7 @@ class SolrLoader(object):
 
         # step 2: grab SOLR properties for url (and optionally the web ports where SOLR instance(es) run
         url  = self.config.get('url')
+        reload_url = self.config.get('reload')
         ports = None
         if ":{}" in url or ":{0}" in url:
             ports = self.config.get_list('ports', def_val='80')
@@ -109,7 +111,13 @@ class SolrLoader(object):
             # step 3b: now refresh all instances of SOLR
             for p in ports:
                 u = url.format(p)
-                self.commit(u)
+                ru = reload_url.format(p) if reload_url else None
+                for _ in range(2):
+                    self.commit(u)
+                    if do_optimize:
+                        self.optimize(u)
+                    if ru:
+                        urllib2.urlopen(ru)
         else:
             # step 3c: update and refresh the single instance of SOLR
             is_success = self.update_index(url, solr_xml_file_path, do_optimize)
