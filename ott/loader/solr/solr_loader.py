@@ -102,32 +102,14 @@ class SolrLoader(object):
 
         # step 3: update SOLR
         if ports:
-            is_success = True
-
             # step 3a: post the .xml content to the first SOLR instance
             u = url.format(ports[0])
             is_success = self.update_index(u, solr_xml_file_path, do_optimize)
-            self.commit(u)
 
             # step 3b: now refresh all instances of SOLR
             for p in ports:
                 u = url.format(p)
                 self.commit(u)
-
-            # step 3a: refresh all instances of SOLR
-            """
-            u = None
-            for p in ports:
-                u = url.format(p)
-                s = self.update_index(u, solr_xml_file_path)
-                if s is False:
-                    is_success = False
-                self.commit(u)
-            """
-
-            # step 3b: if optimize, opt one of the instances
-            if u and do_optimize:
-                self.optimize(u)
         else:
             # step 3c: update and refresh the single instance of SOLR
             is_success = self.update_index(url, solr_xml_file_path, do_optimize)
