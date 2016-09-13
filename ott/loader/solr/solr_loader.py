@@ -1,6 +1,5 @@
 import os
 import logging
-import urllib2
 log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
@@ -115,9 +114,9 @@ class SolrLoader(object):
 
                 # have to call commit a couple of times to make SOLR instances refresh
                 self.commit(u)
-                urllib2.urlopen(ru)
+                web_utils.get(ru)
                 self.commit(u)
-                urllib2.urlopen(ru)
+                web_utils.get(ru)
         else:
             # step 3c: update and refresh the single instance of SOLR
             is_success = self.update_index(url, solr_xml_file_path, do_optimize)
