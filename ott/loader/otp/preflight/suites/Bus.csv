@@ -22,7 +22,7 @@ Transit Issue 485 : Indirect walk to transit,"45.5050,-122.65476","45.5120705645
 "Transit Issue 784 : Reported by Chris Hix, this trip fails (as of 6/2012...fixed 7/17/12) on the Arrive By trip but is fine on the Depart After (1 of 2)","12700_SE_Division::45.503960,-122.532200","NE_42nd_Sandy::45.536217,-122.620020","TRANSIT,WALK",4:00 PM,,QUICK,840,,,,,,,
 "Transit Issue 784 : Reported by Chris Hix, this trip fails (as of 6/2012...fixed 7/17/12) on the Arrive By trip but is fine on the Depart After (2 of 2)","Chavez_Hawthorne::45.511763,-122.622672","SE_11th_Madison::45.512737,-122.654778","TRANSIT,WALK",4:00 PM,,QUICK,840,,,,,,,
 Transfer @ Hooker pedestrian overpass on Naito - line 54 to line 9,"BeavertonHillsdale__Stop_365::45.480078,-122.702270","SE_Powell_60th__Stop_4675::45.497358,-122.601553","TRANSIT,WALK",8:00 AM,,QUICK,840,,,54,,,,
-Transit Issue 1096 : Ex 1 - doubling back after transfer (Outbound),"45.570689,-122.614220","45.563821,-122.661456","TRANSIT,WALK",1:00 PM,,QUICK,840,,,[1273|5899].*[5904|5900],5|5,,,
+Transit Issue 1096 : Ex 1 - doubling back after transfer (Outbound),"45.570689,-122.614220","45.563821,-122.661456","TRANSIT,WALK",1:00 PM,,QUICK,840,,,(1273|5899).*(5904|5900),5|5,,,
 Transit Issue 1096 : Ex 2 - doubling back after transfer (Inbound),"45.571897,-122.644853","45.547859,-122.675623","TRANSIT,WALK",5:50 PM,,QUICK,840,,,3452.*90,,,,
 Transit Issue 1096 : Ex 3 - doubling back after transfer (Outbound),"45.547859,-122.675623","45.571897,-122.644853","TRANSIT,WALK",5:50 PM,,QUICK,840,,,93.*3453,,,,
 Transit Issue 1213 : snapping to incorrect level when routing - not using stairs (Hawthorne Bridge),"45.51149,-122.66585","45.511548,-122.643827","TRANSIT,WALK",11:41 AM,,QUICK,840,,,<streetName>steps</streetName>,,,,
