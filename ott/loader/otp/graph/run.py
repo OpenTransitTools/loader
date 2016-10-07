@@ -1,6 +1,7 @@
 """ Run
 """
 import sys
+import time
 import logging
 log = logging.getLogger(__file__)
 
@@ -29,9 +30,10 @@ class Run(CacheBase):
         import argparse
         parser = argparse.ArgumentParser(prog='otp-run', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., 'prod', 'test' or 'call')")
-        parser.add_argument('--server',     '-s', required=False, action='store_true', help="string (regex) to find in files")
-        parser.add_argument('--viz',        '-v', required=False, action='store_true',  help="string to replace found regex strings")
-        parser.add_argument('--mem',       '-lm', required=False, action='store_true',  help="string to replace found regex strings")
+        parser.add_argument('--server', '-s',  required=False, action='store_true', help="run 'named' graph in server mode")
+        parser.add_argument('--all',    '-a',  required=False, action='store_true', help="run all graphs in server mode")
+        parser.add_argument('--viz',    '-v',  required=False, action='store_true', help="run 'named' graph with the vizualizer client")
+        parser.add_argument('--mem',    '-lm', required=False, action='store_true', help="set the jvm heap memory for the graph")
         args = parser.parse_args()
         return args, parser
 
@@ -45,7 +47,15 @@ class Run(CacheBase):
 
         graph = otp_utils.find_graph(r.graphs, args.name)
         java_mem = "-Xmx1236m" if args.mem else None
-        if args.server:
+        if args.all or 'all' == args.name or 'a' == args.name:
+            success = True
+            for z in r.graphs:
+                print "running {}".format(z)
+                time.sleep(2)
+                s = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+                if s == False:
+                    success = False
+        elif args.server:
             success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
         elif args.viz:
             success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
@@ -63,6 +73,7 @@ class Run(CacheBase):
 
     @classmethod
     def static_server(cls):
+
         ''' start a static server where
         '''
         success = False
