@@ -52,7 +52,7 @@ class Run(CacheBase):
             for z in r.graphs:
                 print "running {}".format(z)
                 time.sleep(2)
-                s = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+                s = otp_utils.run_otp_server(java_mem=java_mem, **z)
                 if s == False:
                     success = False
         elif args.server:
