@@ -4,17 +4,21 @@
 
     //requestLogFile: "request.log",
 
+    //
     // Routing defaults are any public field or setter in the Java class
     // org.opentripplanner.routing.core.RoutingRequest
+    // NOTE: updated Oct 2016 ... adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
+    //
     routingDefaults: {
-        numItineraries: 3,
+        maxHours: 6,
         boardSlack: 0,
         alightSlack: 0,
         transferSlack: 180,
         maxTransfers: 4,
         waitReluctance: 0.9,
         walkReluctance: 1.75,
-        stairsReluctance: 1.65
+        stairsReluctance: 1.65,
+        numItineraries: 3
     },
 
     updaters: [
