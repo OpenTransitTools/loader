@@ -13,21 +13,14 @@ from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
 
 
-def load_all():
-    ''' will load OTP and gtfsdb
+def load_data():
+    """ just download data
 
         does the following:
           1.  update GTFS feeds in cache
-
-          2.  update OSM data
-
-          3a. load gtfsdb
-          3b. export gtfsdb to production
-
-          4a. build OTP graph
-          4b. test OTP graph
-          4c. deploy graphs that pass tests to production servers
-    '''
+          2.  update OSM data in cache
+          3.  update SUM data in cache
+    """
     force_update=object_utils.is_force_update()
 
     log.info("step 1: cache latest gtfs feeds")
@@ -38,20 +31,35 @@ def load_all():
     osm = OsmCache()
     osm.check_cached_osm(force_update=force_update)
 
-    log.info("step 3: load gtfsdb")
+    log.info("step 3: download SUM data (BIKETOWN)")
+    sum_update = SumCache.load
+
+
+def load_all():
+    ''' will load OTP and gtfsdb
+
+          3a. load gtfsdb
+          3b. export gtfsdb to production
+
+          4a. build OTP graph
+          4b. test OTP graph
+          4c. deploy graphs that pass tests to production servers
+
+          5. load SOLR with cached datad
+    '''
+    force_update=object_utils.is_force_update()
+
+    load_data()
+
+    log.info("step 4: load gtfsdb")
     db = GtfsdbLoader()
     db.check_db(force_update=force_update)
 
-    log.info("step 4: load otp (build new graph)")
+    log.info("step 5: load otp (build new graph)")
     otp = Build(force_update=force_update)
     otp.build_and_test_graphs(force_update=force_update)
 
-    log.info("step 5: load SUM data (BIKETOWN)")
-    sum_update = SumCache.load
-
     log.info("step 6: load various data layers into SOLR")
-
-    log.info("step 7: load SOLR")
     solr_load = SolrLoader.load
 
 
