@@ -27,7 +27,6 @@ class WsTest(Test):
         map_url = "http://{0}/tmap.html?debug".format(host)
         return planner_url, map_url
 
-
     @classmethod
     def to_coord(cls, param):
         ''' return cleaned param
@@ -52,7 +51,6 @@ class WsTest(Test):
         except:
             pass
         return place
-
 
     def get_map_url(self):
         return "{0}&{1}".format(self.make_url(self.map_url), self.map_params)
