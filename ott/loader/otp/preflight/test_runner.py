@@ -10,6 +10,7 @@ from mako.template import Template
 from ott.utils.config_util import ConfigUtil
 from ott.utils import web_utils
 from ott.utils import file_utils
+from ott.utils import otp_utils
 
 from ott.loader.otp.preflight.test_suite import ListTestSuites
 
@@ -20,19 +21,11 @@ class TestRunner(object):
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, port=8001, suite_dir=None, report_mako_path=None, date=None):
+    def __init__(self, port=None, suite_dir=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
-
         # step 1: build OTP ws and map urls from config
-        self.config = ConfigUtil(section='otp')
-        host = self.config.get('host', def_val=web_utils.get_hostname())
-
-        ws = self.config.get('ws_url_path', def_val="/otp/routers/default/plan")
-        self.ws_url = "http://{}:{}{}".format(host, port, ws)
-
-        map = self.config.get('map_url_path', def_val="")
-        self.map_url = "http://{}:{}{}".format(host, port, map)
+        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(port=port)
 
         # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
@@ -114,31 +107,20 @@ class TestRunner(object):
 
 
 def email():
+    #import pdb; pdb.set_trace()
     t = TestRunner()
-    import pdb; pdb.set_trace()
     t.send_email()
-
-def stress(argv):
-    date = None
-    if len(argv) > 2:
-        date = argv[1]
-
-    test_suites = TestRunner.get_test_suites(date)
-    for ts in test_suites:
-        ts.printer()
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     dir = None
     if 'DEBUG' in argv:
-        log.basicConfig(level=log.DEBUG)
+        #log.basicConfig(level=log.DEBUG)
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
-    if 'STRESS' in argv:
-        stress(argv)
-    else:
-        TestRunner.test_graph_factory(suite_dir=dir)
+    TestRunner.test_graph_factory(graph_dir=dir, suite_dir=dir)
 
 if __name__ == '__main__':
     #email()
     main()
+
