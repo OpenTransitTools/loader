@@ -379,7 +379,7 @@ class ListTestSuites(CacheBase):
         """
         #import pdb; pdb.set_trace()
         if suite_dir is None:
-            suite_dir = self.sub_dir('templates')
+            suite_dir = self.sub_dir('suites')
 
         self.ws_url = ws_url
         self.map_url = map_url
