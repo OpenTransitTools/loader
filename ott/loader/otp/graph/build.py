@@ -153,13 +153,9 @@ class Build(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' build a certain graph or just run tests (or no tests), etc...
-
-            examples:
+        ''' make the cli argparse for OTP graph building
         '''
-        import argparse
-        parser = argparse.ArgumentParser(prog='otp-build', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('name', default="all", help="Name of GTFS graph folder in the 'cache' build (e.g., 'all', 'prod', 'test' or 'call')")
+        parser = otp_utils.get_initial_arg_parser()
         parser.add_argument('--test',       '-t',  action='store_true', help="to just run tests vs. building the graph")
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
         parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
@@ -167,6 +163,7 @@ class Build(CacheBase):
         parser.add_argument('--mock',        '-m', action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
         parser.add_argument('--mem',        '-lm', action='store_true', help="should we run otp/java with smaller memory footprint?")
         parser.add_argument('--email',       '-e', help="email address(es) to be contacted if we can't build a graph, or the tests don't pass.")
+
         args = parser.parse_args()
         return args, parser
 
