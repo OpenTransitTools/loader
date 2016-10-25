@@ -9,6 +9,8 @@ import csv
 import re
 
 from ott.utils.config_util import ConfigUtil
+from ott.utils.cache_base import CacheBase
+
 from ott.utils import otp_utils
 from ott.utils import date_utils
 from ott.utils import object_utils
@@ -368,7 +370,7 @@ class TestSuite(object):
         self.run(ws_url, map_url, date, printer=True)
 
 
-class ListTestSuites(object):
+class ListTestSuites(CacheBase):
     """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
     """
 
@@ -376,6 +378,9 @@ class ListTestSuites(object):
         """ this class corresponds to a single .csv 'test suite'
         """
         #import pdb; pdb.set_trace()
+        if suite_dir is None:
+            suite_dir = self.sub_dir('templates')
+
         self.ws_url = ws_url
         self.map_url = map_url
         self.suite_dir = suite_dir

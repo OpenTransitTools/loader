@@ -9,7 +9,7 @@ from ott.loader.otp.preflight.test_runner import Test
 
 def_header="Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?"
 
-class RandomTrip():
+class RandomTrip(object):
     """ read in a .csv file full of points, and then output a set of test cases
     """
     def __init__(self, num=500):
