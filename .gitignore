@@ -5,6 +5,8 @@ build-config.json
 router-config.json
 lucene
 ned/
+*.old
+*-old
 *.v
 *.iml
 *.tmp
