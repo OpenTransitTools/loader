@@ -8,7 +8,7 @@ def to_urls(name, hostname, port, filter):
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
 
-    # make file name
+    # make .urls file name
     flt = "" if filter is None else "-{}".format(filter)
     file_name = "{}{}.urls".format(name, flt)
 
@@ -25,6 +25,8 @@ def main():
     if args.name == "all":
         for g in graphs:
             to_urls(g['name'], args.hostname, g['port'], args.test_suite)
+    elif args.name == "none" and args.hostname:
+        to_urls(args.hostname, args.hostname, "80", args.test_suite)
     else:
         g = otp_utils.find_graph(graphs, args.name)
         print g

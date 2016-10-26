@@ -153,7 +153,7 @@ class Build(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' make the cli argparse for OTP graph building
+        ''' make the cli argparse for OTP graph building and testing
         '''
         parser = otp_utils.get_initial_arg_parser()
         parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
