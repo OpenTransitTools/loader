@@ -374,7 +374,7 @@ class ListTestSuites(CacheBase):
     """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
     """
 
-    def __init__(self, ws_url, map_url, suite_dir, date=None):
+    def __init__(self, ws_url, map_url, suite_dir, date=None, filter=None):
         """ this class corresponds to a single .csv 'test suite'
         """
         #import pdb; pdb.set_trace()
@@ -389,6 +389,8 @@ class ListTestSuites(CacheBase):
         self.test_suites = []
         for f in self.files:
             if f.lower().endswith('.csv'):
+                if filter and re.match('.*({})'.format(filter), f, re.IGNORECASE) is None:
+                    continue
                 t = TestSuite(self.suite_dir, f)
                 self.test_suites.append(t)
 
