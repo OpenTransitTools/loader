@@ -3,9 +3,10 @@ import sys
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
 
-def to_urls(name, hostname, port, dir, filter):
+def to_urls(name, hostname, port,filter):
+    #import pdb; pdb.set_trace()
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
-    lts = ListTestSuites(ws_url=ws_url, map_url=map_url, suite_dir=dir, filter=filter)
+    lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
     lts.printer()
 
 def main():
@@ -16,12 +17,12 @@ def main():
     graphs = otp_utils.get_graphs_from_config()
     if args.name == "all":
         for g in graphs:
-            to_urls(g['name'], args.hostname, g['port'])
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite)
     else:
         g = otp_utils.find_graph(graphs, args.name)
         print g
         if g:
-            to_urls(g['name'], args.hostname, g['port'], g['dir'], args.test_suite)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite)
         else:
             print "couldn't find graph {}".format(args.name)
 

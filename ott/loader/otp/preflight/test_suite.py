@@ -374,7 +374,7 @@ class ListTestSuites(CacheBase):
     """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
     """
 
-    def __init__(self, ws_url, map_url, suite_dir, date=None, filter=None):
+    def __init__(self, ws_url, map_url, suite_dir=None, date=None, filter=None):
         """ this class corresponds to a single .csv 'test suite'
         """
         #import pdb; pdb.set_trace()
