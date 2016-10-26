@@ -3,9 +3,9 @@ import sys
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
 
-def to_urls(name, hostname, port, filter):
+def to_urls(name, hostname, port, filter, ws_path):
     #import pdb; pdb.set_trace()
-    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
+    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port, ws_path=ws_path)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
 
     # make .urls file name
@@ -19,19 +19,20 @@ def to_urls(name, hostname, port, filter):
 def main():
     parser = otp_utils.get_initial_arg_parser()
     parser.add_argument('--hostname', '-hn', '-d', help="specify the hostname for the test url")
+    parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     args = parser.parse_args()
 
     graphs = otp_utils.get_graphs_from_config()
     if args.name == "all":
         for g in graphs:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path)
     elif args.name == "none" and args.hostname:
-        to_urls(args.hostname, args.hostname, "80", args.test_suite)
+        to_urls(args.hostname, args.hostname, "80", args.test_suite, args.ws_path)
     else:
         g = otp_utils.find_graph(graphs, args.name)
         print g
         if g:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path)
         else:
             print "couldn't find graph {}".format(args.name)
 
