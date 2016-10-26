@@ -3,11 +3,18 @@ import sys
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
 
-def to_urls(name, hostname, port,filter):
+def to_urls(name, hostname, port, filter):
     #import pdb; pdb.set_trace()
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
-    lts.printer()
+
+    # make file name
+    flt = "" if filter is None else "-{}".format(filter)
+    file_name = "{}{}.urls".format(name, flt)
+
+    # write urls to file
+    with open(file_name, 'w') as f:
+        f.write(lts.printer())
 
 def main():
     parser = otp_utils.get_initial_arg_parser()

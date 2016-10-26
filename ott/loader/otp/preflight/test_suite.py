@@ -346,12 +346,14 @@ class TestSuite(object):
     def run(self, ws_url, map_url, date=None, printer=False):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
+        ret_val = ""
+
         log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
             t = Test(p, i+2, ws_url, map_url, date)
             t.depart_by_check()
             if printer:
-                print t.get_ws_url()
+                ret_val = ret_val + t.get_ws_url() + "\n"
             else:
                 self.do_test(t)
 
@@ -362,12 +364,13 @@ class TestSuite(object):
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
             if printer:
-                print t.get_ws_url()
+                ret_val = ret_val + t.get_ws_url() + "\n"
             else:
                 self.do_test(t, False)
+        return ret_val
 
     def printer(self, ws_url, map_url, date=None):
-        self.run(ws_url, map_url, date, printer=True)
+        return self.run(ws_url, map_url, date, printer=True)
 
 
 class ListTestSuites(CacheBase):
@@ -417,8 +420,10 @@ class ListTestSuites(CacheBase):
             ts.run(self.ws_url, self.map_url, self.date)
 
     def printer(self):
+        ret_val = ""
         for ts in self.test_suites:
-            ts.printer(self.ws_url, self.map_url, self.date)
+            ret_val = ret_val + ts.printer(self.ws_url, self.map_url, self.date)
+        return ret_val
 
     def get_suites(self):
         return self.test_suites
