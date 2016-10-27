@@ -24,21 +24,21 @@ def main():
     parser = otp_utils.get_initial_arg_parser()
     parser.add_argument('--hostname', '-hn', '-d', help="specify the hostname for the test url")
     parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
-    parser.add_argument('--print',    '-p',  help="print to stdout rather than a file")
+    parser.add_argument('--printer',  '-p',  help="print to stdout rather than a file", action='store_true')
     parser.add_argument('--filename', '-f',  help="filename")
     args = parser.parse_args()
 
     graphs = otp_utils.get_graphs_from_config()
     if args.name == "all":
         for g in graphs:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename)
     elif args.name == "none" and args.hostname:
-        to_urls(args.hostname, args.hostname, "80", args.test_suite, args.ws_path)
+        to_urls(args.hostname, args.hostname, "80", args.test_suite, args.ws_path, not args.printer, args.filename)
     else:
         g = otp_utils.find_graph(graphs, args.name)
         print g
         if g:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename)
         else:
             print "couldn't find graph {}".format(args.name)
 
