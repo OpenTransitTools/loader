@@ -27,9 +27,7 @@ class Run(CacheBase):
                bin/otp_run -s call (run the call server)
                bin/otp_run -v test (run the vizualizer with the test graph)
         '''
-        import argparse
-        parser = argparse.ArgumentParser(prog='otp-run', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-        parser.add_argument('name', help="Name of GTFS graph folder in the 'cache' run (e.g., 'prod', 'test' or 'call')")
+        parser = otp_utils.get_initial_arg_parser()
         parser.add_argument('--server', '-s',  required=False, action='store_true', help="run 'named' graph in server mode")
         parser.add_argument('--all',    '-a',  required=False, action='store_true', help="run all graphs in server mode")
         parser.add_argument('--viz',    '-v',  required=False, action='store_true', help="run 'named' graph with the vizualizer client")
