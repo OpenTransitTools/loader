@@ -5,9 +5,8 @@ import time
 import logging
 log = logging.getLogger(__file__)
 
-from ott.utils import otp_utils
-from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
+from .. import tests_to_urls
 
 
 class StressTests(CacheBase):
@@ -18,9 +17,14 @@ class StressTests(CacheBase):
     def __init__(self):
         super(StressTests, self).__init__('otp')
 
+        parser = tests_to_urls.get_args_parser()
+        args = parser.parse_args()
+        tests_to_urls.run(args, self.this_module_dir)
 
     @classmethod
     def run(cls):
+        success = True
+        st = StressTests()
         return success
 
 

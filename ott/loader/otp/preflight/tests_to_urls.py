@@ -31,20 +31,19 @@ def get_args_parser():
     parser.add_argument('--filename', '-f',  help="filename")
     return parser
 
-def run(args):
+def run(args, file_path=None):
     '''
     '''
     graphs = otp_utils.get_graphs_from_config()
     if args.name == "all":
         for g in graphs:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename, file_path)
     elif args.name == "none" and args.hostname:
-        to_urls(args.hostname, args.hostname, "80", args.test_suite, args.ws_path, not args.printer, args.filename)
+        to_urls(args.hostname, args.hostname, "80", args.test_suite, args.ws_path, not args.printer, args.filename, file_path)
     else:
         g = otp_utils.find_graph(graphs, args.name)
-        print g
         if g:
-            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename)
+            to_urls(g['name'], args.hostname, g['port'], args.test_suite, args.ws_path, not args.printer, args.filename, file_path)
         else:
             print "couldn't find graph {}".format(args.name)
 
