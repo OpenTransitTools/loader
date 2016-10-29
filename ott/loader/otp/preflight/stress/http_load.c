@@ -195,7 +195,7 @@ static void handle_connect( int cnum, struct timeval* nowP, int double_check );
 static void handle_read( int cnum, struct timeval* nowP );
 static void idle_connection( ClientData client_data, struct timeval* nowP );
 static void wakeup_connection( ClientData client_data, struct timeval* nowP );
-static void close_connection( int cnum );
+static int  close_connection( int cnum );
 static void close_connection2( int cnum,  char buf[]);
 static void progress_report( ClientData client_data, struct timeval* nowP );
 static void start_timer( ClientData client_data, struct timeval* nowP );
@@ -1045,9 +1045,9 @@ handle_connect( int cnum, struct timeval* nowP, int double_check )
 #endif
     if ( r < 0 )
     {
-    perror( urls[url_num].url_str );
-    close_connection2( cnum, buf );
-    return;
+        perror( urls[url_num].url_str );
+        close_connection( cnum );
+        return;
     }
     connections[cnum].conn_state = CNST_HEADERS;
     connections[cnum].header_state = HDST_LINE1_PROTOCOL;
@@ -1647,23 +1647,24 @@ wakeup_connection( ClientData client_data, struct timeval* nowP )
     }
 
 
-static void close_connection2(int cnum, char buf[])
+static void 
+close_connection2(int cnum, char buf[])
 {
-    int url_num = connections[cnum].url_num;
-
-(void) fprintf(stderr, "%s:\n%s\n", urls[url_num].url_str, buf);
-
-    if( urls[url_num].got_bytes )
-    if(connections[cnum].bytes != urls[url_num].bytes )
+    int success = close_connection(cnum);
+    if(success == 0)
     {
-        (void) fprintf(stderr, "%s: byte count wrong (%ld vs %ld)\n%s\n\n", urls[url_num].url_str, urls[url_num].bytes, connections[cnum].bytes);
+        int url_num = connections[cnum].url_num; 
+        if(sizeof(buf) < 1)
+            (void) fprintf(stderr, "%s:\n%s\n", urls[url_num].url_str, buf);
+        else
+            (void) fprintf(stderr, "%s: IS EMPTY (I think)\n", urls[url_num].url_str);
     }
-    close_connection(cnum);
 }
 
-static void
+static int 
 close_connection( int cnum )
-    {
+{
+        int ret_val = 1;
     int url_num;
 #ifdef USE_SSL
     if ( urls[connections[cnum].url_num].protocol == PROTO_HTTPS )
@@ -1702,12 +1703,12 @@ close_connection( int cnum )
     url_num = connections[cnum].url_num;
     if ( do_checksum )
     {
-    if ( ! urls[url_num].got_checksum )
+        if ( ! urls[url_num].got_checksum )
         {
         urls[url_num].checksum = connections[cnum].checksum;
         urls[url_num].got_checksum = 1;
         }
-    else
+        else
         {
         if ( connections[cnum].checksum != urls[url_num].checksum )
         {
@@ -1730,10 +1731,12 @@ close_connection( int cnum )
         {
           /* FXP */
           (void) fprintf(stderr, "%s: byte count wrong (%ld vs %ld)\n", urls[url_num].url_str, urls[url_num].bytes, connections[cnum].bytes);
-        ++total_badbytes;
-        }
+          ++total_badbytes;
+          ret_val = 0;
         }
     }
+    }
+    return ret_val;
 }
 
 
