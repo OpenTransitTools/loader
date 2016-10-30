@@ -86,7 +86,7 @@ class GtfsCache(CacheBase):
         update_cache = force_update
         try:
             cache = GtfsCache()
-            url, name = GtfsCache.get_url_filename(gtfs_feed)
+            url, name = cache.get_url_filename(gtfs_feed)
 
             # if we aren't forcing an update, then compare for difference before updating the cache
             if not force_update:

@@ -62,6 +62,7 @@ setup(
         osm_update = ott.loader.osm.osm_cache:OsmCache.load
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
+        gtfs_info = ott.loader.gtfs.info:main
         gtfs_fix = ott.loader.gtfs.fix:main
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
 

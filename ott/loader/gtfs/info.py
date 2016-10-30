@@ -5,6 +5,7 @@ import logging
 log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
+from ott.utils import object_utils
 from ott.utils.cache_base import CacheBase
 
 
@@ -23,6 +24,8 @@ class Info(CacheBase):
         ''' note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
         '''
         #import pdb; pdb.set_trace()
+        super(Info, self).__init__(section='gtfs')
+
         self.gtfs_path = gtfs_path
         self.dir_path = os.path.dirname(gtfs_path)
         self.file_prefix = file_prefix
@@ -230,3 +233,32 @@ class Info(CacheBase):
             end_date = edate
 
         return start_date, end_date
+
+    @classmethod
+    def cached_feeds_info(self, info_fmt="version: {}, id: {}, dates: {}-{}\n"):
+        ret_val = ""
+
+        # step 1: read the cache
+        cache = GtfsCache()
+
+        # step 2: update the cache first before getting info ???
+        force_update=object_utils.is_force_update()
+        if force_update:
+            cache.check_cached_feeds(force_update=True)
+
+        # step 3:
+        for f in cache.feeds:
+            url, name = cache.get_url_filename(f)
+            cache_path = os.path.join(cache.get_cache_dir(), name)
+            info = Info(cache_path)
+            start_date,end_date,id,version = info.get_feed_info()
+            ret_val = ret_val + info_fmt.format(version, id, start_date, end_date)
+
+        return ret_val
+
+
+def main():
+    print Info.cached_feeds_info()
+
+if __name__ == '__main__':
+    main()
