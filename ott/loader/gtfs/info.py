@@ -235,7 +235,7 @@ class Info(CacheBase):
         return start_date, end_date
 
     @classmethod
-    def cached_feeds_info(self, info_fmt="version: {}, id: {}, dates: {}-{}\n"):
+    def cached_feeds_info(self, info_fmt="name: {}, url: {}, version: {}, id: {}, dates: {}-{}\n"):
         ret_val = ""
 
         # step 1: read the cache
@@ -253,7 +253,7 @@ class Info(CacheBase):
             cache_path = os.path.join(cache.cache_dir, name)
             info = Info(cache_path)
             start_date,end_date,id,version = info.get_feed_info()
-            ret_val = ret_val + info_fmt.format(version, id, start_date, end_date)
+            ret_val = ret_val + info_fmt.format(name, url, version, id, start_date, end_date)
 
         return ret_val
 
