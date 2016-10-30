@@ -250,7 +250,7 @@ class Info(CacheBase):
         # step 3:
         for f in cache.feeds:
             url, name = cache.get_url_filename(f)
-            cache_path = os.path.join(cache.this_module_dir, name)
+            cache_path = os.path.join(cache.cache_dir, name)
             info = Info(cache_path)
             start_date,end_date,id,version = info.get_feed_info()
             ret_val = ret_val + info_fmt.format(version, id, start_date, end_date)
