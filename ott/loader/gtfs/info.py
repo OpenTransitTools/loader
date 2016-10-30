@@ -235,8 +235,8 @@ class Info(CacheBase):
         return start_date, end_date
 
     @classmethod
-    def cached_feeds_info(self, info_fmt="name: {}, url: {}, version: {}, id: {}, dates: {}-{}\n"):
-        ret_val = ""
+    def cached_feeds_info(cls):
+        ret_val = []
 
         # step 1: read the cache
         from ott.loader.gtfs.gtfs_cache import GtfsCache
@@ -245,7 +245,7 @@ class Info(CacheBase):
         # step 2: update the cache first before getting info ???
         force_update=object_utils.is_force_update()
         if force_update:
-            cache.check_cached_feeds(force_update=True)
+            cache.check_tcached_feeds(force_update=True)
 
         # step 3:
         for f in cache.feeds:
@@ -253,13 +253,32 @@ class Info(CacheBase):
             cache_path = os.path.join(cache.cache_dir, name)
             info = Info(cache_path)
             start_date,end_date,id,version = info.get_feed_info()
-            ret_val = ret_val + info_fmt.format(name, url, version, id, start_date, end_date)
 
+            i = {
+                'name'       : name,
+                'url'        : url,
+                'version'    : version,
+                'id'         : id,
+                'start_date' : start_date,
+                'end_date'   : end_date
+
+            }
+            ret_val.append(i)
+
+        return ret_val
+
+    @classmethod
+    def cached_feeds_info_str(cls, info_fmt="name: {name}, version: {version}, id: {id}, dates: {start_date}-{end_date}\n"):
+        ret_val = ""
+        info = cls.cached_feeds_info()
+        for i in info:
+            n = info_fmt.format(info_fmt, **i)
+            ret_val = ret_val + n
         return ret_val
 
 
 def main():
-    print Info.cached_feeds_info()
+    print Info.cached_feeds_info_str()
 
 if __name__ == '__main__':
     main()
