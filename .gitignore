@@ -23,6 +23,7 @@ tmp/
 cache/
 osmosis/
 .git/
+tests/
 *~
 [a-z].py
 *.py[cod]
