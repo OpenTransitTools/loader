@@ -6,8 +6,8 @@ log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
 from ott.utils import object_utils
-from ott.utils.cache_base import CacheBase
 
+from ott.utils.cache_base import CacheBase
 
 class Info(CacheBase):
     """ Get info on a gtfs.zip file:
@@ -239,6 +239,7 @@ class Info(CacheBase):
         ret_val = ""
 
         # step 1: read the cache
+        from ott.loader.gtfs.gtfs_cache import GtfsCache
         cache = GtfsCache()
 
         # step 2: update the cache first before getting info ???
@@ -249,7 +250,7 @@ class Info(CacheBase):
         # step 3:
         for f in cache.feeds:
             url, name = cache.get_url_filename(f)
-            cache_path = os.path.join(cache.get_cache_dir(), name)
+            cache_path = os.path.join(cache.this_module_dir, name)
             info = Info(cache_path)
             start_date,end_date,id,version = info.get_feed_info()
             ret_val = ret_val + info_fmt.format(version, id, start_date, end_date)
