@@ -19,7 +19,7 @@ class StressTests(CacheBase):
 
         parser = tests_to_urls.get_args_parser()
         args = parser.parse_args()
-        tests_to_urls.run(args, self.this_module_dir)
+        tests_to_urls.printer(args, self.this_module_dir)
 
     @classmethod
     def run(cls):
