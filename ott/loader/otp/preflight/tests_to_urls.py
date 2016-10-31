@@ -3,10 +3,15 @@ import os
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
 
-def to_urls(name, hostname, port, filter, ws_path, to_file=True, file_name=None, file_path=None):
-    #import pdb; pdb.set_trace()
+
+def make_lts(hostname, port, filter, ws_path):
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port, ws_path=ws_path)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
+    return lts
+
+def to_urls(name, hostname, port, filter, ws_path, to_file=True, file_name=None, file_path=None):
+    #import pdb; pdb.set_trace()
+    lts = make_lts(hostname, port, filter, ws_path)
 
     if file_name or to_file:
         if file_name is None:

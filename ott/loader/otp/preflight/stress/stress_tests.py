@@ -27,6 +27,12 @@ class StressTests(CacheBase):
         st = StressTests()
         return success
 
+    @classmethod
+    def printer(cls):
+        success = True
+        st = StressTests()
+        return success
+
 
 def main():
     StressTests.run()

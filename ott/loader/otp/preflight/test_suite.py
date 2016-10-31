@@ -343,18 +343,18 @@ class TestSuite(object):
     def get_tests(self):
         return self.tests
 
-    def run(self, ws_url, map_url, date=None, printer=False):
+    def run(self, ws_url, map_url, date=None, run_test=True):
         """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
-        ret_val = ""
+        # return values for both arrive and depart urls
+        ret_val=[]
 
         log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
             t = Test(p, i+2, ws_url, map_url, date)
             t.depart_by_check()
-            if printer:
-                ret_val = ret_val + t.get_ws_url() + "\n"
-            else:
+            ret_val.append(t.get_ws_url())
+            if run_test:
                 self.do_test(t)
 
             """ arrive by tests
@@ -363,14 +363,17 @@ class TestSuite(object):
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
-            if printer:
-                ret_val = ret_val + t.get_ws_url() + "\n"
-            else:
+            ret_val.append(t.get_ws_url())
+            if run_test:
                 self.do_test(t, False)
         return ret_val
 
-    def printer(self, ws_url, map_url, date=None):
-        return self.run(ws_url, map_url, date, printer=True)
+    def printer(self, ws_url, map_url, date):
+        ret_val = ""
+        urls = self.run(ws_url, map_url, date, run_test=False)
+        for u in urls:
+            ret_val = ret_val + u + "\n"
+        return ret_val
 
 
 class ListTestSuites(CacheBase):
@@ -415,6 +418,9 @@ class ListTestSuites(CacheBase):
                     log.info(err)
         return ret_val
 
+    def get_suites(self):
+        return self.test_suites
+
     def run(self):
         for ts in self.test_suites:
             ts.run(self.ws_url, self.map_url, self.date)
@@ -425,5 +431,9 @@ class ListTestSuites(CacheBase):
             ret_val = ret_val + ts.printer(self.ws_url, self.map_url, self.date)
         return ret_val
 
-    def get_suites(self):
-        return self.test_suites
+    def to_url_list(self):
+        ret_val = []
+        for ts in self.test_suites:
+            urls = ts.run(self.ws_url, self.map_url, self.date, run_test=False)
+            ret_val.append(urls)
+        return ret_val
