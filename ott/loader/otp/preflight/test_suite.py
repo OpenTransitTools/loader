@@ -435,5 +435,5 @@ class ListTestSuites(CacheBase):
         ret_val = []
         for ts in self.test_suites:
             urls = ts.run(self.ws_url, self.map_url, self.date, run_test=False)
-            ret_val.append(urls)
+            ret_val.extend(urls)
         return ret_val
