@@ -18,9 +18,13 @@ def to_urls(hostname, port, filter, ws_path):
     return lts.to_url_list()
 
 def run(args):
-    ''' returns a hash table of lists of url strings, ala
-        ['blah'] = ['http://...', 'http://...', ...]
-        ['glaa'] = ['http://...', 'http://...', ...]
+    ''' returns a hash table of lists of url strings used in the test suites, ala
+        {
+          'blah' : ['http://...', 'http://...', ...],
+          'glaa' : ['http://...', 'http://...', ...]
+        }
+
+        The 'name' for each hash is either the graph name
     '''
     ret_val = {}
 
@@ -42,26 +46,30 @@ def run(args):
     return ret_val
 
 def printer(args, file_path=None):
-    print run(args)
-'''
-    #, to_file=True, file_name=None, file_path=None):
-    if file_name or to_file:
-        if file_name is None:
-    # make .urls file name
-    flt = "" if filter is None else "-{}".format(filter)
-    file_name = "{}{}.urls".format(name, flt)
+    #import pdb; pdb.set_trace()
+    url_hash = run(args)
+    for k in url_hash:
+        name = k # key to the hash is the file name
+        url_list = url_hash[k]
+        url_string = '\n'.join(url_list)
 
-    if file_path:
-        file_name = os.path.join(file_path, file_name)
+        if args.printer:
+            print "\n======={}=======\n".format(name)
+            print url_string
+        else:
+            # make .urls file name
+            filter = ""
+            if args.test_suite:
+                filter = "-{}".format(filter)
+            file_name = "{}{}.urls".format(name, filter)
 
-    # write urls to file
-    with open(file_name, 'w') as f:
-        f.write(lts.printer())
-    else:
-    print lts.printer()
-    pass
-    not args.printer, args.filename, file_path
-'''
+            if file_path:
+                file_name = os.path.join(file_path, file_name)
+
+            # write urls to file
+            with open(file_name, 'w') as f:
+                f.write(url_string)
+
 
 def main():
     parser = get_args_parser()
