@@ -6,7 +6,7 @@ from test_suite import ListTestSuites
 
 def get_args_parser():
     parser = otp_utils.get_initial_arg_parser()
-    parser.add_argument('--hostname', '-hn', '-d', help="specify the hostname for the test url")
+    parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
     parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     parser.add_argument('--printer',  '-p',  help="print to stdout rather than a file", action='store_true')
     parser.add_argument('--filename', '-f',  help="filename")
@@ -45,12 +45,19 @@ def run(args):
             print "couldn't find graph {}".format(args.name)
     return ret_val
 
-def printer(args, file_path=None):
+def printer(args, file_path=None, url_hash=None):
+    ''' loop thru a has of URL strings, and write those strings out to either a file or stdout
+        @see url_hash format defined by the run() method above.
+
+        NOTE: that args and hash keys go into naming output files
+    '''
     #import pdb; pdb.set_trace()
-    url_hash = run(args)
-    for k in url_hash:
-        name = k # key to the hash is the file name
-        url_list = url_hash[k]
+    if url_hash is None:
+        url_hash = run(args)
+
+    for key in url_hash:
+        name = key # key to the hash is the file name
+        url_list = url_hash[key]
         url_string = '\n'.join(url_list)
 
         if args.printer:
@@ -59,6 +66,7 @@ def printer(args, file_path=None):
         else:
             # make .urls file name
             filter = ""
+            file_name = args.filename if args.filename else name
             if args.test_suite:
                 filter = "-{}".format(filter)
             file_name = "{}{}.urls".format(name, filter)
@@ -78,3 +86,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
