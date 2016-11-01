@@ -49,9 +49,11 @@ class Test(object):
               'Description/notes'
             }
         """
-        self.is_valid = True
-
         self.config = ConfigUtil(section='otp')
+
+        self.is_valid        = True
+        self.error_descript  = None
+        self.result          = TestResult.FAIL
 
         self.ws_url          = ws_url
         self.map_url         = map_url
@@ -63,9 +65,6 @@ class Test(object):
         self.itinerary       = None
         self.otp_params      = ''
         self.map_params      = ''
-        self.is_valid        = True
-        self.error_descript  = None
-        self.result          = TestResult.FAIL
 
         self.coord_from      = self.get_param('From')
         self.coord_to        = self.get_param('To')
