@@ -2,6 +2,7 @@
 """
 import sys
 import time
+import datetime
 import logging
 log = logging.getLogger(__file__)
 
@@ -30,12 +31,18 @@ class StressTests(CacheBase):
         elif args.duration:
             self.duration_stress_test(args.duration)
 
-    def duration_stress_test(self, duration):
-        for i in duration:
-            print "x"
+    def duration_stress_test(self, duration=5):
+        now = datetime.datetime.now()
+        end = now + datetime.timedelta(seconds=duration)
+        i = 0
+        while now < end:
+            now = datetime.datetime.now()
+            i += 1
+            print i
 
-    def iteration_stress_test(self, num_iterations):
-        pass
+    def iterations_stress_test(self, num_iterations):
+        for i in range(num_iterations):
+            print i
 
     def printer(self, force=False):
         if force or self.args.printer or (not self.args.number and not self.args.duration):
