@@ -67,9 +67,9 @@ def printer(args, file_path=None, url_hash=None):
             # make .urls file name
             filter = ""
             file_name = args.filename if args.filename else name
-            if args.test_suite:
-                filter = "-{}".format(filter)
-            file_name = "{}{}.urls".format(name, filter)
+            if args.test_suite and len(args.test_suite) > 0:
+                filter = "-{}".format(args.test_suite)
+            file_name = "{}{}.urls".format(file_name, filter)
 
             if file_path:
                 file_name = os.path.join(file_path, file_name)
