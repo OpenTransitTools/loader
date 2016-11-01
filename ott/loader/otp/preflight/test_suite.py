@@ -49,6 +49,8 @@ class Test(object):
               'Description/notes'
             }
         """
+        self.is_valid = True
+
         self.config = ConfigUtil(section='otp')
 
         self.ws_url          = ws_url
@@ -166,10 +168,11 @@ class Test(object):
         """
         """
         self.otp_params = 'fromPlace={0}&toPlace={1}'.format(self.coord_from, self.coord_to)
+
         self.map_params = self.otp_params
         if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
-            if self.coord_from != None or self.coord_to != None:
-                self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:{} to:{}".format(self.coord_from, self.coord_to)
+            self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:{} to:{}".format(self.coord_from, self.coord_to)
+            if self.expect_output:
                 log.warn(self.error_descript)
             self.is_valid = False
 
@@ -352,6 +355,9 @@ class TestSuite(object):
         log.info("test_suite {0}: ******* date - {1} *******\n".format(self.name, datetime.datetime.now()))
         for i, p in enumerate(self.params):
             t = Test(p, i+2, ws_url, map_url, date)
+            if t.is_valid is False:
+                continue
+
             t.depart_by_check()
             ret_val.append(t.get_ws_url())
             if run_test:
