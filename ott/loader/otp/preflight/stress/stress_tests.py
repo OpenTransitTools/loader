@@ -1,7 +1,6 @@
 """ Run
 """
-import sys
-import time
+import os
 import datetime
 import logging
 log = logging.getLogger(__file__)
@@ -22,7 +21,7 @@ class StressTests(CacheBase):
         parser.add_argument('--threads',     '-t',  default=10, help="number of threads")
         parser.add_argument('--number',      '-n',  type=int, help="number of iterations")
         parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
-        parser.add_argument('--file_prefix', '-fp', default="stress-", help="stress file prefix, ala : stress-1.txt")
+        parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
         args = parser.parse_args()
 
         self.args = args
@@ -32,6 +31,14 @@ class StressTests(CacheBase):
         elif args.duration:
             self.duration_stress_test(args.duration)
 
+    def make_response_file_path(self, iteration_id, thread_id=1):
+        '''return a path to a the response file
+        '''
+        now = datetime.datetime.now()
+        file_name = "{}-{:%m%d%y_%H%M}-{}_{}.txt".format(self.args.file_prefix, now, thread_id, iteration_id)
+        file_path = os.path.join(self.tmp_dir, file_name)
+        return file_path
+
     def duration_stress_test(self, duration=5):
         now = datetime.datetime.now()
         end = now + datetime.timedelta(seconds=duration)
@@ -39,11 +46,12 @@ class StressTests(CacheBase):
         while now < end:
             now = datetime.datetime.now()
             i += 1
-            print "{}{}-{}".format(self.args.file_prefix, i, now)
+            print self.make_response_file_path(i)
+
 
     def iterations_stress_test(self, num_iterations):
         for i in range(num_iterations):
-            print i
+            print self.make_response_file_path(i)
 
     def printer(self, force=False):
         if force or self.args.printer or (not self.args.number and not self.args.duration):
