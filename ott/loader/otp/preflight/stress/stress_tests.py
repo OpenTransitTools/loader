@@ -10,6 +10,22 @@ from ott.utils.cache_base import CacheBase
 from .. import tests_to_urls
 
 
+def write_url_response_file(file_path, url, response):
+    ''' write url atop a file, and the response body below...
+    '''
+    f = None
+    try:
+        f = open(file_path, 'w')
+        f.write(url)
+        f.write("\n\n")
+        f.write(response)
+        f.write("\n")
+    except Exception, e:
+        log.warn(e)
+    finally:
+        if f is not None:
+            f.close()
+
 class StressTests(CacheBase):
     """ stress test OTP
     """
@@ -35,7 +51,7 @@ class StressTests(CacheBase):
     def launch_stress_tests(self, iteration_id, thread_id):
         for i, u in enumerate(self.url_list):
             out_file = self.make_response_file_path(thread_id=thread_id, iteration_id=iteration_id, test_number=i)
-            print out_file
+            write_url_response_file(out_file, u, u)
 
     def launch_threads_of_stress_tests(self, iteration_id):
         for i in range(self.args.threads):
