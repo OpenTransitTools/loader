@@ -46,14 +46,16 @@ class StressTests(CacheBase):
         while now < end:
             now = datetime.datetime.now()
             i += 1
-            #for u enumerate(self.url_hash):
-            out_file = self.make_response_file_path(iteration_id=i, test_number=1)
-            print out_file
+            for j, u in enumerate(self.url_list):
+                out_file = self.make_response_file_path(iteration_id=i, test_number=j)
+                print out_file
 
     def iterations_stress_test(self, num_iterations):
         for i in range(num_iterations):
-            out_file = self.make_response_file_path(iteration_id=i, test_number=1)
-            print out_file
+            for j, u in enumerate(self.url_list):
+                out_file = self.make_response_file_path(iteration_id=i, test_number=j)
+                print out_file
+
 
     def printer(self):
         tests_to_urls.printer(self.args, self.this_module_dir, self.url_hash)
