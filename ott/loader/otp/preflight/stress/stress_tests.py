@@ -1,6 +1,7 @@
 """ Run
 """
 import os
+import threading
 import datetime
 import logging
 log = logging.getLogger(__file__)
@@ -31,6 +32,14 @@ class StressTests(CacheBase):
         elif args.duration:
             self.duration_stress_test(args.duration)
 
+    def launch_stress_tests(self, thread_id):
+        print thread_id
+
+    def launch_threads_of_stress_tests(self):
+        for i in range(self.args.threads):
+            t = threading.Thread(target=self.launch_stress_tests, args=(i+1,))
+            t.start()
+
     def make_response_file_path(self, iteration_id, test_number, thread_id=1):
         '''return a path to a the response file
         '''
@@ -52,10 +61,7 @@ class StressTests(CacheBase):
 
     def iterations_stress_test(self, num_iterations):
         for i in range(num_iterations):
-            for j, u in enumerate(self.url_list):
-                out_file = self.make_response_file_path(iteration_id=i, test_number=j)
-                print out_file
-
+            self.launch_threads_of_stress_tests()
 
     def printer(self):
         tests_to_urls.printer(self.args, self.this_module_dir, self.url_hash)
