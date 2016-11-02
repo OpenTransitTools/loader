@@ -18,7 +18,7 @@ class StressTests(CacheBase):
         super(StressTests, self).__init__('otp')
 
         parser = tests_to_urls.get_args_parser()
-        parser.add_argument('--threads',     '-t',  default=10, help="number of threads")
+        parser.add_argument('--threads',     '-t',  type=int, default=10, help="number of threads")
         parser.add_argument('--number',      '-n',  type=int, help="number of iterations")
         parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
@@ -32,12 +32,14 @@ class StressTests(CacheBase):
         elif args.duration:
             self.duration_stress_test(args.duration)
 
-    def launch_stress_tests(self, thread_id):
-        print thread_id
+    def launch_stress_tests(self, iteration_id, thread_id):
+        for i, u in enumerate(self.url_list):
+            out_file = self.make_response_file_path(thread_id=thread_id, iteration_id=iteration_id, test_number=i)
+            print out_file
 
-    def launch_threads_of_stress_tests(self):
+    def launch_threads_of_stress_tests(self, iteration_id):
         for i in range(self.args.threads):
-            t = threading.Thread(target=self.launch_stress_tests, args=(i+1,))
+            t = threading.Thread(target=self.launch_stress_tests, args=(iteration_id, i+1,))
             t.start()
 
     def make_response_file_path(self, iteration_id, test_number, thread_id=1):
@@ -55,13 +57,10 @@ class StressTests(CacheBase):
         while now < end:
             now = datetime.datetime.now()
             i += 1
-            for j, u in enumerate(self.url_list):
-                out_file = self.make_response_file_path(iteration_id=i, test_number=j)
-                print out_file
 
     def iterations_stress_test(self, num_iterations):
         for i in range(num_iterations):
-            self.launch_threads_of_stress_tests()
+            self.launch_threads_of_stress_tests(iteration_id=i)
 
     def printer(self):
         tests_to_urls.printer(self.args, self.this_module_dir, self.url_hash)
