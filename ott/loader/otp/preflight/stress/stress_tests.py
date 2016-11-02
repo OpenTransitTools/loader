@@ -7,24 +7,9 @@ import logging
 log = logging.getLogger(__file__)
 
 from ott.utils.cache_base import CacheBase
+from ott.utils import web_utils
 from .. import tests_to_urls
 
-
-def write_url_response_file(file_path, url, response):
-    ''' write url atop a file, and the response body below...
-    '''
-    f = None
-    try:
-        f = open(file_path, 'w')
-        f.write(url)
-        f.write("\n\n")
-        f.write(response)
-        f.write("\n")
-    except Exception, e:
-        log.warn(e)
-    finally:
-        if f is not None:
-            f.close()
 
 class StressTests(CacheBase):
     """ stress test OTP
@@ -51,7 +36,11 @@ class StressTests(CacheBase):
     def launch_stress_tests(self, iteration_id, thread_id):
         for i, u in enumerate(self.url_list):
             out_file = self.make_response_file_path(thread_id=thread_id, iteration_id=iteration_id, test_number=i)
-            write_url_response_file(out_file, u, u)
+            response = web_utils.get_response(u, show_info=True)
+            if response is None or len(response) < 1:
+                response = "RESPONSE WAS NONE!!!"
+            if "requestParameters" not in response or "plan" not in response or "itineraries" not in response:
+                web_utils.write_url_response_file(out_file, u, response)
 
     def launch_threads_of_stress_tests(self, iteration_id):
         for i in range(self.args.threads):
