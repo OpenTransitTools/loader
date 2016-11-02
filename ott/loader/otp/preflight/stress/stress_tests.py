@@ -12,7 +12,6 @@ from .. import tests_to_urls
 class StressTests(CacheBase):
     """ stress test OTP
     """
-    graphs = None
 
     def __init__(self):
         super(StressTests, self).__init__('otp')
@@ -26,16 +25,17 @@ class StressTests(CacheBase):
 
         self.args = args
         self.url_hash = tests_to_urls.run(args)
+        self.url_list = tests_to_urls.url_hash_to_list(self.url_hash)
         if args.number:
             self.iterations_stress_test(args.number)
         elif args.duration:
             self.duration_stress_test(args.duration)
 
-    def make_response_file_path(self, iteration_id, thread_id=1):
+    def make_response_file_path(self, iteration_id, test_number, thread_id=1):
         '''return a path to a the response file
         '''
         now = datetime.datetime.now()
-        file_name = "{}-{:%m%d%y_%H%M}-{}_{}.txt".format(self.args.file_prefix, now, thread_id, iteration_id)
+        file_name = "{}-{:%m%d%y_%H%M}_{}-{}-{}.txt".format(self.args.file_prefix, now, thread_id, iteration_id, test_number)
         file_path = os.path.join(self.tmp_dir, file_name)
         return file_path
 
@@ -46,22 +46,24 @@ class StressTests(CacheBase):
         while now < end:
             now = datetime.datetime.now()
             i += 1
-            print self.make_response_file_path(i)
-
+            #for u enumerate(self.url_hash):
+            out_file = self.make_response_file_path(iteration_id=i, test_number=1)
+            print out_file
 
     def iterations_stress_test(self, num_iterations):
         for i in range(num_iterations):
-            print self.make_response_file_path(i)
+            out_file = self.make_response_file_path(iteration_id=i, test_number=1)
+            print out_file
 
-    def printer(self, force=False):
-        if force or self.args.printer or (not self.args.number and not self.args.duration):
-            tests_to_urls.printer(self.args, self.this_module_dir, self.url_hash)
+    def printer(self):
+        tests_to_urls.printer(self.args, self.this_module_dir, self.url_hash)
 
     @classmethod
-    def run(cls):
+    def run(cls, force_print=False):
         success = True
         st = StressTests()
-        st.printer()
+        if force_print or st.args.printer or (not st.args.number and not st.args.duration):
+            st.printer()
         return success
 
 

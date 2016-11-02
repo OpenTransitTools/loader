@@ -17,6 +17,13 @@ def to_urls(hostname, port, filter, ws_path):
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
     return lts.to_url_list()
 
+def url_hash_to_list(url_hash):
+    ret_val = []
+    for key in url_hash:
+        url_list = url_hash[key]
+        ret_val.extend(url_list)
+    return ret_val
+
 def run(args):
     ''' returns a hash table of lists of url strings used in the test suites, ala
         {
