@@ -62,8 +62,13 @@ class StressTests(CacheBase):
         # step 4: print out some stats
         self.end_time = datetime.datetime.now()
         if self.num_tests > 0:
-            t = self.end_time - self.start_time
-            print "TESTS: {}\nFAILURES : {}\nSECONDS: {}".format(self.num_tests, self.num_failures, t.seconds)
+            succeses = self.num_tests - self.num_failures
+            if succeses > 0:
+                t = self.end_time - self.start_time
+                tps = float(succeses) / float(t.seconds)
+                print "TESTS: {}\nFAILURES : {}\nSECONDS: {}\nSUCCESSFUL TESTS PER SECOND: {}\n".format(self.num_tests, self.num_failures, t.seconds, tps)
+            else:
+                print "TESTS: {}\nFAILURES : {}\nSECONDS: {}:".format(self.num_tests, self.num_failures, t.seconds)
 
     def duration_stress_test(self, duration=5, thread_id=1):
         ''' duration stress will run for a given amount of time
