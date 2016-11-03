@@ -23,6 +23,7 @@ class StressTests(CacheBase):
         parser.add_argument('--threads',     '-t',  type=int, default=10, help="number of threads")
         parser.add_argument('--number',      '-n',  type=int, help="number of iterations")
         parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
+        parser.add_argument('--search',      '-s',  default="", help="find this string in all stress test reponses")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
         args = parser.parse_args()
 
