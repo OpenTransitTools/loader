@@ -1,6 +1,7 @@
 """ Run
 """
 import os
+import re
 import threading
 import datetime
 from time import sleep
@@ -23,7 +24,7 @@ class StressTests(CacheBase):
         parser.add_argument('--threads',     '-t',  type=int, default=10, help="number of threads")
         parser.add_argument('--number',      '-n',  type=int, help="number of iterations")
         parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
-        parser.add_argument('--search',      '-s',  default="", help="find this string in all stress test reponses")
+        parser.add_argument('--search',      '-s',  default="requestParameters.*plan.*itineraries", help="find this string in all stress test reponses")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
         args = parser.parse_args()
 
@@ -64,12 +65,14 @@ class StressTests(CacheBase):
         self.end_time = datetime.datetime.now()
         if self.num_tests > 0:
             succeses = self.num_tests - self.num_failures
-            if succeses > 0:
-                t = self.end_time - self.start_time
+            t = self.end_time - self.start_time
+            result_str = "SEARCH: {}\nTESTS: {}\nFAILURES : {}\nSECONDS: {}"
+            if succeses > 0 and t:
                 tps = float(succeses) / float(t.seconds)
-                print "TESTS: {}\nFAILURES : {}\nSECONDS: {}\nSUCCESSFUL TESTS PER SECOND: {}\n".format(self.num_tests, self.num_failures, t.seconds, tps)
+                result_str += "\nSUCCESSFUL TESTS PER SECOND: {}\n"
+                print result_str.format(self.args.search, self.num_tests, self.num_failures, t.seconds, tps)
             else:
-                print "TESTS: {}\nFAILURES : {}\nSECONDS: {}:".format(self.num_tests, self.num_failures, t.seconds)
+                print result_str.format(self.args.search, self.num_tests, self.num_failures, t.seconds)
 
     def duration_stress_test(self, duration=5, thread_id=1):
         ''' duration stress will run for a given amount of time
@@ -97,7 +100,7 @@ class StressTests(CacheBase):
             self.num_tests += 1
             if response is None or len(response) < 1:
                 response = "RESPONSE WAS NONE!!!"
-            if "requestParametersplan" not in response or "itineraries" not in response:
+            if re.search(self.args.search, response) is None:
                 self.num_failures += 1
                 out_file = self.make_response_file_path(thread_id=thread_id, iteration_id=iteration_id, test_number=i)
                 web_utils.write_url_response_file(out_file, u, response)
