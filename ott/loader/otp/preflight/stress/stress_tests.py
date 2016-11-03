@@ -97,7 +97,7 @@ class StressTests(CacheBase):
             self.num_tests += 1
             if response is None or len(response) < 1:
                 response = "RESPONSE WAS NONE!!!"
-            if "requestParameters" not in response or "plan" not in response or "itineraries" not in response:
+            if "requestParametersplan" not in response or "itineraries" not in response:
                 self.num_failures += 1
                 out_file = self.make_response_file_path(thread_id=thread_id, iteration_id=iteration_id, test_number=i)
                 web_utils.write_url_response_file(out_file, u, response)
