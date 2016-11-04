@@ -15,6 +15,8 @@ test the ride service and ride html rendering:
 
 http://dev.trimet.org/#planner/results/from=pdx&to=zoo
 
+http://maps8/ride/ws/planner_form.html
+
 * bin/otp_stress_test -ts regres -s plan.*itineraries -n 1 -t 1 -hn maps8 -ws /ride_ws/plan_trip none # test
 * bin/otp_stress_test -ts regres -s BLAHBLAH.*BLAHBLH -n 1 -t 1 -hn maps8 -ws /ride/ws/planner.html none # test
 * bin/otp_stress_test -ts regres -s BLAHBLAH.*BLAHBLH -n 1 -t 1 -hn dev   -ws /#planner/results/ none # test
