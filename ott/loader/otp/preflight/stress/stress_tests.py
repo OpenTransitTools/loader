@@ -27,16 +27,25 @@ class StressTests(CacheBase):
         parser.add_argument('--search',      '-s',  default="requestParameters.*plan.*itineraries", help="find this string in all stress test reponses")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
         parser.add_argument('--no_place',    '-np', help="use from and to URL params rather than fromPlace & toPlace", action='store_true')
+        parser.add_argument('--strip',       '-st', help="remove strings from a url, ala '?submit&module=planner&'")
+
         args = parser.parse_args()
 
         self.args = args
         self.url_hash = tests_to_urls.run(args)
         self.url_list = tests_to_urls.url_hash_to_list(self.url_hash)
 
-        if args.no_place:
+        # fix up the service urls by either removing strings or renaming parameters (fromPlace / toPlace)
+        if args.no_place or args.strip:
             fix_url = []
             for u in self.url_list:
-                fix_url.append(u.replace('Place=', '='))
+                new_url = u
+                if args.no_place:
+                    new_url = new_url.replace('Place=', '=')
+                if args.strip:
+                    new_url = new_url.replace(args.strip, '')
+                fix_url.append(new_url)
+
             self.url_list = fix_url
 
         if args.number or args.duration:

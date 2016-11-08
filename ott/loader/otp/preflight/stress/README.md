@@ -19,4 +19,8 @@ http://maps8/ride/ws/planner_form.html
 
 * bin/otp_stress_test -ts regres -s plan.*itineraries -n 1 -t 1 -hn maps8 -ws /ride_ws/plan_trip none # test ride_ws
 * bin/otp_stress_test -ts regres -s itinerary.*step-number.*directions -np -n 1 -t 1 -hn maps8 -ws /ride/ws/planner.html none # test view html page 
-* bin/otp_stress_test -ts regres -s BLAHBLAH.*BLAHBLH -n 1 -t 1 -hn dev   -ws /#planner/results/ none # test
+
+
+## generate a file of urls for trimet.org
+* bin/otp_stress_test -ts regres -np -strip ?submit\&module=planner\& -hn dev -ws /#planner/results/ none 
+
