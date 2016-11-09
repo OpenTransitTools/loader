@@ -5,7 +5,7 @@ from test_suite import ListTestSuites
 
 
 def get_args_parser():
- za   parser = otp_utils.get_initial_arg_parser()
+    parser = otp_utils.get_initial_arg_parser()
     parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
     parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     parser.add_argument('--printer',  '-p',  help="print to stdout rather than a file", action='store_true')
@@ -15,7 +15,7 @@ def get_args_parser():
     return parser
 
 def to_urls(args, port):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=args.hostname, port=port, ws_path=args.ws_path)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=args.test_suite)
     urls = lts.to_url_list()
