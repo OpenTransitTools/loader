@@ -28,7 +28,12 @@ def to_urls(args, port):
         for u in urls:
             new_url = u
             if args.no_place:
-                new_url = new_url.replace('Place=', '=')
+                # TODO: make this work for other lat beyond 45-parallel
+                new_url = new_url\
+                    .replace('fromPlace=45.', 'from=FROM::45.') \
+                    .replace('toPlace=45.', 'to=TO::45.') \
+                    .replace('Place=', '=')
+
             if args.strip:
                 new_url = new_url.replace(args.strip, '')
             fixed_urls.append(new_url)
