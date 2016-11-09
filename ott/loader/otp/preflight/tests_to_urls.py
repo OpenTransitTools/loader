@@ -132,16 +132,15 @@ def selenium(args, file_name, url_list):
 </thead><tbody>
 <tr>
     <td>setTimeout</td>
-    <td>2200</td>
+    <td>1500</td>
     <td></td>
 </tr>
 '''
     html_open = '''
-<tr>
-<td>open</td>
-<td>{}</td>
-<td></td>
-</tr>
+<tr><td>open</td><td>{}</td><td></td></tr>
+'''
+    html_error_check = '''<tr><td>verifyNotText</td><td>css=div.container &gt; h1</td><td>Error</td></tr>
+<tr><td>assertNotTitle</td><td>Exception</td><td></td></tr>
 '''
     html_footer = '''
 </tbody></table>
@@ -155,6 +154,7 @@ def selenium(args, file_name, url_list):
         for u in url_list:
             h = html_open.format(u)
             f.write(h)
+            f.write(html_error_check)
         f.write(html_footer)
 
 

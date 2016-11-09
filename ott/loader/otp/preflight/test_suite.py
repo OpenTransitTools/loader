@@ -185,6 +185,7 @@ class Test(object):
 
     def url_distance(self, dist=None):
         self.url_param('maxWalkDistance', dist, self.distance)
+        self.url_param('Walk', dist, self.distance)
 
     def url_mode(self, mode=None):
         self.url_param('mode', mode, self.mode)
