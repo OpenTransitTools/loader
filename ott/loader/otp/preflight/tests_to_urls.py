@@ -6,13 +6,15 @@ from test_suite import ListTestSuites
 
 def get_args_parser():
     parser = otp_utils.get_initial_arg_parser()
-    parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
-    parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
-    parser.add_argument('--printer',  '-p',  help="print to stdout rather than a file", action='store_true')
-    parser.add_argument('--filename', '-f',  help="filename")
-    parser.add_argument('--no_place', '-np', help="use from and to URL params rather than fromPlace & toPlace", action='store_true')
-    parser.add_argument('--strip',    '-st', help="remove strings from a url, ala '?submit&module=planner&'")
+    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
+    parser.add_argument('--ws_path',  '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
+    parser.add_argument('--printer',  '-p',   help="print to stdout rather than a file", action='store_true')
+    parser.add_argument('--selenium', '-sel', help="output a selenium IDE file", action='store_true')
+    parser.add_argument('--filename', '-f',   help="filename")
+    parser.add_argument('--no_place', '-np',  help="use from and to URL params rather than fromPlace & toPlace", action='store_true')
+    parser.add_argument('--strip',    '-st',  help="remove strings from a url, ala '?submit&module=planner&'")
     return parser
+
 
 def to_urls(args, port):
     #import pdb; pdb.set_trace()
@@ -42,6 +44,7 @@ def url_hash_to_list(url_hash):
         ret_val.extend(url_list)
     return ret_val
 
+
 def run(args):
     ''' returns a hash table of lists of url strings used in the test suites, ala
         {
@@ -70,6 +73,21 @@ def run(args):
             print "couldn't find graph {}".format(args.name)
     return ret_val
 
+
+def make_filename(args, name, file_path=None, ext=".urls"):
+    ''' make .urls file name '''
+    filter = ""
+    file_name = args.filename if args.filename else name
+    if args.test_suite and len(args.test_suite) > 0:
+        filter = "-{}".format(args.test_suite)
+    file_name = "{}{}{}".format(file_name, filter, ext)
+
+    if file_path:
+        file_name = os.path.join(file_path, file_name)
+
+    return file_name
+
+
 def printer(args, file_path=None, url_hash=None):
     ''' loop thru a has of URL strings, and write those strings out to either a file or stdout
         @see url_hash format defined by the run() method above.
@@ -82,25 +100,62 @@ def printer(args, file_path=None, url_hash=None):
     for key in url_hash:
         name = key # key to the hash is the file name
         url_list = url_hash[key]
-        url_string = '\n'.join(url_list)
 
-        if args.printer:
-            print "\n======={}=======\n".format(name)
-            print url_string
+        if args.selenium:
+            file_name = make_filename(args, name, file_path, ".html")
+            selenium(args, file_name, url_list)
         else:
-            # make .urls file name
-            filter = ""
-            file_name = args.filename if args.filename else name
-            if args.test_suite and len(args.test_suite) > 0:
-                filter = "-{}".format(args.test_suite)
-            file_name = "{}{}.urls".format(file_name, filter)
+            url_string = '\n'.join(url_list)
+            if args.printer:
+                print "\n======={}=======\n".format(name)
+                print url_string
+            else:
+                # write urls to file
+                file_name = make_filename(args, name, file_path, ".urls")
+                with open(file_name, 'w') as f:
+                    f.write(url_string)
 
-            if file_path:
-                file_name = os.path.join(file_path, file_name)
 
-            # write urls to file
-            with open(file_name, 'w') as f:
-                f.write(url_string)
+def selenium(args, file_name, url_list):
+    html_header = '''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>{0}</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">{0}</td></tr>
+</thead><tbody>
+<tr>
+    <td>setTimeout</td>
+    <td>2200</td>
+    <td></td>
+</tr>
+'''
+    html_open = '''
+<tr>
+<td>open</td>
+<td>{}</td>
+<td></td>
+</tr>
+'''
+    html_footer = '''
+</tbody></table>
+</body>
+</html>
+'''
+    # write urls to file
+    with open(file_name, 'w') as f:
+        h = html_header.format(file_name)
+        f.write(h)
+        for u in url_list:
+            h = html_open.format(u)
+            f.write(h)
+        f.write(html_footer)
 
 
 def main():

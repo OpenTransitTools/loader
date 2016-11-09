@@ -26,8 +26,6 @@ class StressTests(CacheBase):
         parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
         parser.add_argument('--search',      '-s',  default="requestParameters.*plan.*itineraries", help="find this string in all stress test reponses")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
-        parser.add_argument('--selenium',    '-sl', help="generate a selenium test with the URLs", action='store_true')
-
         args = parser.parse_args()
 
         self.args = args
