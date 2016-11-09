@@ -5,17 +5,35 @@ from test_suite import ListTestSuites
 
 
 def get_args_parser():
-    parser = otp_utils.get_initial_arg_parser()
+ za   parser = otp_utils.get_initial_arg_parser()
     parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
     parser.add_argument('--ws_path',  '-ws', help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     parser.add_argument('--printer',  '-p',  help="print to stdout rather than a file", action='store_true')
     parser.add_argument('--filename', '-f',  help="filename")
+    parser.add_argument('--no_place', '-np', help="use from and to URL params rather than fromPlace & toPlace", action='store_true')
+    parser.add_argument('--strip',    '-st', help="remove strings from a url, ala '?submit&module=planner&'")
     return parser
 
-def to_urls(hostname, port, filter, ws_path):
-    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port, ws_path=ws_path)
-    lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=filter)
-    return lts.to_url_list()
+def to_urls(args, port):
+    import pdb; pdb.set_trace()
+    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=args.hostname, port=port, ws_path=args.ws_path)
+    lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=args.test_suite)
+    urls = lts.to_url_list()
+
+    # fix up the service urls by either removing strings or renaming parameters (fromPlace / toPlace)
+    if args.no_place or args.strip:
+        fixed_urls = []
+        for u in urls:
+            new_url = u
+            if args.no_place:
+                new_url = new_url.replace('Place=', '=')
+            if args.strip:
+                new_url = new_url.replace(args.strip, '')
+            fixed_urls.append(new_url)
+        urls = fixed_urls
+
+    return urls
+
 
 def url_hash_to_list(url_hash):
     ret_val = []
@@ -38,15 +56,15 @@ def run(args):
     graphs = otp_utils.get_graphs_from_config()
     if args.name == "all":
         for g in graphs:
-            urls = to_urls(args.hostname, g['port'], args.test_suite, args.ws_path)
+            urls = to_urls(args, g['port'])
             ret_val[g['name']] = urls
     elif args.name == "none" and args.hostname:
-        urls = to_urls(args.hostname, "80", args.test_suite, args.ws_path)
+        urls = to_urls(args, "80")
         ret_val[args.hostname] = urls
     else:
         g = otp_utils.find_graph(graphs, args.name)
         if g:
-            urls = to_urls(args.hostname, g['port'], args.test_suite, args.ws_path)
+            urls = to_urls(args, g['port'])
             ret_val[args.hostname] = urls
         else:
             print "couldn't find graph {}".format(args.name)
@@ -58,7 +76,6 @@ def printer(args, file_path=None, url_hash=None):
 
         NOTE: that args and hash keys go into naming output files
     '''
-    #import pdb; pdb.set_trace()
     if url_hash is None:
         url_hash = run(args)
 
