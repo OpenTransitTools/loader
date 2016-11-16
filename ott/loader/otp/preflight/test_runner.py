@@ -21,11 +21,11 @@ class TestRunner(object):
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, port=None, suite_dir=None, report_mako_path=None, date=None):
+    def __init__(self, hostname=None, port=None, suite_dir=None, report_mako_path=None, date=None, filter=None):
         """constructor builds the test runner
         """
         # step 1: build OTP ws and map urls from config
-        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(port=port)
+        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
 
         # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
@@ -36,7 +36,7 @@ class TestRunner(object):
 
         # step 3: create mako template, and list of test suites
         self.report_template = Template(filename=self.report_mako_path)
-        self.test_suites = ListTestSuites(ws_url=self.ws_url, map_url=self.map_url, suite_dir=suite_dir, date=date)
+        self.test_suites = ListTestSuites(ws_url=self.ws_url, map_url=self.map_url, suite_dir=suite_dir, date=date, filter=filter)
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a test pass/fail report with mako
@@ -85,7 +85,7 @@ class TestRunner(object):
             log.warn(e)
 
     @classmethod
-    def test_graph_factory(cls, graph_dir, suite_dir, port=None, delay=1):
+    def test_graph_factory(cls, graph_dir, suite_dir, hostname=None, port=None, delay=1, filter=None):
         ''' run graph tests against whatever server is running
         '''
         #import pdb; pdb.set_trace()
@@ -93,7 +93,7 @@ class TestRunner(object):
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(port=port, suite_dir=suite_dir)
+        t = TestRunner(hostname=hostname, port=port, suite_dir=suite_dir, filter=filter)
         t.test_suites.run()
         t.report(graph_dir)
         if t.test_suites.has_errors():
@@ -108,14 +108,18 @@ class TestRunner(object):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
+
+    parser = otp_utils.get_initial_arg_parser()
+    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
+    parser.add_argument('--debug',    '-d',   help="run DEBUG suites", action='store_true')
+    args = parser.parse_args()
+
     dir = None
-    if 'DEBUG' in argv:
+    if args.debug:
         #log.basicConfig(level=log.DEBUG)
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
-    parser = otp_utils.get_initial_arg_parser()
-
-    TestRunner.test_graph_factory(graph_dir=dir, suite_dir=dir)
+    TestRunner.test_graph_factory(graph_dir=dir, suite_dir=dir, hostname=args.hostname, filter=args.test_suite)
 
 if __name__ == '__main__':
     #test_email()
