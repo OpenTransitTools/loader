@@ -106,11 +106,6 @@ class TestRunner(object):
         return ret_val
 
 
-def email():
-    #import pdb; pdb.set_trace()
-    t = TestRunner()
-    t.send_email()
-
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     dir = None
@@ -118,9 +113,16 @@ def main(argv=sys.argv):
         #log.basicConfig(level=log.DEBUG)
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
+    parser = otp_utils.get_initial_arg_parser()
+
     TestRunner.test_graph_factory(graph_dir=dir, suite_dir=dir)
 
 if __name__ == '__main__':
-    #email()
+    #test_email()
     main()
+
+def test_email():
+    #import pdb; pdb.set_trace()
+    t = TestRunner()
+    t.send_email()
 
