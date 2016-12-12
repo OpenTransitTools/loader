@@ -122,7 +122,7 @@ def main(argv=sys.argv):
         #log.basicConfig(level=log.DEBUG)
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
-    TestRunner.test_graph_factory(graph_dir=dir, suite_dir=dir, hostname=args.hostname, filter=args.test_suite)
+    TestRunner.test_graph_factory(args, graph_dir=dir, suite_dir=dir)
 
 if __name__ == '__main__':
     #test_email()
