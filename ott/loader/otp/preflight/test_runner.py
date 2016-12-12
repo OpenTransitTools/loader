@@ -116,9 +116,7 @@ class TestRunner(object):
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
 
-    parser = otp_utils.get_initial_arg_parser()
-    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
-    parser.add_argument('--debug',    '-d',   help="run DEBUG suites", action='store_true')
+    parser = get_args_parser()
     args = parser.parse_args()
 
     dir = None
