@@ -28,11 +28,11 @@ class TestRunner(object):
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, hostname=None, port=None, suite_dir=None, report_mako_path=None, date=None, filter=None):
+    def __init__(self, hostname=None, port=None, ws_path=None, suite_dir=None, report_mako_path=None, date=None, filter=None):
         """constructor builds the test runner
         """
         # step 1: build OTP ws and map urls from config
-        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port)
+        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port, ws_path=ws_path)
 
         # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
@@ -92,15 +92,13 @@ class TestRunner(object):
             log.warn(e)
 
     @classmethod
-    def test_graph_factory(cls, graph_dir, suite_dir, hostname=None, port=None, delay=1, filter=None):
+    def test_graph_factory(cls, args, graph_dir, suite_dir, delay=1):
         ''' run graph tests against whatever server is running
         '''
-        #import pdb; pdb.set_trace()
-        #suite_dir = "/java/DEV/loader/ott/loader/otp/tests/suites"
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(hostname=hostname, port=port, suite_dir=suite_dir, filter=filter)
+        t = TestRunner(hostname=args.hostname, port=args.port, ws_path=args.ws_path, suite_dir=suite_dir, filter=args.test_suite)
         t.test_suites.run()
         t.report(graph_dir)
         if t.test_suites.has_errors():
