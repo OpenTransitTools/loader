@@ -2,13 +2,12 @@ import os
 
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
+from test_runner import get_args_parser
 
 
-def get_args_parser():
-    parser = otp_utils.get_initial_arg_parser()
-    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
-    parser.add_argument('--ws_path',  '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
-    parser.add_argument('--printer',  '-p',   help="print to stdout rather than a file", action='store_true')
+def url_args_parser():
+    parser = get_args_parser()
+    parser.add_argument('--printer',  '-pt',  help="print to stdout rather than a file", action='store_true')
     parser.add_argument('--selenium', '-sel', help="output a selenium IDE file", action='store_true')
     parser.add_argument('--filename', '-f',   help="filename")
     parser.add_argument('--no_place', '-np',  help="use from and to URL params rather than fromPlace & toPlace", action='store_true')
@@ -164,7 +163,7 @@ def selenium(args, file_name, url_list):
 
 
 def main():
-    parser = get_args_parser()
+    parser = url_args_parser()
     args = parser.parse_args()
     printer(args)
 

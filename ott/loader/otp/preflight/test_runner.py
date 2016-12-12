@@ -14,6 +14,13 @@ from ott.utils import otp_utils
 
 from ott.loader.otp.preflight.test_suite import ListTestSuites
 
+def get_args_parser():
+    parser = otp_utils.get_initial_arg_parser()
+    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
+    parser.add_argument('--port',     '-p',   help="port")
+    parser.add_argument('--ws_path',  '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
+    parser.add_argument('--debug',    '-d',   help="run DEBUG suites", action='store_true')
+    return parser
 
 class TestRunner(object):
     """ Run .csv tests from ./tests/ by constructing a
