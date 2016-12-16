@@ -18,7 +18,8 @@
         waitReluctance: 0.9,
         walkReluctance: 1.75,
         stairsReluctance: 1.65,
-        numItineraries: 3
+        numItineraries: 3,
+        disableAlertFiltering: true
     },
 
     updaters: [
