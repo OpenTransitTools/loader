@@ -8,6 +8,7 @@
     // Routing defaults are any public field or setter in the Java class
     // org.opentripplanner.routing.core.RoutingRequest
     // NOTE: updated Oct 2016 ... adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
+    //       updated Dec 2016 ... add disableAlertFiltering to show future alerts
     //
     routingDefaults: {
         maxHours: 6,
