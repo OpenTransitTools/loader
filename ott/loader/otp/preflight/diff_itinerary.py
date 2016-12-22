@@ -17,8 +17,8 @@ class DiffItinerary(object):
         self.date = date
 
     def call_otp(self, url, fname):
-        ''' calls the trip web service and saves the trip to a file fname
-        '''
+        """ calls the trip web service and saves the trip to a file fname
+        """
         try:
             # step 1: get itinerary from OTP
             start = time.time()
@@ -49,14 +49,14 @@ class DiffItinerary(object):
             pass
 
     def remove_variable_stuff(self, xml):
-        ''' remove things that are variable and change between web calls (like a timestamp, etc...)
-        '''
+        """ remove things that are variable and change between web calls (like a timestamp, etc...)
+        """
         xml = re.sub(r'<date.*date>', '', xml)
         return xml
 
     def add_newlines(self, xml):
-        ''' remove things that are variable and change between web calls (like a timestamp, etc...)
-        '''
+        """ remove things that are variable and change between web calls (like a timestamp, etc...)
+        """
         xml = re.sub(r'>', '>\n', xml)
         return xml
 

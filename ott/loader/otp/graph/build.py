@@ -47,9 +47,9 @@ class Build(CacheBase):
         self.graphs = self.config_graph_dirs(force_update, dont_update)
 
     def config_graph_dirs(self, force_update=False, dont_update=False):
-        ''' read the config for graph specs like graph dir and web port (for running OTP)
+        """ read the config for graph specs like graph dir and web port (for running OTP)
             this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
-        '''
+        """
         graphs = otp_utils.get_graphs(self)
 
         # check for config list of graphs ... create a default if nothing exists
@@ -66,8 +66,8 @@ class Build(CacheBase):
         return graphs
 
     def build_and_test_graphs(self, java_mem=None, force_update=False):
-        ''' will build and test each of the graphs we have in self.graphs
-        '''
+        """ will build and test each of the graphs we have in self.graphs
+        """
         #import pdb; pdb.set_trace()
         ret_val = True
         for g in self.graphs:
@@ -81,8 +81,8 @@ class Build(CacheBase):
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True):
-        ''' will test each of the graphs we have in self.graphs
-        '''
+        """ will test each of the graphs we have in self.graphs
+        """
         ret_val = True
         for g in self.graphs:
             success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
@@ -93,8 +93,8 @@ class Build(CacheBase):
         return ret_val
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
-        ''' will rebuild the graph...
-        '''
+        """ will rebuild the graph...
+        """
         success = True
 
         # step 1: set some params
@@ -126,8 +126,8 @@ class Build(CacheBase):
         return success, rebuild_graph
 
     def test_graph(self, graph, suite_dir=None, java_mem=None, start_server=True):
-        ''' will test a given graph against a suite of tests
-        '''
+        """ will test a given graph against a suite of tests
+        """
         #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
         success = True
         delay = 1
@@ -153,8 +153,8 @@ class Build(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' make the cli argparse for OTP graph building and testing
-        '''
+        """ make the cli argparse for OTP graph building and testing
+        """
         parser = otp_utils.get_initial_arg_parser()
         parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
