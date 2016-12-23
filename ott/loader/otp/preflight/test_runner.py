@@ -78,6 +78,7 @@ class TestRunner(object):
     def send_email(self):
         """ send email
         """
+        msg = None
         try:
             t = time.strftime('%B %d, %Y (%A) %I:%M%p').lower().replace(" 0", " ")
             m = ""
@@ -85,11 +86,15 @@ class TestRunner(object):
             if self.test_suites.has_errors():
                 p = "FAILED"
                 m = self.test_suites.list_errors()
-            msg = "OTP tests {} on {}\n{}\n".format(p, t, m)
+            msg = "OTP tests {} on {}\n{}\nOTP endpoint: {}".format(p, t, m, self.test_suites.ws_url)
             recipients = ConfigUtil(section='contact').get('emails')
             web_utils.simple_email(msg, recipients)
         except Exception, e:
             log.warn(e)
+        finally:
+            if msg:
+                log.info(msg)
+
 
     @classmethod
     def test_graph_factory(cls, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
