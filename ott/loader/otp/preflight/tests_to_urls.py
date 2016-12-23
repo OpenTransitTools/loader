@@ -50,14 +50,14 @@ def url_hash_to_list(url_hash):
 
 
 def run(args):
-    ''' returns a hash table of lists of url strings used in the test suites, ala
+    """ returns a hash table of lists of url strings used in the test suites, ala
         {
           'blah' : ['http://...', 'http://...', ...],
           'glaa' : ['http://...', 'http://...', ...]
         }
 
         The 'name' for each hash is either the graph name
-    '''
+    """
     ret_val = {}
 
     graphs = otp_utils.get_graphs_from_config()
@@ -79,7 +79,7 @@ def run(args):
 
 
 def make_filename(args, name, file_path=None, ext=".urls"):
-    ''' make .urls file name '''
+    """ make .urls file name """
     filter = ""
     file_name = args.filename if args.filename else name
     if args.test_suite and len(args.test_suite) > 0:
@@ -93,11 +93,11 @@ def make_filename(args, name, file_path=None, ext=".urls"):
 
 
 def printer(args, file_path=None, url_hash=None):
-    ''' loop thru a has of URL strings, and write those strings out to either a file or stdout
+    """ loop thru a has of URL strings, and write those strings out to either a file or stdout
         @see url_hash format defined by the run() method above.
 
         NOTE: that args and hash keys go into naming output files
-    '''
+    """
     if url_hash is None:
         url_hash = run(args)
 
@@ -121,7 +121,7 @@ def printer(args, file_path=None, url_hash=None):
 
 
 def selenium(args, file_name, url_list):
-    html_header = '''<?xml version="1.0" encoding="UTF-8"?>
+    html_header = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
@@ -139,18 +139,18 @@ def selenium(args, file_name, url_list):
     <td>1500</td>
     <td></td>
 </tr>
-'''
-    html_open = '''
+"""
+    html_open = """
 <tr><td>open</td><td>{}</td><td></td></tr>
-'''
-    html_error_check = '''<tr><td>verifyNotText</td><td>css=div.container &gt; h1</td><td>Error</td></tr>
+"""
+    html_error_check = """<tr><td>verifyNotText</td><td>css=div.container &gt; h1</td><td>Error</td></tr>
 <tr><td>assertNotTitle</td><td>Exception</td><td></td></tr>
-'''
-    html_footer = '''
+"""
+    html_footer = """
 </tbody></table>
 </body>
 </html>
-'''
+"""
     # write urls to file
     with open(file_name, 'w') as f:
         h = html_header.format(file_name)

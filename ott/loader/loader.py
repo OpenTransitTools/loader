@@ -35,7 +35,7 @@ def load_data():
 
 
 def load_all():
-    ''' will load OTP and gtfsdb
+    """ will load OTP and gtfsdb
 
           3a. load gtfsdb
           3b. export gtfsdb to production
@@ -45,7 +45,7 @@ def load_all():
           4c. deploy graphs that pass tests to production servers
 
           5. load SOLR with cached datad
-    '''
+    """
     force_update=object_utils.is_force_update()
 
     load_data()
@@ -63,13 +63,13 @@ def load_all():
 
 
 def deploy_all():
-    ''' load (production) new database extracts and deploy new otp graphs
+    """ load (production) new database extracts and deploy new otp graphs
 
         does the following:
           1. will load any postgres exports into local (production) db
           2. enable new OTP graph
 
-    '''
+    """
     print "@TODO @TODO @TODO @TODO @TODO"
 
 

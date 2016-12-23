@@ -267,8 +267,8 @@ class Test(object):
             self.is_valid = False
 
     def call_otp(self, url=None):
-        ''' calls the trip web service
-        '''
+        """ calls the trip web service
+        """
         self.itinerary = None
         start = time.time()
         url = url if url else self.get_ws_url()

@@ -21,12 +21,12 @@ class Run(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' run the OTP server
+        """ run the OTP server
 
             examples:
                bin/otp_run -s call (run the call server)
                bin/otp_run -v test (run the vizualizer with the test graph)
-        '''
+        """
         parser = otp_utils.get_initial_arg_parser()
         parser.add_argument('--server', '-s',  required=False, action='store_true', help="run 'named' graph in server mode")
         parser.add_argument('--all',    '-a',  required=False, action='store_true', help="run all graphs in server mode")
@@ -71,13 +71,13 @@ class Run(CacheBase):
 
     @classmethod
     def static_server(cls):
-
-        ''' start a static server where
-        '''
+        """ start a static server where
+        """
         success = False
         port, dir = Run.static_server_cfg()
         success = web_utils.background_web_server(dir, port)
         return success
+
 
 def main(argv=sys.argv):
     Run.run()

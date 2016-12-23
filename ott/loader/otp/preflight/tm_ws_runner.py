@@ -29,8 +29,8 @@ class WsTest(Test):
 
     @classmethod
     def to_coord(cls, param):
-        ''' return cleaned param
-        '''
+        """ return cleaned param
+        """
         ret_val = param
         p = param.split('::')
         if p and len(p) > 0:
@@ -41,8 +41,8 @@ class WsTest(Test):
 
     @classmethod
     def coord_or_name(cls, param, coord="Coord", place="Place"):
-        ''' return either 'Coord' or 'Place' based on whether string looks like a coord or name
-        '''
+        """ return either 'Coord' or 'Place' based on whether string looks like a coord or name
+        """
         ret_val = place
         try:
             p = param.split(',')

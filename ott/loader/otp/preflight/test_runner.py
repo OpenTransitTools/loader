@@ -98,9 +98,9 @@ class TestRunner(object):
 
     @classmethod
     def test_graph_factory(cls, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
-        ''' run graph tests against whatever server is running
+        """ run graph tests against whatever server is running
             @see build.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
-        '''
+        """
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
