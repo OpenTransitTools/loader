@@ -28,7 +28,7 @@ class TestRunner(object):
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, hostname=None, port=None, ws_path=None, suite_dir=None, report_mako_path=None, date=None, filter=None):
+    def __init__(self, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
         # step 1: build OTP ws and map urls from config
@@ -92,13 +92,14 @@ class TestRunner(object):
             log.warn(e)
 
     @classmethod
-    def test_graph_factory(cls, args, graph_dir, suite_dir, delay=1):
+    def test_graph_factory(cls, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
         ''' run graph tests against whatever server is running
+            TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
         '''
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(hostname=args.hostname, port=args.port, ws_path=args.ws_path, suite_dir=suite_dir, filter=args.test_suite)
+        t = TestRunner(hostname, port, ws_path, suite_dir, filter)
         t.test_suites.run()
         t.report(graph_dir)
         if t.test_suites.has_errors():
@@ -109,6 +110,9 @@ class TestRunner(object):
             log.info('GRAPH TESTS: Nope, no errors...')
             ret_val = True
         return ret_val
+
+    def test_graph_factory_args(cls, args, suite_dir, graph_dir):
+        return cls.test_graph_factory(args.hostname, args.port, args.ws_path, suite_dir, args.test_suite, graph_dir)
 
 
 def main(argv=sys.argv):
@@ -122,7 +126,7 @@ def main(argv=sys.argv):
         #log.basicConfig(level=log.DEBUG)
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
-    TestRunner.test_graph_factory(args, graph_dir=dir, suite_dir=dir)
+    TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
 if __name__ == '__main__':
     #test_email()

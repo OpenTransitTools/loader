@@ -11,3 +11,6 @@ grab new otp from build:
   1. ott/loader/otp/graph/call/install.sh 
   1. ott/loader/otp/graph/prod/install.sh
 
+
+run test suites:
+  1. bin/otp_preflight -hn maps8.trimet.org -p 80 -ws /prod -ts Otp

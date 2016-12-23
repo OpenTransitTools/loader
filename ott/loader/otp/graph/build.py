@@ -135,7 +135,7 @@ class Build(CacheBase):
             success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
             delay = 60
         if success:
-            success = TestRunner.test_graph_factory(graph_dir=graph['dir'], port=graph['port'], suite_dir=suite_dir, delay=delay)
+            success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
             if success:
                 self.update_vlog(graph=graph)
             else:
