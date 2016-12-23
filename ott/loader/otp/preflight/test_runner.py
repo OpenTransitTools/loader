@@ -111,6 +111,7 @@ class TestRunner(object):
             ret_val = True
         return ret_val
 
+    @classmethod
     def test_graph_factory_args(cls, args, suite_dir, graph_dir):
         return cls.test_graph_factory(args.hostname, args.port, args.ws_path, suite_dir, args.test_suite, graph_dir)
 
