@@ -94,7 +94,7 @@ class TestRunner(object):
     @classmethod
     def test_graph_factory(cls, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
         ''' run graph tests against whatever server is running
-            TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
+            @see build.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
         '''
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
@@ -117,14 +117,12 @@ class TestRunner(object):
 
 
 def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
-
     parser = get_args_parser()
     args = parser.parse_args()
 
     dir = None
     if args.debug:
-        #log.basicConfig(level=log.DEBUG)
+        # run the suites from the ../tests directory
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
     TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
@@ -133,7 +131,10 @@ if __name__ == '__main__':
     #test_email()
     main()
 
+
 def test_email():
+    """ this is a test routine for the email sender...
+    """
     #import pdb; pdb.set_trace()
     t = TestRunner()
     t.send_email()
