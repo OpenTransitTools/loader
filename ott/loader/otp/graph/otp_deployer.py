@@ -1,8 +1,3 @@
-import shutil
-import datetime
-import logging
-log = logging.getLogger(__file__)
-
 from ott.utils import web_utils
 from ott.utils import file_utils
 from ott.utils import otp_utils
@@ -10,6 +5,10 @@ from ott.utils import object_utils
 
 from .build import Build
 
+import shutil
+import datetime
+import logging
+log = logging.getLogger(__file__)
 
 # constants
 BUILD_SVR = "http://maps7.trimet.org/"
@@ -17,12 +16,12 @@ JAR_NAME = "graph-builder.jar"
 JAR_NAME = "otp.jar"
 
 
-class Deploy(Build):
+class OtpDeployer(Build):
     """ deploy OTP graphs source from the 'build' server (SVR)
     """
     force_update = False
     def __init__(self):
-        super(Deploy, self).__init__(dont_update=True)
+        super(OtpDeployer, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
 
     def update_new_otp(self):
@@ -95,9 +94,9 @@ class Deploy(Build):
         return ret_val
 
 def main():
-    log.info("\nRunning deploy.py on {0}\n".format(datetime.datetime.now()))
+    log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
     force_update = object_utils.is_force_update()
-    deploy = Deploy()
+    deploy = OtpDeployer()
     deploy.update_graphs(force_update)
 
 if __name__ == '__main__':
