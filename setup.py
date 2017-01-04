@@ -68,8 +68,8 @@ setup(
 
         gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
 
-        otp_build = ott.loader.otp.graph.build:main
-        otp_deploy = ott.loader.otp.graph.deploy:main
+        otp_build = ott.loader.otp.graph.otp_builder:main
+        otp_deploy = ott.loader.otp.graph.otp_deployer:main
         otp_run = ott.loader.otp.graph.run:Run.run
         otp_static_server = ott.loader.otp.graph.run:Run.static_server
         otp_preflight = ott.loader.otp.preflight.test_runner:main

@@ -2,7 +2,8 @@ from ott.utils import object_utils
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
-from ott.loader.otp.graph.build import Build
+from ott.loader.otp.graph.otp_deployer import OtpDeployer
+from ott.loader.otp.graph.otp_builder import OtpBuilder
 from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader
 from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
@@ -55,7 +56,7 @@ def load_all():
     db.check_db(force_update=force_update)
 
     log.info("step 5: load otp (build new graph)")
-    otp = Build(force_update=force_update)
+    otp = OtpBuilder(force_update=force_update)
     otp.build_and_test_graphs(force_update=force_update)
 
     log.info("step 6: load various data layers into SOLR")

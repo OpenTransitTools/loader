@@ -3,7 +3,7 @@ from ott.utils import file_utils
 from ott.utils import otp_utils
 from ott.utils import object_utils
 
-from .build import Build
+from .otp_builder import OtpBuilder
 
 import shutil
 import datetime
@@ -13,7 +13,7 @@ log = logging.getLogger(__file__)
 JAR_NAME = "otp.jar"
 
 
-class OtpDeployer(Build):
+class OtpDeployer(OtpBuilder):
     """ deploy OTP graphs source from the 'build' server (SVR)
     """
     force_update = False

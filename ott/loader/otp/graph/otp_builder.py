@@ -30,7 +30,7 @@ OSM_NAME   = "or-wa"
 TEST_HTML  = "otp_report.html"
 
 
-class Build(CacheBase):
+class OtpBuilder(CacheBase):
     """ build an OTP graph
     """
     feeds       = None
@@ -42,7 +42,7 @@ class Build(CacheBase):
     graph_failed = GRAPH_FAILD
 
     def __init__(self, force_update=False, dont_update=False):
-        super(Build, self).__init__('otp')
+        super(OtpBuilder, self).__init__('otp')
         self.feeds  = self.config.get_json('feeds', section='gtfs')
         self.graphs = self.config_graph_dirs(force_update, dont_update)
 
@@ -175,8 +175,8 @@ class Build(CacheBase):
         test_success = True
         server_success = True
 
-        args, parser = Build.get_args()
-        b = Build(force_update=args.force, dont_update=args.dont_update)
+        args, parser = OtpBuilder.get_args()
+        b = OtpBuilder(force_update=args.force, dont_update=args.dont_update)
         java_mem = "-Xmx1236m" if args.mem else None
 
         if args.mock:
@@ -212,7 +212,7 @@ class Build(CacheBase):
 
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
-    Build.build()
+    OtpBuilder.build()
 
 if __name__ == '__main__':
     main()
