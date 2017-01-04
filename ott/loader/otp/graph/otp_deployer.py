@@ -66,7 +66,7 @@ class OtpDeployer(OtpBuilder):
             tomcat_cmd="ant test"
         deploy_graph(tomcat_cmd)
 
-    def update_graphs(self, build_svr=BUILD_SVR, force_update=False):
+    def update_graphs(self, build_svr, force_update=False):
         """ update the graph,  and other
         """
         ret_val = True

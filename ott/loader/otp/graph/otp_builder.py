@@ -24,10 +24,10 @@ from ott.loader.otp.preflight.test_runner import TestRunner
 GRAPH_NAME = "Graph.obj"
 GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
 GRAPH_SIZE = 35000000
-OSM_SIZE   = 5000000
-OSM_NAME   = "or-wa"
+OSM_SIZE = 5000000
+OSM_NAME = "or-wa"
 
-TEST_HTML  = "otp_report.html"
+TEST_HTML = "otp_report.html"
 
 
 class OtpBuilder(CacheBase):
