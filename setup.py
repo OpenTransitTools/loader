@@ -70,8 +70,8 @@ setup(
 
         otp_build = ott.loader.otp.graph.otp_builder:main
         otp_deploy = ott.loader.otp.graph.otp_deployer:main
-        otp_run = ott.loader.otp.graph.run:Run.run
-        otp_static_server = ott.loader.otp.graph.run:Run.static_server
+        otp_run = ott.loader.otp.graph.otp_runner:OtpRunner.run
+        otp_static_server = ott.loader.otp.graph.otp_runner:OtpRunner.static_server
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_stress_test = ott.loader.otp.preflight.stress.stress_tests:main
         otp_test_urls = ott.loader.otp.preflight.tests_to_urls:main

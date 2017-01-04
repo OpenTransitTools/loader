@@ -10,13 +10,13 @@ from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 
 
-class Run(CacheBase):
+class OtpRunner(CacheBase):
     """ run OTP graph
     """
     graphs = None
 
     def __init__(self):
-        super(Run, self).__init__('otp')
+        super(OtpRunner, self).__init__('otp')
         self.graphs = otp_utils.get_graphs(self)
 
     @classmethod
@@ -40,7 +40,7 @@ class Run(CacheBase):
         #import pdb; pdb.set_trace()
         success = False
 
-        r = Run()
+        r = OtpRunner()
         args, parser = r.get_args()
 
         graph = otp_utils.find_graph(r.graphs, args.name)
@@ -64,7 +64,7 @@ class Run(CacheBase):
 
     @classmethod
     def static_server_cfg(cls):
-        r = Run()
+        r = OtpRunner()
         port = r.config.get('port', 'web', '50080')
         dir  = r.config.get('dir',  'web', 'ott/loader/otp/graph')
         return port, dir
@@ -74,13 +74,13 @@ class Run(CacheBase):
         """ start a static server where
         """
         success = False
-        port, dir = Run.static_server_cfg()
+        port, dir = OtpRunner.static_server_cfg()
         success = web_utils.background_web_server(dir, port)
         return success
 
 
 def main(argv=sys.argv):
-    Run.run()
+    OtpRunner.run()
 
 if __name__ == '__main__':
     main()
