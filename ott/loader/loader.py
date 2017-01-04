@@ -1,7 +1,3 @@
-import logging
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger(__file__)
-
 from ott.utils import object_utils
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
@@ -10,6 +6,10 @@ from ott.loader.otp.graph.build import Build
 from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader
 from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
+
+import logging
+# logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__file__)
 
 
 def load_data():
