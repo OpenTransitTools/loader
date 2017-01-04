@@ -10,9 +10,6 @@ import datetime
 import logging
 log = logging.getLogger(__file__)
 
-# constants
-BUILD_SVR = "http://maps7.trimet.org/"
-JAR_NAME = "graph-builder.jar"
 JAR_NAME = "otp.jar"
 
 
