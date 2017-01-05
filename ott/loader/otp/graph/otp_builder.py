@@ -43,7 +43,7 @@ class OtpBuilder(CacheBase):
 
     def __init__(self, force_update=False, dont_update=False):
         super(OtpBuilder, self).__init__('otp')
-        self.feeds  = self.config.get_json('feeds', section='gtfs')
+        self.feeds = self.config.get_json('feeds', section='gtfs')
         self.graphs = self.config_graph_dirs(force_update, dont_update)
 
     def config_graph_dirs(self, force_update=False, dont_update=False):
@@ -68,7 +68,6 @@ class OtpBuilder(CacheBase):
     def build_and_test_graphs(self, java_mem=None, force_update=False):
         """ will build and test each of the graphs we have in self.graphs
         """
-        #import pdb; pdb.set_trace()
         ret_val = True
         for g in self.graphs:
             success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)

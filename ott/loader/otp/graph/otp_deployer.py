@@ -90,11 +90,15 @@ class OtpDeployer(OtpBuilder):
 
         return ret_val
 
+    @classmethod
+    def deploy(cls):
+        log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
+        force_update = object_utils.is_force_update()
+        d = OtpDeployer()
+        d.update_graphs(force_update)
+
 def main():
-    log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
-    force_update = object_utils.is_force_update()
-    deploy = OtpDeployer()
-    deploy.update_graphs(force_update)
+    OtpDeployer.deploy()
 
 if __name__ == '__main__':
     main()
