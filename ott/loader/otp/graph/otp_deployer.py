@@ -49,20 +49,12 @@ class OtpDeployer(OtpBuilder):
         d = OtpDeployer()
         d.update_graphs()
 
-
     @classmethod
     def scp(cls):
-        log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
-        from paramiko import SSHClient
-        from scp import SCPClient
-
-        ssh = SSHClient()
-        ssh.load_system_host_keys()
-        ssh.connect('maps7', username='otp')
-
-        with SCPClient(ssh.get_transport()) as scp:
-            scp.put('setup.py')
-            scp.get('test.txt')
+        s,h = web_utils.scp_client('maps7', 'otp')
+        s.put('setup.py')
+        s.get('test.txt')
+        s.close()
 
 def main():
     OtpDeployer.deploy()
