@@ -51,6 +51,7 @@ class OtpDeployer(OtpBuilder):
 
     @classmethod
     def scp(cls):
+        self.feeds = self.config.get_json('feeds', section='gtfs')
         s,h = web_utils.scp_client('maps7', 'otp')
         s.put('setup.py')
         s.get('test.txt')
