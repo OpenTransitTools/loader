@@ -19,27 +19,15 @@ class OtpDeployer(OtpBuilder):
         super(OtpDeployer, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
 
-    def update_graphs(self):
+    def deploy_graphs(self):
         """ update the graph, and other
         """
         ret_val = True
-        for g in self.graphs:
-            do_update = object_utils.is_force_update()
 
-            # step 1: determine via the otp.v log if 'build' server has new otp.jar file
-            if do_update is False:
-                do_update = otp_utils.diff_vlog(build_svr, g['dir'])
-
-            # step 2: grab new graph and api
-            if do_update:
-                if self.is_old_otp(g):
-                    continue_update = self.update_new_otp()
-                else:
-                    continue_update = self.update_new_otp()
-
-                # step 3: deploy new binaries
-                if continue_update:
-                    pass
+        user = self.config.get_json('user', section='deploy')
+        servers = self.config.get_json('servers', section='deploy')
+        for f in servers:
+            print f, user
 
         return ret_val
 
@@ -47,11 +35,13 @@ class OtpDeployer(OtpBuilder):
     def deploy(cls):
         log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
         d = OtpDeployer()
-        d.update_graphs()
+        d.deploy_graphs()
 
     @classmethod
     def scp(cls):
-        self.feeds = self.config.get_json('feeds', section='gtfs')
+        cls.deploy()
+
+    def xscp(self):
         s,h = web_utils.scp_client('maps7', 'otp')
         s.put('setup.py')
         s.get('test.txt')
