@@ -77,7 +77,6 @@ setup(
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_stress_test = ott.loader.otp.preflight.stress.stress_tests:main
         otp_test_urls = ott.loader.otp.preflight.tests_to_urls:main
-        scp = ott.loader.otp.graph.otp_deployer:OtpDeployer.scp
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load
 

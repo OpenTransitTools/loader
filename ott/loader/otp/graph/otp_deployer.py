@@ -24,6 +24,11 @@ class OtpDeployer(OtpBuilder):
         """
         ret_val = True
 
+        def scp(self, svr, user):
+            s, h = web_utils.scp_client(svr, user)
+            s.put('setup.py')
+            s.close()
+
         user = self.config.get_json('user', section='deploy')
         servers = self.config.get_json('servers', section='deploy')
         for f in servers:
@@ -36,16 +41,6 @@ class OtpDeployer(OtpBuilder):
         log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
         d = OtpDeployer()
         d.deploy_graphs()
-
-    @classmethod
-    def scp(cls):
-        cls.deploy()
-
-    def xscp(self):
-        s,h = web_utils.scp_client('maps7', 'otp')
-        s.put('setup.py')
-        s.get('test.txt')
-        s.close()
 
 def main():
     OtpDeployer.deploy()

@@ -73,18 +73,19 @@ def deploy_all():
     """
     log.info("step 1: load any new gtfsdb snapshot")
     db = GtfsdbLoader()
-    db.deploy_db_snapshot()
+    #db.deploy_db_snapshot()
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()
-    osm.deploy_db_snapshot()
+    #osm.deploy_db_snapshot()
 
     log.info("step 3: deploy otp graph")
     otp = OtpDeployer()
-    otp.deploy_graphs()
+    otp.deploy()
+    #otp.deploy_graphs()
 
-    log.info("step 6: deploy SOLR updates")
-    solr_load = SolrLoader.load
+    log.info("step 4: deploy SOLR updates")
+    #solr_load = SolrLoader.load
 
 
 
