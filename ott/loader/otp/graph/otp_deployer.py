@@ -32,7 +32,9 @@ class OtpDeployer(OtpBuilder):
         user = self.config.get_json('user', section='deploy')
         servers = self.config.get_json('servers', section='deploy')
         for f in servers:
-            print f, user
+            for g in self.graphs:
+                dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+                print f, user, dir
 
         return ret_val
 
