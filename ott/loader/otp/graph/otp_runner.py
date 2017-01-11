@@ -36,6 +36,17 @@ class OtpRunner(CacheBase):
         return args, parser
 
     @classmethod
+    def start_server(cls, graph, java_mem=None):
+        status = False
+
+        dir = graph['dir']
+        otp_utils.deploy_new_otp_graph(dir)
+
+        print "running {}".format(graph)
+        #status = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+        return status
+
+    @classmethod
     def run(cls):
         #import pdb; pdb.set_trace()
         success = False
@@ -43,23 +54,22 @@ class OtpRunner(CacheBase):
         r = OtpRunner()
         args, parser = r.get_args()
 
-        graph = otp_utils.find_graph(r.graphs, args.name)
         java_mem = "-Xmx1236m" if args.mem else None
         if args.all or 'all' == args.name or 'a' == args.name:
             success = True
             for z in r.graphs:
-                print "running {}".format(z)
-                time.sleep(2)
-                s = otp_utils.run_otp_server(java_mem=java_mem, **z)
-                if s == False:
+                s = cls.start_server(graph=z, java_mem=java_mem)
+                if s is False:
                     success = False
-        elif args.server:
-            success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
-        elif args.viz:
-            success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
         else:
-            print "PLEASE select a option to either serve or vizualize graph {}".format(graph['name'])
-            parser.print_help()
+            graph = otp_utils.find_graph(r.graphs, args.name)
+            if args.server:
+                success = cls.start_server(graph=graph, java_mem=java_mem)
+            elif args.viz:
+                success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
+            else:
+                print "PLEASE select a option to either serve or vizualize graph {}".format(graph['name'])
+                parser.print_help()
         return success
 
     @classmethod
