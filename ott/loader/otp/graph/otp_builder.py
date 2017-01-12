@@ -33,8 +33,8 @@ TEST_HTML = "otp_report.html"
 class OtpBuilder(CacheBase):
     """ build an OTP graph
     """
-    feeds       = None
-    graphs      = None
+    feeds = None
+    graphs = None
     expire_days = 45
 
     graph_name = GRAPH_NAME
@@ -91,7 +91,12 @@ class OtpBuilder(CacheBase):
                     break
         return ret_val
 
-    def build_graph(self, graph_dir, java_mem=None, force_update=False):
+    def write_new(self, dir, graph_name:
+        """ will rebuild the graph...
+        """
+        new_graph = file_utils.make_new_path(dir, graph_name)
+
+    def build_graph(self, graph_dir, java_mem=None, force_update=False, deploy_graph=True):
         """ will rebuild the graph...
         """
         success = True
