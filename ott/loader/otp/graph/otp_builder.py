@@ -152,15 +152,19 @@ class OtpBuilder(CacheBase):
         otp_utils.append_vlog_file(dir_path, feed_msg)
 
     def package_new(self, graph):
-        """ copy
+        """ copy otp.v, otp.jar and Graph.obj to *-new paths
         """
-        graph_path = os.path.join(graph['dir'], self.graph_name)
+        graph_path = otp_utils.get_graph_path(dir_path=graph['dir'], graph_name=self.graph_name)
         new_graph_path = file_utils.make_new_path(graph_path)
         file_utils.cp(graph_path, new_graph_path)
 
         vlog_path = otp_utils.get_vlog_file_path(dir_path=graph['dir'])
         new_vlog_path = file_utils.make_new_path(vlog_path)
         file_utils.cp(vlog_path, new_vlog_path)
+
+        otp_path = otp_utils.get_otp_path(dir_path=graph['dir'])
+        new_otp_path = file_utils.make_new_path(otp_path)
+        file_utils.cp(otp_path, new_otp_path)
 
     @classmethod
     def get_args(cls):
