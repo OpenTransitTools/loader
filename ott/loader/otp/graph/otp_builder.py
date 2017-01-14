@@ -91,11 +91,6 @@ class OtpBuilder(CacheBase):
                     break
         return ret_val
 
-    def write_new(self, dir, graph_name:
-        """ will rebuild the graph...
-        """
-        new_graph = file_utils.make_new_path(dir, graph_name)
-
     def build_graph(self, graph_dir, java_mem=None, force_update=False, deploy_graph=True):
         """ will rebuild the graph...
         """
@@ -142,6 +137,7 @@ class OtpBuilder(CacheBase):
             success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
             if success:
                 self.update_vlog(graph=graph)
+                self.package_new(graph)
             else:
                 log.warn("graph {} didn't pass it's tests".format(graph['name']))
         else:
@@ -154,6 +150,13 @@ class OtpBuilder(CacheBase):
         dir = graph.get('dir', self.cache_dir)
         feed_msg = Info.get_cache_msgs(dir, self.feeds, graph.get('filter'))
         otp_utils.append_vlog_file(dir, feed_msg)
+
+    def package_new(self, graph):
+        """ will rebuild the graph...
+        """
+        new_graph = file_utils.make_new_path(dir=graph['dir'], self.graph_name)
+        print new_graph
+
 
     @classmethod
     def get_args(cls):
@@ -217,6 +220,11 @@ class OtpBuilder(CacheBase):
 def main(argv=sys.argv):
     #import pdb; pdb.set_trace()
     OtpBuilder.build()
+
+
+def main(argv=sys.argv):
+    o = OtpBuilder(dont_update=True)
+    o.package_new(o.graphs[0])
 
 if __name__ == '__main__':
     main()
