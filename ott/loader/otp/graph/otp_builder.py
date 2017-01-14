@@ -58,11 +58,11 @@ class OtpBuilder(CacheBase):
 
         # run thru the graphs and
         for g in graphs:
-            dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+            dir_path = otp_utils.config_graph_dir(g, self.this_module_dir)
             filter = g.get('filter')
             if force_update or not dont_update:
-                OsmCache.check_osm_file_against_cache(dir)
-                GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
+                OsmCache.check_osm_file_against_cache(dir_path)
+                GtfsCache.check_feeds_against_cache(self.feeds, dir_path, force_update, filter)
         return graphs
 
     def build_and_test_graphs(self, java_mem=None, force_update=False):
@@ -147,17 +147,17 @@ class OtpBuilder(CacheBase):
     def update_vlog(self, graph):
         """ print out gtfs feed(s) version numbers and dates to the otp.v log file
         """
-        dir = graph.get('dir', self.cache_dir)
-        feed_msg = Info.get_cache_msgs(dir, self.feeds, graph.get('filter'))
-        otp_utils.append_vlog_file(dir, feed_msg)
+        dir_path = graph.get('dir', self.cache_dir)
+        feed_msg = Info.get_cache_msgs(dir_path, self.feeds, graph.get('filter'))
+        otp_utils.append_vlog_file(dir_path, feed_msg)
 
     def package_new(self, graph):
         """ will rebuild the graph...
         """
-        new_graph = file_utils.make_new_path(dir=graph['dir'], file_name=self.graph_name)
+        new_graph = file_utils.make_new_path(dir_path=graph['dir'], file_name=self.graph_name)
 
-        vlog_path = otp_utils.get_vlog_file_path(dir)
-        new_vlog = file_utils.make_new_path(dir=vlog_path)
+        vlog_path = otp_utils.get_vlog_file_path(dir_path)
+        new_vlog = file_utils.make_new_path(dir_path=vlog_path)
         print new_graph, new_vlog
 
 
