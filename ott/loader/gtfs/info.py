@@ -261,7 +261,6 @@ class Info(CacheBase):
                 'id'         : id,
                 'start_date' : start_date,
                 'end_date'   : end_date
-
             }
             ret_val.append(i)
 

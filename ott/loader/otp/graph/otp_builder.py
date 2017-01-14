@@ -154,8 +154,11 @@ class OtpBuilder(CacheBase):
     def package_new(self, graph):
         """ will rebuild the graph...
         """
-        new_graph = file_utils.make_new_path(dir=graph['dir'], self.graph_name)
-        print new_graph
+        new_graph = file_utils.make_new_path(dir=graph['dir'], file_name=self.graph_name)
+
+        vlog_path = otp_utils.get_vlog_file_path(dir)
+        new_vlog = file_utils.make_new_path(dir=vlog_path)
+        print new_graph, new_vlog
 
 
     @classmethod
