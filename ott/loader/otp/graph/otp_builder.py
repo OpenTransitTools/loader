@@ -20,15 +20,6 @@ from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info  import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
 
-# constants
-GRAPH_NAME = "Graph.obj"
-GRAPH_FAILD = GRAPH_NAME + "-failed-tests"
-GRAPH_SIZE = 35000000
-OSM_SIZE = 5000000
-OSM_NAME = "or-wa"
-
-TEST_HTML = "otp_report.html"
-
 
 class OtpBuilder(CacheBase):
     """ build an OTP graph
@@ -37,9 +28,9 @@ class OtpBuilder(CacheBase):
     graphs = None
     expire_days = 45
 
-    graph_name = GRAPH_NAME
-    graph_size = GRAPH_SIZE
-    graph_failed = GRAPH_FAILD
+    graph_name = otp_utils.GRAPH_NAME
+    graph_size = 35000000
+    graph_failed = graph_name + "-failed-tests"
 
     def __init__(self, force_update=False, dont_update=False):
         super(OtpBuilder, self).__init__('otp')
@@ -91,7 +82,7 @@ class OtpBuilder(CacheBase):
                     break
         return ret_val
 
-    def build_graph(self, graph_dir, java_mem=None, force_update=False, deploy_graph=True):
+    def build_graph(self, graph_dir, java_mem=None, force_update=False):
         """ will rebuild the graph...
         """
         success = True
@@ -101,7 +92,7 @@ class OtpBuilder(CacheBase):
 
         # step 2: check graph file is fairly recent and properly sized
         graph_path = os.path.join(graph_dir, self.graph_name)
-        if not file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
+        if not file_utils.exists_and_sized(graph_path, self.graph_size):
             rebuild_graph = True
 
         # step 3: check the cache files
@@ -137,7 +128,7 @@ class OtpBuilder(CacheBase):
             success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
             if success:
                 self.update_vlog(graph=graph)
-                self.package_new(graph)
+                self.package_new(graph, graph_name=self.graph_name)
             else:
                 log.warn("graph {} didn't pass it's tests".format(graph['name']))
         else:
@@ -151,10 +142,11 @@ class OtpBuilder(CacheBase):
         feed_msg = Info.get_cache_msgs(dir_path, self.feeds, graph.get('filter'))
         otp_utils.append_vlog_file(dir_path, feed_msg)
 
-    def package_new(self, graph):
+    @classmethod
+    def package_new(cls, graph, graph_name=otp_utils.GRAPH_NAME):
         """ copy otp.v, otp.jar and Graph.obj to *-new paths
         """
-        graph_path = otp_utils.get_graph_path(dir_path=graph['dir'], graph_name=self.graph_name)
+        graph_path = otp_utils.get_graph_path(dir_path=graph['dir'], graph_name=graph_name)
         new_graph_path = file_utils.make_new_path(graph_path)
         file_utils.cp(graph_path, new_graph_path)
 
@@ -184,6 +176,7 @@ class OtpBuilder(CacheBase):
 
     @classmethod
     def build(cls):
+        """ effectively the main routine for building new graphs from the command line """
         success = False
 
         build_success = True

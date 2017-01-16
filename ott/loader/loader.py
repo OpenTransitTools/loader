@@ -88,9 +88,9 @@ def deploy_all():
     #solr_load = SolrLoader.load
 
 
-
-
-
+def package_new():
+    log.info("step 3: deploy otp graph")
+    otp = OtpDeployer()
 
 
 
