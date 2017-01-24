@@ -203,13 +203,9 @@ class OtpBuilder(CacheBase):
 
 
 def main(argv=sys.argv):
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     OtpBuilder.build()
 
-
-def main(argv=sys.argv):
-    o = OtpBuilder(dont_update=True)
-    otp_utils.package_new(dir=o.graphs[2]['dir'])
 
 if __name__ == '__main__':
     main()
