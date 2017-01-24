@@ -13,10 +13,6 @@ log = logging.getLogger(__file__)
 class OtpDeployer(OtpBuilder):
     """ deploy OTP graphs source from the 'build' server (SVR)
     """
-    log_name = "otp.v"
-    jar_name = "otp.jar"
-    graph_name = "Graph.obj"
-
     def __init__(self):
         super(OtpDeployer, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
@@ -32,9 +28,9 @@ class OtpDeployer(OtpBuilder):
             s.close()
 
         def scp(server, user, graph_dir):
-            log_v = os.path.join(graph_dir, self.log_name)
-            graph = os.path.join(graph_dir, self.graph_name)
-            jar = os.path.join(graph_dir, self.jar_name)
+            log_v = otp_utils.get_vlog_file_path(graph_dir)
+            graph = otp_utils.get_graph_path(graph_dir)
+            jar = otp_utils.get_otp_path(graph_dir)
 
             if file_utils.exists(log_v) and file_utils.is_min_sized(graph):
                 print server, user, graph, log_v
