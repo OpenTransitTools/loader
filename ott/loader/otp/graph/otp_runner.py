@@ -40,7 +40,7 @@ class OtpRunner(CacheBase):
         status = False
 
         dir = graph['dir']
-        otp_utils.deploy_new_otp_graph(dir)
+        otp_utils.mv_new_files_into_place(dir)
 
         print "running {}".format(graph)
         #status = otp_utils.run_otp_server(java_mem=java_mem, **graph)

@@ -17,7 +17,7 @@ from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
-from ott.loader.gtfs.info  import Info
+from ott.loader.gtfs.info import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
 
 
@@ -128,7 +128,7 @@ class OtpBuilder(CacheBase):
             success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
             if success:
                 self.update_vlog(graph=graph)
-                self.package_new(graph, graph_name=self.graph_name)
+                otp_utils.package_new(dir=graph['dir'], graph_name=self.graph_name)
             else:
                 log.warn("graph {} didn't pass it's tests".format(graph['name']))
         else:
@@ -141,22 +141,6 @@ class OtpBuilder(CacheBase):
         dir_path = graph.get('dir', self.cache_dir)
         feed_msg = Info.get_cache_msgs(dir_path, self.feeds, graph.get('filter'))
         otp_utils.append_vlog_file(dir_path, feed_msg)
-
-    @classmethod
-    def package_new(cls, graph, graph_name=otp_utils.GRAPH_NAME):
-        """ copy otp.v, otp.jar and Graph.obj to *-new paths
-        """
-        graph_path = otp_utils.get_graph_path(dir_path=graph['dir'], graph_name=graph_name)
-        new_graph_path = file_utils.make_new_path(graph_path)
-        file_utils.cp(graph_path, new_graph_path)
-
-        vlog_path = otp_utils.get_vlog_file_path(dir_path=graph['dir'])
-        new_vlog_path = file_utils.make_new_path(vlog_path)
-        file_utils.cp(vlog_path, new_vlog_path)
-
-        otp_path = otp_utils.get_otp_path(dir_path=graph['dir'])
-        new_otp_path = file_utils.make_new_path(otp_path)
-        file_utils.cp(otp_path, new_otp_path)
 
     @classmethod
     def get_args(cls):
@@ -225,7 +209,7 @@ def main(argv=sys.argv):
 
 def main(argv=sys.argv):
     o = OtpBuilder(dont_update=True)
-    o.package_new(o.graphs[0])
+    otp_utils.package_new(dir=o.graphs[2]['dir'])
 
 if __name__ == '__main__':
     main()
