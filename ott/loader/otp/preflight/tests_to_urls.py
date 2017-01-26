@@ -2,10 +2,10 @@ import os
 
 from ott.utils import otp_utils
 from test_suite import ListTestSuites
-from test_runner import get_args_parser
 
 
 def url_args_parser():
+    from test_runner import get_args_parser
     parser = get_args_parser()
     parser.add_argument('--printer',  '-pt',  help="print to stdout rather than a file", action='store_true')
     parser.add_argument('--selenium', '-sel', help="output a selenium IDE file", action='store_true')
@@ -16,7 +16,7 @@ def url_args_parser():
 
 
 def to_urls(args, port):
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=args.hostname, port=port, ws_path=args.ws_path)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=args.test_suite)
     urls = lts.to_url_list()

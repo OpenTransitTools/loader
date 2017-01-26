@@ -20,10 +20,10 @@ class StressTests(CacheBase):
     def __init__(self):
         super(StressTests, self).__init__('otp')
 
-        parser = tests_to_urls.get_args_parser()
+        parser = tests_to_urls.url_args_parser()
         parser.add_argument('--threads',     '-t',  type=int, default=10, help="number of threads")
         parser.add_argument('--number',      '-n',  type=int, help="number of iterations")
-        parser.add_argument('--duration',    '-d',  type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
+        parser.add_argument('--duration',    '-du', type=int, help="length of time (seconds) to run (as opposed to --number of iterations)")
         parser.add_argument('--search',      '-s',  default="requestParameters.*plan.*itineraries", help="find this string in all stress test reponses")
         parser.add_argument('--file_prefix', '-fp', default="stress", help="stress file prefix, ala : stress-1.txt")
         args = parser.parse_args()
