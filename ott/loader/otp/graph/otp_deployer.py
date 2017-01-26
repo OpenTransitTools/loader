@@ -18,7 +18,8 @@ class OtpDeployer(OtpBuilder):
         self.graphs = otp_utils.get_graphs(self)
 
     def deploy_graphs(self):
-        """ update the graph, and other
+        """ copy new graphs from build server to configured set of production servers
+            (basically scp Graph.obj-new, otp.v-new and otp.jar-new over to another server)
         """
         ret_val = True
 
@@ -78,12 +79,15 @@ class OtpDeployer(OtpBuilder):
 
     @classmethod
     def deploy(cls):
-        log.info("\nRunning otp_deployer.py on {0}\n".format(datetime.datetime.now()))
+        log.info("\nRunning otp_deployer.py at {0}\n".format(datetime.datetime.now()))
         d = OtpDeployer()
         d.deploy_graphs()
 
     @classmethod
     def package_new(cls):
+        """ convenience routine will take Graph.obj and simply copy it to Graph.obj-new
+            intended to run manually if we need to export a graph by hand
+        """
         log.info("\nPackage new\n".format())
         d = OtpDeployer()
         for g in d.graphs:

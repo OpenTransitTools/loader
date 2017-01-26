@@ -60,6 +60,7 @@ setup(
         load_data = ott.loader.loader:load_data
         load_all = ott.loader.loader:load_all
         deploy_all = ott.loader.loader:deploy_all
+        load_and_deploy = ott.loader.loader:load_and_deploy
 
         osm_update = ott.loader.osm.osm_cache:OsmCache.load
 

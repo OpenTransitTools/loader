@@ -1,12 +1,12 @@
-import os
-import logging
-log = logging.getLogger(__file__)
-
 from ott.utils.cache_base import CacheBase
 from ott.utils import object_utils
 
 from ott.loader.sum.gbfs.gbfs_cache import GbfsCache
 from ott.loader.sum.sobi.sobi_cache import SobiCache
+
+import logging
+log = logging.getLogger(__file__)
+
 
 class SumCache(CacheBase):
     """ Does a 'smart' cache of a SUM data
@@ -32,6 +32,5 @@ class SumCache(CacheBase):
     def load(cls):
         ''' run the SUM loader routines
         '''
-        #import pdb; pdb.set_trace()
         sum = SumCache(force_update=object_utils.is_force_update())
         return sum

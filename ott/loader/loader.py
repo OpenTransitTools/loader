@@ -60,7 +60,7 @@ def load_all():
     otp.build_and_test_graphs(force_update=force_update)
 
     log.info("step 6: load various data layers into SOLR")
-    solr_load = SolrLoader.load
+    solr_load = SolrLoader.load()
 
 
 def deploy_all():
@@ -88,9 +88,10 @@ def deploy_all():
     #solr_load = SolrLoader.load
 
 
-def package_new():
-    log.info("step 3: deploy otp graph")
-    otp = OtpDeployer()
+def load_and_deploy():
+    log.info("***load and build things, then deploy them***")
+    load_all()
+    deploy_all()
 
 
 
