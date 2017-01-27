@@ -43,7 +43,7 @@ class OtpRunner(CacheBase):
         otp_utils.mv_new_files_into_place(dir)
 
         print "running {}".format(graph)
-        #status = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+        status = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=dir, **graph)
         return status
 
     @classmethod
@@ -76,7 +76,7 @@ class OtpRunner(CacheBase):
     def static_server_cfg(cls):
         r = OtpRunner()
         port = r.config.get('port', 'web', '50080')
-        dir  = r.config.get('dir',  'web', 'ott/loader/otp/graph')
+        dir = r.config.get('dir',  'web', 'ott/loader/otp/graph')
         return port, dir
 
     @classmethod

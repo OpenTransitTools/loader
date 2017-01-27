@@ -49,11 +49,11 @@ class OtpBuilder(CacheBase):
 
         # run thru the graphs and
         for g in graphs:
-            dir_path = otp_utils.config_graph_dir(g, self.this_module_dir)
+            graph_dir = otp_utils.config_graph_dir(g, self.this_module_dir)
             filter = g.get('filter')
             if force_update or not dont_update:
-                OsmCache.check_osm_file_against_cache(dir_path)
-                GtfsCache.check_feeds_against_cache(self.feeds, dir_path, force_update, filter)
+                OsmCache.check_osm_file_against_cache(graph_dir)
+                GtfsCache.check_feeds_against_cache(self.feeds, graph_dir, force_update, filter)
         return graphs
 
     def build_and_test_graphs(self, java_mem=None, force_update=False):
@@ -122,13 +122,13 @@ class OtpBuilder(CacheBase):
         success = True
         delay = 1
         if start_server:
-            success = otp_utils.run_otp_server(java_mem=java_mem, **graph)
+            success = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=graph['dir'], **graph)
             delay = 60
         if success:
             success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
             if success:
                 self.update_vlog(graph=graph)
-                otp_utils.package_new(dir=graph['dir'], graph_name=self.graph_name)
+                otp_utils.package_new(graph_dir=graph['dir'], graph_name=self.graph_name)
             else:
                 log.warn("graph {} didn't pass it's tests".format(graph['name']))
         else:
@@ -138,9 +138,9 @@ class OtpBuilder(CacheBase):
     def update_vlog(self, graph):
         """ print out gtfs feed(s) version numbers and dates to the otp.v log file
         """
-        dir_path = graph.get('dir', self.cache_dir)
-        feed_msg = Info.get_cache_msgs(dir_path, self.feeds, graph.get('filter'))
-        otp_utils.append_vlog_file(dir_path, feed_msg)
+        graph_dir = graph.get('dir', self.cache_dir)
+        feed_msg = Info.get_cache_msgs(graph_dir, self.feeds, graph.get('filter'))
+        otp_utils.append_vlog_file(graph_dir, feed_msg)
 
     @classmethod
     def get_args(cls):
@@ -205,7 +205,6 @@ class OtpBuilder(CacheBase):
 def main(argv=sys.argv):
     # import pdb; pdb.set_trace()
     OtpBuilder.build()
-
 
 if __name__ == '__main__':
     main()

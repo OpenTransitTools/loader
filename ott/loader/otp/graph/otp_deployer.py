@@ -63,7 +63,6 @@ class OtpDeployer(OtpBuilder):
 
         # step A: grab config .ini (from app.ini) variables for the server(s) to scp OTP graphs to
         #         note, we need these server(s) to be 'known_hosts'
-        # import pdb; pdb.set_trace()
         user = self.config.get_json('user', section='deploy')
         servers = self.config.get_json('servers', section='deploy')
         svr_base_dir = self.config.get_json('svr_base_dir', section='deploy')
@@ -91,10 +90,11 @@ class OtpDeployer(OtpBuilder):
         log.info("\nPackage new\n".format())
         d = OtpDeployer()
         for g in d.graphs:
-            otp_utils.package_new(dir=g['dir'])
+            otp_utils.package_new(graph_dir=g['dir'])
 
 
 def main():
+    # import pdb; pdb.set_trace()
     OtpDeployer.deploy()
 
 if __name__ == '__main__':
