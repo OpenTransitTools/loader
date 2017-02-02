@@ -49,6 +49,12 @@ function build_jar()
 ##
 function wget_jar()
 {
+    if [ -f $EXE_JAR ];
+    then
+        echo "$EXE_JAR exists, so I'm not going to copy/wget a cached version"
+        return
+    fi
+
     if [ ! -f $CACHE_JAR ];
     then
         wget -O $EXE_JAR $WEB_JAR
@@ -106,7 +112,7 @@ function misc()
     fi
 
     # cp cached tiles to ned dir
-    if [ -d $TILE_DIR ];
+    if [ -d $TILE_DIR ] && [ ! -f $EXE_DIR/ned/n46w123.tiff ];
     then
         if "$link"; then
             cd $TILE_DIR
