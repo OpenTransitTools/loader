@@ -9,13 +9,13 @@ otp_consts = {
      * The OTP web service locations
      */
     hostname       : "",
-    restService    : "otp_prod/otp/routers/default",
+    restService    : "otp_prod",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
     //maxWalk        : 1207.008, // 3/4 mile walk
     //maxWalk        : 1609.344, // 1 mile walk
-    attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+    attribution    : 'Map data &copy; 2017 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
 otp.config = {
