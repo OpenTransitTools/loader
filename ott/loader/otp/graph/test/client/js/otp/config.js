@@ -8,8 +8,8 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    hostname       : "http://maps8.trimet.org:51515",
-    restService    : "otp/routers/default",
+    hostname       : "",
+    restService    : "otp_test/otp/routers/default",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
