@@ -1,2 +1,2 @@
 Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
-"new OTP includes bogus transit trips","Hall_5th::45.48574,-122.80459","Library::45.4840838,-122.80397",,11:00 AM,,QUICK,1609,,,!2305,,,,
+"new OTP includes bogus transit trips","Hall_5th::45.48574,-122.80459","Library::45.4840838,-122.80397",,11:00 AM,,QUICK,1609,,,Ha,,,,
