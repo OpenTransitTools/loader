@@ -20,7 +20,9 @@
         walkReluctance: 1.75,
         stairsReluctance: 1.65,
         numItineraries: 3,
-        disableAlertFiltering: true
+        disableAlertFiltering: true,
+        geoidElevation : true,
+        ellipsoidToGeoidDifference : 20.0
     },
 
     updaters: [
@@ -28,7 +30,7 @@
         // @see: http://opentripplanner.readthedocs.io/en/latest/Configuration/#real-time-data
         {
             type: "real-time-alerts",
-            frequencySec: 30,
+            frequencySec: 180,
             //url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
             url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
             feedId: "TriMet"
