@@ -84,10 +84,10 @@ class OsmCache(CacheBase):
             e = "OSM file {} is not big enough".format(self.osm_path)
             raise Exception(e)
 
-    def get_osmosis_cmd(self):
-        ''' build osmosis cmd line to convert .pbf to .osm file
+    def get_osmosis_exe(self):
+        ''' get the path osmosis binary
+            TODO - we should look for system installed osmosis first
         '''
-
         # step 1: get osmosis binary path (for ux or dos, ala c:\\ in path will get you a .bin extension)
         osmosis_dir = os.path.join(self.this_module_dir, "osmosis")
         osmosis_exe = os.path.join(osmosis_dir, "bin", "osmosis")
@@ -99,15 +99,37 @@ class OsmCache(CacheBase):
             e = "OSMOSIS {} doesn't exist...\nMaybe cd into {} and run osmosis.sh".format(osmosis_exe, osmosis_dir)
             raise Exception(e)
 
-        # step 3: build full osmosis cmd line
+        return osmosis_exe
+
+    def get_osmosis_osm2pbf_cmd(self, osm_path=None, pbf_path=None):
+        if osm_path is None:
+            osm_path = self.osm_path
+        if pbf_path is None:
+            pbf_path = osm_path + ".pbf"
+        osmosis_exe = self.get_osmosis_exe()
+        osmosis = "{} {} {}"
+        osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
+        return osmosis_cmd
+
+    def get_osmosis_pbf2osm_cmd(self):
+        ''' build osmosis cmd line to convert .pbf to .osm file
+        '''
+        osmosis_exe = self.get_osmosis_exe()
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
-        osmosis = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
-        return osmosis
+        osmosis_cmd = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
+        return osmosis_cmd
 
     def pbf_to_osm(self):
         ''' use osmosis to convert .pbf to .osm file
         '''
-        osmosis = self.get_osmosis_cmd()
+        osmosis = self.get_osmosis_pbf2osm_cmd()
+        log.info(osmosis)
+        exe_utils.run_cmd(osmosis, shell=True)
+
+    def osm_to_pbf(self):
+        ''' use osmosis to convert .pbf to .osm file
+        '''
+        osmosis = self.get_osmosis_pbf2osm_cmd()
         log.info(osmosis)
         exe_utils.run_cmd(osmosis, shell=True)
 
