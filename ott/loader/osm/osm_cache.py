@@ -77,7 +77,7 @@ class OsmCache(CacheBase):
             sized = file_utils.is_min_sized(self.osm_path, min_size)
             pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
             if force_update or pbf_newer or not fresh or not sized:
-                self.pbf_to_osm()
+                self.pbf_clip_bbox_to_osm()
 
         # step 3: .osm file check
         if not file_utils.is_min_sized(self.osm_path, min_size):
@@ -101,7 +101,18 @@ class OsmCache(CacheBase):
 
         return osmosis_exe
 
-    def get_osmosis_osm2pbf_cmd(self, osm_path=None, pbf_path=None):
+    def pbf_clip_bbox_to_osm(self):
+        ''' use osmosis to convert .pbf to .osm file
+        '''
+        osmosis_exe = self.get_osmosis_exe()
+        osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
+        osmosis_cmd = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
+        log.info(osmosis_cmd)
+        exe_utils.run_cmd(osmosis_cmd, shell=True)
+
+    def osm_to_pbf(self, osm_path=None, pbf_path=None):
+        ''' use osmosis to convert .pbf to .osm file
+        '''
         if osm_path is None:
             osm_path = self.osm_path
         if pbf_path is None:
@@ -109,29 +120,8 @@ class OsmCache(CacheBase):
         osmosis_exe = self.get_osmosis_exe()
         osmosis = '{} --read-xml {} --write-pbf {}'
         osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
-        return osmosis_cmd
-
-    def get_osmosis_pbf2osm_cmd(self):
-        ''' build osmosis cmd line to convert .pbf to .osm file
-        '''
-        osmosis_exe = self.get_osmosis_exe()
-        osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
-        osmosis_cmd = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
-        return osmosis_cmd
-
-    def pbf_to_osm(self):
-        ''' use osmosis to convert .pbf to .osm file
-        '''
-        osmosis = self.get_osmosis_pbf2osm_cmd()
-        log.info(osmosis)
-        exe_utils.run_cmd(osmosis, shell=True)
-
-    def osm_to_pbf(self):
-        ''' use osmosis to convert .pbf to .osm file
-        '''
-        osmosis = self.get_osmosis_osm2pbf_cmd()
-        log.info(osmosis)
-        exe_utils.run_cmd(osmosis, shell=True)
+        log.info(osmosis_cmd)
+        exe_utils.run_cmd(osmosis_cmd, shell=True)
 
     def download_pbf(self):
         log.info("wget {} to {}".format(self.pbf_url, self.pbf_path))
@@ -167,6 +157,14 @@ class OsmCache(CacheBase):
 
     @classmethod
     def convert_osm_to_pbf(cls):
+        ''' run the SUM loader routines
+        '''
+        # import pdb; pdb.set_trace()
+        osm = OsmCache()
+        osm.osm_to_pbf()
+
+    @classmethod
+    def convert_pbf_to_osm(cls):
         ''' run the SUM loader routines
         '''
         # import pdb; pdb.set_trace()
