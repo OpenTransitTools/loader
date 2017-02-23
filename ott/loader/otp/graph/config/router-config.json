@@ -21,8 +21,7 @@
         stairsReluctance: 1.65,
         numItineraries: 3,
         disableAlertFiltering: true,
-        geoidElevation : true,
-        ellipsoidToGeoidDifference : 20.0
+        geoidElevation : true
     },
 
     updaters: [
