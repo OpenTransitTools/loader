@@ -9,6 +9,7 @@
     // org.opentripplanner.routing.core.RoutingRequest
     // NOTE: updated Oct 2016 ... adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
     //       updated Dec 2016 ... add disableAlertFiltering to show future alerts
+    //       updated Feb 2017 ... add geoidElevation to fix the below sea-level with a regional offset
     //
     routingDefaults: {
         maxHours: 6,
