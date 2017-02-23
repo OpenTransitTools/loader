@@ -107,7 +107,7 @@ class OsmCache(CacheBase):
         if pbf_path is None:
             pbf_path = osm_path + ".pbf"
         osmosis_exe = self.get_osmosis_exe()
-        osmosis = "{} {} {}"
+        osmosis = '{} --read-xml {} --write-pbf {}'
         osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
         return osmosis_cmd
 
@@ -129,7 +129,7 @@ class OsmCache(CacheBase):
     def osm_to_pbf(self):
         ''' use osmosis to convert .pbf to .osm file
         '''
-        osmosis = self.get_osmosis_pbf2osm_cmd()
+        osmosis = self.get_osmosis_osm2pbf_cmd()
         log.info(osmosis)
         exe_utils.run_cmd(osmosis, shell=True)
 
@@ -164,3 +164,11 @@ class OsmCache(CacheBase):
         #import pdb; pdb.set_trace()
         osm = OsmCache()
         osm.check_cached_osm(force_update=object_utils.is_force_update())
+
+    @classmethod
+    def convert_osm_to_pbf(cls):
+        ''' run the SUM loader routines
+        '''
+        # import pdb; pdb.set_trace()
+        osm = OsmCache()
+        osm.osm_to_pbf()
