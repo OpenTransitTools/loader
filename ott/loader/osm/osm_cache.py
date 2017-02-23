@@ -102,7 +102,8 @@ class OsmCache(CacheBase):
         return osmosis_exe
 
     def pbf_clip_bbox_to_osm(self):
-        ''' use osmosis to convert .pbf to .osm file
+        ''' use osmosis to clip a bbox out of a .pbf, and output .osm file
+            (file paths derrived by the cache paths & config)
         '''
         osmosis_exe = self.get_osmosis_exe()
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
@@ -111,7 +112,7 @@ class OsmCache(CacheBase):
         exe_utils.run_cmd(osmosis_cmd, shell=True)
 
     def osm_to_pbf(self, osm_path=None, pbf_path=None):
-        ''' use osmosis to convert .pbf to .osm file
+        ''' use osmosis to convert .osm file to .pbf
         '''
         if osm_path is None:
             osm_path = self.osm_path
@@ -119,6 +120,19 @@ class OsmCache(CacheBase):
             pbf_path = osm_path + ".pbf"
         osmosis_exe = self.get_osmosis_exe()
         osmosis = '{} --read-xml {} --write-pbf {}'
+        osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
+        log.info(osmosis_cmd)
+        exe_utils.run_cmd(osmosis_cmd, shell=True)
+
+    def pbf_to_osm(self, osm_path=None, pbf_path=None):
+        ''' use osmosis to convert .pbf to .osm file
+        '''
+        if osm_path is None:
+            osm_path = self.osm_path
+        if pbf_path is None:
+            pbf_path = osm_path + ".pbf"
+        osmosis_exe = self.get_osmosis_exe()
+        osmosis = '{} --read-pbf {} --write-xml {}'
         osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
         log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
@@ -169,4 +183,4 @@ class OsmCache(CacheBase):
         '''
         # import pdb; pdb.set_trace()
         osm = OsmCache()
-        osm.osm_to_pbf()
+        osm.pbf_to_osm()

@@ -64,6 +64,7 @@ setup(
 
         osm_update = ott.loader.osm.osm_cache:OsmCache.load
         osm_to_pbf = ott.loader.osm.osm_cache:OsmCache.convert_osm_to_pbf
+        pbf_to_osm = ott.loader.osm.osm_cache:OsmCache.convert_pbf_to_osm
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_info = ott.loader.gtfs.info:main
