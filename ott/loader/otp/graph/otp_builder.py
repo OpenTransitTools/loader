@@ -56,14 +56,14 @@ class OtpBuilder(CacheBase):
                 GtfsCache.check_feeds_against_cache(self.feeds, graph_dir, force_update, filter)
         return graphs
 
-    def build_and_test_graphs(self, java_mem=None, force_update=False):
+    def build_and_test_graphs(self, java_mem=None, force_update=False, start_server=True):
         """ will build and test each of the graphs we have in self.graphs
         """
         ret_val = True
         for g in self.graphs:
             success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
             if success and rebuilt:
-                success = self.test_graph(graph=g, java_mem=java_mem)
+                success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
                 ret_val = success
             elif not success:
                 ret_val = False
@@ -151,6 +151,7 @@ class OtpBuilder(CacheBase):
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
         parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
         parser.add_argument('--dont_update', '-d', action='store_true', help="don't update data regardless of state")
+        parser.add_argument('--dont_restart',      action='store_true', help="don't restart OTP when testing new graphs, etc...")
         parser.add_argument('--mock',        '-m', action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
         parser.add_argument('--mem',        '-lm', action='store_true', help="should we run otp/java with smaller memory footprint?")
         parser.add_argument('--email',       '-e', help="email address(es) to be contacted if we can't build a graph, or the tests don't pass.")
@@ -184,16 +185,16 @@ class OtpBuilder(CacheBase):
                     if not args.test:
                         success, rebuilt = b.build_graph(graph['dir'], java_mem=java_mem, force_update=args.force)
                     if not args.no_tests:
-                        success = b.test_graph(graph, java_mem=java_mem, start_server=args.force)
+                        success = b.test_graph(graph, java_mem=java_mem, start_server=not args.dont_restart)
                 else:
                     log.warn("I don't know how to build graph '{}'".format(args.name))
                     success = False
             else:
                 # build and/or test all graphs in the config file
                 if args.test:
-                    success = b.only_test_graphs(java_mem=java_mem, start_server=args.force)
+                    success = b.only_test_graphs(java_mem=java_mem, start_server=not args.dont_restart)
                 else:
-                    success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force)
+                    success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force, start_server=not args.dont_restart)
 
         if args.email and (not success or args.force):
             #otp_utils.build_test_email(emails=args.email, build_status=build_success, test_status=test_success, server_status=server_success)
