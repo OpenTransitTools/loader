@@ -133,7 +133,7 @@ class OsmCache(CacheBase):
             pbf_path = osm_path + ".pbf"
         osmosis_exe = self.get_osmosis_exe()
         osmosis = '{} --read-pbf {} --write-xml {}'
-        osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
+        osmosis_cmd = osmosis.format(osmosis_exe, pbf_path, osm_path)
         log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
 
