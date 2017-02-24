@@ -74,6 +74,10 @@ class OtpDeployer(OtpBuilder):
                 svr_dir = file_utils.append_to_path(svr_base_dir, g['name'])
                 scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir)
 
+        # step C: remove the -new files (so we don't keep deploying / scp-ing)
+        for g in self.graphs:
+            otp_utils.rm_new(graph_dir=g['dir'])
+
         return ret_val
 
     @classmethod
