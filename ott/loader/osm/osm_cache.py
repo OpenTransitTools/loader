@@ -42,9 +42,9 @@ class OsmCache(CacheBase):
         # step 1: cache dir management
         self.cache_expire = self.config.get_int('cache_expire', def_val=self.cache_expire)
 
-        # step 2: urls
+        # step 2: .pbf and .html (meta data) urls and file names
         self.pbf_url = self.config.get('pbf_url')
-        self.pbf_name = urlparse.urlsplit(self.pbf_name).path.split('/')[-1]
+        self.pbf_name = urlparse.urlsplit(self.pbf_url).path.split('/')[-1]
         self.meta_url = self.config.get('meta_url')
         self.meta_name = urlparse.urlsplit(self.meta_url).path.split('/')[-1]
 

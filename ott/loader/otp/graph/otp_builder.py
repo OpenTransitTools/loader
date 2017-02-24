@@ -5,12 +5,6 @@
     @see deploy.py, which is a companion script that runs on the production servers, and
     deploys a new OTP graph into production.
 """
-import os
-import sys
-import time
-import logging
-log = logging.getLogger(__file__)
-
 from ott.utils import otp_utils
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
@@ -19,6 +13,12 @@ from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.gtfs.info import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
+
+import os
+import sys
+import time
+import logging
+log = logging.getLogger(__file__)
 
 
 class OtpBuilder(CacheBase):
@@ -197,7 +197,7 @@ class OtpBuilder(CacheBase):
                     success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force, start_server=not args.dont_restart)
 
         if args.email and (not success or args.force):
-            #otp_utils.build_test_email(emails=args.email, build_status=build_success, test_status=test_success, server_status=server_success)
+            # otp_utils.build_test_email(emails=args.email, build_status=build_success, test_status=test_success, server_status=server_success)
             otp_utils.send_build_test_email(args.email)
 
         return success
