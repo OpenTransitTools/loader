@@ -1,36 +1,38 @@
-import os
-import re
-import logging
-log = logging.getLogger(__file__)
-
 from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 
+import os
+import re
+import urlparse
+import logging
+log = logging.getLogger(__file__)
+
+
 class OsmCache(CacheBase):
     """ Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
-    pbf_url   = None
-    pbf_name  = None
-    pbf_path  = None
-    pbf_url   = None
+    pbf_url = None
+    pbf_name = None
+    pbf_path = None
+    pbf_url = None
 
-    meta_url  = None
+    meta_url = None
     meta_name = None
     meta_path = None
-    meta_url  = None
+    meta_url = None
 
-    osm_name  = None
-    osm_path  = None
+    osm_name = None
+    osm_path = None
 
-    top    = None
+    top = None
     bottom = None
-    left   = None
-    right  = None
+    left = None
+    right = None
 
     def __init__(self):
         ''' check osm cache
@@ -41,19 +43,19 @@ class OsmCache(CacheBase):
         self.cache_expire = self.config.get_int('cache_expire', def_val=self.cache_expire)
 
         # step 2: urls
-        self.pbf_url  = self.config.get('pbf_url')
+        self.pbf_url = self.config.get('pbf_url')
+        self.pbf_name = urlparse.urlsplit(self.pbf_name).path.split('/')[-1]
         self.meta_url = self.config.get('meta_url')
+        self.meta_name = urlparse.urlsplit(self.meta_url).path.split('/')[-1]
 
-        # step 3: file names
+        # step 3: output .osm file name
         name = self.config.get('name')
-        self.pbf_name  = name + ".pbf"
-        self.meta_name = name + ".html"
-        self.osm_name  = name + ".osm"
+        self.osm_name = name + ".osm"
 
         # step 4: file cache paths
-        self.pbf_path  = os.path.join(self.cache_dir, self.pbf_name)
+        self.pbf_path = os.path.join(self.cache_dir, self.pbf_name)
         self.meta_path = os.path.join(self.cache_dir, self.meta_name)
-        self.osm_path  = os.path.join(self.cache_dir, self.osm_name)
+        self.osm_path = os.path.join(self.cache_dir, self.osm_name)
 
         # step 5: get bbox from config
         self.top, self.bottom, self.left, self.right = self.config.get_bbox()
@@ -105,12 +107,14 @@ class OsmCache(CacheBase):
     def pbf_clip_bbox_to_osm(self):
         ''' use osmosis to clip a bbox out of a .pbf, and output .osm file
             (file paths derrived by the cache paths & config)
+            outputs: both an .osm file and a .pbf file of the clipped area
         '''
         osmosis_exe = self.get_osmosis_exe()
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
         osmosis_cmd = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
         log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
+        self.osm_to_pbf()
 
     def osm_to_pbf(self, osm_path=None, pbf_path=None):
         ''' use osmosis to convert .osm file to .pbf
