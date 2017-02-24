@@ -96,7 +96,7 @@ class OtpBuilder(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        if file_utils.dir_has_newer_files(graph_path, graph_dir, include_filter=".jar,.json,.osm,.zip"):
+        if file_utils.dir_has_newer_files(graph_path, graph_dir, offset_minutes=60, include_filter=".jar,.json,.osm,.zip"):
             rebuild_graph = True
 
         # step 4: build graph is needed
