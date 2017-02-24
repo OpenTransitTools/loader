@@ -35,8 +35,8 @@ class OsmCache(CacheBase):
     right = None
 
     def __init__(self):
-        ''' check osm cache
-        '''
+        """ check osm cache
+        """
         super(OsmCache, self).__init__(section='osm')
 
         # step 1: cache dir management
@@ -61,9 +61,9 @@ class OsmCache(CacheBase):
         self.top, self.bottom, self.left, self.right = self.config.get_bbox()
 
     def check_cached_osm(self, force_update=False):
-        ''' if OSM .pbf file is out of date, download a new one.
+        """ if OSM .pbf file is out of date, download a new one.
             convert .pbf to .osm if .pbf file is newer than .osm file
-        '''
+        """
         min_size = self.config.get_int('min_size', def_val=1000000)
 
         # step 1: download new osm pbf file if it's not new
@@ -88,9 +88,9 @@ class OsmCache(CacheBase):
             raise Exception(e)
 
     def get_osmosis_exe(self):
-        ''' get the path osmosis binary
+        """ get the path osmosis binary
             TODO - we should look for system installed osmosis first
-        '''
+        """
         # step 1: get osmosis binary path (for ux or dos, ala c:\\ in path will get you a .bin extension)
         osmosis_dir = os.path.join(self.this_module_dir, "osmosis")
         osmosis_exe = os.path.join(osmosis_dir, "bin", "osmosis")
@@ -105,10 +105,10 @@ class OsmCache(CacheBase):
         return osmosis_exe
 
     def pbf_clip_bbox_to_osm(self):
-        ''' use osmosis to clip a bbox out of a .pbf, and output .osm file
+        """ use osmosis to clip a bbox out of a .pbf, and output .osm file
             (file paths derrived by the cache paths & config)
             outputs: both an .osm file and a .pbf file of the clipped area
-        '''
+        """
         osmosis_exe = self.get_osmosis_exe()
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
         osmosis_cmd = osmosis.format(osmosis_exe, self.pbf_path, self.top, self.bottom, self.left, self.right, self.osm_path)
@@ -117,8 +117,8 @@ class OsmCache(CacheBase):
         self.osm_to_pbf()
 
     def osm_to_pbf(self, osm_path=None, pbf_path=None):
-        ''' use osmosis to convert .osm file to .pbf
-        '''
+        """ use osmosis to convert .osm file to .pbf
+        """
         if osm_path is None:
             osm_path = self.osm_path
         if pbf_path is None:
@@ -129,8 +129,8 @@ class OsmCache(CacheBase):
         exe_utils.run_cmd(osmosis_cmd, shell=True)
 
     def pbf_to_osm(self, osm_path=None, pbf_path=None):
-        ''' use osmosis to convert .pbf to .osm file
-        '''
+        """ use osmosis to convert .pbf to .osm file
+        """
         if osm_path is None:
             osm_path = self.osm_path
         if pbf_path is None:
@@ -149,8 +149,8 @@ class OsmCache(CacheBase):
 
     @classmethod
     def check_osm_file_against_cache(cls, app_dir, force_update=False):
-        ''' check the .osm file in this cache against an osm file in another app's directory
-        '''
+        """ check the .osm file in this cache against an osm file in another app's directory
+        """
         ret_val = False
         try:
             osm = OsmCache()
@@ -166,24 +166,22 @@ class OsmCache(CacheBase):
 
     @classmethod
     def load(cls):
-        ''' run the SUM loader routines
-        '''
-        #import pdb; pdb.set_trace()
+        """ run the SUM loader routines
+        """
         osm = OsmCache()
         osm.check_cached_osm(force_update=object_utils.is_force_update())
 
     @classmethod
     def convert_osm_to_pbf(cls):
-        ''' run the SUM loader routines
-        '''
-        # import pdb; pdb.set_trace()
+        """ run the SUM loader routines
+        """
         osm = OsmCache()
         osm.osm_to_pbf()
 
     @classmethod
     def convert_pbf_to_osm(cls):
-        ''' run the SUM loader routines
-        '''
+        """ run the SUM loader routines
+        """
         # import pdb; pdb.set_trace()
         osm = OsmCache()
         osm.pbf_to_osm()
