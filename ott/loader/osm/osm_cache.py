@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 log = logging.getLogger(__file__)
 
@@ -117,11 +118,10 @@ class OsmCache(CacheBase):
         if osm_path is None:
             osm_path = self.osm_path
         if pbf_path is None:
-            pbf_path = osm_path + ".pbf"
+            pbf_path = re.sub('.osm$', '', osm_path) + ".pbf"
         osmosis_exe = self.get_osmosis_exe()
         osmosis = '{} --read-xml {} --write-pbf {}'
         osmosis_cmd = osmosis.format(osmosis_exe, osm_path, pbf_path)
-        log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
 
     def pbf_to_osm(self, osm_path=None, pbf_path=None):
@@ -130,11 +130,10 @@ class OsmCache(CacheBase):
         if osm_path is None:
             osm_path = self.osm_path
         if pbf_path is None:
-            pbf_path = osm_path + ".pbf"
+            pbf_path = re.sub('.osm$', '', osm_path) + ".pbf"
         osmosis_exe = self.get_osmosis_exe()
         osmosis = '{} --read-pbf {} --write-xml {}'
         osmosis_cmd = osmosis.format(osmosis_exe, pbf_path, osm_path)
-        log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
 
     def download_pbf(self):
