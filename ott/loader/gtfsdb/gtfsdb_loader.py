@@ -26,23 +26,22 @@ class GtfsdbLoader(CacheBase):
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
     def load_feed(self, feed):
-        """ insert feeds into configured db (see config/app.ini)
+        """ insert a GTFS feed into configured db
         """
-        #import pdb; pdb.set_trace()
         ret_val = True
 
-        # get cached feed path and feed name (see 'feeds' in config/app.ini)
+        # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
         feed_path = os.path.join(self.cache_dir, feed['name'])
         feed_name = feed['name'].rstrip(".zip")
 
-        # make args for gtfsdb
+        # step 2: make args for gtfsdb
         kwargs = {}
         kwargs['url'] = self.db_url
         if "sqlite:" not in self.db_url:
             kwargs['is_geospatial'] = self.is_geospatial
             kwargs['schema'] = feed_name
 
-        # load this feed into gtfsdb
+        # step 3: load this feed into gtfsdb
         log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
         try:
             database_load(feed_path, **kwargs)
@@ -50,12 +49,12 @@ class GtfsdbLoader(CacheBase):
             ret_val = False
             file_utils.mv(feed_path, feed_path + self.err_ext)
             log.error("DATABASE ERROR : {}".format(e))
-
         return ret_val
 
     def check_db(self, force_update=False):
         """ check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
         """
+        # import pdb; pdb.set_trace()
         purged = False
         reload = force_update
 
@@ -82,7 +81,6 @@ class GtfsdbLoader(CacheBase):
         """ run the gtfsdb loader against all the specified feeds from config/app.ini
             NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
         """
-        #import pdb; pdb.set_trace()
         db = GtfsdbLoader()
         db.check_db(force_update=object_utils.is_force_update())
 
@@ -96,4 +94,3 @@ class GtfsdbLoader(CacheBase):
             # step 2: check date on last export file vs. date of GTFS feed
             # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
             pass
-
