@@ -26,6 +26,10 @@ class GtfsdbLoader(CacheBase):
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
+    def get_feed_name(self, feed):
+        """ get a name for the database (amoungst other systems) """
+        return feed['name'].rstrip(".zip").lower()
+
     def load_feed(self, feed):
         """ insert a GTFS feed into configured db
         """
@@ -33,7 +37,7 @@ class GtfsdbLoader(CacheBase):
 
         # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
         feed_path = os.path.join(self.cache_dir, feed['name'])
-        feed_name = feed['name'].rstrip(".zip")
+        feed_name = self.get_feed_name(feed)
 
         # step 2: make args for gtfsdb
         kwargs = {}
@@ -81,20 +85,34 @@ class GtfsdbLoader(CacheBase):
         """
         # import pdb; pdb.set_trace()
         ret_val = True
+        feed_name = ""
         try:
+            feed_name = self.get_feed_name(feed)
             db_dump = self.config.get('dump', section='db')
-            db_dump = db_dump.format(schema=feed.name)
+            db_dump = db_dump.format(schema=feed_name)
             log.info(db_dump)
-            exe_utils.run_cmd(db_dump)
+            exe_utils.run_cmd(db_dump, shell=True)
         except Exception, e:
             ret_val = False
-            log.error("DB DUMP ERROR : {}".format(e))
+            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
 
     def restore(self, feed):
         """ run the db dumper
         """
-        db_restore = self.config.get('dump', section='db')
+        # import pdb; pdb.set_trace()
+        ret_val = True
+        feed_name = ""
+        try:
+            feed_name = self.get_feed_name(feed)
+            db_dump = self.config.get('dump', section='db')
+            db_dump = db_dump.format(schema=feed_name)
+            log.info(db_dump)
+            exe_utils.run_cmd(db_dump)
+        except Exception, e:
+            ret_val = False
+            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
+        return ret_val
 
     @classmethod
     def load(cls):
