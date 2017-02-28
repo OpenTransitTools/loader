@@ -62,18 +62,27 @@ def load_all():
     log.info("step 6: load various data layers into SOLR")
     solr_load = SolrLoader.load()
 
+    export_all()
+
+
+def export_all():
+    """ @todo: maybe export Graphs and the like
+    """
+    db = GtfsdbLoader()
+    db.export()
+
 
 def deploy_all():
     """ load (production) new database extracts and deploy new otp graphs
 
         does the following:
-          1. will load any postgres exports into local (production) db
+          1. will  any postgres exports into local (production) db
           2. enable new OTP graph
 
     """
     log.info("step 1: load any new gtfsdb snapshot")
     db = GtfsdbLoader()
-    #db.deploy_db_snapshot()
+    #db.deploy()
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()

@@ -59,8 +59,8 @@ setup(
         [console_scripts]
         load_data = ott.loader.loader:load_data
         load_all = ott.loader.loader:load_all
-        deploy_all = ott.loader.loader:deploy_all
         load_and_deploy = ott.loader.loader:load_and_deploy
+        deploy_all = ott.loader.loader:deploy_all
 
         osm_update = ott.loader.osm.osm_cache:OsmCache.load
         osm_to_pbf = ott.loader.osm.osm_cache:OsmCache.convert_osm_to_pbf

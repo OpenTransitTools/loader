@@ -1,5 +1,6 @@
 from ott.utils import object_utils
 from ott.utils import db_utils
+from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
@@ -54,18 +55,17 @@ class GtfsdbLoader(CacheBase):
     def check_db(self, force_update=False):
         """ check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
         """
-        # import pdb; pdb.set_trace()
-        purged = False
-        reload = force_update
-
         # step 1: loop thru all our feeds
+        purged = False
         for f in self.feeds:
+            reload = False
+
             # step 2: see if the GTFS cache has a newer feed than what we have in this GTFS-DB cache
             if GtfsCache.compare_feed_against_cache(f, self.cache_dir, force_update):
                 reload = True
 
             # step 3: okay, reload this GTFS feed into the database
-            if reload:
+            if reload or force_update:
                 # step 3a: we should purge any GTFS-error files that might have been generated on the last load
                 #          NOTE: we'll also check the database onthis step ... make sure it's available and ready
                 if not purged:
@@ -75,6 +75,26 @@ class GtfsdbLoader(CacheBase):
 
                 # step 3b: load the feed into the database
                 self.load_feed(f)
+
+    def dump(self, feed):
+        """ run the db dumper
+        """
+        # import pdb; pdb.set_trace()
+        ret_val = True
+        try:
+            db_dump = self.config.get('dump', section='db')
+            db_dump = db_dump.format(schema=feed.name)
+            log.info(db_dump)
+            exe_utils.run_cmd(db_dump)
+        except Exception, e:
+            ret_val = False
+            log.error("DB DUMP ERROR : {}".format(e))
+        return ret_val
+
+    def restore(self, feed):
+        """ run the db dumper
+        """
+        db_restore = self.config.get('dump', section='db')
 
     @classmethod
     def load(cls):
@@ -86,6 +106,18 @@ class GtfsdbLoader(CacheBase):
 
     @classmethod
     def export(cls):
+        """ export """
+        db = GtfsdbLoader()
+
+        # step 1: loop thru all our feeds
+        for f in db.feeds:
+            db.dump(f)
+            # step 2: check date on last export file vs. date of GTFS feed
+            # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
+            pass
+
+    @classmethod
+    def deploy(cls):
         """ export """
 
         # step 1: loop thru all our feeds
