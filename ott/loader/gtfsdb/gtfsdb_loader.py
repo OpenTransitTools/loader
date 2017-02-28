@@ -30,6 +30,10 @@ class GtfsdbLoader(CacheBase):
         """ get a name for the database (amoungst other systems) """
         return feed['name'].rstrip(".zip").lower()
 
+    def get_dump_path(self, feed_name):
+        """ get a name for the database (amoungst other systems) """
+        return "{}/{}.tar".format(self.cache_dir, feed_name)
+
     def load_feed(self, feed):
         """ insert a GTFS feed into configured db
         """
@@ -88,8 +92,8 @@ class GtfsdbLoader(CacheBase):
         feed_name = ""
         try:
             feed_name = self.get_feed_name(feed)
-            db_dump = self.config.get('dump', section='db')
-            db_dump = db_dump.format(schema=feed_name)
+            dump_path = self.get_dump_path(feed_name)
+            db_dump = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
             log.info(db_dump)
             exe_utils.run_cmd(db_dump, shell=True)
         except Exception, e:
