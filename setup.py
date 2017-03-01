@@ -72,6 +72,8 @@ setup(
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
 
         gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
+        gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.dump
+        gtfsdb_restore = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.restore
 
         otp_run = ott.loader.otp.graph.otp_runner:OtpRunner.run
         otp_build = ott.loader.otp.graph.otp_builder:OtpBuilder.build

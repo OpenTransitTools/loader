@@ -84,7 +84,7 @@ class GtfsdbLoader(CacheBase):
                 # step 3b: load the feed into the database
                 self.load_feed(f)
 
-    def dump(self, feed):
+    def dump_feed(self, feed):
         """ run the db dumper
         """
         ret_val = True
@@ -100,7 +100,7 @@ class GtfsdbLoader(CacheBase):
             log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
 
-    def restore(self, feed):
+    def restore_feed(self, feed):
         """ run the db restore
         """
         ret_val = True
@@ -125,24 +125,23 @@ class GtfsdbLoader(CacheBase):
         db.check_db(force_update=object_utils.is_force_update())
 
     @classmethod
-    def export(cls):
+    def dump(cls):
         """ export """
         db = GtfsdbLoader()
 
         # step 1: loop thru all our feeds
         for f in db.feeds:
-            db.dump(f)
+            db.dump_feed(f)
             # step 2: check date on last export file vs. date of GTFS feed
             # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
-            pass
 
     @classmethod
-    def deploy(cls):
+    def restore(cls):
         """ export """
 
         # step 1: loop thru all our feeds
         db = GtfsdbLoader()
         for f in db.feeds:
+            db.restore_feed(f)
             # step 2: check date on last export file vs. date of GTFS feed
             # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
-            pass

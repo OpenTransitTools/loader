@@ -68,9 +68,7 @@ def load_all():
 def export_all():
     """ @todo: maybe export Graphs and the like
     """
-    db = GtfsdbLoader()
-    db.export()
-
+    GtfsdbLoader.dump()
 
 def deploy_all():
     """ load (production) new database extracts and deploy new otp graphs
@@ -81,8 +79,7 @@ def deploy_all():
 
     """
     log.info("step 1: load any new gtfsdb snapshot")
-    db = GtfsdbLoader()
-    #db.deploy()
+    GtfsdbLoader.restore()
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()
