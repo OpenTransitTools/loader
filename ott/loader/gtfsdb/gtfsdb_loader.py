@@ -87,35 +87,33 @@ class GtfsdbLoader(CacheBase):
     def dump(self, feed):
         """ run the db dumper
         """
-        # import pdb; pdb.set_trace()
         ret_val = True
         feed_name = ""
         try:
             feed_name = self.get_feed_name(feed)
             dump_path = self.get_dump_path(feed_name)
-            db_dump = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
-            log.info(db_dump)
-            exe_utils.run_cmd(db_dump, shell=True)
+            dump_exe = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
+            log.info(dump_exe)
+            exe_utils.run_cmd(dump_exe, shell=True)
         except Exception, e:
             ret_val = False
             log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
 
     def restore(self, feed):
-        """ run the db dumper
+        """ run the db restore
         """
-        # import pdb; pdb.set_trace()
         ret_val = True
         feed_name = ""
         try:
             feed_name = self.get_feed_name(feed)
-            db_dump = self.config.get('dump', section='db')
-            db_dump = db_dump.format(schema=feed_name)
-            log.info(db_dump)
-            exe_utils.run_cmd(db_dump)
+            dump_path = self.get_dump_path(feed_name)
+            restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
+            log.info(restore_exe)
+            exe_utils.run_cmd(restore_exe, shell=True)
         except Exception, e:
             ret_val = False
-            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
+            log.error("DB RESTORE ERROR {} : {}".format(feed_name, e))
         return ret_val
 
     @classmethod
