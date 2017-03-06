@@ -66,9 +66,21 @@ def load_all():
 
 
 def export_all():
-    """ @todo: maybe export Graphs and the like
     """
+    """
+    log.info("step 1: export gtfsdb ")
     GtfsdbLoader.dump()
+
+    log.info("step 2: load any new OSM database snapshot")
+    osm = OsmCache()
+    #osm.deploy_db_snapshot()
+
+    log.info("step 3: export otp graph")
+    OtpDeployer.deploy()
+
+    log.info("step 4: export... SOLR updates")
+    #solr_load = SolrLoader.load
+
 
 def deploy_all():
     """ load (production) new database extracts and deploy new otp graphs
@@ -78,26 +90,24 @@ def deploy_all():
           2. enable new OTP graph
 
     """
-    log.info("step 1: load any new gtfsdb snapshot")
+    log.info("step 1: restore gtfsdb from export")
     GtfsdbLoader.restore()
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()
     #osm.deploy_db_snapshot()
 
-    log.info("step 3: deploy otp graph")
-    otp = OtpDeployer()
-    otp.deploy()
-    #otp.deploy_graphs()
+    log.info("step 3: export otp graph")
+    OtpDeployer.deploy()
 
-    log.info("step 4: deploy SOLR updates")
+    log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
 
 
-def load_and_deploy():
-    log.info("***load and build things, then deploy them***")
+def load_and_export():
+    log.info("***load and build things, then export them and scp' them to production servers ***")
     load_all()
-    deploy_all()
+    export_all()
 
 
 
