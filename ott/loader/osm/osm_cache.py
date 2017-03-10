@@ -107,7 +107,7 @@ class OsmCache(CacheBase):
             (file paths derrived by the cache paths & config)
             outputs: both an .osm file and a .pbf file of the clipped area
         """
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         top, bottom, left, right = self.config.get_bbox(bbox_ini_section)
         osmosis_exe = self.get_osmosis_exe()
         osmosis = "{} --rb {} --bounding-box top={} bottom={} left={} right={} completeWays=true --wx {}"
