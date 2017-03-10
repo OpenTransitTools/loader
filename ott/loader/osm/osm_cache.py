@@ -59,7 +59,9 @@ class OsmCache(CacheBase):
 
         # step 5: get bbox from config
         self.top, self.bottom, self.left, self.right = self.config.get_bbox('bbox')
-        self.sm_top, self.sm_bottom, self.sm_left, self.sm_right = self.config.get_bbox('small_bbox')
+
+        # step 6: other .osm exports
+        self.other_exports = self.config.get_json('other_exports')
 
     def check_cached_osm(self, force_update=False):
         """ if OSM .pbf file is out of date, download a new one.
@@ -186,3 +188,11 @@ class OsmCache(CacheBase):
         # import pdb; pdb.set_trace()
         osm = OsmCache()
         osm.pbf_to_osm()
+
+    @classmethod
+    def other_exports(cls):
+        """ export other .osm files
+        """
+        osm = OsmCache()
+        for o in osm.other_exports:
+            print o
