@@ -58,7 +58,8 @@ class OsmCache(CacheBase):
         self.osm_path = os.path.join(self.cache_dir, self.osm_name)
 
         # step 5: get bbox from config
-        self.top, self.bottom, self.left, self.right = self.config.get_bbox()
+        self.top, self.bottom, self.left, self.right = self.config.get_bbox('bbox')
+        self.sm_top, self.sm_bottom, self.sm_left, self.sm_right = self.config.get_bbox('small_bbox')
 
     def check_cached_osm(self, force_update=False):
         """ if OSM .pbf file is out of date, download a new one.
