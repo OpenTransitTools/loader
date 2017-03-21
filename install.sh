@@ -62,4 +62,4 @@ do
 done
 
 # FINALLY ... run the load all script to execute the loader for the first time...
-nohup bin/load_all > ./load_all.log 2>&1 &
+nohup bin/load_and_deploy > ./load_and_deploy.log 2>&1 &
