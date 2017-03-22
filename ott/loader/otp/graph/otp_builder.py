@@ -173,9 +173,10 @@ class OtpBuilder(CacheBase):
         java_mem = "-Xmx1236m" if args.mem else None
 
         if args.mock:
-            feed_details = b.get_gtfs_feed_details()
-            b.update_vlog(feed_details)
-            b.mv_failed_graph_to_good()
+            graph = otp_utils.find_graph(b.graphs, args.name)
+            b.update_vlog(graph)
+            # TODO: implement mv graph to good
+            # b.mv_failed_graph_to_good()
             success = True
         else:
             if args.name != "all":
