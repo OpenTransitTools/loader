@@ -1,7 +1,7 @@
 #
 # loader install
 # will go from buildout to grabbing proper otp.jar files
-# June 2016
+# April 2017
 #
 
 link=false
@@ -62,4 +62,4 @@ do
 done
 
 # FINALLY ... run the load all script to execute the loader for the first time...
-nohup bin/load_and_deploy > ./load_and_deploy.log 2>&1 &
+nohup bin/load_and_export > ./load_and_export.log 2>&1 &
