@@ -186,3 +186,4 @@ Add (part of multi-address taxlot),4259 NE BROADWAY AVE,PORTLAND,97213,1,1,76591
 Add (not in MAF),8205 SW 24TH AVE,PORTLAND,97219,1,1,7637150.5,663444.4A
 Add (part of multi-address taxlot),920 W BURNSIDE ST,PORTLAND,97205,1,1,7643297.5,684274.5
 Add (taxlot not in MAF),3610 NW ST HELENS RD,PORTLAND,97210,1,1,7632253.5,694003.44
+One entry has incorrect coordinates (one of the suites has a taxlot ID and coordinates for 235 SW 1st Ave),506 SW 6TH AVE,PORTLAND,97204,1,1,7644010.0, 683275.1
