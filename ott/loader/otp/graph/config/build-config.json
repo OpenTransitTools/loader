@@ -1,6 +1,8 @@
 {
   // useTransfersTxt: true, // https://github.com/opentripplanner/OpenTripPlanner/issues/2264
   osmNaming: "portland",
+  disableAlertFiltering: true,
+  banDiscouragedWalking : true,
   fetchElevationUS: true,
   "elevationBucket" : {
     "accessKey" : "AKIAI5DKXIBQAUDA2S3A",
