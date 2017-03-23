@@ -3,6 +3,7 @@
   osmNaming: "portland",
   disableAlertFiltering: true,
   banDiscouragedWalking : true,
+  banDiscouragedBiking : true,
   fetchElevationUS: true,
   "elevationBucket" : {
     "accessKey" : "AKIAI5DKXIBQAUDA2S3A",
