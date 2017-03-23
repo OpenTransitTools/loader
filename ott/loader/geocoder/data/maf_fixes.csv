@@ -190,3 +190,4 @@ One entry has incorrect coordinates (one of the suites has a taxlot ID and coord
 Incorrect coordinates (and taxlot ID - both map to 1736-1764 SE Hawthorne),7642 SW CAPITOL HWY,PORTLAND,97219,1,1,7635559.0,664823.250
 Add (alias; in MAF as 1407 LLoyd Center),1407 NE HALSEY ST,PORTLAND,97232,1,1,7650280.0,688057.60
 Add (alias; in MAF as 1405 Lloyd Center),1405 NE HALSEY ST,PORTLAND,97232,1,1,7650163.50,688061.30
+Add (not in MAF; part of multi-address lot),1839 NE COUCH ST,PORTLAND,97232,1,1,7652010.0,684339.30
