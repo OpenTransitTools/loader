@@ -14,7 +14,7 @@ otp_consts = {
     basename       : "http://call.trimet.org",
     restService    : "call_otp",
     solrService    : "http://maps.trimet.org/solr/select",
-    attribution    : 'Map data &copy; 2016 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+    attribution    : 'Map data &copy; 2017 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
 otp.config = {

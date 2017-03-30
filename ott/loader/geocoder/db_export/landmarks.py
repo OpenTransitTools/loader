@@ -1,12 +1,11 @@
-from ott.utils import object_utils
-from ott.utils import db_utils
 from ott.utils.cache_base import CacheBase
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.schema import MetaData
 from sqlalchemy.orm import Session
-from sqlalchemy import Table
 from sqlalchemy import create_engine
+from geoalchemy2.shape import to_shape
+
 
 
 import logging
@@ -34,11 +33,15 @@ class Landmarks(CacheBase):
 
         #a = Table('agency', meta, autoload=True, autoload_with=engine)
         #print a.all()
-        Agency = Base.classes.agency
+        Stops = Base.classes.stops
 
         session = Session(engine)
-        for a in session.query(Agency).all():
+        for a in session.query(Stops).all():
             print a.__dict__
+            print a.geom.__dict__
+            print to_shape(a.geom).x
+            print to_shape(a.geom).y
+            break
 
     @classmethod
     def export(cls):
