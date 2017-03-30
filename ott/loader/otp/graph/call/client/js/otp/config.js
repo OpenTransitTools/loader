@@ -205,7 +205,7 @@ otp.config = {
                     { name : 'Rte 66 Schedule (66-Marquam Hill/Hollywood)', largePrint: true },
                     { name : 'Rte 68 Schedule (68-Marquam Hill/Collins Circle)', largePrint: true },
                     { name : 'Rte 70 Schedule (70-12th/NE 33rd Ave)', largePrint: true },
-                    { name : 'Rte 71 Schedule (71-60th Ave/122nd Ave)', largePrint: true },
+                    { name : 'Rte 71/73 Schedule (71-60th Ave, 73-122nd Ave)', largePrint: true },
                     { name : 'Rte 72 Schedule (72-Killingsworth/82nd Ave)', largePrint: true },
                     { name : 'Rte 75 Schedule (75-Cesar Chavez/Lombard)', largePrint: true },
                     { name : 'Rte 76/78 Schedule (76-Beaverton/Tualatin, 78-Beaverton/Lake Oswego)', largePrint: true },
@@ -261,7 +261,7 @@ otp.config = {
                 mailables_vertical_margin: 72,
 
                 mailables_introduction : "Thank you for calling us to request TriMet information.  We have enclosed for you the following item(s):",
-                mailables_conclusion : "For personalized trip planning, please call our Customer Service Center from 8:30 AM until 4:30 PM, Monday through Friday, at 238-RIDE (238-7433), TTY 238-5511.  We can also provide fare information, additional schedules, or brochures you may need.\n\nIt's a pleasure to serve your transit needs, and we thank you for riding TriMet.",
+                mailables_conclusion : "For personalized trip planning, please call our Rider Support Team from 7:30 AM until 5:30 PM, seven days a week, at 238-RIDE (238-7433), TTY 238-5511.  We can also provide fare information, additional schedules, or brochures you may need.\n\nIt's a pleasure to serve your transit needs, and we thank you for riding TriMet.",
 
                 mailables_footer : "Tri-County Metropolitan Transportation District of Oregon • 503-238-RIDE • TTY 503-238-5811 • trimet.org",
 
@@ -287,8 +287,6 @@ otp.config = {
                 {
                     maxWalkDistance : otp_consts.maxWalk,
                     minTransferTime : 300
-                    //,
-                    //maxHours : 3
                 }
             }
         }
