@@ -3,10 +3,12 @@ from ott.utils import db_utils
 from ott.utils.cache_base import CacheBase
 
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.schema import MetaData
 from sqlalchemy.orm import Session
+from sqlalchemy import Table
 from sqlalchemy import create_engine
 
-import os
+
 import logging
 log = logging.getLogger(__file__)
 
@@ -17,30 +19,26 @@ class Landmarks(CacheBase):
     db_url = None
 
     def __init__(self):
-        self.db_url = self.config.get('transit_url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
+        self.db_url = self.config.get('transit_url', section='db', def_val='postgresql+psycopg2://127.0.0.1:5432/ott')
+        self.schema = self.config.get('transit_schema', section='db', def_val="TRIMET")
 
     def x(self):
-
-        Base = automap_base()
-
         # engine, suppose it has two tables 'user' and 'address' set up
-        engine = create_engine(self.db_url);
+        engine = create_engine(self.db_url)
 
         # reflect the tables
+        meta = MetaData(schema=self.schema)
+        Base = automap_base(bind=engine, metadata=meta)
         Base.prepare(engine, reflect=True)
+        #print Base.classes.keys()
 
-        Address = Base.classes.address
+        #a = Table('agency', meta, autoload=True, autoload_with=engine)
+        #print a.all()
+        Agency = Base.classes.agency
 
         session = Session(engine)
-
-        # rudimentary relationships are produced
-        session.add(Address(email_address="foo@bar.com", user=User(name="foo")))
-        session.commit()
-
-        # collection-based relationships are by default named
-        # "<classname>_collection"
-        print (u1.address_collection)
-
+        for a in session.query(Agency).all():
+            print a.__dict__
 
     @classmethod
     def export(cls):
