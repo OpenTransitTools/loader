@@ -1,9 +1,15 @@
 """
-> We need a way to hold off trip planning on preliminary exports.  Can we set an end date for the GTFS export to exclude incomplete schedules?
+> March 2017 
+ - we have a hole in the schedule for PSC
+ - should have a test that hits every day, and makes sure there's a handful of trips each of the effective days
+ ...
 
-TODO: add checks to GTFS … make sure each service date has multiple service keys, make sure each service date has many multiple trips…
+====
 
-
+> August 2016
+ - we need a way to hold off trip planning on preliminary exports.  Can we set an end date for the GTFS export to exclude incomplete schedules?
+ - TODO: add checks to GTFS … make sure each service date has multiple service keys, make sure each service date has many multiple trips…
+ ...
 
 From: Kellermann, John
 Sent: Wednesday, August 17, 2016 1:09 PM
