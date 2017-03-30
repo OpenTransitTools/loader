@@ -1,5 +1,6 @@
 from ott.utils import object_utils
 from ott.utils import db_utils
+from ott.utils.cache_base import CacheBase
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -10,7 +11,7 @@ import logging
 log = logging.getLogger(__file__)
 
 
-class Landmarks(object):
+class Landmarks(CacheBase):
     """ export Transit data from 
     """
     db_url = None
