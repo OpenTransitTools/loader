@@ -186,4 +186,8 @@ Add (part of multi-address taxlot),4259 NE BROADWAY AVE,PORTLAND,97213,1,1,76591
 Add (not in MAF),8205 SW 24TH AVE,PORTLAND,97219,1,1,7637150.5,663444.4A
 Add (part of multi-address taxlot),920 W BURNSIDE ST,PORTLAND,97205,1,1,7643297.5,684274.5
 Add (taxlot not in MAF),3610 NW ST HELENS RD,PORTLAND,97210,1,1,7632253.5,694003.44
-One entry has incorrect coordinates (one of the suites has a taxlot ID and coordinates for 235 SW 1st Ave),506 SW 6TH AVE,PORTLAND,97204,1,1,7644010.0, 683275.1
+One entry has incorrect coordinates (one of the suites has a taxlot ID and coordinates for 235 SW 1st Ave),506 SW 6TH AVE,PORTLAND,97204,1,1,7644010.0,683275.1
+Incorrect coordinates (and taxlot ID - both map to 1736-1764 SE Hawthorne),7642 SW CAPITOL HWY,PORTLAND,97219,1,1,7635559.0,664823.250
+Add (alias; in MAF as 1407 LLoyd Center),1407 NE HALSEY ST,PORTLAND,97232,1,1,7650280.0,688057.60
+Add (alias; in MAF as 1405 Lloyd Center),1405 NE HALSEY ST,PORTLAND,97232,1,1,7650163.50,688061.30
+Add (not in MAF; part of multi-address lot),1839 NE COUCH ST,PORTLAND,97232,1,1,7652010.0,684339.30
