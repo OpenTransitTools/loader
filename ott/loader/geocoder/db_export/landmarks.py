@@ -12,14 +12,14 @@ import logging
 log = logging.getLogger(__file__)
 
 
-types = [
-    {'type_id':'7',  'type':'station'},
-    {'type_id': '10', 'type': 'pr'},
-    {'type_id': '14', 'type': 'tc'},
-    {'type_id': '15', 'type': 'facility'},
-    {'type_id': '16', 'type': 'fare_seller'},
-    {'type_id': '26', 'type': 'tvm'},
-]
+types = {}
+types[7] = 'station'
+types[10] = 'pr'
+types[14] = 'tc'
+types[15] = 'facility'
+types[16] = 'fare_outlet'
+types[26] = 'tvm'
+
 
 class Landmarks(CacheBase):
     """ export Transit data from 
@@ -40,18 +40,23 @@ class Landmarks(CacheBase):
         meta = MetaData(schema=self.schema)
         Base = automap_base(bind=engine, metadata=meta)
         Base.prepare(engine, reflect=True)
-        print Base.classes.keys()
+        #print Base.classes.keys()
 
         LandmarksDao = Base.classes.landmark_ext
-
         session = Session(engine)
+
+        type_ids = types.keys()
         for a in session.query(LandmarksDao).all():
-            print a.__dict__
-            print a.lon
-            print a.lat
-            print to_shape(a.geom).x
-            print to_shape(a.geom).y
-            break
+            if a.type in type_ids:
+                #print a.__dict__
+                #print to_shape(a.geom).x
+                #print to_shape(a.geom).y
+                print types[a.type]
+                print a.lon
+                print a.lat
+                print a.name
+                print a.address
+                break
 
     @classmethod
     def export(cls):
