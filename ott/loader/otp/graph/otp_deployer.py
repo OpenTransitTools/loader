@@ -23,7 +23,7 @@ class OtpDeployer(OtpBuilder):
         """
         ret_val = True
 
-        def scp_graph(server, user, graph_dir, server_dir):
+        def scp_graph(server, user, graph_dir, server_dir, graph=None):
             """ sub-routine to scp Graph.obj-new, otp.v-new and (optionally) otp.jar-new over to
                 a given server.  crazy part of this code is all the path (string) manipulation
                 in step 1 below...
@@ -45,7 +45,9 @@ class OtpDeployer(OtpBuilder):
 
             # step 2: we are going to attempt to scp Graph.obj-new over to the server(s)
             #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
-            if file_utils.exists(log_v_new) and file_utils.is_min_sized(graph_new):
+            if file_utils.is_min_sized(graph_new):
+                if file_utils.exists(log_v_new) is False and graph:
+                    self.update_vlog(graph)
                 scp = None
                 try:
                     log.info("scp {} over to {}@{}:{}".format(graph_new, user, server, graph_svr))
@@ -72,7 +74,7 @@ class OtpDeployer(OtpBuilder):
             for g in self.graphs:
                 dir = otp_utils.config_graph_dir(g, self.this_module_dir)
                 svr_dir = file_utils.append_to_path(svr_base_dir, g['name'])
-                scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir)
+                scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir, graph=g)
 
         # step C: remove the -new files (so we don't keep deploying / scp-ing)
         for g in self.graphs:
