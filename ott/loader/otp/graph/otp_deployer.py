@@ -46,8 +46,6 @@ class OtpDeployer(OtpBuilder):
             # step 2: we are going to attempt to scp Graph.obj-new over to the server(s)
             #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
             if file_utils.is_min_sized(graph_new):
-                if file_utils.exists(log_v_new) is False and graph:
-                    self.update_vlog(graph)
                 scp = None
                 try:
                     log.info("scp {} over to {}@{}:{}".format(graph_new, user, server, graph_svr))
@@ -96,6 +94,12 @@ class OtpDeployer(OtpBuilder):
         log.info("\nPackage new\n".format())
         d = OtpDeployer()
         for g in d.graphs:
+            # step 1: is otp.v doesn't exist, create it
+            vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
+            if file_utils.exists(vlog_path) is False:
+                d.update_vlog(g)
+
+            # step 2: package it...
             otp_utils.package_new(graph_dir=g['dir'])
 
 
