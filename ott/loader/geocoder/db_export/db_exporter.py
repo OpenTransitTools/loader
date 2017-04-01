@@ -37,3 +37,16 @@ class DbExporter(CacheBase):
     def export(cls):
         log.warn("abstract base method ... no export work being done")
         pass
+
+    @classmethod
+    def export_all(cls):
+        """ will run all the xporters sub-classed off of DbExporter """
+
+        # have to import the classes first, so reflection below picks up the inheritance chain
+        from .intersections import Intersections
+        from .landmarks import Landmarks
+
+        # iterate thru all the children, and call export
+        for subclass in cls.__subclasses__():
+            print subclass
+            subclass.export()
