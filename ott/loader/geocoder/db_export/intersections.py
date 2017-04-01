@@ -33,4 +33,3 @@ class Intersections(DbExporter):
     def export(cls):
         l = Intersections()
         l.query_and_output()
-

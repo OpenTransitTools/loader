@@ -20,7 +20,7 @@ LANDMARK_TYPES[26] = 'tvm'
 
 
 class Landmarks(DbExporter):
-    """ export Transit data from 
+    """ export Transit data from
     """
     def __init__(self):
         super(Landmarks, self).__init__()
@@ -43,4 +43,3 @@ class Landmarks(DbExporter):
     def export(cls):
         l = Landmarks()
         l.query_and_output()
-
