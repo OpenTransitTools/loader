@@ -88,7 +88,8 @@ setup(
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load
 
-        export_landmarks = ott.loader.geocoder.db_export.landmarks:Landmarks.export
+        geocoder_export_landmarks = ott.loader.geocoder.db_export.landmarks:Landmarks.export
+        geocoder_export_intersections = ott.loader.geocoder.db_export.intersections:Intersections.export
         solr_load = ott.loader.solr.solr_loader:SolrLoader.load
     """,
 )

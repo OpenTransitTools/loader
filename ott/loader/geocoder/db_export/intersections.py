@@ -1,8 +1,13 @@
 """ NOTE: below there are queries that are specific to TriMet's geo database (PostGIS), and a street intersection table.
 """
 import os
-from ott.utils import file_utils
+
 from sqlalchemy.orm import Session
+from sqlalchemy import text
+from geoalchemy2.shape import to_shape
+
+from ott.utils import file_utils
+from ott.utils import geo_utils
 from .db_exporter import DbExporter
 
 import logging
@@ -14,20 +19,22 @@ class Intersections(DbExporter):
     """
     def __init__(self):
         super(Intersections, self).__init__()
+        self.schema = 'prod'
         csv_output = self.config.get('intersections_csv', section='geocoder', def_val="intersections.csv")
         self.file_path = os.path.join(self.cache_dir, csv_output)
 
     def query_and_output(self):
-        IntersectionsOrm = self.get_table_orm('intersections')
+        IntersectionsOrm = self.get_table_orm('geocode')
         session = Session(self.engine)
         fp = open(self.file_path, 'w')
-        csv_writer = file_utils.make_csv_writer(fp, ['name', 'address', 'lon', 'lat', 'layer_id'])
+        csv_writer = file_utils.make_csv_writer(fp, ['name', 'lon', 'lat'])
 
-        type_ids = LANDMARK_TYPES.keys()
-        for i, a in enumerate(session.query(IntersectionsOrm).all()):
-            if a.type in type_ids:
-                row = {'name':a.name, 'address':a.address, 'lon':a.lon, 'lat':a.lat, 'layer_id':LANDMARK_TYPES[a.type]}
-                csv_writer.writerow(row)
+        for i, a in enumerate(session.query(IntersectionsOrm).filter(text('type = 2')).all()):
+            x = to_shape(a.geom).x
+            y = to_shape(a.geom).y
+            lon, lat = geo_utils.to_lon_lat(x, y)
+            row = {'name':a.address, 'lon':lon, 'lat':lat}
+            csv_writer.writerow(row)
 
     @classmethod
     def export(cls):
