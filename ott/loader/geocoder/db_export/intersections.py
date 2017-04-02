@@ -17,6 +17,7 @@ log = logging.getLogger(__file__)
 class Intersections(DbExporter):
     """ export Transit data from
     """
+
     def __init__(self):
         super(Intersections, self).__init__()
         self.schema = 'prod'
