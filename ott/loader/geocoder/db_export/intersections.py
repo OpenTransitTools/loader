@@ -29,7 +29,8 @@ class Intersections(DbExporter):
         fp = open(self.file_path, 'w')
         csv_writer = file_utils.make_csv_writer(fp, ['name', 'lon', 'lat'])
 
-        for i, a in enumerate(session.query(IntersectionsOrm).filter(text('type = 2')).all()):
+        intersections = session.query(IntersectionsOrm).filter(text('type = 2')).all()
+        for i, a in enumerate(intersections):
             x = to_shape(a.geom).x
             y = to_shape(a.geom).y
             lon, lat = geo_utils.to_lon_lat(x, y)
