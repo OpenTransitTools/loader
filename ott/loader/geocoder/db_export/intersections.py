@@ -35,7 +35,7 @@ class Intersections(DbExporter):
             x = to_shape(a.geom).x
             y = to_shape(a.geom).y
             lon, lat = geo_utils.to_lon_lat(x, y)
-            row = {'name':a.address, 'lon':lon, 'lat':lat, 'layer_id':'intersections'}
+            row = {'id':i, 'name':a.address, 'lon':lon, 'lat':lat, 'layer_id':'intersections'}
             csv_writer.writerow(row)
 
     @classmethod

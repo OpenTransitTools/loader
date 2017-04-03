@@ -16,6 +16,7 @@ LANDMARK_TYPES[10] = 'pr'
 LANDMARK_TYPES[14] = 'tc'
 LANDMARK_TYPES[15] = 'facility'
 LANDMARK_TYPES[16] = 'fare_outlet'
+LANDMARK_TYPES[17] = 'br'
 LANDMARK_TYPES[26] = 'tvm'
 
 
@@ -36,7 +37,7 @@ class Landmarks(DbExporter):
         type_ids = LANDMARK_TYPES.keys()
         for i, a in enumerate(session.query(LandmarksOrm).all()):
             if a.type in type_ids:
-                row = {'name':a.name, 'address':a.address, 'lon':a.lon, 'lat':a.lat, 'layer_id':LANDMARK_TYPES[a.type]}
+                row = {'id':a.id, 'name':a.name, 'address':a.address, 'lon':a.lon, 'lat':a.lat, 'layer_id':LANDMARK_TYPES[a.type]}
                 csv_writer.writerow(row)
 
     @classmethod
