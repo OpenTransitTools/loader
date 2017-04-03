@@ -28,14 +28,14 @@ class Intersections(DbExporter):
         IntersectionsOrm = self.get_table_orm('geocode')
         session = Session(self.engine)
         fp = open(self.file_path, 'w')
-        csv_writer = file_utils.make_csv_writer(fp, ['name', 'lon', 'lat'])
+        csv_writer = file_utils.make_csv_writer(fp, self.csv_columns)
 
         intersections = session.query(IntersectionsOrm).filter(text('type = 2')).all()
         for i, a in enumerate(intersections):
             x = to_shape(a.geom).x
             y = to_shape(a.geom).y
             lon, lat = geo_utils.to_lon_lat(x, y)
-            row = {'name':a.address, 'lon':lon, 'lat':lat}
+            row = {'name':a.address, 'lon':lon, 'lat':lat, 'layer_id':'intersections'}
             csv_writer.writerow(row)
 
     @classmethod

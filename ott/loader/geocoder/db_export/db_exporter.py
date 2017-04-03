@@ -12,6 +12,8 @@ log = logging.getLogger(__file__)
 class DbExporter(CacheBase):
     """ export Transit data from 
     """
+    csv_columns = ['name', 'address', 'lon', 'lat', 'layer_id']
+
     def __init__(self):
         super(DbExporter, self).__init__('geocoder')
         self.db_url = self.config.get('transit_url',    section='db', def_val='postgresql+psycopg2://geoserve@maps6:5432/trimet')

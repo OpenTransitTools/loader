@@ -31,7 +31,7 @@ class Landmarks(DbExporter):
         LandmarksOrm = self.get_table_orm('landmark_ext')
         session = Session(self.engine)
         fp = open(self.file_path, 'w')
-        csv_writer = file_utils.make_csv_writer(fp, ['name', 'address', 'lon', 'lat', 'layer_id'])
+        csv_writer = file_utils.make_csv_writer(fp, self.csv_columns)
 
         type_ids = LANDMARK_TYPES.keys()
         for i, a in enumerate(session.query(LandmarksOrm).all()):
