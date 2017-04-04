@@ -12,7 +12,7 @@ log = logging.getLogger(__file__)
 class DbExporter(CacheBase):
     """ export Transit data from 
     """
-    csv_columns = ['id', 'name', 'address', 'lon', 'lat', 'layer_id']
+    csv_columns = ['id', 'name', 'address', 'zipcode', 'lon', 'lat', 'layer_id']
 
     def __init__(self):
         super(DbExporter, self).__init__('geocoder')
