@@ -27,7 +27,7 @@ class Intersections(DbExporter):
     def query_and_output(self):
         IntersectionsOrm = self.get_table_orm('geocode')
         session = Session(self.engine)
-        fp = open(self.file_path, 'w')
+        fp = open(self.file_path, 'wb')
         csv_writer = file_utils.make_csv_writer(fp, self.csv_columns)
 
         intersections = session.query(IntersectionsOrm).filter(text('type = 2')).all()
