@@ -16,6 +16,7 @@ lucene
 *.osm
 *.pid
 call/
+call-test/
 prod/
 test/
 ned/

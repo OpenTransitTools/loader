@@ -15,6 +15,7 @@ requires = [
     'pyparsing',
     'psycopg2',
     'paramiko == 1.14.2',
+    'shapely',
     'scp'
 ]
 

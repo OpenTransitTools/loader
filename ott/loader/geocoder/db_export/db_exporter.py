@@ -16,7 +16,7 @@ class DbExporter(CacheBase):
 
     def __init__(self):
         super(DbExporter, self).__init__('geocoder')
-        self.db_url = self.config.get('transit_url',    section='db', def_val='postgresql+psycopg2://geoserve@maps6:5432/trimet')
+        self.db_url = self.config.get('transit_url',    section='db', def_val='postgresql+psycopg2://geoserve@localhost:5432/trimet')
         self.schema = self.config.get('transit_schema', section='db', def_val="current")
 
     def make_database(self):
