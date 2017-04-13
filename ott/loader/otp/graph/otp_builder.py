@@ -146,7 +146,7 @@ class OtpBuilder(CacheBase):
     def get_args(cls):
         """ make the cli argparse for OTP graph building and testing
         """
-        parser = otp_utils.get_initial_arg_parser()
+        parser = otp_utils.get_initial_arg_parser('otp-builder')
         parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
         parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
