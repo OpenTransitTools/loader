@@ -11,6 +11,7 @@ log = logging.getLogger(__file__)
 
 # map TriMet landmark types to something more readable / relatable
 LANDMARK_TYPES = {}
+#LANDMARK_TYPES[2] = 'airport' # maybe we do this if we need the PDX alias
 LANDMARK_TYPES[7] = 'station'
 LANDMARK_TYPES[10] = 'pr'
 LANDMARK_TYPES[14] = 'tc'
