@@ -22,7 +22,13 @@ class OsmInfo(object):
         self.last = Last()
 
     def __str__(self):
-        return json_utils.json_repr(self, pretty_print=True)
+        return self.to_json(pretty_print=True)
+
+    def to_json(self, pretty_print=False):
+        return json_utils.json_repr(self, pretty_print=pretty_print)
+
+    def to_json_file(self, file_path, pretty_print=False):
+        json_utils.object_to_json_file(file_path, self, pretty_print)
 
     def get_osm_stats(self, osm_path):
         """ 
@@ -51,3 +57,4 @@ class OsmInfo(object):
         stats = OsmInfo()
         stats.get_osm_stats(c.osm_name)
         print stats
+        stats.to_json(c.osm_name + "-stats", pretty_print=True)
