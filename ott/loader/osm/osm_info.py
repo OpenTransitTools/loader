@@ -21,6 +21,9 @@ class OsmInfo(object):
             changeset = 0
         self.last = Last()
 
+    def __str__(self):
+        return json_utils.json_repr(self, pretty_print=True)
+
     def get_osm_stats(self, osm_path):
         """ 
         """
@@ -47,4 +50,4 @@ class OsmInfo(object):
         c = OsmCache()
         stats = OsmInfo()
         stats.get_osm_stats(c.osm_name)
-        print json_utils.json_repr(stats, pretty_print=True)
+        print stats
