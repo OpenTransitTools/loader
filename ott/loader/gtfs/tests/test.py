@@ -3,7 +3,7 @@ import inspect
 import unittest
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
-from ott.loader.gtfs.info import Info
+from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.gtfs.diff import Diff
 
 class TestGtfsDiff(unittest.TestCase):
@@ -87,7 +87,7 @@ class TestGtfsInfo(unittest.TestCase):
         this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
         gtfsA = os.path.join(this_module_dir, "gtfsB.zip")
 
-        i = Info(gtfsA)
+        i = GtfsInfo(gtfsA)
 
         fi = i.get_feed_info()
         fi_match = ('20150927', '20160305', 'TriMet', '20150927-20151006-0140')

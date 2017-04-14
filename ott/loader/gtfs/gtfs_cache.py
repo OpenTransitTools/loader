@@ -9,7 +9,7 @@ from ott.utils import object_utils
 from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 
-from ott.loader.gtfs.info import Info
+from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.gtfs.diff import Diff
 
 
@@ -76,7 +76,7 @@ class GtfsCache(CacheBase):
         ''' :return an info object for this cached gtfs feed
         '''
         cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
-        ret_val = Info(cache_path, file_prefix)
+        ret_val = GtfsInfo(cache_path, file_prefix)
         return ret_val
 
     @classmethod
