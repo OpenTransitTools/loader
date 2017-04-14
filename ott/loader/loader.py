@@ -82,7 +82,7 @@ def export_all():
     #solr_load = SolrLoader.load
 
 
-def deploy_all():
+def restore_production():
     """ load (production) new database extracts and deploy new otp graphs
 
         does the following:
@@ -95,14 +95,10 @@ def deploy_all():
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()
-    #osm.deploy_db_snapshot()
-
-    log.info("step 3: export otp graph")
-    OtpExporter.export()
+    #osm.restore_db_snapshots()
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
-
 
 def load_and_export():
     log.info("***load and build things, then export them and scp' them to production servers ***")
