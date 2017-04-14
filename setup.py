@@ -11,6 +11,7 @@ requires = [
     'ott.utils',
     'ott.gbfsdb',
     'simplejson',
+    'osmread',
     'mako',
     'pyparsing',
     'psycopg2',
@@ -68,6 +69,7 @@ setup(
         osm_to_pbf = ott.loader.osm.osm_cache:OsmCache.convert_osm_to_pbf
         pbf_to_osm = ott.loader.osm.osm_cache:OsmCache.convert_pbf_to_osm
         osm_other_exports = ott.loader.osm.osm_cache:OsmCache.other_exports
+        osm_stats = ott.loader.osm.osm_info:OsmInfo.print_stats
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_info = ott.loader.gtfs.info:main
