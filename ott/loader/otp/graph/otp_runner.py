@@ -1,13 +1,14 @@
 """ Run
 """
 import sys
-import time
-import logging
-log = logging.getLogger(__file__)
 
 from ott.utils import otp_utils
 from ott.utils import web_utils
+from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
+
+import logging
+log = logging.getLogger(__file__)
 
 
 class OtpRunner(CacheBase):
@@ -48,7 +49,6 @@ class OtpRunner(CacheBase):
 
     @classmethod
     def run(cls):
-        #import pdb; pdb.set_trace()
         success = False
 
         r = OtpRunner()
@@ -77,15 +77,18 @@ class OtpRunner(CacheBase):
         """ search configured graph cache's, and if we find a Graph.obj-new, we'll move that into place and
             restart the otp instance 
         """
-        #import pdb; pdb.set_trace()
         success = True
         r = OtpRunner()
         for g in r.graphs:
-            print g
-            s = True
-            #s = cls.start_server(graph=z, java_mem=java_mem)
-            if s is False:
-                success = False
+            graph_path = otp_utils.get_graph_path(g['dir'])
+            new_path = file_utils.make_new_path(graph_path)
+            if file_utils.exists(new_path):
+                log.info("yes, a 'new' graph for instance {} exists ({}) ... restarting".format(g['name'], new_path))
+                s = cls.start_server(graph=g)
+                if s is False:
+                    success = False
+            else:
+                log.info("no, a 'new' graph for {} has not yet been built ({}) - nothing to restart ... skipping.".format(g['name'], new_path))
         return success
 
     @classmethod
@@ -106,6 +109,7 @@ class OtpRunner(CacheBase):
 
 
 def main(argv=sys.argv):
+    # import pdb; pdb.set_trace()
     OtpRunner.run()
 
 if __name__ == '__main__':
