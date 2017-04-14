@@ -3,6 +3,7 @@ from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
+from .osm_info import OsmInfo
 
 import os
 import re
@@ -56,6 +57,7 @@ class OsmCache(CacheBase):
         self.pbf_path = os.path.join(self.cache_dir, self.pbf_name)
         self.meta_path = os.path.join(self.cache_dir, self.meta_name)
         self.osm_path = os.path.join(self.cache_dir, self.osm_name)
+        self.stats_path = os.path.join(self.cache_dir, self.osm_name + "-stats")
 
     def check_cached_osm(self, force_update=False):
         """ if OSM .pbf file is out of date, download a new one.
@@ -114,6 +116,7 @@ class OsmCache(CacheBase):
         osmosis_cmd = osmosis.format(osmosis_exe, input_path, top, bottom, left, right, output_path)
         log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
+        OsmInfo.cache_stats(output_path)
 
     def osm_to_pbf(self, osm_path=None, pbf_path=None):
         """ use osmosis to convert .osm file to .pbf
@@ -148,7 +151,7 @@ class OsmCache(CacheBase):
 
     @classmethod
     def check_osm_file_against_cache(cls, app_dir, force_update=False):
-        """ check the .osm file in this cache against an osm file in another app's directory
+        """ check the .osm file in this cache against an osm file in another app's directory (e.g., OTP folder)
         """
         ret_val = False
         try:
@@ -156,8 +159,13 @@ class OsmCache(CacheBase):
             app_osm_path = os.path.join(app_dir, osm.osm_name)
             refresh = file_utils.is_a_newer_than_b(osm.osm_path, app_osm_path)
             if refresh or force_update:
+                # step a: copy the .osm file to this foreign cache
                 log.info("cp {} to {}".format(osm.osm_name, app_dir))
                 osm.cp_cached_file(osm.osm_name, app_dir)
+
+                # step b: copy the stats file to this foreign cache
+                cache_file = OsmInfo.get_stats_file_path(osm.osm_name)
+                osm.cp_cached_file(cache_file, app_dir)
                 ret_val = True
         except Exception, e:
             log.warn(e)

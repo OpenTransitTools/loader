@@ -48,28 +48,40 @@ class OsmInfo(object):
         self.last.changeset_url = "http://openstreetmap.org/changeset/{}".format(self.last.changeset)
         self.last.date = date_utils.pretty_date_from_ms(self.last.timestamp * 1000)
 
+
+    @classmethod
+    def get_stats_file_path(cls, osm_file, stats_file=None):
+        if stats_file is None:
+            stats_file = osm_file + "-stats"
+        return stats_file
+
+    @classmethod
+    def cache_stats(cls, osm_file, stats_file=None, pretty_print=True):
+        stats_file = cls.get_stats_file_path(osm_file, stats_file)
+        stats = OsmInfo()
+        stats.calculate_osm_stats(osm_file)
+        stats.write_json_file(stats_file, pretty_print)
+        ret_val = stats.to_json()
+        return ret_val
+
     @classmethod
     def get_stats(cls, osm_file, stats_file=None, pretty_print=True):
         """ will either read a cache'd -stats file into memory, or calculate the stats, cache them and then return
             :return dict representing the json stats object
         """
+        #import pdb; pdb.set_trace()
         ret_val = None
 
-        # step 1: make sure we have a stats file path
-        if stats_file is None:
-            stats_file = osm_file + "-stats"
+        # step 1: validate stats file path
+        stats_file = cls.get_stats_file_path(osm_file, stats_file)
 
         # step 2: if the stats file exists and is newere than the .osm file, try to read it in
-        #import pdb; pdb.set_trace()
         if file_utils.exists(stats_file) and file_utils.is_a_newer_than_b(stats_file, osm_file):
             ret_val = json_utils.get_json(stats_file)
 
         # step 3: if we don't have stats from a cache'd file, calculate new stats and write them out
         if ret_val is None or len(ret_val) < 2:
-            stats = OsmInfo()
-            stats.calculate_osm_stats(osm_file)
-            stats.write_json_file(stats_file, pretty_print)
-            ret_val = stats.to_json()
+            ret_val = cls.cache_stats(osm_file, stats_file, pretty_print)
 
         # step 4: return the stats as a string
         return ret_val
@@ -80,5 +92,5 @@ class OsmInfo(object):
         """
         from .osm_cache import OsmCache
         c = OsmCache()
-        s = OsmInfo.get_stats(c.osm_name)
+        s = OsmInfo.get_stats(c.osm_path)
         print json_utils.dict_to_json_str(s, pretty_print=True)
