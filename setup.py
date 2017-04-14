@@ -79,6 +79,7 @@ setup(
         gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.dump
         gtfsdb_restore = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.restore
 
+        otp_restart_new_graphs = ott.loader.otp.graph.otp_runner:OtpRunner.restart_new_graphs
         otp_run = ott.loader.otp.graph.otp_runner:OtpRunner.run
         otp_build = ott.loader.otp.graph.otp_builder:OtpBuilder.build
         otp_export = ott.loader.otp.graph.otp_exporter:OtpExporter.export
@@ -87,7 +88,6 @@ setup(
         otp_preflight = ott.loader.otp.preflight.test_runner:main
         otp_stress_test = ott.loader.otp.preflight.stress.stress_tests:main
         otp_test_urls = ott.loader.otp.preflight.tests_to_urls:main
-        
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load
 

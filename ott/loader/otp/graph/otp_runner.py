@@ -73,6 +73,22 @@ class OtpRunner(CacheBase):
         return success
 
     @classmethod
+    def restart_new_graphs(cls):
+        """ search configured graph cache's, and if we find a Graph.obj-new, we'll move that into place and
+            restart the otp instance 
+        """
+        #import pdb; pdb.set_trace()
+        success = True
+        r = OtpRunner()
+        for g in r.graphs:
+            print g
+            s = True
+            #s = cls.start_server(graph=z, java_mem=java_mem)
+            if s is False:
+                success = False
+        return success
+
+    @classmethod
     def static_server_cfg(cls):
         r = OtpRunner()
         port = r.config.get('port', 'web', '50080')
