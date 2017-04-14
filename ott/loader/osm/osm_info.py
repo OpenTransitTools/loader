@@ -46,7 +46,8 @@ class OsmInfo(object):
 
         # clean up data
         self.last.changeset_url = "http://openstreetmap.org/changeset/{}".format(self.last.changeset)
-        self.last.date = date_utils.pretty_date_from_ms(self.last.timestamp * 1000)
+        self.last.edit_date = date_utils.pretty_date_from_ms(self.last.timestamp * 1000, fmt="%B %d, %Y")
+        self.last.file_date = file_utils.file_pretty_date(osm_path, fmt="%B %d, %Y")
 
 
     @classmethod
