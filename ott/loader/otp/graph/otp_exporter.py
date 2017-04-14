@@ -10,14 +10,14 @@ import logging
 log = logging.getLogger(__file__)
 
 
-class OtpDeployer(OtpBuilder):
+class OtpExporter(OtpBuilder):
     """ deploy OTP graphs source from the 'build' server (SVR)
     """
     def __init__(self):
-        super(OtpDeployer, self).__init__(dont_update=True)
+        super(OtpExporter, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
 
-    def deploy_graphs(self):
+    def export_graphs(self):
         """ copy new graphs from build server to configured set of production servers
             (basically scp Graph.obj-new, otp.v-new and otp.jar-new over to another server)
         """
@@ -81,10 +81,10 @@ class OtpDeployer(OtpBuilder):
         return ret_val
 
     @classmethod
-    def deploy(cls):
-        log.info("\nRunning otp_deployer.py at {0}\n".format(datetime.datetime.now()))
-        d = OtpDeployer()
-        d.deploy_graphs()
+    def export(cls):
+        log.info("\nRunning otp_exporter.py at {0}\n".format(datetime.datetime.now()))
+        d = OtpExporter()
+        d.export_graphs()
 
     @classmethod
     def package_new(cls):
@@ -92,7 +92,7 @@ class OtpDeployer(OtpBuilder):
             intended to run manually if we need to export a graph by hand
         """
         log.info("\nPackage new\n".format())
-        d = OtpDeployer()
+        d = OtpExporter()
         for g in d.graphs:
             # step 1: is otp.v doesn't exist or is a bit old, create it
             vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
@@ -105,7 +105,7 @@ class OtpDeployer(OtpBuilder):
 
 def main():
     # import pdb; pdb.set_trace()
-    OtpDeployer.deploy()
+    OtpExporter.export()
 
 if __name__ == '__main__':
     main()

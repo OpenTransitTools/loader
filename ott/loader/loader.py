@@ -2,7 +2,7 @@ from ott.utils import object_utils
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
-from ott.loader.otp.graph.otp_deployer import OtpDeployer
+from ott.loader.otp.graph.otp_exporter import OtpExporter
 from ott.loader.otp.graph.otp_builder import OtpBuilder
 from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader
 from ott.loader.sum.sum_cache import SumCache
@@ -76,7 +76,7 @@ def export_all():
     #osm.deploy_db_snapshot()
 
     log.info("step 3: export otp graph")
-    OtpDeployer.deploy()
+    OtpExporter.export()
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
@@ -98,7 +98,7 @@ def deploy_all():
     #osm.deploy_db_snapshot()
 
     log.info("step 3: export otp graph")
-    OtpDeployer.deploy()
+    OtpExporter.export()
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
@@ -108,7 +108,3 @@ def load_and_export():
     log.info("***load and build things, then export them and scp' them to production servers ***")
     load_all()
     export_all()
-
-
-
-
