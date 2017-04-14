@@ -105,7 +105,7 @@ class OsmInfo(object):
         file_name = file_utils.get_file_name_from_path(file_path)
         stats = OsmInfo.get_stats(file_path)
         msg = "{}{} : file date: {} -- last OSM update: {}, changeset {}{}"\
-            .format(prefix, file_name, stats['last'].get('file_date'), stats['last'].get('edit_date'), stats['last'].get('changeset_url'), suffix)
+            .format(prefix, file_name, stats['last'].get('file_date'), stats['last'].get('edit_date'), stats['last'].get('changeset'), suffix)
         return msg
 
     @classmethod
@@ -114,11 +114,8 @@ class OsmInfo(object):
         osm_msg = def_msg
         try:
             osm_files = OsmInfo.find_osm_files(cache_path)
-            if osm_files and len(osm_files) > 0:
-                num_msg = "\n"
-                if len(osm_files) > 1:
-                    num_msg = " (plus another {} OSM files)\n".format(len(osm_files))
-                osm_msg = OsmInfo.get_osm_feed_msg(osm_files[0], suffix=num_msg)
+            for f in osm_files:
+                osm_msg += OsmInfo.get_osm_feed_msg(f)
         except Exception, e:
             log.info(e)
         return osm_msg
