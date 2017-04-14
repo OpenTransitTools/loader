@@ -51,6 +51,17 @@ class OsmInfo(object):
 
 
     @classmethod
+    def find_osm_files(cls, dir_path):
+        ret_val = []
+        osm = file_utils.find_files(dir_path, ".osm")
+        if osm:
+            ret_val.extend(osm)
+        pbf = file_utils.find_files(dir_path, ".pbf")
+        if pbf:
+            ret_val.extend(pbf)
+        return ret_val
+
+    @classmethod
     def get_stats_file_path(cls, osm_file, stats_file=None):
         if stats_file is None:
             stats_file = osm_file + "-stats"
@@ -88,6 +99,31 @@ class OsmInfo(object):
         return ret_val
 
     @classmethod
+    def get_osm_feed_msg(cls, file_path, prefix=" ", suffix="\n"):
+        """ get osm feed details msg string for the .vlog file
+        """
+        file_name = file_utils.get_file_name_from_path(file_path)
+        stats = OsmInfo.get_stats(file_path)
+        msg = "{}{} : file date: {} -- last OSM update: {}, changeset {}{}"\
+            .format(prefix, file_name, stats['last'].get('file_date'), stats['last'].get('edit_date'), stats['last'].get('changeset_url'), suffix)
+        return msg
+
+    @classmethod
+    def get_cache_msgs(cls, cache_path, def_msg=""):
+        """return message for all OSM feeds in the cache directory """
+        osm_msg = def_msg
+        try:
+            osm_files = OsmInfo.find_osm_files(cache_path)
+            if osm_files and len(osm_files) > 0:
+                num_msg = "\n"
+                if len(osm_files) > 1:
+                    num_msg = " (plus another {} OSM files)\n".format(len(osm_files))
+                osm_msg = OsmInfo.get_osm_feed_msg(osm_files[0], suffix=num_msg)
+        except Exception, e:
+            log.info(e)
+        return osm_msg
+
+    @classmethod
     def print_stats(cls):
         """ run the SUM loader routines
         """
@@ -95,3 +131,5 @@ class OsmInfo(object):
         c = OsmCache()
         s = OsmInfo.get_stats(c.osm_path)
         print json_utils.dict_to_json_str(s, pretty_print=True)
+        print ""
+        print OsmInfo.get_cache_msgs(c.cache_dir)

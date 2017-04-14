@@ -11,6 +11,7 @@ from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.osm.osm_cache import OsmCache
+from ott.loader.osm.osm_info import OsmInfo
 from ott.loader.gtfs.info import Info
 from ott.loader.otp.preflight.test_runner import TestRunner
 
@@ -140,7 +141,9 @@ class OtpBuilder(CacheBase):
         """
         graph_dir = graph.get('dir', self.cache_dir)
         feed_msg = Info.get_cache_msgs(graph_dir, self.feeds, graph.get('filter'))
-        otp_utils.append_vlog_file(graph_dir, feed_msg)
+
+
+        otp_utils.append_vlog_file(graph_dir, feed_msg + osm_msg)
 
     @classmethod
     def get_args(cls):
