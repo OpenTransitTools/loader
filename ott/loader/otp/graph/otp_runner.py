@@ -83,12 +83,12 @@ class OtpRunner(CacheBase):
             graph_path = otp_utils.get_graph_path(g['dir'])
             new_path = file_utils.make_new_path(graph_path)
             if file_utils.exists(new_path):
-                log.info("yes, a 'new' graph for instance {} exists ({}) ... restarting".format(g['name'], new_path))
+                log.info("restarting instance '{}' ... deploying file {} as the new Graph.obj".format(g['name'], new_path))
                 s = cls.start_server(graph=g)
                 if s is False:
                     success = False
             else:
-                log.info("no, a 'new' graph for {} has not yet been built ({}) - nothing to restart ... skipping.".format(g['name'], new_path))
+                log.info("a 'new' graph for instance '{}' does not exist (e.g., {} doesn't exist) - no reason to restart ... skipping.".format(g['name'], new_path))
         return success
 
     @classmethod
