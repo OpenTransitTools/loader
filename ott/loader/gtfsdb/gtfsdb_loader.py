@@ -1,3 +1,4 @@
+from ott.utils import gtfs_utils
 from ott.utils import object_utils
 from ott.utils import db_utils
 from ott.utils import exe_utils
@@ -22,13 +23,9 @@ class GtfsdbLoader(CacheBase):
     def __init__(self):
         super(GtfsdbLoader, self).__init__(section='gtfs')
 
-        self.feeds = self.config.get_json('feeds', section='gtfs')
+        self.feeds = gtfs_utils.get_feeds_from_config(self.config)
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
-
-    def get_feed_name(self, feed):
-        """ get a name for the database (amoungst other systems) """
-        return feed['name'].rstrip(".zip").lower()
 
     def get_dump_path(self, feed_name):
         """ get a name for the database (amoungst other systems) """
@@ -41,7 +38,7 @@ class GtfsdbLoader(CacheBase):
 
         # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
         feed_path = os.path.join(self.cache_dir, feed['name'])
-        feed_name = self.get_feed_name(feed)
+        feed_name = gtfs_utils.get_schema_name_from_feed(feed)
 
         # step 2: make args for gtfsdb
         kwargs = {}

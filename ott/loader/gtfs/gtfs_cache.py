@@ -1,9 +1,9 @@
 import os
 import logging
-import logging.config
 log = logging.getLogger(__file__)
 
 
+from ott.utils import gtfs_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils import web_utils
@@ -22,7 +22,7 @@ class GtfsCache(CacheBase):
 
     def __init__(self):
         super(GtfsCache, self).__init__(section='gtfs')
-        self.feeds = self.config.get_json('feeds')
+        self.feeds = gtfs_utils.get_feeds_from_config(self.config)
 
     def check_cached_feeds(self, force_update=False):
         for f in self.feeds:
