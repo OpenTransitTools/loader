@@ -7,6 +7,7 @@ GRAPH_NAME=${GRAPH_DIR##*/}
 
 ## build / copy .jar into place
 #build_jar
+wget_otpv
 wget_jar
 fix_config_jar
 misc

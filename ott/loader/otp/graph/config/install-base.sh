@@ -4,10 +4,11 @@
 # preps each graph directory by adding config stuff to otp.jar, as well as
 # (possibly) copying cached data (like NED tiles)
 #
-# June 2016
+# June 2016 - created
+# May 2017 - update link to otp.jar and also grab otp.v from other server if new install
 #
 
-WEB_JAR=${WEB_JAR:="http://maven.conveyal.com.s3.amazonaws.com/org/opentripplanner/otp/0.20.0/otp-0.20.0-shaded.jar"}
+WEB_JAR=${WEB_JAR:="https://repo1.maven.org/maven2/org/opentripplanner/otp/1.1.0/otp-1.1.0-shaded.jar"}
 
 OTP_DIR=${OTP_DIR:="../OpenTripPlanner"}
 OTP_JAR=${OTP_JAR:="$OTP_DIR/target/otp-*-shaded.jar"}
@@ -19,10 +20,21 @@ CACHE_JAR=${CACHE_JAR:="../cache/otp.jar"}
 CFG_DIR=${CFG_DIR:="ott/loader/otp/graph/config"}
 TILE_DIR=${TILE_DIR:="../cache/ned/"}
 
+PROD_SVR=${PROD_SVR:="maps8"}
+
 link=false
 if [[ $1 == "link" ]]; then
   link=true
 fi
+
+##
+## grap otp.v from production server, so we don't lose that content with new otp.v file
+##
+function wget_otpv()
+{
+    echo scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
+    scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
+}
 
 ##
 ## build OTP.jar and copy it to a given location
