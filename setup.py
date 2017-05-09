@@ -17,8 +17,11 @@ requires = [
     'psycopg2',
     'paramiko == 1.14.2',
     'shapely',
-    'scp'
-]
+    'protobuf',
+    'scp',
+] + ([] if "win" in sys.platform else  # sys dependant dependencies
+[   'imposm',
+])
 
 extras_require = dict(
     dev=[],
