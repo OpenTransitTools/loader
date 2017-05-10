@@ -15,6 +15,14 @@ install:
   1. cd loader
   1. buildout
   1. git update-index --assume-unchanged .pydevproject
+  1. NOTE: system packages necessary for things to work may include pre-built Shapely, or else the following system packages: 
+    `protobuf
+    protobuf-devel
+    tokyocabinet
+    tokyocabinet-devel
+    geos
+    geos-devel
+`
 
 run:
   1. bin/test ... this cmd will run loader's unit tests (see: http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started)

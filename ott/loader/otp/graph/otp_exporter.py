@@ -96,7 +96,7 @@ class OtpExporter(OtpBuilder):
         for g in d.graphs:
             # step 1: is otp.v doesn't exist or is a bit old, create it
             vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
-            if file_utils.exists(vlog_path) is False or file_utils.file_age(vlog_path) > 2:
+            if file_utils.exists(vlog_path) is False or file_utils.file_age(vlog_path) > 1:
                 d.update_vlog(g)
 
             # step 2: package it...
