@@ -64,8 +64,8 @@ setup(
     # find ott | grep py$ | xargs grep "def.main"
     entry_points="""
         [console_scripts]
+        download_data = ott.loader.loader:download_data
         load_all = ott.loader.loader:load_all
-        load_data = ott.loader.loader:load_data
         load_and_export = ott.loader.loader:load_and_export
         export_all = ott.loader.loader:export_all
 

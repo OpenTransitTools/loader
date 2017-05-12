@@ -13,7 +13,7 @@ import logging
 log = logging.getLogger(__file__)
 
 
-def load_data():
+def download_data():
     """ just download data
 
         does the following:
@@ -49,7 +49,7 @@ def load_all():
     """
     force_update=object_utils.is_force_update()
 
-    load_data()
+    download_data()
 
     log.info("step 4: load gtfsdb")
     db = GtfsdbLoader()
