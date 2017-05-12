@@ -19,19 +19,21 @@ requires = [
     'shapely',
     'protobuf',
     'scp',
-] + ([] if "win" in sys.platform else  # sys dependant dependencies
-[   'imposm',
-])
+]
+
+# sys dependant dependencies
+if sys.platform == "darwin" or "win" not in sys.platform:
+    requires.append('imposm')
+
+# eggs that you need if you're running a version of python lower than 2.7
+if sys.version_info[:2] < (2, 7):
+    requires.extend(['argparse>=1.2.1', 'unittest2>=0.5.1'])
+
 
 extras_require = dict(
     dev=[],
 )
 
-#
-# eggs that you need if you're running a version of python lower than 2.7
-#
-if sys.version_info[:2] < (2, 7):
-    requires.extend(['argparse>=1.2.1', 'unittest2>=0.5.1'])
 
 setup(
     name='ott.loader',
