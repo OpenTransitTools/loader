@@ -1,0 +1,73 @@
+// router-config.json
+{
+    timeouts: [7, 3, 2],
+
+    //requestLogFile: "request.log",
+
+    //
+    // Routing defaults are any public field or setter in the Java class
+    // org.opentripplanner.routing.core.RoutingRequest
+    // NOTE: updated Oct 2016 ... adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
+    //       updated Dec 2016 ... add disableAlertFiltering to show future alerts
+    //       updated Feb 2017 ... add geoidElevation to fix the below sea-level with a regional offset
+    //
+    routingDefaults: {
+        maxHours: 6,
+        boardSlack: 0,
+        alightSlack: 0,
+        transferSlack: 180,
+        maxTransfers: 4,
+        waitReluctance: 0.9,
+        walkReluctance: 1.75,
+        stairsReluctance: 1.65,
+        numItineraries: 3,
+        disableAlertFiltering: true,
+        geoidElevation : true
+    },
+
+    updaters: [
+        // @see: http://docs.opentripplanner.org/en/latest/Configuration/
+        // @see: http://opentripplanner.readthedocs.io/en/latest/Configuration/#real-time-data
+        //  alt svc url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
+        {
+            type: "real-time-alerts",
+            frequencySec: 180,
+            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+            feedId: "TriMet"
+        },
+
+        // Polling for GTFS-RT TripUpdates
+        {
+            type: "stop-time-updater",
+            frequencySec: 30,
+            sourceType: "gtfs-http",
+            url: "http://trimet.org/transweb/ws/V1/TripUpdate",
+            feedId: "TriMet"
+        },
+
+        // Streaming differential GTFS-RT TripUpdates over websockets
+        {
+            type: "websocket-gtfs-rt-updater"
+        },
+
+        // OpenTraffic data
+        {
+          "type": "opentraffic-updater",
+          "frequencySec": -1,
+          // relative to OTP's working directory, where is traffic data stored.
+          // Should have subdirectories z/x/y.traffic.pbf (i.e. a tile tree of traffic tiles)
+          "tileDirectory": "traffic"
+        },
+
+        {
+            type: "bike-rental",
+            sourceType: "gbfs",
+            url: "http://biketownpdx.socialbicycles.com/opendata",
+            frequencySec: 300
+        },
+
+        {
+            type: "bike-park"
+        }
+    ]
+}
