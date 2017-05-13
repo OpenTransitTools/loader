@@ -7,8 +7,8 @@
   banDiscouragedBiking : true,
   fetchElevationUS: true,
   "elevationBucket" : {
-    "accessKey" : "AKIAI5DKXIBQAUDA2S3A",
-    "secretKey" : "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",
+    "accessKey" : "KEYKEYKEY",
+    "secretKey" : "SECRETSECRETSECRET",
     "bucketName" : "ned13"
   }
 }
