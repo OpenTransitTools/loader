@@ -17,7 +17,7 @@ install:
   1. git update-index --assume-unchanged .pydevproject
   1. NOTE: system packages necessary for things to work may include pre-built Shapely, or else the following system packages: 
   1. Install these packages
-     - `yum install protobuf protobuf-devel tokyocabinet tokyocabinet-devel geos geos-devel
+     - `yum install protobuf protobuf-devel tokyocabinet tokyocabinet-devel geos geos-devel  libxml2 libxslt libxml2-devel libxslt-devel
     `
   1. Or Build and install Protobuf and TokyoCabinet from source (MacOSX):
      - git clone https://github.com/google/protobuf 
