@@ -13,7 +13,7 @@ log = logging.getLogger(__file__)
 class OsmRename(object):
     """ Utility for getting stats on an osm file 
     """
-    attrib = "renamed by OTT"
+    attrib = "streets renamed by OpenTransitTools"
     bunchsize = 1000000
     rename_cache = {}
 
@@ -23,6 +23,12 @@ class OsmRename(object):
             
             :note this assumes that each OSM <tag /> falls completely upon a single line of the file 
             and the parser / renamer will break if targeted tags are spread across multiple lines of the file
+            
+            
+            @todo look at SAX
+            https://gist.github.com/veryhappythings/98604
+            :todo ... add unit tests
+            TODO: fix up hacky parts...
         """
         self.osm_input_path = osm_infile_path
         is_same_input_output = False
@@ -49,7 +55,7 @@ class OsmRename(object):
                 # step 1: check to see if this .osm file has already been renamed
                 if not do_rename and "<osm " in line:
                     if not self.attrib in line:
-                        line = add_xml_attribute_to_tag(line, line_num)
+                        line = add_xml_attribute_to_osm_tag(line, line_num)
                         do_rename = True
 
                 # step 2: run rename method(s) for this line in the text (xml) file
@@ -73,7 +79,7 @@ class OsmRename(object):
         if val:
             if len(val) > 0:
                 self.rename_xml_value_attirbute(xml)
-                ret_val = ET.tostring(xml)
+                ret_val = "    {}\n".format(ET.tostring(xml))
             else:
                 log.warn('addr:street (line {}) xml element {} found an empty street name value'.format(line_num, xml.attrib))
         else:
@@ -88,17 +94,17 @@ class OsmRename(object):
             xml.attrib['v'] = self.rename_cache[street_name]
         else:
             rename = street_name + "XXX"
-            xml.setAttribute('v', rename)
+            xml.set('v', rename)
             self.rename_cache[street_name] = rename
 
     @classmethod
     def rename(cls, osm_infile_path, osm_outfile_path):
         """ 
         """
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         ret_val = None
 
-        # step 1: validate stats file path
+        # step 1:
         osm = OsmRename(osm_infile_path, osm_outfile_path)
 
         # step 4: return the stats as a string
@@ -111,17 +117,35 @@ class OsmRename(object):
         cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
 
 
-
-def add_xml_attribute_to_tag(line, line_num, attribute_name="generator", attribue_val=OsmRename.attrib, append=True):
+def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", attribue_val=OsmRename.attrib, append=True):
+    """ a bit hacky XML element editing """
     ret_val = line
     try:
-        xml = ET.fromstring(line)
+        xml = ET.fromstring(line + "</osm>")
         curr_val = xml.get(attribute_name)
         if append:
             attribue_val = "{}; {}".format(curr_val, attribue_val)
         xml.set(attribute_name, attribue_val)
         ret_val = ET.tostring(xml)
+        ret_val = ret_val.replace("</osm>", "").replace("/>", ">")
     except Exception, e:
         log.warn("couldn't add attribute {} to xml element on line number {}", attribute_name, line_num)
         log.warn(e)
     return ret_val
+
+'''
+<way id="5516537" version="7" timestamp="2016-05-11T00:36:00Z" uid="3735764" user="Brett_Ham" changeset="39230702">
+    <nd ref="40448171"/>
+    <nd ref="40448180"/>
+    <nd ref="40448186"/>
+    <nd ref="1377018862"/>
+    <nd ref="40448188"/>
+    <nd ref="1377018878"/>
+    <nd ref="40448189"/>
+    <nd ref="40448191"/>
+    <tag k="name" v="Southwest Westwood Court"/>
+    <tag k="highway" v="residential"/>
+    <tag k="sidewalk" v="no"/>
+    <tag k="tiger:county" v="Multnomah, OR"/>
+  </way>
+'''
