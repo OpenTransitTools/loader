@@ -48,6 +48,9 @@ c:/
 *.so
 
 # Packages
+imposm_*
+x
+x.*
 *.egg
 *.egg-info
 dist
