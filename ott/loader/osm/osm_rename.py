@@ -50,6 +50,7 @@ class OsmRename(object):
         """
         bunch = []
         do_rename = False
+        is_inside_way = False
         with open(self.osm_input_path, "r") as r, open(self.osm_output_path, "w") as w:
             for line_num, line in enumerate(r):
                 # step 1: check to see if this .osm file has already been renamed
@@ -61,7 +62,20 @@ class OsmRename(object):
                 # step 2: run rename method(s) for this line in the text (xml) file
                 if do_rename:
                     if "addr:street" in line:
-                        line = self.process_addrstreet_line(line, line_num)
+                        line = self.process_streetname_str(line, line_num, "addr:street")
+                    if is_inside_way:
+                        if '<tag k="name' in line:
+                            line = self.process_streetname_str(line, line_num, "way:name")
+                        elif '<tag k="old_name' in line:
+                            line = self.process_streetname_str(line, line_num, "way:old_name")
+                        elif '<tag k="bridge:name' in line:
+                            line = self.process_streetname_str(line, line_num, "way:bridge:name")
+                        elif '<tag k="description' in line:
+                            line = self.process_streetname_str(line, line_num, "way:description")
+                    if '<way ' in line:
+                        is_inside_way = True
+                    if '</way>' in line:
+                        is_inside_way = False
 
                 # step 3: buffer write the lines of the file to a new file
                 bunch.append(line)
@@ -70,7 +84,7 @@ class OsmRename(object):
                     bunch = []
             w.writelines(bunch)
 
-    def process_addrstreet_line(self, line, line_num):
+    def process_streetname_str(self, line, line_num, type):
         """ parse line of text into XML and look to rename the v attribute in the tag element """
         ret_val = line
 
@@ -81,9 +95,9 @@ class OsmRename(object):
                 self.rename_xml_value_attirbute(xml)
                 ret_val = "    {}\n".format(ET.tostring(xml))
             else:
-                log.warn('addr:street (line {}) xml element {} found an empty street name value'.format(line_num, xml.attrib))
+                log.warn('{} (line {}) xml element {} found an empty street name value'.format(type, line_num, xml.attrib))
         else:
-            log.warn('addr:street (line {}) xml element {} is without a value attribute'.format(line_num, xml.attrib))
+            log.warn('{} (line {}) xml element {} is without a value attribute'.format(type, line_num, xml.attrib))
 
         return ret_val
 
