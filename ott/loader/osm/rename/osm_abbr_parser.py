@@ -6,8 +6,8 @@ import inspect
 import csv
 from pyparsing import *
 
-class OsmAbbrParser():
-    """Convert long OSM types and directions to their proper abbrivated forms
+class OsmAbbrParser(object):
+    """Convert long OSM types and directions to their proper abbreviated forms
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
@@ -67,9 +67,7 @@ class OsmAbbrParser():
 
     def parse(self, s):
         """ Returns parsed address as dictionary
-        
-        run the input string through the street parser
-        
+            run the input string through the street parser
         """
         ret_val = {
            'type'   : '',
@@ -112,6 +110,16 @@ class OsmAbbrParser():
         pretty = self.pstr(r['prefix'], pretty) + self.pstr(r['name'], pretty) + self.pstr(r['type'], pretty) + self.pstr(r['suffix'], pretty)
         ret_val['label_text'] = pretty.strip()
         ret_val['label'] = self.do_label(r['name'], r['type'])
+        return ret_val
+
+    def to_str(self, orig):
+        ret_val = orig
+        try:
+            f = self.dict(orig)
+            if f and len(f['label_text']) > 0:
+                ret_val = f['label_text']
+        except:
+            pass
         return ret_val
 
     def do_label(self, s, t):

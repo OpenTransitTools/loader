@@ -1,9 +1,12 @@
+import sys
 try:
     import xml.etree.cElementTree as ET
 except ImportError:
     import xml.etree.ElementTree as ET
 
 from ott.utils import file_utils
+
+from ott.loader.osm.rename.osm_abbr_parser import OsmAbbrParser
 
 import logging
 log = logging.getLogger(__file__)
@@ -38,6 +41,7 @@ class OsmRename(object):
         else:
             self.osm_output_path = osm_outfile_path
 
+        self.abbr_parser = OsmAbbrParser()
         self.process_osm_file()
 
         if is_same_input_output:
@@ -92,7 +96,7 @@ class OsmRename(object):
         val = xml.get('v')
         if val:
             if len(val) > 0:
-                self.rename_xml_value_attirbute(xml)
+                self.rename_xml_value_attirbute(xml, line_num)
                 ret_val = "    {}\n".format(ET.tostring(xml))
             else:
                 log.warn('{} (line {}) xml element {} found an empty street name value'.format(type, line_num, xml.attrib))
@@ -101,15 +105,21 @@ class OsmRename(object):
 
         return ret_val
 
-    def rename_xml_value_attirbute(self, xml):
+    def rename_xml_value_attirbute(self, xml, line_num):
         """ rename the 'v' value attirbute in this xml element tag """
         street_name = xml.attrib['v']
         if street_name in self.rename_cache:
             xml.attrib['v'] = self.rename_cache[street_name]
+            if line_num % 111 == 0:
+                sys.stdout.write(":")
+                sys.stdout.flush()
         else:
-            rename = street_name + "XXX"
+            rename = self.abbr_parser.to_str(street_name)
             xml.set('v', rename)
             self.rename_cache[street_name] = rename
+            if line_num % 111 == 0:
+                sys.stdout.write(".")
+                sys.stdout.flush()
 
     @classmethod
     def rename(cls, osm_infile_path, osm_outfile_path):
