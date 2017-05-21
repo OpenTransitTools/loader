@@ -45,7 +45,7 @@ class OsmRename(object):
         self.process_osm_file()
 
         if is_same_input_output:
-            file_utils.backup(osm_outfile_path)
+            file_utils.bkup(osm_outfile_path)
             file_utils.mv(self.osm_output_path, osm_outfile_path)
 
     def process_osm_file(self):
@@ -137,15 +137,15 @@ class OsmRename(object):
     @classmethod
     def mock(cls):
         """ assumes portland.osm exists """
-        cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
-        #cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
+        #cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
+        cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
 
 
 def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", attribue_val=OsmRename.attrib, append=True):
-    """ a bit hacky XML element editing """
+    """ a bit hacky <osm> element editing """
     ret_val = line
     try:
-        xml = ET.fromstring(line + "</osm>")
+        xml = ET.fromstring(line + "</osm>")  # need to fake close elem for ET, since real close is 1000s of lines away
         curr_val = xml.get(attribute_name)
         if append:
             attribue_val = "{}; {}".format(curr_val, attribue_val)
