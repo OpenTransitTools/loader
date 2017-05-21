@@ -137,8 +137,8 @@ class OsmRename(object):
     @classmethod
     def mock(cls):
         """ assumes portland.osm exists """
-        #cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
-        cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
+        cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
+        #cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
 
 
 def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", attribue_val=OsmRename.attrib, append=True):
