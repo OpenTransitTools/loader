@@ -8,8 +8,9 @@ import time
 import logging
 logging.basicConfig(level=logging.INFO)
 
-from ott.loader.osm.rename.osm_abbr_parser import OsmAbbrParser
-from ott.loader.osm.rename import pgdb
+from . import pgdb
+from .osm_abbr_parser import OsmAbbrParser
+
 from ott.utils import num_utils
 
 MAX=999999999999

@@ -4,6 +4,7 @@
 import os
 import inspect
 import csv
+
 from pyparsing import *
 
 class OsmAbbrParser(object):
@@ -32,9 +33,9 @@ class OsmAbbrParser(object):
         prefix = Combine(StringStart() + MatchFirst(dt) + Optional(" ") + Optional(".").suppress())
         suffix = Combine(OneOrMore(MatchFirst(dt) + Optional(".").suppress()) + StringEnd())
 
-        name_chars  = nums + alphas + "-" + "." + "," + "á" + "é" + "."  + "'" + '"' + "&" + ";" + ":" + "#" + "@" + "(" + ")"
+        name_chars = nums + alphas + "-" + "." + "," + "á" + "é" + "." + "'" + '"' + "&" + ";" + ":" + "#" + "@" + "(" + ")"
         name_string = Word(name_chars) 
-        streetName = (
+        street_name = (
                        Combine( 
                             OneOrMore(
                                  ~prefix + ~type_ + ~suffix + name_string
@@ -46,8 +47,8 @@ class OsmAbbrParser(object):
                      ).setName("streetName")
 
         # basic street address grammer
-        nm  = streetName.setResultsName("name")
-        tp  = type_.setResultsName("type")
+        nm = street_name.setResultsName("name")
+        tp = type_.setResultsName("type")
         pre = prefix.setResultsName("prefix") 
         nm_type = nm + tp
         pre_nm_type = pre + nm + tp
@@ -64,34 +65,32 @@ class OsmAbbrParser(object):
                           | nm
                         )
 
-
     def parse(self, s):
         """ Returns parsed address as dictionary
             run the input string through the street parser
         """
         ret_val = {
-           'type'   : '',
-           'suffix' : '',
-           'prefix' : '',
-           'name'   : '',
+           'type':   '',
+           'suffix': '',
+           'prefix': '',
+           'name':   '',
         }
         r = ret_val
         # test whether this string is in our ignore list (e.g., South Shore Blvd) before sending to the parser  
         if s.lower() in self.str_ignore_kw:
             d = self.csv_ignore_replace(self.str_ignore, s)
-            r['name']   = d['replace']
-            r['type']   = d['type']
+            r['name'] = d['replace']
+            r['type'] = d['type']
             r['prefix'] = d['prefix']
             r['suffix'] = d['suffix']
         else:
            p = self.streetAddress.parseString(s)
-           r['type']   = self.find_replace(self.street_types, p.type)
+           r['type'] = self.find_replace(self.street_types, p.type)
            r['suffix'] = self.find_replace(self.dir_types,    p.suffix)
            r['prefix'] = self.find_replace(self.dir_types,    p.prefix)
-           r['name']   = p.name
+           r['name'] = p.name
 
         return ret_val
-
 
     def dict(self, orig):
         """ Returns a parsed and string replaced dict
@@ -123,7 +122,7 @@ class OsmAbbrParser(object):
         return ret_val
 
     def do_label(self, s, t):
-        ret_val=True
+        ret_val = True
         s = s.lower()
         if s == "unnamed" or t == "Aly":
             ret_val=False
@@ -132,9 +131,9 @@ class OsmAbbrParser(object):
     def pstr(self, s, r):
         """ return a pretty string by checking string len, and return the string, with optional trailing space...
         """
-        if r == None and len(s) <= 0:
+        if r is None and len(s) <= 0:
             r = ""
-        if s != None and len(s) > 0:
+        if s is not None and len(s) > 0:
             if len(s) > 0:
                 r += " "
             r += s
@@ -159,15 +158,13 @@ class OsmAbbrParser(object):
             if self.dict_find(dic, value):
                 ret_val = dic
                 break
-        if ret_val == None:
+        if ret_val is None:
             # if not found in the 'str' column, search the 'replace' column for a csv entry...
             for i, dic in enumerate(csv_list):
                 if self.dict_find(dic, value, 'replace'):
                     ret_val = dic
                     break
-
         return ret_val
-
 
     def sub_str_replace(self, lst, value, justOnce=False):
         """ find a value in a list of dicts, key identifies what attribute of the dict to look at
@@ -175,20 +172,20 @@ class OsmAbbrParser(object):
         ret_val = value
         for i, dic in enumerate(lst):
             if self.dict_find(dic, value):
-               ret_val = ret_val.replace(dic['str'], dic['replace'], 1)
-               if justOnce:
-                   break
+                ret_val = ret_val.replace(dic['str'], dic['replace'], 1)
+                if justOnce:
+                    break
         return ret_val
-
 
     def find_list_pos(self, lst, key, value):
         """ find position of matching dict  in a list of dicts, key identifies what attribute of the dict to compare to the value
         """
+        ret_val = -1
         for i, dic in enumerate(lst):
             if dic[key].strip().lower() == value.strip().lower():
-               return i
-        return -1
-
+                ret_val = i
+                break
+        return ret_val
 
     def find_replace(self, lst, value):
         """ returns a matching replacement string from a list of dicts with the form [{str:"XTC", replace:"Atom Ant"}, ...]
@@ -196,8 +193,6 @@ class OsmAbbrParser(object):
 
             call find on the list, and when a match is found, the 'replace' attribute will be returned
         """
-        #import pdb
-        #pdb.set_trace()
         i = self.find_list_pos(lst, 'str', value)
         if i == -1:
            i = self.find_list_pos(lst, 'replace', value)
@@ -205,7 +200,6 @@ class OsmAbbrParser(object):
            return value
         d = lst[i]
         return d['replace']
-
 
     def load_replace_csv(self, fn):
         """ returns a large string with the 'str' and 'replace' attributes concat'd together (used as keywords in pyparsing)
@@ -215,12 +209,12 @@ class OsmAbbrParser(object):
         """
         # street types -- used for both parser and replacement
         csv_path = os.path.join(self.this_module_dir, fn)
-        file = open(csv_path, 'r')
-        reader = csv.DictReader(file)
+        f = open(csv_path, 'r')
+        reader = csv.DictReader(f)
         strings = ""
-        list = []
+        l = []
         for row in reader:
            strings += row['str'] + " " + row['replace'] + " "
-           list.append(row)
+           l.append(row)
 
-        return strings, list
+        return strings, l

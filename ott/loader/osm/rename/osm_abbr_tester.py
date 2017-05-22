@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
-from pyparsing import *
 from osm_abbr_parser import OsmAbbrParser
+
+
+'''
+<     <tag k="addr:street" v="Northeast César E. Chávez Boulevard"/>
+---
+>     <tag k="addr:street" v="Northeast C&#233;sar E. Ch&#225;vez Boulevard" />
+'''
 
 tests = """\
     3120 De la Cruz Boulevard

@@ -3,7 +3,6 @@
 # Licensed under the GNU Lesser General Public License 3.0 or any
 # later version. See lgpl-3.0.txt for details.
 
-import psycopg2
 import os
 
 # DB connection with env_var override / default values
@@ -16,6 +15,7 @@ dbschema=os.environ.get('PGSCHEMA', 'osm')
 print "host=",host,"port=",port,"database=",dbname, "user=",dbuser, "password=",dbpass
 
 def getConnection():
+    import psycopg2
     return psycopg2.connect(host=host, port=port, database=dbname, user=dbuser, password=dbpass)
 
 def escape_str(v):
