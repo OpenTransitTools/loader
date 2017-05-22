@@ -68,7 +68,7 @@ class OsmRename(object):
                     if "addr:street" in line:
                         line = self.process_streetname_str(line, line_num, "addr:street")
                     if is_inside_way:
-                        if '<tag k="name' in line:
+                        if '<tag k="name"' in line:
                             line = self.process_streetname_str(line, line_num, "way:name")
                         elif '<tag k="old_name' in line:
                             line = self.process_streetname_str(line, line_num, "way:old_name")

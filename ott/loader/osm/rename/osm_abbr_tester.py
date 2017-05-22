@@ -1,12 +1,22 @@
 # -*- coding: utf-8 -*-
-from osm_abbr_parser import OsmAbbrParser
+from .osm_abbr_parser import OsmAbbrParser
 
 
 '''
 <     <tag k="addr:street" v="Northeast César E. Chávez Boulevard"/>
 ---
 >     <tag k="addr:street" v="Northeast C&#233;sar E. Ch&#225;vez Boulevard" />
+
+<     <tag k="addr:street" v="Southeast César E. Chávez Boulevard"/>
+---
+>     <tag k="addr:street" v="Southeast C&#233;sar E. Ch&#225;vez Boulevard" />
+
+<     <tag k="name" v="Northeast César E. Chávez Boulevard"/>
+---
+>     <tag k="name" v="Northeast C&#233;sar E. Ch&#225;vez Boulevard" />
+502246c502246
 '''
+
 
 tests = """\
     3120 De la Cruz Boulevard
@@ -258,7 +268,7 @@ tests = """\
     State Highway 35
     State Highway 224
     National Forest Development Road 3511
-    """.split("\n")
+""".split("\n")
 
 xtests = """\
     South Shore Road
@@ -269,7 +279,13 @@ xtests = """\
 
 sp = OsmAbbrParser()
 
-for name in map(str.strip,tests):
+tests = """\
+  Southeast César E. Chávez Boulevard
+  Northeast César E. Chávez Boulevard
+""".split("\n")
+
+
+for name in map(str.strip, tests):
     name = name or ''
     if name:
         try:
