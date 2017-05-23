@@ -19,7 +19,8 @@ class TestOsmRename(unittest.TestCase):
     def test_rename(self):
         osm_out = os.path.join(self.thisdir, "test_renamed.osm")
         OsmRename.rename(self.osm_test_data, osm_out)
-        #self.assertTrue()
+        r = file_utils.grep(osm_out, "[North,South,East,West,Street,Avenue,Terrace,Road]")
+        self.assertTrue(len(r) == 0)
 
     def test_rename_tag(self):
         osm_out = os.path.join(self.thisdir, "test_not_renamed.osm")

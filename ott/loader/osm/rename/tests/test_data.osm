@@ -11,7 +11,7 @@
     <tag k="addr:city" v="Portland"/>
     <tag k="addr:unit" v="A"/>
     <tag k="addr:state" v="OR"/>
-    <tag k="addr:street" v="Southeast César E. Chávez Boulevard"/>
+    <tag k="addr:street" v="Southeast XXX Boulevard"/>
     <tag k="addr:postcode" v="97202"/>
     <tag k="opening_hours" v="Mo-Fr 05:00-19:00; Fr,Sa 05:30-19:00"/>
     <tag k="internet_access" v="wlan"/>
@@ -27,7 +27,7 @@
     <nd ref="1391266409"/>
     <nd ref="1222278580"/>
     <nd ref="1504554286"/>
-    <tag k="name" v="Northeast César E. Chávez Boulevard"/>
+    <tag k="name" v="Northeast XXX Boulevard"/>
     <tag k="lanes" v="2"/>
     <tag k="oneway" v="yes"/>
     <tag k="bicycle" v="yes"/>
@@ -52,9 +52,13 @@
 
   <relation id="7088715" version="1" timestamp="2017-03-20T08:02:03Z" uid="131996" user="nvk" changeset="47004491">
     <member type="way" ref="33665885" role=""/>
-    <tag k="name" v="Johnson Bike Blvd"/>
-    <tag k="network" v="lcn"/>
-    <tag k="route" v="bicycle"/>
-    <tag k="type" v="route"/>
+    <tag k="name" v="South Y Avenue"/>
+    <tag k="name_1" v="South Y Avenue"/>
+    <tag k="destination" v="North X Street"/>
+    <tag k="destination_1" v="North X Street"/>
+    <tag k="name" v="West  K Road"/>
+    <tag k="old_name" v="West  K Road"/>
+    <tag k="description" v="East  M Terrace"/>
+    <tag k="description_2" v="East  M Terrace"/>
   </relation>
 </osm>
