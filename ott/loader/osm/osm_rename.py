@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import sys
 try:
     import xml.etree.cElementTree as ET
@@ -81,10 +84,9 @@ class OsmRename(object):
                     if '</way>' in line:
                         is_inside_way = False
 
-                    # remove ET xml side effect of adding an element space at end
+                    # remove ET xml (type html) side effects, so ending tags look trim & proper
                     if line:
                         line = line.replace(" />", "/>").replace("></tag>", "/>")
-
 
                 # step 3: buffer write the lines of the file to a new file
                 bunch.append(line)
@@ -98,6 +100,12 @@ class OsmRename(object):
         ret_val = line
 
         xml = ET.fromstring(line)
+
+        # DEBUG C E C issue here...
+        if "César E. Chávez" in line:
+            print xml.attrib['v']
+            print self.abbr_parser.to_str(xml.attrib['v'])
+
         val = xml.get('v')
         if val:
             if len(val) > 0:
