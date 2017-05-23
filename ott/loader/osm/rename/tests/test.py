@@ -8,17 +8,21 @@ from ott.utils import file_utils
 class TestOsmRename(unittest.TestCase):
 
     def setUp(self):
+        self.thisdir = file_utils.get_module_dir(self.__class__)
+        self.osm_test_data = os.path.join(self.thisdir, "test_data.osm")
+        self.osm_renamed_already = os.path.join(self.thisdir, "test_dont_rename_again.osm")
         pass
 
     def tearDown(self):
         pass
 
     def test_rename(self):
-        #import pdb; pdb.set_trace()
-        dir = file_utils.get_module_dir(self.__class__)
-        osm_in = os.path.join(dir,  "test_data.osm")
-        osm_out = os.path.join(dir, "test_renamed.osm")
+        osm_out = os.path.join(self.thisdir, "test_renamed.osm")
+        OsmRename.rename(self.osm_test_data, osm_out)
+        #self.assertTrue()
 
-        OsmRename.rename(osm_in, osm_out)
+    def test_rename_tag(self):
+        osm_out = os.path.join(self.thisdir, "test_not_renamed.osm")
+        OsmRename.rename(self.osm_renamed_already, osm_out)
         #self.assertTrue()
 
