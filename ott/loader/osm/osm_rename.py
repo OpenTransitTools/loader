@@ -100,17 +100,10 @@ class OsmRename(object):
         ret_val = line
 
         xml = ET.fromstring(line)
-
-        # DEBUG C E C issue here...
-        if "César E. Chávez" in line:
-            print xml.attrib['v']
-            print self.abbr_parser.to_str(xml.attrib['v'])
-
         val = xml.get('v')
         if val:
             if len(val) > 0:
                 self.rename_xml_value_attirbute(xml, line_num)
-                #import pdb; pdb.set_trace()
                 xml_str = ET.tostring(xml, encoding="UTF-8", method="html")
                 ret_val = "    {}\n".format(xml_str)
             else:
