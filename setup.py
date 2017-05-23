@@ -74,7 +74,7 @@ setup(
         pbf_to_osm = ott.loader.osm.osm_cache:OsmCache.convert_pbf_to_osm
         osm_other_exports = ott.loader.osm.osm_cache:OsmCache.other_exports
         osm_stats = ott.loader.osm.osm_info:OsmInfo.print_stats
-        osm_rename_mock = ott.loader.osm.osm_rename:OsmRename.mock
+        osm_rename = ott.loader.osm.osm_rename:main
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_info = ott.loader.gtfs.info:main

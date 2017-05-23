@@ -15,6 +15,45 @@ import logging
 log = logging.getLogger(__file__)
 
 
+"""
+TODO:
+
+1a) the =&gt; is screwing up the rename string:
+<     <tag k="name" v="Bus 34: Oregon City Transit Center =&gt; Clackamas Town Center"/>
+>     <tag k="name" v="Bus 34: Oregon City TC"/>
+<     <tag k="name" v="Bus 19: Mount Scott &amp; 112th =&gt; Gateway Transit Center via Southeast 28th Avenue"/>
+>     <tag k="name" v="Bus 19: Mount Scott &amp; 112th"/>
+
+1b) slash / also screwing up the rename string:
+<     <tag k="name" v="Bus 77: Broadway/Halsey"/>
+>     <tag k="name" v="Bus 77: Broadway"/>
+<     <tag k="name" v="Bus 75: Cesar Chavez/Lombard"/>
+>     <tag k="name" v="Bus 75: Cesar Chavez"/>
+
+1c) star *
+<     <tag k="name" v="E*Trade"/>
+>     <tag k="name" v="E"/>
+
+1d) OR | 
+<     <tag k="destination:lanes" v="Market Street|US 26 East;I 405 South"/>
+>     <tag k="destination:lanes" v="Market St"/>
+
+2) rename non streets:
+<     <tag k="name" v="The Northwest Academy"/>
+>     <tag k="name" v="The NW Academy"/>
+<     <tag k="name" v="De Paul Treatment Centers"/>
+>     <tag k="name" v="De Paul Treatment Ctrs"/>
+<     <tag k="name" v="Thai Square"/>
+>     <tag k="name" v="Thai Sq"/>
+
+3) don't rename rivers
+<     <tag k="name" v="Willamette River"/>
+>     <tag k="name" v="Willamette Riv"/>
+<     <tag k="destination" v="Columbia River"/>
+>     <tag k="destination" v="Columbia Riv"/>
+
+
+"""
 
 class OsmRename(object):
     """ Utility for getting stats on an osm file 
@@ -144,12 +183,6 @@ class OsmRename(object):
         # step 4: return the stats as a string
         return ret_val
 
-    @classmethod
-    def mock(cls):
-        """ assumes portland.osm exists """
-        #cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
-        cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
-
 
 def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", attribue_val=OsmRename.attrib, append=True):
     """ a bit hacky <osm> element editing """
@@ -166,3 +199,16 @@ def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", att
         log.warn("couldn't add attribute {} to xml element on line number {}", attribute_name, line_num)
         log.warn(e)
     return ret_val
+
+
+def main():
+    """ cmd line processor """
+    # cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
+    # cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
+    if len(sys.argv) == 2:
+        OsmRename(sys.argv[1], sys.argv[1])
+    elif len(sys.argv) > 2:
+        OsmRename(sys.argv[1], sys.argv[2])
+    else:
+        print "what's the path to the osm file?"
+
