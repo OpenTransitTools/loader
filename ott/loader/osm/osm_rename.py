@@ -81,6 +81,11 @@ class OsmRename(object):
                     if '</way>' in line:
                         is_inside_way = False
 
+                    # remove ET xml side effect of adding an element space at end
+                    if line:
+                        line = line.replace(" />", "/>").replace("></tag>", "/>")
+
+
                 # step 3: buffer write the lines of the file to a new file
                 bunch.append(line)
                 if len(bunch) == self.bunchsize:
@@ -97,7 +102,9 @@ class OsmRename(object):
         if val:
             if len(val) > 0:
                 self.rename_xml_value_attirbute(xml, line_num)
-                ret_val = "    {}\n".format(ET.tostring(xml))
+                #import pdb; pdb.set_trace()
+                xml_str = ET.tostring(xml, encoding="UTF-8", method="html")
+                ret_val = "    {}\n".format(xml_str)
             else:
                 log.warn('{} (line {}) xml element {} found an empty street name value'.format(type, line_num, xml.attrib))
         else:
