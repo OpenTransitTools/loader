@@ -47,7 +47,7 @@
     <tag k="place" v="islet"/>
     <tag k="addr:state" v="OR"/>
     <tag k="gnis:feature_id" v="1120339"/>
-    <tag k="description" v="Northwest Everett Street - Steel Bridge Ramp"/>
+    <tag k="description" v="Northwest Everett - Steel Bridge"/>
   </way>
 
   <relation id="7088715" version="1" timestamp="2017-03-20T08:02:03Z" uid="131996" user="nvk" changeset="47004491">

@@ -71,7 +71,7 @@ class OsmRename(object):
                     if "addr:street" in line:
                         line = self.process_streetname_str(line, line_num, "addr:street")
                     if is_inside_way:
-                        if '<tag k="name"' in line:
+                        if '<tag k="name"' in line or '<tag k="name_' in line:
                             line = self.process_streetname_str(line, line_num, "way:name")
                         elif '<tag k="old_name' in line:
                             line = self.process_streetname_str(line, line_num, "way:old_name")
@@ -79,9 +79,11 @@ class OsmRename(object):
                             line = self.process_streetname_str(line, line_num, "way:bridge:name")
                         elif '<tag k="description' in line:
                             line = self.process_streetname_str(line, line_num, "way:description")
-                    if '<way ' in line:
+                        elif '<tag k="destination' in line:
+                            line = self.process_streetname_str(line, line_num, "way:destination")
+                    if '<way ' in line or '<relation ' in line:
                         is_inside_way = True
-                    if '</way>' in line:
+                    if '</way>' in line or '</relation>' in line:
                         is_inside_way = False
 
                     # remove ET xml (type html) side effects, so ending tags look trim & proper
@@ -164,20 +166,3 @@ def add_xml_attribute_to_osm_tag(line, line_num, attribute_name="generator", att
         log.warn("couldn't add attribute {} to xml element on line number {}", attribute_name, line_num)
         log.warn(e)
     return ret_val
-
-'''
-<way id="5516537" version="7" timestamp="2016-05-11T00:36:00Z" uid="3735764" user="Brett_Ham" changeset="39230702">
-    <nd ref="40448171"/>
-    <nd ref="40448180"/>
-    <nd ref="40448186"/>
-    <nd ref="1377018862"/>
-    <nd ref="40448188"/>
-    <nd ref="1377018878"/>
-    <nd ref="40448189"/>
-    <nd ref="40448191"/>
-    <tag k="name" v="Southwest Westwood Court"/>
-    <tag k="highway" v="residential"/>
-    <tag k="sidewalk" v="no"/>
-    <tag k="tiger:county" v="Multnomah, OR"/>
-  </way>
-'''
