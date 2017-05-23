@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<osm version="0.6" generator="Osmosis 0.45; streets renamed by OpenTransitTools">
+<osm version="0.6" generator="Osmosis 0.45">
   <bounds minlon="-122.70000" minlat="45.45000" maxlon="-122.62000" maxlat="45.54000" origin="0.45"/>
 
   <node id="523474399" version="4" timestamp="2017-01-31T17:40:19Z" uid="81676" user="Peter Dobratz" changeset="45691940" lat="45.4904112" lon="-122.6230366">
@@ -11,7 +11,7 @@
     <tag k="addr:city" v="Portland"/>
     <tag k="addr:unit" v="A"/>
     <tag k="addr:state" v="OR"/>
-    <tag k="addr:street" v="Southeast XXX Boulevard"/>
+    <tag k="addr:street" v="Southeast César E. Chávez Boulevard"/>
     <tag k="addr:postcode" v="97202"/>
     <tag k="opening_hours" v="Mo-Fr 05:00-19:00; Fr,Sa 05:30-19:00"/>
     <tag k="internet_access" v="wlan"/>
@@ -27,7 +27,7 @@
     <nd ref="1391266409"/>
     <nd ref="1222278580"/>
     <nd ref="1504554286"/>
-    <tag k="name" v="Northeast XXX Boulevard"/>
+    <tag k="name" v="Northeast César E. Chávez Boulevard"/>
     <tag k="lanes" v="2"/>
     <tag k="oneway" v="yes"/>
     <tag k="bicycle" v="yes"/>
@@ -40,25 +40,4 @@
     <tag k="change:lanes" v="no|no"/>
     <tag k="change:lanes:bus" v="yes|yes"/>
   </way>
-
-  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="bdiscoe" changeset="42534358">
-    <tag k="ele" v="3"/>
-    <tag k="name" v=""/>
-    <tag k="place" v="islet"/>
-    <tag k="addr:state" v="OR"/>
-    <tag k="gnis:feature_id" v="1120339"/>
-    <tag k="description" v="Northwest Everett - Steel Bridge"/>
-  </way>
-
-  <relation id="7088715" version="1" timestamp="2017-03-20T08:02:03Z" uid="131996" user="nvk" changeset="47004491">
-    <member type="way" ref="33665885" role=""/>
-    <tag k="name" v="South Y Avenue"/>
-    <tag k="name_1" v="South Y Avenue"/>
-    <tag k="destination" v="North X Street"/>
-    <tag k="destination_1" v="North X Street"/>
-    <tag k="name" v="West  K Road"/>
-    <tag k="old_name" v="West  K Road"/>
-    <tag k="description" v="East  M Terrace"/>
-    <tag k="description_2" v="East  M Terrace"/>
-  </relation>
 </osm>
