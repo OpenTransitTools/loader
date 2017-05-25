@@ -18,7 +18,6 @@ def get_args_parser():
     parser = otp_utils.get_initial_arg_parser('otp_test_runner')
     parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
     parser.add_argument('--port',    '-p',   help="port")
-    parser.add_argument('--filter',  '-f',   help="filter, ala -f Walk")
     parser.add_argument('--ws_path', '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     parser.add_argument('--debug',   '-d',   help="run DEBUG suites", action='store_true')
     return parser
@@ -33,9 +32,9 @@ class TestRunner(object):
     def __init__(self, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
-        #import pdb; pdb.set_trace()
+        import pdb; pdb.set_trace()
         # step 1: build OTP ws and map urls from config
-        self.ws_url, self.app_url = otp_utils.get_test_urls_from_config(hostname, ws_path, ws_port, app_path, app_port)
+        self.ws_url, self.app_url = otp_utils.get_test_urls_from_config(hostname=hostname, ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port)
 
         # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
@@ -120,10 +119,11 @@ class TestRunner(object):
     @classmethod
     def test_graph_factory_args(cls, args, suite_dir, graph_dir):
         """ uses cmd-line params from argparse """
-        return cls.test_graph_factory(args.hostname, args.ws_path, args.port, suite_dir=suite_dir, filter=args.test_suite)
+        return cls.test_graph_factory(args.hostname, args.ws_path, args.port,
+                                      graph_dir=graph_dir, suite_dir=suite_dir, filter=args.test_suite)
 
     @classmethod
-    def test_graph_factory_config(cls, graph, suite_dir=None, delay=1):
+    def test_graph_factory_config(cls, graph, suite_dir=None, delay=1, filter=None):
         """ expect a graph def from the config .ini file to populate test params """
         port = graph.get('port')
         ws_path = graph.get('ws_path')
@@ -131,7 +131,7 @@ class TestRunner(object):
         app_path = graph.get('app_path')
         app_port = "80" if app_path else port
         return cls.test_graph_factory(ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port,
-                                      graph_dir=graph.get('dir'), suite_dir=suite_dir, filter=graph.get('filter'),
+                                      graph_dir=graph.get('dir', None), suite_dir=suite_dir, filter=filter,
                                       delay=delay)
 
 
@@ -149,7 +149,7 @@ def main():
         g = otp_utils.get_graphs_from_config()
         graph = otp_utils.find_graph(g, args.name)
     if graph:
-        TestRunner.test_graph_factory_config(graph, suite_dir=dir)
+        TestRunner.test_graph_factory_config(graph, suite_dir=dir, filter=args.test_suite)
     else:
         TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
