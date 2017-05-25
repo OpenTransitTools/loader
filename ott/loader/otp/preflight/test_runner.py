@@ -32,7 +32,7 @@ class TestRunner(object):
     def __init__(self, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         # step 1: build OTP ws and map urls from config
         self.ws_url, self.app_url = otp_utils.get_test_urls_from_config(hostname=hostname, ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port)
 
