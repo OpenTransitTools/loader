@@ -62,7 +62,7 @@ class OsmRename(object):
     bunchsize = 1000000
     rename_cache = {}
 
-    def __init__(self, osm_infile_path, osm_outfile_path):
+    def __init__(self, osm_infile_path, osm_outfile_path, do_bkup=True):
         """ this class will work to rename streets in OSM, abbreviating common street prefix and suffixes
             (e.g., North == N, Southeast == SE, Street == St, Avenue == Ave, etc...)
             
@@ -87,7 +87,8 @@ class OsmRename(object):
         self.process_osm_file()
 
         if is_same_input_output:
-            file_utils.bkup(osm_outfile_path)
+            if do_bkup:
+                file_utils.bkup(osm_outfile_path)
             file_utils.mv(self.osm_output_path, osm_outfile_path)
 
     def process_osm_file(self):
@@ -171,16 +172,13 @@ class OsmRename(object):
                 sys.stdout.flush()
 
     @classmethod
-    def rename(cls, osm_infile_path, osm_outfile_path):
+    def rename(cls, osm_infile_path, osm_outfile_path=None, do_bkup=True):
         """ 
         """
-        # import pdb; pdb.set_trace()
         ret_val = None
-
-        # step 1:
+        if osm_outfile_path is None:
+            osm_outfile_path = osm_infile_path
         osm = OsmRename(osm_infile_path, osm_outfile_path)
-
-        # step 4: return the stats as a string
         return ret_val
 
 
@@ -206,7 +204,7 @@ def main():
     # cls.rename("ott/loader/osm/cache/or-wa.osm", "ott/loader/osm/cache/or-wa-renamed.osm")
     # cls.rename("ott/loader/osm/cache/portland.osm", "ott/loader/osm/cache/portland-renamed.osm")
     if len(sys.argv) == 2:
-        OsmRename(sys.argv[1], sys.argv[1])
+        OsmRename(sys.argv[1])
     elif len(sys.argv) > 2:
         OsmRename(sys.argv[1], sys.argv[2])
     else:

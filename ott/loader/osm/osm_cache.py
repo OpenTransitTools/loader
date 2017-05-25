@@ -1,10 +1,10 @@
 from ott.utils import exe_utils
-# noinspection PyPackageRequirements
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils import web_utils
 from ott.utils.cache_base import CacheBase
 from .osm_info import OsmInfo
+from .osm_rename import OsmRename
 
 import os
 import re
@@ -82,6 +82,7 @@ class OsmCache(CacheBase):
             if force_update or pbf_newer or not fresh or not sized:
                 self.clip_to_bbox(input_path=self.pbf_path, output_path=self.osm_path)
                 self.osm_to_pbf()
+                OsmRename.rename(self.osm_path, do_bkup=False)
                 self.other_exports()
 
         # step 3: .osm file check
