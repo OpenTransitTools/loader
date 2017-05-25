@@ -126,7 +126,7 @@ class OtpBuilder(CacheBase):
             success = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=graph['dir'], **graph)
             delay = 60
         if success:
-            success = TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
+            success = TestRunner.test_graph_factory_config(graph, suite_dir=suite_dir, delay=delay)
             if success:
                 self.update_vlog(graph=graph)
                 otp_utils.package_new(graph_dir=graph['dir'], graph_name=self.graph_name)
