@@ -16,10 +16,11 @@ from ott.loader.otp.preflight.test_suite import ListTestSuites
 
 def get_args_parser():
     parser = otp_utils.get_initial_arg_parser('otp_test_runner')
-    parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
-    parser.add_argument('--port', '-p', help="port")
-    parser.add_argument('--ws_path',  '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
-    parser.add_argument('--debug',    '-d',   help="run DEBUG suites", action='store_true')
+    parser.add_argument('--hostname', '-hn', help="specify the hostname for the test url")
+    parser.add_argument('--port',    '-p',   help="port")
+    parser.add_argument('--filter',  '-f',   help="filter, ala -f Walk")
+    parser.add_argument('--ws_path', '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
+    parser.add_argument('--debug',   '-d',   help="run DEBUG suites", action='store_true')
     return parser
 
 
@@ -129,7 +130,9 @@ class TestRunner(object):
         ws_port = "80" if ws_path else port
         app_path = graph.get('app_path')
         app_port = "80" if app_path else port
-        return cls.test_graph_factory(ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port, graph_dir=graph.get('dir'), suite_dir=suite_dir, delay=delay)
+        return cls.test_graph_factory(ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port,
+                                      graph_dir=graph.get('dir'), suite_dir=suite_dir, filter=graph.get('filter'),
+                                      delay=delay)
 
 
 def main():
