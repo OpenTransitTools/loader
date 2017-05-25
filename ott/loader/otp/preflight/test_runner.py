@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import inspect
 import logging
@@ -14,6 +13,7 @@ from ott.utils import otp_utils
 
 from ott.loader.otp.preflight.test_suite import ListTestSuites
 
+
 def get_args_parser():
     parser = otp_utils.get_initial_arg_parser('otp_test_runner')
     parser.add_argument('--hostname', '-hn',  help="specify the hostname for the test url")
@@ -22,18 +22,19 @@ def get_args_parser():
     parser.add_argument('--debug',    '-d',   help="run DEBUG suites", action='store_true')
     return parser
 
+
 class TestRunner(object):
     """ Run .csv tests from ./tests/ by constructing a
         url to the trip planner, calling the url, then printing a report
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
-    def __init__(self, hostname=None, port=None, ws_path=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
+    def __init__(self, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
         """constructor builds the test runner
         """
         #import pdb; pdb.set_trace()
         # step 1: build OTP ws and map urls from config
-        self.ws_url, self.map_url = otp_utils.get_test_urls_from_config(hostname=hostname, port=port, ws_path=ws_path)
+        self.ws_url, self.app_url = otp_utils.get_test_urls_from_config(hostname, ws_path, ws_port, app_path, app_port)
 
         # step 2: set file and directory paths (suites dir contains .csv files defining tests)
         if suite_dir is None:
@@ -44,7 +45,7 @@ class TestRunner(object):
 
         # step 3: create mako template, and list of test suites
         self.report_template = Template(filename=self.report_mako_path)
-        self.test_suites = ListTestSuites(ws_url=self.ws_url, map_url=self.map_url, suite_dir=suite_dir, date=date, filter=filter)
+        self.test_suites = ListTestSuites(ws_url=self.ws_url, map_url=self.app_url, suite_dir=suite_dir, date=date, filter=filter)
 
     def report(self, dir=None, report_name='otp_report.html'):
         """ render a test pass/fail report with mako
@@ -95,16 +96,15 @@ class TestRunner(object):
             if msg:
                 log.info(msg)
 
-
     @classmethod
-    def test_graph_factory(cls, hostname=None, port=None, ws_path=None, map_path=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
+    def test_graph_factory(cls, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
         """ run graph tests against whatever server is running
             @see otp_builder.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
         """
         ret_val = False
         log.info('GRAPH TESTS: Starting tests!')
         time.sleep(delay)
-        t = TestRunner(hostname, port, ws_path, suite_dir, filter)
+        t = TestRunner(hostname, ws_path, ws_port, app_path, app_port, suite_dir=suite_dir, filter=filter)
         t.test_suites.run()
         t.report(graph_dir)
         if t.test_suites.has_errors():
@@ -119,13 +119,17 @@ class TestRunner(object):
     @classmethod
     def test_graph_factory_args(cls, args, suite_dir, graph_dir):
         """ uses cmd-line params from argparse """
-        return cls.test_graph_factory(args.hostname, args.port, args.ws_path, suite_dir, args.test_suite, graph_dir)
+        return cls.test_graph_factory(args.hostname, args.ws_path, args.port, suite_dir=suite_dir, filter=args.test_suite)
 
     @classmethod
     def test_graph_factory_config(cls, graph, suite_dir=None, delay=1):
         """ expect a graph def from the config .ini file to populate test params """
-        #return cls.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
-        print graph
+        port = graph.get('port')
+        ws_path = graph.get('ws_path')
+        ws_port = "80" if ws_path else port
+        app_path = graph.get('app_path')
+        app_port = "80" if app_path else port
+        return cls.test_graph_factory(ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port, graph_dir=graph.get('dir'), suite_dir=suite_dir, delay=delay)
 
 
 def main():
@@ -142,7 +146,7 @@ def main():
         g = otp_utils.get_graphs_from_config()
         graph = otp_utils.find_graph(g, args.name)
     if graph:
-        TestRunner.test_graph_factory_config(graph)
+        TestRunner.test_graph_factory_config(graph, suite_dir=dir)
     else:
         TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
