@@ -50,7 +50,6 @@ class OsmInfo(object):
         self.last.edit_date = date_utils.pretty_date_from_ms(self.last.timestamp * 1000, fmt="%B %d, %Y")
         self.last.file_date = file_utils.file_pretty_date(osm_path, fmt="%B %d, %Y")
 
-
     @classmethod
     def find_osm_files(cls, dir_path):
         ret_val = []
@@ -69,12 +68,29 @@ class OsmInfo(object):
         return stats_file
 
     @classmethod
-    def cache_stats(cls, osm_file, stats_file=None, pretty_print=True):
-        stats_file = cls.get_stats_file_path(osm_file, stats_file)
-        stats = OsmInfo()
-        stats.calculate_osm_stats(osm_file)
-        stats.write_json_file(stats_file, pretty_print)
-        ret_val = stats.to_json()
+    def cache_stats(cls, osm_path, stats_file=None, pretty_print=True):
+        """ return OSM .osm-stats info json
+            will either read the .osm-stats file or create a new stats file calculated via the .osm file
+        """
+        import pdb; pdb.set_trace()
+        stats_path = cls.get_stats_file_path(osm_path, stats_file)
+        is_stats_good = False
+
+        # step 1: read the .osm-stats cache file (if exists)
+        is_stats_fresh = file_utils.is_a_newer_than_b(stats_path, osm_path)
+        if is_stats_fresh:
+            j = json_utils.get_json(stats_path)
+            if j.get('way_count') and j.get('highway_count') and j.get('last'):
+                is_stats_good = True
+                ret_val = j
+
+        # step 2: if .osm-stats don't exists or are out of date, cache them
+        if not is_stats_good:
+            stats = OsmInfo()
+            stats.calculate_osm_stats(osm_path)
+            stats.write_json_file(stats_file, pretty_print)
+            ret_val = stats.to_json()
+
         return ret_val
 
     @classmethod
@@ -82,7 +98,6 @@ class OsmInfo(object):
         """ will either read a cache'd -stats file into memory, or calculate the stats, cache them and then return
             :return dict representing the json stats object
         """
-        #import pdb; pdb.set_trace()
         ret_val = None
 
         # step 1: validate stats file path
@@ -101,7 +116,7 @@ class OsmInfo(object):
 
     @classmethod
     def get_osm_feed_msg(cls, file_path, prefix=" ", suffix="\n"):
-        """ get osm feed details msg string for the .vlog file
+        """ get osm feed details msg string for the .v log file
         """
         file_name = file_utils.get_file_name_from_path(file_path)
         stats = OsmInfo.get_stats(file_path)
