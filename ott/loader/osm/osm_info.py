@@ -76,9 +76,8 @@ class OsmInfo(object):
         stats_path = cls.get_stats_file_path(osm_path, stats_file)
         is_stats_good = False
 
-        # step 1: read the .osm-stats cache file (if exists)
-        is_stats_fresh = file_utils.is_a_newer_than_b(stats_path, osm_path)
-        if is_stats_fresh:
+        # step 1: read the .osm-stats cache file (if exists and stats are newer than osm)
+        if not file_utils.is_a_newer_than_b(osm_path, stats_path):
             j = json_utils.get_json(stats_path)
             if j.get('way_count') and j.get('highway_count') and j.get('last'):
                 is_stats_good = True
