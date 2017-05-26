@@ -38,4 +38,20 @@ class TestOsmRename(unittest.TestCase):
         r = file_utils.grep(osm_out, self.full_names_regexp)
         self.assertTrue(len(r) > 0)  # note: expect to grep multiple full names, since the renamer should not engage
 
+    def test_problematic_strings(self):
+        osm_in = os.path.join(self.thisdir, "test_data_problematic_strings.osm")
+        osm_out = os.path.join(self.thisdir, "test_renamed_problematic_strings.osm")
+        OsmRename.rename(osm_in, osm_out)
 
+        # note: these strings currently not working -- @see:
+        #   bin/osm_rename ott/loader/osm/rename/tests/test_data_problematic_strings.osm x; cat x
+        problem_strs = ['=&gt;', '/', '|', '^', '%', '*', '&amp;', '=&gt;/|^%**&amp;']
+        for p in problem_strs:
+            r = file_utils.grep(osm_out, "A{}B".format(p))
+            self.assertTrue(len(r) == 1)
+
+            r = file_utils.grep(osm_out, "SE {} Rd".format(p))
+            self.assertTrue(len(r) == 1)
+
+            r = file_utils.grep(osm_out, "NW {}Street".format(p))
+            self.assertTrue(len(r) == 1)

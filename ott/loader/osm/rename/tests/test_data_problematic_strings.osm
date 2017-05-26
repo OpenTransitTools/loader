@@ -45,4 +45,10 @@
     <tag k="description" v="Northwest &amp;Street"/>
   </way>
 
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A=&gt;/|^%*&amp;B"/>
+    <tag k="name" v="Southeast =&gt;/|^%*&amp; Road"/>
+    <tag k="description" v="Northwest =&gt;/|^%*&amp;Street"/>
+  </way>
+
 </osm>
