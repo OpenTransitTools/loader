@@ -58,13 +58,12 @@ class OsmCache(CacheBase):
         self.pbf_path = os.path.join(self.cache_dir, self.pbf_name)
         self.meta_path = os.path.join(self.cache_dir, self.meta_name)
         self.osm_path = os.path.join(self.cache_dir, self.osm_name)
-        self.stats_path = os.path.join(self.cache_dir, self.osm_name + "-stats")
 
     def check_cached_osm(self, force_update=False):
         """ if OSM .pbf file is out of date, download a new one.
             convert .pbf to .osm if .pbf file is newer than .osm file
         """
-        min_size = self.config.get_int('min_size', def_val=1000000)
+        min_size = self.config.get_int('min_size', def_val=100000)
 
         # step 1: download new osm pbf file if it's not new
         fresh = self.is_fresh_in_cache(self.pbf_path)

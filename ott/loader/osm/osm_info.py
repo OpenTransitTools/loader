@@ -26,7 +26,7 @@ class OsmInfo(object):
     def __str__(self):
         return json_utils.json_repr(self, pretty_print=True)
 
-    def to_json(self, pretty_print=False):
+    def to_json(self):
         return json_utils.obj_to_dict(self)
 
     def write_json_file(self, file_path, pretty_print=False):
@@ -72,7 +72,7 @@ class OsmInfo(object):
         """ return OSM .osm-stats info json
             will either read the .osm-stats file or create a new stats file calculated via the .osm file
         """
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         stats_path = cls.get_stats_file_path(osm_path, stats_file)
         is_stats_good = False
 
@@ -88,6 +88,7 @@ class OsmInfo(object):
         if not is_stats_good:
             stats = OsmInfo()
             stats.calculate_osm_stats(osm_path)
+            stats_file = cls.get_stats_file_path(osm_path, stats_file)
             stats.write_json_file(stats_file, pretty_print)
             ret_val = stats.to_json()
 
