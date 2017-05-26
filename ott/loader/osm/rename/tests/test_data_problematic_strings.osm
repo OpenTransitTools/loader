@@ -4,24 +4,45 @@
 
   <!-- certain strings don't work correctly as of May 2017  -->
   <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
-    <tag k="name" v="A =&gt; B"/>
-    <tag k="description" v="C=&gt;D"/>
+    <tag k="name" v="A=&gt;B"/>
+    <tag k="name" v="Southeast =&gt; Road"/>
+    <tag k="description" v="Northwest =&gt;Street"/>
   </way>
 
   <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
-    <tag k="name" v="A  / B"/>
-    <tag k="description" v="C/D"/>
+    <tag k="name" v="A/B"/>
+    <tag k="name" v="Southeast / Road"/>
+    <tag k="description" v="Northwest /Street"/>
   </way>
 
   <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
-    <tag k="name" v="A | B"/>
-    <tag k="description" v="C|D"/>
+    <tag k="name" v="A|B"/>
+    <tag k="name" v="Southeast | Road"/>
+    <tag k="description" v="Northwest |Street"/>
   </way>
 
   <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
-    <tag k="name" v="Southeast X Road"/>
-    <tag k="description" v="Northwest X Street"/>
+    <tag k="name" v="A^B"/>
+    <tag k="name" v="Southeast ^ Road"/>
+    <tag k="description" v="Northwest ^Street"/>
   </way>
 
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A%B"/>
+    <tag k="name" v="Southeast % Road"/>
+    <tag k="description" v="Northwest %Street"/>
+  </way>
+
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A*B"/>
+    <tag k="name" v="Southeast * Road"/>
+    <tag k="description" v="Northwest *Street"/>
+  </way>
+
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A&amp;B"/>
+    <tag k="name" v="Southeast &amp; Road"/>
+    <tag k="description" v="Northwest &amp;Street"/>
+  </way>
 
 </osm>

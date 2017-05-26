@@ -18,21 +18,6 @@ log = logging.getLogger(__file__)
 """
 TODO:
 
-
-1b) slash / also screwing up the rename string:
-<     <tag k="name" v="Bus 77: Broadway/Halsey"/>
->     <tag k="name" v="Bus 77: Broadway"/>
-<     <tag k="name" v="Bus 75: Cesar Chavez/Lombard"/>
->     <tag k="name" v="Bus 75: Cesar Chavez"/>
-
-1c) star *
-<     <tag k="name" v="E*Trade"/>
->     <tag k="name" v="E"/>
-
-1d) OR | 
-<     <tag k="destination:lanes" v="Market Street|US 26 East;I 405 South"/>
->     <tag k="destination:lanes" v="Market St"/>
-
 2) rename non streets:
 <     <tag k="name" v="The Northwest Academy"/>
 >     <tag k="name" v="The NW Academy"/>
