@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="Osmosis 0.45">
+  <bounds minlon="-122.70000" minlat="45.45000" maxlon="-122.62000" maxlat="45.54000" origin="0.45"/>
+
+  <!-- certain strings don't work correctly as of May 2017  -->
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A =&gt; B"/>
+    <tag k="description" v="C=&gt;D"/>
+  </way>
+
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A  / B"/>
+    <tag k="description" v="C/D"/>
+  </way>
+
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="A | B"/>
+    <tag k="description" v="C|D"/>
+  </way>
+
+  <way id="4951565" version="7" timestamp="2016-09-30T06:27:57Z" uid="402624" user="fpurcell" changeset="42534358">
+    <tag k="name" v="Southeast X Road"/>
+    <tag k="description" v="Northwest X Street"/>
+  </way>
+
+
+</osm>

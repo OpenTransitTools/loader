@@ -18,11 +18,6 @@ log = logging.getLogger(__file__)
 """
 TODO:
 
-1a) the =&gt; is screwing up the rename string:
-<     <tag k="name" v="Bus 34: Oregon City Transit Center =&gt; Clackamas Town Center"/>
->     <tag k="name" v="Bus 34: Oregon City TC"/>
-<     <tag k="name" v="Bus 19: Mount Scott &amp; 112th =&gt; Gateway Transit Center via Southeast 28th Avenue"/>
->     <tag k="name" v="Bus 19: Mount Scott &amp; 112th"/>
 
 1b) slash / also screwing up the rename string:
 <     <tag k="name" v="Bus 77: Broadway/Halsey"/>
