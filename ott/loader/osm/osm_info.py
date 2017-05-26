@@ -72,7 +72,7 @@ class OsmInfo(object):
         """ return OSM .osm-stats info json
             will either read the .osm-stats file or create a new stats file calculated via the .osm file
         """
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         stats_path = cls.get_stats_file_path(osm_path, stats_file)
         is_stats_good = False
 
