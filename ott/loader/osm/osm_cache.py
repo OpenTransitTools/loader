@@ -81,14 +81,17 @@ class OsmCache(CacheBase):
             pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
             if force_update or pbf_newer or not fresh or not sized:
                 self.clip_to_bbox(input_path=self.pbf_path, output_path=self.osm_path)
-                self.osm_to_pbf()
-                OsmRename.rename(self.osm_path, do_bkup=False)
-                self.other_exports()
 
         # step 3: .osm file check
         if not file_utils.is_min_sized(self.osm_path, min_size):
             e = "OSM file {} is not big enough".format(self.osm_path)
             raise Exception(e)
+
+        # step 4: other OSM processing steps
+        OsmRename.rename(self.osm_path, do_bkup=False)
+        OsmInfo.cache_stats(self.osm_path)
+        self.osm_to_pbf()
+        self.other_exports()
 
     def get_osmosis_exe(self):
         """ get the path osmosis binary
@@ -118,7 +121,6 @@ class OsmCache(CacheBase):
         osmosis_cmd = osmosis.format(osmosis_exe, input_path, top, bottom, left, right, output_path)
         log.info(osmosis_cmd)
         exe_utils.run_cmd(osmosis_cmd, shell=True)
-        OsmInfo.cache_stats(output_path)
 
     def osm_to_pbf(self, osm_path=None, pbf_path=None):
         """ use osmosis to convert .osm file to .pbf
