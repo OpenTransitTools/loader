@@ -13,6 +13,7 @@
     //
     routingDefaults: {
         maxHours: 6,
+        useRequestedDateTimeInMaxHours: true,
         boardSlack: 0,
         alightSlack: 0,
         transferSlack: 180,
