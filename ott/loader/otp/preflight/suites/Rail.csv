@@ -157,7 +157,7 @@ Tests Wilsonville WES Station (13070) departure to outside Beaverton Transit Cen
 Tests Tualatin WES Station (13069) departure to outside Beaverton Transit Center,"45.382664,-122.763897","45.491320,-122.802537","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,13069.*WES,,,,
 Tests Tigard TC WES Station (13073) departure to outside Beaverton Transit Center,"45.430457,-122.771456","45.491320,-122.802537","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,13073.*WES,,,,
 Tests Hall/Nimbus WES Station (13067) departure to outside Beaverton Transit Center,"45.458891,-122.787408","45.491320,-122.802537","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,13067.*WES,,,,
-Stress test OTP with a Wilsonville to Sandy trip,"WES::45.310865,-122.775745","Sandy::45.474328,-122.337150","TRANSIT,WALK",9:11 AM,Weekday,QUICK,4828,,,WES.*13070.*Orient,,,,
+Stress test OTP with a Wilsonville to Sandy trip,"WES::45.310865,-122.775745","Sandy::45.474328,-122.337150","TRANSIT,WALK",3:11 PM,Weekday,QUICK,4828,,,WES.*13070.*Orient,,,,
 #NAME?,,,,,,,,,,,,,,
 Tests Hall/Nimbus WES Station (13067) arrival from outside Beaverton Transit Center (13066),"45.491320,-122.802537","45.458891,-122.787408","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,3219,,,13066.*13067,,,,
 Tests Tigard TC WES Station (13068) arrival from outside Beaverton Transit Center,"45.491320,-122.802537","45.429983,-122.768463","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,WES.*13068,,,,
