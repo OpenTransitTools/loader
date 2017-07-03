@@ -196,3 +196,4 @@ One entry has incorrect coordinates(Suite 3300),1717 NE 42ND AVE,PORTLAND,97213,
 Correct coordinates (mapping to incorrect taxlot),3123 NW INDUSTRIAL ST,PORTLAND,97210,1,1,7634815.5,691272.0
 One entry has incorrect coordinates(Suite 190),2020 SW 4TH AVE,PORTLAND,97201,1,1,7642952.555,679001.862
 "Although coordinates aren't wrong per se (map to proper taxlot), these are better",13296 SW COMMONWEALTH LN,BEAVERTON,97005,1,1,7608763.0,681185.25
+Updated Coordinates,21000 NW QUATAMA RD,BEAVERTON,97006,1,1,7588090.0,685796.0
