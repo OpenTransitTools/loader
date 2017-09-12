@@ -26,6 +26,7 @@ cache/
 osmosis/
 .git/
 tests/
+logs/
 *~
 [a-z].py
 *.py[cod]
