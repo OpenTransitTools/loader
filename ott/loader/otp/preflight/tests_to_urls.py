@@ -17,7 +17,7 @@ def url_args_parser():
 
 def to_urls(args, port):
     # import pdb; pdb.set_trace()
-    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=args.hostname, port=port, ws_path=args.ws_path)
+    ws_url, map_url = otp_utils.get_test_urls_from_config(hostname=args.hostname, ws_port=port, ws_path=args.ws_path)
     lts = ListTestSuites(ws_url=ws_url, map_url=map_url, filter=args.test_suite)
     urls = lts.to_url_list()
 
