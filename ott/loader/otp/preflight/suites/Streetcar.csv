@@ -1,19 +1,19 @@
 Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?
-"Test: from OMSI/SE Water to MLK & Hawthorne","SE_Water/OMSI_(Streetcar)::45.506878,-122.663360","SE_M_L_King_@_Hawthorne::45.512512,-122.661960","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",2:25 PM,Weekday,QUICK,840,,,Streetcar.*13616
-"Test: from hawthorne & mlk to good samaritan hospital","SE_Hawthorne_Blvd_@_SE_Martin_Luther_King_Jr_Blvd::45.512245,-122.661835","Legacy_Good_Samaritan::45.530296,-122.697530","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",10:05 AM,Weekday,QUICK,840,,,Streetcar.*8989
-"Test: good samaritan hospital to south waterfront","Legacy_Good_Samaritan::45.530296,-122.697530","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12760
-"Test: COMMONS to omsi ... should always transfer at SW Moody and Meade (13602) via transfers.txt","OHSU_Commons::45.498943,-122.670740","OMSI::45.508327,-122.665010","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,420,,,Streetcar.*12883.*13602
-"Test: COMMONS to rail museum ... transfer at SW Moody and Meade (13602) to MAX Orange","OHSU_Commons::45.498943,-122.670740","RAIL_MUSEE::45.50654,-122.66205","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",10:45 PM,Weekday,QUICK,420,,,Streetcar.*12883.*13602.*13711.*13712
-"Test: PSU urban center to sw 10th and yamhill","PSU_Urban_Center::45.512220,-122.682076","SW_Yamhill_St_@_SW_10th_Ave::45.519333,-122.682480","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",2:00 PM,Weekday,QUICK,840,,,Streetcar.*10767
-"Test: burnside and Grand to lovejoy and 9th","E_Burnside_St_@_SE_Grand_Ave::45.522930,-122.660720","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","TRANSIT,WALK",12:10 PM,Weekday,QUICK,840,,,Streetcar.*2167
-"Test: 9th and lovejoy to grand and oregon st","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","NE_Grand_Ave_@_NE_Oregon_St::45.528630,-122.660680","TRANSIT,WALK",1:00 PM,Weekday,QUICK,840,,,Streetcar.*13606
-"Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*6493
-"Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,840,,,Streetcar.*13602
-"Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",12:02 PM,Weekday,QUICK,840,,,Streetcar.*13619
-"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*10762
-"Test: broadway and benton to PSU park blocks","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_PARK_BLOCKS::45.512702,-122.684627","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011
-"Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*13615
-"Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",11:00 AM,Weekday,QUICK,840,,,Streetcar.*13604
+"Test: from OMSI/SE Water to MLK & Hawthorne","SE_Water/OMSI_(Streetcar)::45.506878,-122.663360","SE_M_L_King_@_Hawthorne::45.512512,-122.661960","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",2:25 PM,Weekday,QUICK,840,,,Streetcar.*13616,,,,
+"Test: from hawthorne & mlk to good samaritan hospital","SE_Hawthorne_Blvd_@_SE_Martin_Luther_King_Jr_Blvd::45.512245,-122.661835","Legacy_Good_Samaritan::45.530296,-122.697530","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",10:05 AM,Weekday,QUICK,840,,,Streetcar.*8989,,,,
+"Test: good samaritan hospital to south waterfront","Legacy_Good_Samaritan::45.530296,-122.697530","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",5:00 PM,Weekday,QUICK,840,,,Streetcar.*12760,,,,
+"Test: COMMONS to omsi ... should always transfer at SW Moody and Meade (13602) via transfers.txt","OHSU_Commons::45.498943,-122.670740","OMSI::45.508327,-122.665010","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,420,,,Streetcar.*12883.*13602,,,,
+"Test: COMMONS to rail museum ... transfer at SW Moody and Meade (13602) to MAX Orange","OHSU_Commons::45.498943,-122.670740","RAIL_MUSEE::45.50654,-122.66205","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",10:45 PM,Weekday,QUICK,420,,,Streetcar.*12883.*13602.*13711.*13712,,,,
+"Test: PSU urban center to sw 10th and yamhill","PSU_Urban_Center::45.512220,-122.682076","SW_Yamhill_St_@_SW_10th_Ave::45.519333,-122.682480","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",2:00 PM,Weekday,QUICK,840,,,Streetcar.*10767,,,,
+"Test: burnside and Grand to lovejoy and 9th","E_Burnside_St_@_SE_Grand_Ave::45.522930,-122.660720","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","TRANSIT,WALK",12:10 PM,Weekday,QUICK,840,,,Streetcar.*2167,,,,
+"Test: 9th and lovejoy to grand and oregon st","NW_9th_Ave_@_NW_Lovejoy_St::45.530120,-122.680370","NE_Grand_Ave_@_NE_Oregon_St::45.528630,-122.660680","TRANSIT,WALK",1:00 PM,Weekday,QUICK,840,,,Streetcar.*13606,,,,
+"Test: 12th and jefferson to mlk and stark","SW_Jefferson_St_@_SW_12th_Ave::45.516552,-122.686310","SE_Martin_Luther_King_Jr_Blvd::45.519367,-122.661790","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*6493,,,,
+"Test: mlk and hoyt to south waterfront","NE_Hoyt_St_@_NE_Martin_Luther_King_Jr_Blvd::45.527270,-122.661690","OHSU_Commons::45.498943,-122.670740","TRANSIT,WALK",10:30 AM,Weekday,QUICK,840,,,Streetcar.*13602,,,,
+"Test: south waterfront to benton and broadway","OHSU_Commons::45.498943,-122.67074","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",12:02 PM,Weekday,QUICK,840,,,Streetcar.*13619,,,,
+"Test: broadway and benton to PSU urban center","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_Urban_Center::45.512220,-122.682076","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*10762,,,,
+"Test: broadway and benton to PSU park blocks","N_Broadway_@_N_Benton_Ave::45.533886,-122.670334","PSU_PARK_BLOCKS::45.512702,-122.684627","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",5:00 PM,Weekday,QUICK,420,,,Streetcar.*11011,,,,
+"Test: PSU urban center to OMSI","PSU_Urban_Center::45.512220,-122.682076","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",3:00 PM,Weekday,QUICK,840,,,Streetcar.*13615,,,,
+"Test: OMSI to good samaritan","Oregon_Museum_of_Science_and_Industry::45.508327,-122.665010","Legacy_Good_Samaritan::45.530296,-122.697530","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",11:00 AM,Weekday,QUICK,840,,,Streetcar.*id.13709.*id.10778,,,,
 Tests SW Lowell & Bond (12881) departure to Central Library,"45.493741,-122.670953","45.518987,-122.682664","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,12881.*Streetcar,,,,NO... why?
 Tests SW Bond & Lane (12882) departure to Central Library,"45.494993,-122.671172","45.518987,-122.682664","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,160,,,12882.*Streetcar,,,,NO... why?
 Tests OHSU Commons (12883) departure to Central Library,"45.498554,-122.670648","45.518987,-122.682664","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,12883.*Streetcar,,,,
@@ -35,20 +35,13 @@ Tests NW Northrup & 18th (10776) arrival from Central Library,"45.518987,-122.68
 Tests NW Northrup & 21st (10777) arrival from Central Library,"45.518987,-122.682664","45.531051,-122.694638","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10777,,,,
 Tests NW Northrup & 22nd (10778) arrival from Central Library,"45.518987,-122.682664","45.531526,-122.696653","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10778,,,,
 Tests NW 23rd & Marshall (8989) arrival from Central Library,"45.518987,-122.682664","45.530507,-122.698960","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,Streetcar.*8989,,,,
-Tests NW 23rd & Marshall (8989) departure to Central Library,"45.530507,-122.698960","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"8989.*Streetcar
-",,,,
-Tests NW Lovejoy & 22nd (3596) departure to Central Library,"45.529559,-122.696579","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3596.*Streetcar
-",,,,
-Tests NW Lovejoy & 21st (3595) departure to Central Library,"45.530074,-122.694570","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3595.*Streetcar
-",,,,
-Tests NW Lovejoy & 18th (10751) departure to Central Library,"45.529683,-122.689493","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10751.*Streetcar
-",,,,
-Tests NW Lovejoy & 13th (10752) departure to Central Library,"45.530239,-122.684429","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10752.*Streetcar
-",,,,
-Tests NW 11th & Johnson (10753) departure to Central Library,"45.528653,-122.682676","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,"10753.*Streetcar
-",,,,
-Tests NW 11th & Glisan (10754) departure to Central Library,"45.526529,-122.682045","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,"10754.*Streetcar
-",,,,
+Tests NW 23rd & Marshall (8989) departure to Central Library,"45.530507,-122.698960","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"8989.*Streetcar",,,,
+Tests NW Lovejoy & 22nd (3596) departure to Central Library,"45.529559,-122.696579","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3596.*Streetcar",,,,
+Tests NW Lovejoy & 21st (3595) departure to Central Library,"45.530074,-122.694570","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3595.*Streetcar",,,,
+Tests NW Lovejoy & 18th (10751) departure to Central Library,"45.529683,-122.689493","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10751.*Streetcar",,,,
+Tests NW Lovejoy & 13th (10752) departure to Central Library,"45.530239,-122.684429","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10752.*Streetcar",,,,
+Tests NW 11th & Johnson (10753) departure to Central Library,"45.528653,-122.682676","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,"10753.*Streetcar",,,,
+Tests NW 11th & Glisan (10754) departure to Central Library,"45.526529,-122.682045","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,"10754.*Streetcar",,,,
 Tests NW 11th & Couch (10756) departure to Central Library,"45.523676,-122.682002","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,Streetcar.*10756,,,,
 Tests SW 11th & Alder (9600) departure to OHSU Commons,"45.521039,-122.683098","45.498554,-122.670648","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,420,,,9600.*Streetcar,,,,
 "TODO - the original test doesn't work anymore in OTP v1.0 ... with a short walk distance, OTP should show a trip on SC that goes around the EOL Streetcar turnaround loop, with just a short walk leg from OHSU Commons stop 12883...had to move the original end point (45.49855,-122.67065)","45.521039,-122.683098","45.49868,-122.67074","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,160,,,9600.*Streetcar,,,,
