@@ -8,16 +8,16 @@ otp_consts = {
     /**
      * The OTP web service locations
      */
-    trinetReDirect : "https://trinet.trimet.org/verify_login/host1",
-    datastoreUrl   : "http://maps8.trimet.org:9000",
-    hostname       : "http://call-test.trimet.org",
+    trinetReDirect : "https://trinet.trimet.org/call-test_verify_login",
+    datastoreUrl   : "https://call-test.trimet.org:9443 ",
+    hostname       : "https://call-test.trimet.org",
     restService    : "otp/routers/default",
-    solrService    : "http://maps.trimet.org/solr/select",
+    solrService    : "https://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
     //maxWalk        : 1207.008, // 3/4 mile walk
     //maxWalk        : 1609.344, // 1 mile walk
-    attribution    : 'Map data &copy; 2017 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
+    attribution    : 'Map data &copy; 2018 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
 
@@ -79,19 +79,19 @@ otp.config = {
     baseLayers: [
         {
             name: 'TriMet Map',
-            tileUrl: 'http://{s}.trimet.org/tilecache/tilecache.py/1.0.0/currentOSM/{z}/{x}/{y}',
+            tileUrl: '//{s}.trimet.org/tilecache/tilecache.py/1.0.0/currentOSM/{z}/{x}/{y}',
             subdomains : ["tilea","tileb","tilec","tiled"],
             attribution : otp_consts.attribution
         },
         {
             name: 'TriMet Aerials',
-            tileUrl: 'http://{s}.trimet.org/tilecache/tilecache.py/1.0.0/hybridOSM/{z}/{x}/{y}',
+            tileUrl: '//{s}.trimet.org/tilecache/tilecache.py/1.0.0/hybridOSM/{z}/{x}/{y}',
             subdomains : ["tilea","tileb","tilec","tiled"],
             attribution : otp_consts.attribution
         },
         {
             name: 'OSM Tiles',
-            tileUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            tileUrl: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             subdomains : ['a','b'],
             attribution : 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }
