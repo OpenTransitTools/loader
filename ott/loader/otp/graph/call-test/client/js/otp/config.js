@@ -9,7 +9,7 @@ otp_consts = {
      * The OTP web service locations
      */
     trinetReDirect : "https://trinet.trimet.org/call-test_verify_login",
-    datastoreUrl   : "https://call-test.trimet.org:9443 ",
+    datastoreUrl   : "https://call-test.trimet.org:9443",
     hostname       : "https://call-test.trimet.org",
     restService    : "otp/routers/default",
     solrService    : "https://maps.trimet.org/solr/select",
