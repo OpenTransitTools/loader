@@ -231,6 +231,7 @@ otp.config = {
                     { name : 'Bikes and TriMet ', largePrint: false},
                     { name : 'Bikes and TriMet (Spanish)', largePrint: false},
                     { name : 'Fares & How to Ride (multilingual)', largePrint: false},
+                    { name : 'Multilingual Hop pamphlet', largePrint: false},
                     { name : 'Trip Tools', largePrint: false},
                     { name : 'System Map', largePrint: true},
                     { name : 'Honored Citizen Application', largePrint: false},
