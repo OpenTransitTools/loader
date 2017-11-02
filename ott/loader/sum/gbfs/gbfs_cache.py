@@ -9,6 +9,7 @@ from ott.loader.solr.solr_cache import SolrCache
 
 from ott.gbfsdb.stations import Stations
 
+
 class GbfsCache(CacheBase):
     """ cache GBFS .json files
         @see https://github.com/NABSA/gbfs

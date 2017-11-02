@@ -9,7 +9,6 @@ from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
 
 import logging
-# logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__file__)
 
 
@@ -99,6 +98,7 @@ def restore_production():
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
+
 
 def load_and_export():
     log.info("***load and build things, then export them and scp' them to production servers ***")
