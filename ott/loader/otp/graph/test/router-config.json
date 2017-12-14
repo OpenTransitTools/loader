@@ -2,7 +2,8 @@
 {
     timeouts: [7, 3, 2],
 
-    //requestLogFile: "request.log",
+    // for Pedestrian-Routing.md - https://github.com/opentripplanner/OpenTripPlanner/blob/63fba9db13daa29ce384763d8762ec84c21241b4/docs/Pedestrian-Routing.md
+    includeOsmTags: true,
 
     //
     // Routing defaults are any public field or setter in the Java class
