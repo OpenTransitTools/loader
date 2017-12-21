@@ -32,8 +32,11 @@ fi
 ##
 function wget_otpv()
 {
-    echo scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
-    scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
+    if [ ! -f ./$GRAPH_DIR/otp.v ];
+    then
+        echo scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
+        scp $PROD_SVR:~/loader/$GRAPH_DIR/otp.v ./$GRAPH_DIR/otp.v
+    fi
 }
 
 ##
