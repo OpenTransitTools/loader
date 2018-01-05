@@ -13,7 +13,8 @@ log = logging.getLogger(__file__)
 
 
 class GtfsdbLoader(CacheBase):
-    """ load GTFS data into a gtfsdb
+    """
+    load GTFS data into a gtfsdb
     """
     feeds = []
     db_url = None
@@ -27,6 +28,16 @@ class GtfsdbLoader(CacheBase):
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
+    def get_feed_name(self, feed):
+        """ """
+        db_schema_name = gtfs_utils.get_schema_name_from_feed(feed)
+        return db_schema_name
+
+    def get_feed_path(self, feed):
+        """  """
+        feed_path = os.path.join(self.cache_dir, feed['name'])
+        return feed_path
+
     def get_dump_path(self, feed_name):
         """ get a name for the database (amoungst other systems) """
         return "{}/{}.tar".format(self.cache_dir, feed_name)
@@ -37,8 +48,8 @@ class GtfsdbLoader(CacheBase):
         ret_val = True
 
         # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
-        feed_path = os.path.join(self.cache_dir, feed['name'])
-        feed_name = gtfs_utils.get_schema_name_from_feed(feed)
+        feed_path = self.get_feed_path()
+        feed_name = self.get_feed_name(feed)
 
         # step 2: make args for gtfsdb
         kwargs = {}
