@@ -9,7 +9,7 @@ import json
 from ott.utils.parse import csv_reader
 
 HOST="localhost:44444"
-#HOST="maps7.trimet.org/ride_ws"
+HOST="maps7.trimet.org/ride_ws"
 
 class TestGeoCoder(unittest.TestCase):
     def setUp(self):

@@ -97,6 +97,7 @@ setup(
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load
 
+        geocoder_tests = ott.loader.geocoder.test:DbExporter.export_all
         geocoder_export_all = ott.loader.geocoder.db_export.db_exporter:DbExporter.export_all
         geocoder_export_landmarks = ott.loader.geocoder.db_export.landmarks:Landmarks.export
         geocoder_export_intersections = ott.loader.geocoder.db_export.intersections:Intersections.export

@@ -14,7 +14,8 @@ from ott.loader.gtfs.diff import Diff
 
 
 class GtfsCache(CacheBase):
-    """ Does a 'smart' cache of a gtfs file
+    """
+    Does a 'smart' cache of a gtfs file
          1. it will look to see if a gtfs.zip file is in the cache, and download it and put it in the cache if not
          2. once cached, it will check to see that the file in the cache is the most up to date data...
     """
@@ -25,14 +26,23 @@ class GtfsCache(CacheBase):
         self.feeds = gtfs_utils.get_feeds_from_config(self.config)
 
     def check_cached_feeds(self, force_update=False):
+        """
+        will check all feeds from an .ini file
+        :return: array of feed names that were updated
+        """
+        updated_gtfs_names = []
         for f in self.feeds:
-            url,name = GtfsCache.get_url_filename(f)
-            self.check_feed(url, name, force_update)
+            url, name = GtfsCache.get_url_filename(f)
+            update = self.check_feed(url, name, force_update)
+            if update:
+                updated_gtfs_names.append(name)
+        return updated_gtfs_names
 
     def check_feed(self, url, file_name, force_update=False):
-        ''' download feed from url, and check it against the cache
-            if newer, then replace cached feed .zip file with new version
-        '''
+        """
+        download feed from url, and check it against the cache
+        if newer, then replace cached feed .zip file with new version
+        """
         # step 1: file name
         file_name = file_name
         file_path = os.path.join(self.cache_dir, file_name)
@@ -63,9 +73,12 @@ class GtfsCache(CacheBase):
             file_utils.bkup(file_path)
             file_utils.cp(tmp_path, file_path)
 
+        return update
+
     def cmp_file_to_cached(self, gtfs_zip_name, cmp_dir):
-        ''' returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
-        '''
+        """
+        returns a Diff object with cache/gtfs_zip_name & cmp_dir/gtfs_zip_name
+        """
         cache_path = os.path.join(self.cache_dir, gtfs_zip_name)
         other_path = os.path.join(cmp_dir, gtfs_zip_name)
         diff = Diff(cache_path, other_path)
@@ -73,16 +86,18 @@ class GtfsCache(CacheBase):
 
     @classmethod
     def _get_info(cls, gtfs_zip_name, file_prefix=''):
-        ''' :return an info object for this cached gtfs feed
-        '''
+        """
+        :return an info object for this cached gtfs feed
+        """
         cache_path = os.path.join(cls.get_cache_dir(), gtfs_zip_name)
         ret_val = GtfsInfo(cache_path, file_prefix)
         return ret_val
 
     @classmethod
     def compare_feed_against_cache(cls, gtfs_feed, app_dir, force_update=False):
-        ''' check the ott.loader.gtfs cache for any feed updates
-        '''
+        """
+        check the ott.loader.gtfs cache for any feed updates
+        """
         update_cache = force_update
         try:
             cache = GtfsCache()
@@ -103,8 +118,9 @@ class GtfsCache(CacheBase):
 
     @classmethod
     def check_feeds_against_cache(cls, gtfs_feeds, app_dir, force_update=False, filter=None):
-        ''' check the ott.loader.gtfs cache for any feed updates
-        '''
+        """
+        check the ott.loader.gtfs cache for any feed updates
+        """
         update_cache = False
         for feed in gtfs_feeds:
             if filter and feed.get('name', 'XXX') not in filter:

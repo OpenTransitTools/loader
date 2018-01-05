@@ -24,11 +24,15 @@ def download_data():
 
     log.info("step 1: cache latest gtfs feeds")
     gtfs = GtfsCache()
-    gtfs.check_cached_feeds(force_update=force_update)
+    updated_feeds = gtfs.check_cached_feeds(force_update=force_update)
+    if updated_feeds and updated_feeds.len() > 0:
+        force_update = True
 
     log.info("step 2: cache latest osm data")
     osm = OsmCache()
-    osm.check_cached_osm(force_update=force_update)
+    updated_osm = osm.check_cached_osm(force_update=force_update)
+    if updated_osm:
+        force_update = True
 
     log.info("step 3: download SUM data (BIKETOWN)")
     sum_update = SumCache.load

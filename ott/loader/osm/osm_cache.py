@@ -60,9 +60,13 @@ class OsmCache(CacheBase):
         self.osm_path = os.path.join(self.cache_dir, self.osm_name)
 
     def check_cached_osm(self, force_update=False):
-        """ if OSM .pbf file is out of date, download a new one.
-            convert .pbf to .osm if .pbf file is newer than .osm file
         """
+        if OSM .pbf file is out of date, download a new one.
+        convert .pbf to .osm if .pbf file is newer than .osm file
+        :return indication if updated
+        """
+        is_updated = force_update
+
         min_size = self.config.get_int('min_size', def_val=100000)
 
         # step 1: download new osm pbf file if it's not new
@@ -70,6 +74,7 @@ class OsmCache(CacheBase):
         sized = file_utils.is_min_sized(self.pbf_path, min_size)
         if force_update or not fresh or not sized:
             self.download_pbf()
+            is_updated = True
 
         # step 2: .pbf to .osm
         if not file_utils.is_min_sized(self.pbf_path, min_size):
@@ -78,11 +83,11 @@ class OsmCache(CacheBase):
             fresh = self.is_fresh_in_cache(self.osm_path)
             sized = file_utils.is_min_sized(self.osm_path, min_size)
             pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
-            if force_update or pbf_newer or not fresh or not sized:
+            if is_updated or pbf_newer or not fresh or not sized:
                 self.clip_to_bbox(input_path=self.pbf_path, output_path=self.osm_path)
-                fresh = True
+                is_updated = True
             else:
-                fresh = False
+                is_updated = False
 
         # step 3: .osm file check
         if not file_utils.is_min_sized(self.osm_path, min_size):
@@ -90,11 +95,12 @@ class OsmCache(CacheBase):
             raise Exception(e)
 
         # step 4: other OSM processing steps on a new (fresh) .osm file
-        if fresh:
+        if is_updated:
             OsmRename.rename(self.osm_path, do_bkup=False)
             OsmInfo.cache_stats(self.osm_path)
             self.osm_to_pbf()
             self.other_exports()
+        return is_updated
 
     def get_osmosis_exe(self):
         """ get the path osmosis binary
