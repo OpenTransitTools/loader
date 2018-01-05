@@ -48,7 +48,7 @@ class GtfsdbLoader(CacheBase):
         ret_val = True
 
         # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
-        feed_path = self.get_feed_path()
+        feed_path = self.get_feed_path(feed)
         feed_name = self.get_feed_name(feed)
 
         # step 2: make args for gtfsdb
