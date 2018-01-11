@@ -11,5 +11,5 @@
     "secretKey" : "SECRETSECRETSECRET",
     "bucketName" : "ned13"
   },
-
+  "includeOsmTags": true
 }
