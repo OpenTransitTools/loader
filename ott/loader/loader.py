@@ -66,8 +66,6 @@ def load_all():
     log.info("step 6: load various data layers into SOLR")
     solr_load = SolrLoader.load()
 
-    export_all()
-
 
 def export_all():
     """
@@ -84,6 +82,12 @@ def export_all():
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
+
+
+def load_and_export():
+    log.info("***load and build things, then export them and scp' them to production servers ***")
+    load_all()
+    export_all()
 
 
 def restore_production():
@@ -103,9 +107,3 @@ def restore_production():
 
     log.info("step 4: export... SOLR updates")
     #solr_load = SolrLoader.load
-
-
-def load_and_export():
-    log.info("***load and build things, then export them and scp' them to production servers ***")
-    load_all()
-    export_all()
