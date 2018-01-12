@@ -8,7 +8,6 @@ from .osm_rename import OsmRename
 
 import os
 import re
-import urlparse
 import logging
 log = logging.getLogger(__file__)
 
@@ -46,9 +45,9 @@ class OsmCache(CacheBase):
 
         # step 2: .pbf and .html (meta data) urls and file names
         self.pbf_url = self.config.get('pbf_url')
-        self.pbf_name = urlparse.urlsplit(self.pbf_url).path.split('/')[-1]
+        self.pbf_name = web_utils.get_name_from_url(self.pbf_url)
         self.meta_url = self.config.get('meta_url')
-        self.meta_name = urlparse.urlsplit(self.meta_url).path.split('/')[-1]
+        self.meta_name = web_utils.get_name_from_url(self.meta_url)
 
         # step 3: output .osm file name
         name = self.config.get('name')
