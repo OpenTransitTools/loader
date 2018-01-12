@@ -30,13 +30,14 @@ def download_data():
         force_update = True
 
     log.info("step 2: cache latest osm data")
-    osm = OsmCache()
-    updated_osm = osm.check_cached_osm(force_update=force_update)
+    updated_osm = OsmCache.update(force_update=force_update)
     if updated_osm:
         force_update = True
 
     log.info("step 3: download SUM data (BIKETOWN)")
     sum_update = SumCache.load
+
+    return force_update
 
 
 def load_all():

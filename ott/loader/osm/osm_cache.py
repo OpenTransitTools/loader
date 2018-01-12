@@ -2,6 +2,7 @@ from ott.utils import exe_utils
 from ott.utils import file_utils
 from ott.utils import object_utils
 from ott.utils import web_utils
+from ott.utils import string_utils
 from ott.utils.cache_base import CacheBase
 from .osm_info import OsmInfo
 from .osm_rename import OsmRename
@@ -51,12 +52,12 @@ class OsmCache(CacheBase):
 
         # step 3: output .osm file name
         name = self.config.get('name')
-        self.osm_name = name + ".osm"
+        self.osm_name = string_utils.safe_append(name, ".osm")
 
         # step 4: file cache paths
-        self.pbf_path = os.path.join(self.cache_dir, self.pbf_name)
-        self.meta_path = os.path.join(self.cache_dir, self.meta_name)
-        self.osm_path = os.path.join(self.cache_dir, self.osm_name)
+        self.pbf_path = string_utils.safe_path_join(self.cache_dir, self.pbf_name)
+        self.meta_path = string_utils.safe_path_join(self.cache_dir, self.meta_name)
+        self.osm_path = string_utils.safe_path_join(self.cache_dir, self.osm_name)
 
     def check_cached_osm(self, force_update=False):
         """
@@ -181,6 +182,20 @@ class OsmCache(CacheBase):
                 ret_val = True
         except Exception, e:
             log.warn(e)
+        return ret_val
+
+    def is_configured(self):
+        return self.osm_name and self.osm_path and self.pbf_name and self.pbf_path
+
+    @classmethod
+    def update(cls, force_update):
+        """ check OSM for freshness
+        """
+        # import pdb; pdb.set_trace()
+        ret_val = False
+        osm = OsmCache()
+        if osm.is_configured():
+            ret_val = osm.check_cached_osm(force_update)
         return ret_val
 
     @classmethod
