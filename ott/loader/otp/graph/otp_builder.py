@@ -45,42 +45,45 @@ class OtpBuilder(CacheBase):
         graphs = otp_utils.get_graphs(self)
 
         # check for config list of graphs ... create a default if nothing exists
-        if graphs is None or len(graphs) == 0:
+        if force_update and (graphs is None or len(graphs) == 0):
             graphs = [otp_utils.get_graph_details(None)]  # returns a default graph config
 
         # run thru the graphs and
-        for g in graphs:
-            graph_dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-            filter = g.get('filter')
-            if force_update or not dont_update:
-                OsmCache.check_osm_file_against_cache(graph_dir)
-                GtfsCache.check_feeds_against_cache(self.feeds, graph_dir, force_update, filter)
+        if graphs:
+            for g in graphs:
+                graph_dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+                filter = g.get('filter')
+                if force_update or not dont_update:
+                    OsmCache.check_osm_file_against_cache(graph_dir)
+                    GtfsCache.check_feeds_against_cache(self.feeds, graph_dir, force_update, filter)
         return graphs
 
     def build_and_test_graphs(self, java_mem=None, force_update=False, start_server=True):
         """ will build and test each of the graphs we have in self.graphs
         """
         ret_val = True
-        for g in self.graphs:
-            success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
-            if success and rebuilt:
-                success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
-                ret_val = success
-            elif not success:
-                ret_val = False
-                log.warn("graph build failed for graph {}".format(g['name']))
+        if self.graphs:
+            for g in self.graphs:
+                success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
+                if success and rebuilt:
+                    success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
+                    ret_val = success
+                elif not success:
+                    ret_val = False
+                    log.warn("graph build failed for graph {}".format(g['name']))
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True):
         """ will test each of the graphs we have in self.graphs
         """
         ret_val = True
-        for g in self.graphs:
-            success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
-            if not success:
-                ret_val = False
-                if break_on_fail:
-                    break
+        if self.graphs:
+            for g in self.graphs:
+                success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
+                if not success:
+                    ret_val = False
+                    if break_on_fail:
+                        break
         return ret_val
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):

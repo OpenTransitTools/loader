@@ -23,6 +23,10 @@ class OtpExporter(OtpBuilder):
         """
         ret_val = True
 
+        if self.graphs is None or len(self.graphs) < 1:
+            log.info("no [otp] graphs configured in the .ini file")
+            return ret_val
+
         def scp_graph(server, user, graph_dir, server_dir, graph=None):
             """ sub-routine to scp Graph.obj-new, otp.v-new and (optionally) otp.jar-new over to
                 a given server.  crazy part of this code is all the path (string) manipulation
