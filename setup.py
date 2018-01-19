@@ -8,6 +8,7 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'gtfsdb',
+    'gtfsdb_realtime',
     'ott.utils',
     'ott.gbfsdb',
     'simplejson',
@@ -50,6 +51,7 @@ setup(
         'git+https://github.com/OpenTransitTools/utils.git#egg=ott.utils-0.1.0',
         'git+https://github.com/OpenTransitTools/gbfsdb.git#egg=ott.gbfsdb-1.0.0',
         'git+https://github.com/OpenTransitTools/gtfsdb.git#egg=gtfsdb-1.0.0',
+        'git+https://github.com/OpenTransitTools/gtfsdb_realtime.git#egg=gtfsdb_realtime-1.0.0',
     ],
     license="Mozilla-derived (http://opentransittools.com)",
     url='http://opentransittools.com',
