@@ -13,6 +13,8 @@ log = logging.getLogger(__file__)
 class GtfsdbRealtimeLoader(object):
     """
     load GTFS Realtime data into a companion gtfsdb database
+
+    TODO: do we need to abstract some common gtfsdb and gtfs-realtime methods into a new parent class? IoC?
     """
     feeds = []
     db_url = None
@@ -91,5 +93,5 @@ class GtfsdbRealtimeLoader(object):
         """ run the gtfsdb loader against all the specified feeds from config/app.ini
             NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
         """
-        db = GtfsdbLoader()
+        db = GtfsdbRealtimeLoader()
         db.check_db(force_update=object_utils.is_force_update())
