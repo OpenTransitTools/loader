@@ -8,6 +8,7 @@ loader:gtfsdb
 
 **run**: bin/gtfsdb_load (optional -ini <name>.ini | force_update)
 
+**Note**: this system assumes a PostGIS environment, with geom columns available for stops and routes tables.
 
 **Note**: the config is set up for a PostGIS geo database, where gtfsdb will create route and stop geometry columns
       http://postgis.net/docs/postgis_installation.html#create_new_db_extensions
