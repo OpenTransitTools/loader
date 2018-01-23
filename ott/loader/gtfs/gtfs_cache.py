@@ -1,7 +1,4 @@
 import os
-import logging
-log = logging.getLogger(__file__)
-
 
 from ott.utils import gtfs_utils
 from ott.utils import file_utils
@@ -11,6 +8,9 @@ from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.gtfs.diff import Diff
+
+import logging
+log = logging.getLogger(__file__)
 
 
 class GtfsCache(CacheBase):
@@ -139,9 +139,10 @@ class GtfsCache(CacheBase):
 
 
 def main():
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     cache = GtfsCache()
     cache.check_cached_feeds(force_update=object_utils.is_force_update())
+
 
 if __name__ == '__main__':
     main()

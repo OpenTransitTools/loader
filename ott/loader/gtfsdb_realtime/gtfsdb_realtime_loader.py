@@ -1,13 +1,11 @@
 from ott.utils import gtfs_utils
 from ott.utils import object_utils
-from ott.utils import db_utils
-from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 
 from ott.gtfsdb_realtime import loader
 
-
 import logging
+logging.basicConfig()
 log = logging.getLogger(__file__)
 
 
@@ -31,21 +29,22 @@ class GtfsdbRealtimeLoader(CacheBase):
         """
         ret_val = True
 
-        # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
-        schema = feed['name']
+        # step 1: get urls to this feed's
+        agency_id = feed.get('agency_id')
+        schema = feed.get('schema', agency_id)
         trips_url = gtfs_utils.get_realtime_trips_url(feed)
         alerts_url = gtfs_utils.get_realtime_alerts_url(feed)
         vehicles_url = gtfs_utils.get_realtime_vehicles_url(feed)
 
-        # step 2: make args for gtfsdb_realtime
-
-        # step 3: load this feed into gtfsdb
-        log.info("loading gtfsdb_realtime db {} {} with:\n trips = {}\n alerts = {}\n vehicles {}".format(self.db_url, schema, trips_url, alerts_url, vehicles_url))
+        # step 2: load them there gtfs-rt feeds
         try:
-            pass
+            log.info("loading gtfsdb_realtime db {} {}".format(self.db_url, schema))
+            session = loader.get_db_session(self.db_url, schema, geo=True, create=True)
+            ret_val = loader.load_agency_data(session, agency_id, trips_url, alerts_url, vehicles_url)
         except Exception, e:
             log.error("DATABASE ERROR : {}".format(e))
             ret_val = False
+
         return ret_val
 
     def load_all(self, force_update=False):
@@ -57,5 +56,6 @@ class GtfsdbRealtimeLoader(CacheBase):
         """ run the gtfsdb realtime loader against all the specified feeds from config/app.ini
             NOTE: this is effectively a main method for updating all the realtime feeds
         """
-        db = GtfsdbRealtimeLoader()
-        db.load_all(force_update=object_utils.is_force_update())
+        # import pdb; pdb.set_trace()
+        rt = GtfsdbRealtimeLoader()
+        rt.load_all(force_update=object_utils.is_force_update())

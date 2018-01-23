@@ -1,5 +1,4 @@
 import os
-import logging
 
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
@@ -16,8 +15,8 @@ class Fix(CacheBase):
         self.gtfs_path = os.path.join(self.cache_dir, gtfs_name)
 
     def cp(self, to_gtfs_path=None):
-        ''' copy gtfs file to new file (good for testing, so you don't harm original gtfs.zip)
-        '''
+        """ copy gtfs file to new file (good for testing, so you don't harm original gtfs.zip)
+        """
         if to_gtfs_path is None:
             to_gtfs_path = self.gtfs_path + '.zip'
         file_utils.cp(self.gtfs_path, to_gtfs_path)
@@ -31,12 +30,12 @@ class Fix(CacheBase):
 
     @classmethod
     def get_args(cls):
-        ''' database load command-line arg parser and help util...
+        """ database load command-line arg parser and help util...
 
             examples:
                bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
                bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
-        '''
+        """
         import argparse
         parser = argparse.ArgumentParser(prog='gtfs-fix', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         parser.add_argument('gtfs', help="Name of GTFS zip that is in the 'cache' (e.g., TRIMET.zip)")
@@ -50,11 +49,12 @@ class Fix(CacheBase):
 
 
 def rename_trimet_agency():
-    ''' just rename routes.txt (good for OTP alerts) ... don't rename the agency.txt
+    """ just rename routes.txt (good for OTP alerts) ... don't rename the agency.txt
         bin/gtfs_fix TRIMET.zip -r -f "(PSC|TRAM)" -t "TRIMET"
-    '''
+    """
     fix = Fix("TRIMET.zip")
     fix.rename_agency_in_routes_txt("(PSC|TRAM)",  "TRIMET")
+
 
 def main():
     args = Fix.get_args()
@@ -65,6 +65,7 @@ def main():
         fix.rename_agency_in_routes_txt(args.regex, args.replace)
     if args.agency:
         fix.rename_agency_in_agency_txt(args.regex, args.replace)
+
 
 if __name__ == '__main__':
     main()
