@@ -32,28 +32,25 @@ class GtfsdbRealtimeLoader(CacheBase):
         ret_val = True
 
         # step 1: get cached feed path and feed name (see 'feeds' in config/app.ini)
-        feed_path = self.get_feed_path(feed)
-        feed_name = self.get_feed_name(feed)
+        schema = feed['name']
+        trips_url = gtfs_utils.get_realtime_trips_url(feed)
+        alerts_url = gtfs_utils.get_realtime_alerts_url(feed)
+        vehicles_url = gtfs_utils.get_realtime_vehicles_url(feed)
 
-        # step 2: make args for gtfsdb
-        kwargs = {}
-        kwargs['url'] = self.db_url
-        if "sqlite:" not in self.db_url:
-            kwargs['is_geospatial'] = self.is_geospatial
-            kwargs['schema'] = feed_name
+        # step 2: make args for gtfsdb_realtime
 
         # step 3: load this feed into gtfsdb
-        log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
+        log.info("loading gtfsdb_realtime db {} {} with:\n trips = {}\n alerts = {}\n vehicles {}".format(self.db_url, schema, trips_url, alerts_url, vehicles_url))
         try:
-            database_load(feed_path, **kwargs)
+            pass
         except Exception, e:
-            ret_val = False
-            file_utils.mv(feed_path, feed_path + self.err_ext)
             log.error("DATABASE ERROR : {}".format(e))
+            ret_val = False
         return ret_val
 
     def load_all(self, force_update=False):
-        pass
+        for f in self.feeds:
+            self.load_feed(f)
 
     @classmethod
     def load(cls):

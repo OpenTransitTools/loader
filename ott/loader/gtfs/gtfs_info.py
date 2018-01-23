@@ -24,7 +24,7 @@ class GtfsInfo(CacheBase):
     def __init__(self, gtfs_path, file_prefix=''):
         ''' note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
         '''
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         super(GtfsInfo, self).__init__(section='gtfs')
 
         self.gtfs_path = gtfs_path
