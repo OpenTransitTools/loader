@@ -213,7 +213,7 @@ otp.config = {
                     { name : 'Rte 77 Schedule (77-Broadway/Halsey)', largePrint: true },
                     { name : 'Rte 79 Schedule (79-Clackamas/Oregon City)', largePrint: true },
                     { name : 'Rte 80/81 Schedule (80-Kane/Troutdale Rd, 81-Kane/257th)', largePrint: true },
-                    { name : 'Rte 82 Schedule (82-South Gresham)', largePrint: true },    
+                    { name : 'Rte 82 Schedule (82-South Gresham)', largePrint: true },
                     { name : 'Rte 84 Schedule (84-Powell Valley/Orient Dr)', largePrint: true },
                     { name : 'Rte 85 Schedule (85-Swan Island)', largePrint: true },
                     { name : 'Rte 87 Schedule (87-Airport Way/181st)', largePrint: true },
