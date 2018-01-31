@@ -239,7 +239,7 @@ otp.config = {
                     { name : 'System Map', largePrint: true},
                     { name : 'Honored Citizen Application', largePrint: false},
                     { name : 'Transit Access Flip-book for the Blind', largePrint: false},
-                    { name : 'Lanyard', false},
+                    { name : 'Lanyard', largePrint: false},
                     { name : 'Safety light', largePrint: false},
                     { name : 'Earl P. Nutt Safety Coloring Book', largePrint: false},
                     { name : 'Earl P. Nutt Safety Puzzle Book', largePrint: false},
