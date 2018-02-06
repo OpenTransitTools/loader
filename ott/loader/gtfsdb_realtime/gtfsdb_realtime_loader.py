@@ -39,7 +39,7 @@ class GtfsdbRealtimeLoader(CacheBase):
         # step 2: load them there gtfs-rt feeds
         try:
             log.info("loading gtfsdb_realtime db {} {}".format(self.db_url, schema))
-            session = loader.get_db_session(self.db_url, schema, geo=True, create=True)
+            session = loader.make_session(self.db_url, schema, is_geospatial=True, create_db=True)
             ret_val = loader.load_agency_data(session, agency_id, trips_url, alerts_url, vehicles_url)
         except Exception, e:
             log.error("DATABASE ERROR : {}".format(e))
