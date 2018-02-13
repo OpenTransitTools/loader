@@ -8,7 +8,17 @@
     {
       "key": "sidewalk",
       "value": "both",
-      "factor": 0.9
+      "factor": 0.5
+    },
+    {
+      "key": "footway",
+      "value": "sidewalk",
+      "factor": 2
+    },
+    {
+      "key": "sidewalk",
+      "value": "no",
+      "factor": 1.5
     }
   ]
 }
