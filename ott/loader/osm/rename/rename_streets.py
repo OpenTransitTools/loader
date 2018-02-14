@@ -1,23 +1,25 @@
-# Copyright 2011, TriMet
-#
-# Licensed under the GNU Lesser General Public License 3.0 or any
-# later version. See lgpl-3.0.txt for details.
-#
+"""
+  Copyright 2011, TriMet
+  Licensed under the GNU Lesser General Public License 3.0 or any later version. See lgpl-3.0.txt for details.
+"""
 import sys
 import time
-import logging
-logging.basicConfig(level=logging.INFO)
 
 from . import pgdb
 from .osm_abbr_parser import OsmAbbrParser
 
 from ott.utils import num_utils
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
 MAX=999999999999
 #MAX=20
 
+
 class RenameStreets():
-    """ Fixup the street labels from various osm streets table(s) in a pgsql database
+    """
+    Fixup the street labels from various osm streets table(s) in a pgsql database
     """
     limit = MAX
     parser = None
@@ -31,7 +33,8 @@ class RenameStreets():
             self.rename_streets(table)
 
     def rename_streets(self, table):
-        """ query the database table for osm_name entries, then update the given column with a parsed set of name, prefix, suffix, type, etc...
+        """
+        query the database table for osm_name entries, then update the given column with a parsed set of name, prefix, suffix, type, etc...
         """
         #import pdb; pdb.set_trace()
         try:
@@ -86,7 +89,7 @@ class RenameStreets():
 
 
     def add_columns(self, table):
-        ''' renames name col in the street tables, and then adds new columns for RLIS like name attributes
+        """ renames name col in the street tables, and then adds new columns for RLIS like name attributes
             - rename name to osm_name = Southeast Lambert Street
             - name = Lambert
             - prefix = SE
@@ -94,7 +97,7 @@ class RenameStreets():
             - type = St
             - label = BOOLEAN
             - label_text = SE Lambert St
-        '''
+        """
         try:
             # step 0: database connect
             conn = pgdb.getConnection()
@@ -133,6 +136,7 @@ def main(argv):
     else:
         RenameStreets(limit=limit)
 
+
 def profile_run(argv):
     import cProfile, pstats, StringIO
     pr = cProfile.Profile()
@@ -145,6 +149,7 @@ def profile_run(argv):
     ps.print_stats()
     print s.getvalue()
 
+
 def timed_run(argv):
     start_seconds = time.time()
     start_time = time.localtime()
@@ -154,6 +159,7 @@ def timed_run(argv):
     print time.strftime('end time: %H:%M:%S', end_time)
     process_time = time.time() - start_seconds
     print 'processing time: %.0f seconds' %(process_time)
+
 
 if __name__ == '__main__':
     #profile_run(sys.argv)

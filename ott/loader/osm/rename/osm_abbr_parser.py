@@ -7,14 +7,17 @@ import csv
 
 from pyparsing import *
 
+
 class OsmAbbrParser(object):
-    """Convert long OSM types and directions to their proper abbreviated forms
+    """
+    Convert long OSM types and directions to their proper abbreviated forms
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 
     def __init__(self):
-        """constructor builds the pyparsing parser
+        """
+        constructor builds the pyparsing parser
         """
 
         # step 1: load in .csv files used for parsing, find/replace and string fixups
@@ -66,8 +69,9 @@ class OsmAbbrParser(object):
                         )
 
     def parse(self, s):
-        """ Returns parsed address as dictionary
-            run the input string through the street parser
+        """
+        Returns parsed address as dictionary
+        run the input string through the street parser
         """
         ret_val = {
            'type':   '',
@@ -93,7 +97,8 @@ class OsmAbbrParser(object):
         return ret_val
 
     def dict(self, orig):
-        """ Returns a parsed and string replaced dict
+        """
+        Returns a parsed and string replaced dict
 
         dict format is {
                          original:'East North South Street Westbound',
@@ -129,7 +134,8 @@ class OsmAbbrParser(object):
         return ret_val
 
     def pstr(self, s, r):
-        """ return a pretty string by checking string len, and return the string, with optional trailing space...
+        """
+        return a pretty string by checking string len, and return the string, with optional trailing space...
         """
         if r is None and len(s) <= 0:
             r = ""
@@ -140,8 +146,8 @@ class OsmAbbrParser(object):
         return r
 
     def dict_find(self, dict, value, col='str'):
-        '''
-        '''
+        """
+        """
         ret_val = False
         l = dict[col].lower()
         v = value.lower()
@@ -150,8 +156,8 @@ class OsmAbbrParser(object):
         return ret_val
 
     def csv_ignore_replace(self, csv_list, value):
-        '''
-        '''
+        """
+        """
         ret_val = None
         # search the 'str' column for a csv entry...
         for i, dic in enumerate(csv_list):

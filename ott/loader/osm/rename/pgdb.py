@@ -14,9 +14,11 @@ dbpass=os.environ.get('PGPASS',   'osm')
 dbschema=os.environ.get('PGSCHEMA', 'osm')
 print "host=",host,"port=",port,"database=",dbname, "user=",dbuser, "password=",dbpass
 
+
 def getConnection():
     import psycopg2
     return psycopg2.connect(host=host, port=port, database=dbname, user=dbuser, password=dbpass)
+
 
 def escape_str(v):
     ret_val=v
@@ -24,8 +26,10 @@ def escape_str(v):
         ret_val=v.replace("'", "''")
     return ret_val
 
+
 def dict_2_str(dict, joiner=','):
-    """returns a string that looks like "key='value', key2='value2', ... "
+    """
+    returns a string that looks like "key='value', key2='value2', ... "
     """
     tmplist=[]
     for k,v in dict.items():
@@ -40,9 +44,11 @@ def dict_2_str(dict, joiner=','):
 
     return joiner.join(tmplist)
 
+
 def sql_update_str(table, dict):
-    """returns a string that looks like "UPDATE table SET key='value', key2='value2', ... "
-       based on this example: http://code.activestate.com/recipes/577605-auto-generate-simple-sql-statements/
+    """
+    returns a string that looks like "UPDATE table SET key='value', key2='value2', ... "
+    based on this example: http://code.activestate.com/recipes/577605-auto-generate-simple-sql-statements/
     """
     sql  = ''
     sql += 'UPDATE %s '%table
