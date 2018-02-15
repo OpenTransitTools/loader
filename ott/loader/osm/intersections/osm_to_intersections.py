@@ -3,6 +3,8 @@
     https://stackoverflow.com/questions/14716497/how-can-i-find-a-list-of-street-intersections-from-openstreetmap-data?rq=1
 """
 
+from ott.utils import file_utils
+
 try:
     from xml.etree import cElementTree as ET
 except ImportError, e:
@@ -57,7 +59,10 @@ def extract_intersections(osm):
 
 
 def main():
-    intersections = extract_intersections('./test/portland.osm')
+    import pdb; pdb.set_trace()
+    dir = file_utils.get_file_dir(__file__)
+    file = file_utils.path_join(dir, 'test/portland.osm')
+    intersections = extract_intersections(file)
     for entry in intersections:
         print entry
 
