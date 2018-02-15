@@ -22,7 +22,7 @@ fi
 
 
 ## copy junk over
-for d in ott/loader/gtfs/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/call ott/loader/otp/graph/call-test ott/loader/otp/graph/prod ott/loader/otp/graph/test
+for d in ott/loader/gtfs/cache ott/loader/gtfsdb/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/call ott/loader/otp/graph/call-test ott/loader/otp/graph/prod ott/loader/otp/graph/test
 do
     if [[ "$1/$d" = "./$d" ]];
     then
@@ -45,3 +45,9 @@ do
     echo $CP -r "$1/$d" "./$d"
     $CP -r "$1/$d" "./$d"
 done
+
+touch ott/loader/osm/cache/*.osm
+sleep 1
+touch ott/loader/otp/graph/*/*.osm
+sleep 1
+touch ott/loader/otp/graph/*/Graph.obj
