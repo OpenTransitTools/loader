@@ -8,16 +8,17 @@ import logging
 log = logging.getLogger(__file__)
 
 
-
 class OsmInfo(object):
-    """ Utility for getting stats on an osm file 
+    """
+    Utility for getting stats on an osm file
     """
     def __init__(self):
         """ TODO think about rewriting this to simply read file line by line and find latest stamps and count tags...
-            will be much faster than osmread on big files...
+        will be much faster than osmread on big files...
         """
         self.way_count = 0
         self.highway_count = 0
+
         class Last(object):
             timestamp = 0
             changeset = 0

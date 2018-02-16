@@ -82,7 +82,7 @@ class OsmCache(CacheBase):
         else:
             fresh = self.is_fresh_in_cache(self.osm_path)
             sized = file_utils.is_min_sized(self.osm_path, min_size)
-            pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path)
+            pbf_newer = file_utils.is_a_newer_than_b(self.pbf_path, self.osm_path, offset_minutes=10)
             if is_updated or pbf_newer or not fresh or not sized:
                 self.clip_to_bbox(input_path=self.pbf_path, output_path=self.osm_path)
                 is_updated = True
@@ -164,13 +164,14 @@ class OsmCache(CacheBase):
 
     @classmethod
     def check_osm_file_against_cache(cls, app_dir, force_update=False):
-        """ check the .osm file in this cache against an osm file in another app's directory (e.g., OTP folder)
+        """
+        check the .osm file in this cache against an osm file in another app's directory (e.g., OTP folder)
         """
         ret_val = False
         try:
             osm = OsmCache()
             app_osm_path = os.path.join(app_dir, osm.osm_name)
-            refresh = file_utils.is_a_newer_than_b(osm.osm_path, app_osm_path)
+            refresh = file_utils.is_a_newer_than_b(osm.osm_path, app_osm_path, offset_minutes=10)
             if refresh or force_update:
                 # step a: copy the .osm file to this foreign cache
                 log.info("cp {} to {}".format(osm.osm_name, app_dir))
