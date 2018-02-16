@@ -59,9 +59,9 @@ def extract_intersections(osm):
 
 
 def main():
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     dir = file_utils.get_file_dir(__file__)
-    file = file_utils.path_join(dir, '/test/portland.osm')
+    file = file_utils.path_join(dir, './tests/portland.osm')
     intersections = extract_intersections(file)
     for entry in intersections:
         print entry
