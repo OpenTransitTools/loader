@@ -46,6 +46,9 @@ do
     $CP -r "$1/$d" "./$d"
 done
 
+# remove gtfs.zip junk
+rm ott/loader/gtfs*/cache/*.txt
+
 touch ott/loader/osm/cache/*.osm
 sleep 1
 touch ott/loader/otp/graph/*/*.osm
