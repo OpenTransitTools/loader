@@ -9,7 +9,7 @@ otp_consts = {
      * The OTP web service locations
      */
     hostname       : "",
-    restService    : "/otp_test",
+    restService    : "otp_test",
     solrService    : "http://maps.trimet.org/solr/select",
     solrService    : "http://maps7.trimet.org/solrwrap/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
