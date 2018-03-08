@@ -9,7 +9,7 @@ otp_consts = {
      * The OTP web service locations
      */
     hostname       : "",
-    restService    : "otp/routers/default",
+    restService    : "/otp_prod",
     solrService    : "http://maps.trimet.org/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
