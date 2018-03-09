@@ -10,7 +10,7 @@ otp_consts = {
      */
     hostname       : "",
     restService    : "otp_prod",
-    solrService    : "http://maps.trimet.org/solr/select",
+    solrService    : "//maps7.trimet.org/solrwrap/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
     //maxWalk        : 1207.008, // 3/4 mile walk

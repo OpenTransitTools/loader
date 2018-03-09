@@ -10,12 +10,12 @@ otp_consts = {
      */
     hostname       : "",
     restService    : "otp_test",
-    solrService    : "http://maps.trimet.org/solr/select",
-    solrService    : "http://maps7.trimet.org/solrwrap/solr/select",
+    solrService    : "//maps.trimet.org/solr/select",
+    solrService    : "//maps7.trimet.org/solrwrap/solr/select",
     center         : new L.LatLng(45.494833,-122.670376),
-    maxWalk        : 804.672, // 1/2 mile walk
+    //maxWalk        : 804.672, // 1/2 mile walk
     //maxWalk        : 1207.008, // 3/4 mile walk
-    //maxWalk        : 1609.344, // 1 mile walk
+    maxWalk        : 1609.344, // 1 mile walk
     attribution    : 'Map data &copy; 2018 Oregon Metro and <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> and contributors.'
 };
 
