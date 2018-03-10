@@ -105,5 +105,10 @@ setup(
         geocoder_export_landmarks = ott.loader.geocoder.db_export.landmarks:Landmarks.export
         geocoder_export_intersections = ott.loader.geocoder.db_export.intersections:Intersections.export
         solr_load = ott.loader.solr.solr_loader:SolrLoader.load
+
+        log_find_pauses = ott.utils.parse.logs.request_dwell:main
+        log_count_requests = ott.utils.parse.logs.request_count:main
+        log_grep_urls = ott.utils.parse.logs.grep_urls:main
+        log_call_urls = ott.utils.parse.logs.call_urls:main
     """,
 )
