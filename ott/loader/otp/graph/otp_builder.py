@@ -71,6 +71,8 @@ class OtpBuilder(CacheBase):
                 elif not success:
                     ret_val = False
                     log.warn("graph build failed for graph {}".format(g['name']))
+                if rebuilt and g.get('post_shutdown'):
+                    otp_utils.kill_otp_server(g['dir'])
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True):
