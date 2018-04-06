@@ -77,6 +77,7 @@ setup(
         osm_other_exports = ott.loader.osm.osm_cache:OsmCache.other_exports
         osm_stats = ott.loader.osm.osm_info:OsmInfo.print_stats
         osm_rename = ott.loader.osm.osm_rename:main
+        osm_intersections = ott.loader.osm.intersections.osm_to_intersections:main
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_info = ott.loader.gtfs.info:main
