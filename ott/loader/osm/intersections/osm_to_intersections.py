@@ -12,6 +12,7 @@ except ImportError, e:
 
 
 def get_names_from_way_list(way_list):
+    import pdb; pdb.set_trace()
     ret_val = []
     try:
         for w in way_list:
@@ -73,7 +74,6 @@ def extract_intersections(osm):
             if id in intersections and id in road_ways:
                 coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
                 names = get_names_from_way_list(road_ways[id])
-                #import pdb; pdb.set_trace()
                 if len(names) > 1:
                     ret_val.append(coordinate + names[0] + ' & ' + names[1])
                 else:
