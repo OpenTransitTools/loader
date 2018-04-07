@@ -32,8 +32,8 @@ def extract_intersections(osm):
         if child.tag == 'way':
             is_road = False
 
-            # TODO: make road types configurable
-            road_types = ('primary', 'secondary', 'residential', 'tertiary', 'service')
+            # TODO: make road types configurable ? , 'service'
+            road_types = ('primary', 'secondary', 'residential', 'tertiary')
             for item in child:
                 if item.tag == 'tag' and item.attrib['k'] == 'highway' and item.attrib['v'] in road_types:
                     is_road = True
@@ -53,6 +53,7 @@ def extract_intersections(osm):
     for child in children:
         if child.tag == 'node' and child.attrib['id'] in intersections:
             coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
+            import pdb; pdb.set_trace()
             ret_val.append(coordinate)
 
     return ret_val
