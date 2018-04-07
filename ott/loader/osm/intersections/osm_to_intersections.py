@@ -12,14 +12,14 @@ except ImportError, e:
 
 
 def get_names_from_way_list(way_list):
-    import pdb; pdb.set_trace()
-    ret_val = []
+    #import pdb; pdb.set_trace()
+    ret_val = {}
     try:
         for w in way_list:
-            for c in w.child:
+            for c in w:
                 if c.tag == 'tag' and 'k' in c.attrib and c.attrib['k'] == 'name':
                     if 'v' in c.attrib and len(c.attrib['v']) > 0:
-                        ret_val.append(c.attrib['v'])
+                        ret_val[c.attrib['v']] = c.attrib['v']
     except Exception as e:
         pass
     return ret_val
@@ -67,18 +67,22 @@ def extract_intersections(osm):
 
     # Find nodes that are shared with more than one way, which might correspond to intersections
     intersections = filter(lambda x: counter[x] > 1, counter)
-
+    raw_intersection_count = 0
     for child in children:
         if child.tag == 'node':
             id = child.attrib['id']
-            if id in intersections and id in road_ways:
-                coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
-                names = get_names_from_way_list(road_ways[id])
-                if len(names) > 1:
-                    ret_val.append(coordinate + names[0] + ' & ' + names[1])
-                else:
-                    print names
+            if id in intersections:
+                raw_intersection_count += 1
+                if id in road_ways:
+                    coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
+                    names_d = get_names_from_way_list(road_ways[id])
+                    names = names_d.values()
+                    if len(names) > 1:
+                        ret_val.append("{}: {}".format(coordinate, names))
+                    else:
+                        print names
 
+    print "num raw intersections: {}, num named intersections: {}".format(raw_intersection_count, len(ret_val))
 
     return ret_val
 
