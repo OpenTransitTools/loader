@@ -11,6 +11,19 @@ except ImportError, e:
     from xml.etree import ElementTree as ET
 
 
+def get_names_from_way_list(way_list):
+    ret_val = []
+    try:
+        for w in way_list:
+            for c in w.child:
+                if c.tag == 'tag' and 'k' in c.attrib and c.attrib['k'] == 'name':
+                    if 'v' in c.attrib and len(c.attrib['v']) > 0:
+                        ret_val.append(c.attrib['v'])
+    except Exception as e:
+        pass
+    return ret_val
+
+
 def extract_intersections(osm):
     """
     This method reads the passed osm file (xml) and finds intersections (nodes that are shared by two or more roads)
@@ -28,6 +41,7 @@ def extract_intersections(osm):
         children = root.getchildren()
 
     counter = {}
+    road_ways = {}
     for child in children:
         if child.tag == 'way':
             is_road = False
@@ -46,15 +60,25 @@ def extract_intersections(osm):
                         if nd_ref not in counter:
                             counter[nd_ref] = 0
                         counter[nd_ref] += 1
+                        if nd_ref not in road_ways:
+                            road_ways[nd_ref] = []
+                        road_ways[nd_ref].append(child)
 
     # Find nodes that are shared with more than one way, which might correspond to intersections
     intersections = filter(lambda x: counter[x] > 1, counter)
 
     for child in children:
-        if child.tag == 'node' and child.attrib['id'] in intersections:
-            coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
-            import pdb; pdb.set_trace()
-            ret_val.append(coordinate)
+        if child.tag == 'node':
+            id = child.attrib['id']
+            if id in intersections and id in road_ways:
+                coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
+                names = get_names_from_way_list(road_ways[id])
+                #import pdb; pdb.set_trace()
+                if len(names) > 1:
+                    ret_val.append(coordinate + names[0] + ' & ' + names[1])
+                else:
+                    print names
+
 
     return ret_val
 
