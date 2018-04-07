@@ -2,6 +2,7 @@
     Credit goes to https://stackoverflow.com/users/684592/kotaro
     https://stackoverflow.com/questions/14716497/how-can-i-find-a-list-of-street-intersections-from-openstreetmap-data?rq=1
 """
+import itertools
 
 from ott.utils import file_utils
 
@@ -30,7 +31,7 @@ def extract_intersections(osm):
     This method reads the passed osm file (xml) and finds intersections (nodes that are shared by two or more roads)
     :param osm: An osm file or a string from get_osm()
     """
-    ret_val = []
+    ret_val = {}
 
     # step 1: parse either XML string or file
     if '<' in osm and '>' in osm:
@@ -77,10 +78,12 @@ def extract_intersections(osm):
                     coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
                     names_d = get_names_from_way_list(road_ways[id])
                     names = names_d.values()
-                    if len(names) > 1:
-                        ret_val.append("{}: {}".format(coordinate, names))
-                    else:
+                    if len(names) < 2:
                         print names
+                    else:
+                        two_names_list = itertools.combinations(names, 2)
+                        for t in two_names_list:
+                            ret_val[t] = coordinate
 
     print "num raw intersections: {}, num named intersections: {}".format(raw_intersection_count, len(ret_val))
 
@@ -92,8 +95,8 @@ def main():
     dir = file_utils.get_file_dir(__file__)
     file = file_utils.path_join(dir, './tests/portland.osm')
     intersections = extract_intersections(file)
-    for entry in intersections:
-        print entry
+    for i in intersections:
+        print i, intersections[i]
 
 
 if __name__ == '__main__':

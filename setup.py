@@ -11,15 +11,15 @@ requires = [
     'ott.gtfsdb_realtime',
     'ott.utils',
     'ott.gbfsdb',
-    'simplejson',
-    'mako',
-    'pyparsing',
     'psycopg2',
-    'paramiko == 1.14.2',
-    'shapely',
-    'protobuf',
+    'mako',
     'scp',
-    'osmread',
+    'paramiko == 1.14.2',
+    'simplejson',
+    'osmread',    # a lot of dependant libs needed for OSM (pyparsing, protobuf, shapely)
+    'protobuf',
+    'pyparsing',
+    'shapely',
 ]
 
 # sys dependant dependencies
@@ -55,7 +55,7 @@ setup(
     ],
     license="Mozilla-derived (http://opentransittools.com)",
     url='http://opentransittools.com',
-    keywords='ott, otp, gtfs, gtfsdb, data, database, services, transit',
+    keywords='ott, osm, otp, gtfs, gtfsdb, data, database, services, transit',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
