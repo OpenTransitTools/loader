@@ -76,26 +76,25 @@ def extract_intersections(osm):
                         road_ways[nd_ref].append(child)
 
     # Find nodes that are shared with more than one way, which might correspond to intersections
-    intersections = filter(lambda x: counter[x] > 1, counter)
+    #intersections = filter(lambda x: counter[x] > 1, counter)
+    #sys.stderr.write('INtERSECTIONS READ: {}\n'.format(len(intersections)))
 
-    sys.stderr.write('INtERSECTIONS READ: {}\n'.format(len(intersections)))
-
+    #import pdb; pdb.set_trace()
     intersection_nodes = []
     for i, child in enumerate(children):
         if child.tag == 'node':
-            id = child.attrib['id']
-            if id in intersections and id in road_ways:
+            z = child.attrib['id']
+            n = counter.get(z)
+            if n and n > 1:
                 intersection_nodes.append(child)
-        if i % 100000 == 0:
-            print  sys.stderr.write('#')
+        if i % 100000 == 0: sys.stderr.write('#')
 
 
+    sys.stderr.write('\n\nINERSECTION NODES: {}\n'.format(len(intersection_nodes)))
 
-    sys.stderr.write('INERSECTION NODES: {}\n'.format(len(intersection_nodes)))
-
-    for n in intersection_nodes:
-        id = n.attrib['id']
-        names_d = get_names_from_way_list(road_ways[id])
+    for i, n in enumerate(intersection_nodes):
+        z = n.attrib['id']
+        names_d = get_names_from_way_list(road_ways[z])
         names = names_d.values()
         if len(names) < 2:
             # print names
@@ -105,23 +104,9 @@ def extract_intersections(osm):
             two_names_list = itertools.combinations(names, 2)
             for t in two_names_list:
                 ret_val[t] = coordinate
+        if i % 5000 == 0: sys.stderr.write('#')
 
     """
-    
-                if 
-                    names_d = get_names_from_way_list(road_ways[id])
-                    names = names_d.values()
-                    if len(names) < 2:
-                        # print names
-                        pass
-                    else:
-                        coordinate = child.attrib['lat'] + ',' + child.attrib['lon']
-                        two_names_list = itertools.combinations(names, 2)
-                        for t in two_names_list:
-                            ret_val[t] = coordinate
-
-
-
     print "num raw intersections: {}, num named intersections: {}".format(raw_intersection_count, len(ret_val))
     """
 
@@ -129,7 +114,6 @@ def extract_intersections(osm):
 
 
 def main():
-    # import pdb; pdb.set_trace()
     dir = file_utils.get_file_dir(__file__)
     #file = file_utils.path_join(dir, './tests/portland.osm')
     file = file_utils.path_join(dir, './tests/or-wa.osm')
