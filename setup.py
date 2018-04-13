@@ -11,15 +11,12 @@ requires = [
     'ott.gtfsdb_realtime',
     'ott.utils',
     'ott.gbfsdb',
+    'ott.osm',
     'psycopg2',
     'mako',
     'scp',
     'paramiko == 1.14.2',
     'simplejson',
-    'osmread',    # a lot of dependant libs needed for OSM (pyparsing, protobuf, shapely)
-    'protobuf',
-    'pyparsing',
-    'shapely',
 ]
 
 # sys dependant dependencies
@@ -52,6 +49,7 @@ setup(
         'git+https://github.com/OpenTransitTools/gbfsdb.git#egg=ott.gbfsdb-1.0.0',
         'git+https://github.com/OpenTransitTools/gtfsdb.git#egg=gtfsdb-1.0.0',
         'git+https://github.com/OpenTransitTools/gtfsdb_realtime.git#egg=ott.gtfsdb_realtime-1.0.0',
+        'git+https://github.com/OpenTransitTools/osm.git#egg=ott.osm-0.1.0',
     ],
     license="Mozilla-derived (http://opentransittools.com)",
     url='http://opentransittools.com',
@@ -70,14 +68,6 @@ setup(
         load_all = ott.loader.loader:load_all
         load_and_export = ott.loader.loader:load_and_export
         export_all = ott.loader.loader:export_all
-
-        osm_update = ott.loader.osm.osm_cache:OsmCache.load
-        osm_to_pbf = ott.loader.osm.osm_cache:OsmCache.convert_osm_to_pbf
-        pbf_to_osm = ott.loader.osm.osm_cache:OsmCache.convert_pbf_to_osm
-        osm_other_exports = ott.loader.osm.osm_cache:OsmCache.other_exports
-        osm_stats = ott.loader.osm.osm_info:OsmInfo.print_stats
-        osm_rename = ott.loader.osm.osm_rename:main
-        osm_intersections = ott.loader.osm.intersections.osm_to_intersections:main
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
         gtfs_info = ott.loader.gtfs.info:main
