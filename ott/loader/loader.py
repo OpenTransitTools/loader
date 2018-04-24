@@ -1,7 +1,7 @@
 from ott.utils import object_utils
 
+from ott.osm.osm_cache import OsmCache
 from ott.loader.gtfs.gtfs_cache import GtfsCache
-from ott.loader.osm.osm_cache import OsmCache
 from ott.loader.otp.graph.otp_exporter import OtpExporter
 from ott.loader.otp.graph.otp_builder import OtpBuilder
 from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader

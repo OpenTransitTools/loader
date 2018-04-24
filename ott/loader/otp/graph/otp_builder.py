@@ -10,8 +10,8 @@ from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 
 from ott.loader.gtfs.gtfs_cache import GtfsCache
-from ott.loader.osm.osm_cache import OsmCache
-from ott.loader.osm.osm_info import OsmInfo
+from ott.osm.osm_cache import OsmCache
+from ott.osm.stats.osm_info import OsmInfo
 from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.otp.preflight.test_runner import TestRunner
 
