@@ -27,7 +27,6 @@ if sys.platform == "darwin" or "win" not in sys.platform:
 if sys.version_info[:2] < (2, 7):
     requires.extend(['argparse>=1.2.1', 'unittest2>=0.5.1'])
 
-
 extras_require = dict(
     dev=[],
 )
