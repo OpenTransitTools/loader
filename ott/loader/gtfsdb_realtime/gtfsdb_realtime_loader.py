@@ -23,7 +23,7 @@ class GtfsdbRealtimeLoader(CacheBase):
         self.feeds = gtfs_utils.get_realtime_feed_from_config(self.config)
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
 
-    def load_feed(self, feed):
+    def load_feed(self, feed, force_update=False, app_id=None):
         """
         insert a GTFS feed into configured db
         """
@@ -31,7 +31,9 @@ class GtfsdbRealtimeLoader(CacheBase):
 
         # step 1: get urls to this feed's
         agency_id = feed.get('agency_id')
-        schema = feed.get('schema', agency_id)
+        schema = feed.get('schema', agency_id.lower())
+        if app_id:
+            feed.app_id = app_id
         trips_url = gtfs_utils.get_realtime_trips_url(feed)
         alerts_url = gtfs_utils.get_realtime_alerts_url(feed)
         vehicles_url = gtfs_utils.get_realtime_vehicles_url(feed)
@@ -40,16 +42,17 @@ class GtfsdbRealtimeLoader(CacheBase):
         try:
             log.info("loading gtfsdb_realtime db {} {}".format(self.db_url, schema))
             session = loader.make_session(self.db_url, schema, is_geospatial=True, create_db=True)
-            ret_val = loader.load_agency_data(session, agency_id, trips_url, alerts_url, vehicles_url)
+            ret_val = loader.load_agency_feeds(session, agency_id, trips_url, alerts_url, vehicles_url)
+
         except Exception, e:
             log.error("DATABASE ERROR : {}".format(e))
             ret_val = False
 
         return ret_val
 
-    def load_all(self, force_update=False):
+    def load_all(self, force_update=False, def_app_id=None):
         for f in self.feeds:
-            self.load_feed(f)
+            self.load_feed(f, def_app_id)
 
     @classmethod
     def load(cls):
