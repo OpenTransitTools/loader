@@ -26,18 +26,23 @@ class GtfsdbRealtimeLoader(CacheBase):
             loader.load_feeds_via_config(f, self.db_url, is_geospatial, create_db)
 
     @classmethod
+    def cmdline(cls):
+        """ make a command line with options for app keys and creating new dbs, etc... """
+        from ott.utils.parse.cmdline import db_cmdline
+        from ott.utils.parse.cmdline import gtfs_cmdline
+        parser = gtfs_cmdline.blank_parser('bin/gtfsdb_rt_load')
+        gtfs_cmdline.api_key(parser)
+        db_cmdline.create_and_clear(parser)
+        db_cmdline.is_spatial(parser)
+        args = parser.parse_args()
+        return args
+
+    @classmethod
     def load(cls):
         """ run the gtfsdb realtime loader against all the specified feeds from config/app.ini
             NOTE: this is effectively a main method for updating all the realtime feeds
         """
-
-        # step 1: cmdline args
-        from ott.utils.parse.cmdline import gtfs_cmdline
-        parser = gtfs_cmdline.blank_parser('bin/gtfsdb_rt_load')
-        gtfs_cmdline.api_key(parser)
-        args = parser.parse_args()
-
-        # step 2: run loader
         # import pdb; pdb.set_trace()
+        args = cls.cmdline()
         rt = GtfsdbRealtimeLoader()
-        rt.load_all(api_key=args.api_key)
+        rt.load_all(args.api_key, args.is_geospatial, args.create)
