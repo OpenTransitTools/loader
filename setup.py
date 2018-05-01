@@ -72,7 +72,7 @@ setup(
         gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
         gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.dump
         gtfsdb_restore = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.restore
-        gtfsdb_rt_load = ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader:GtfsdbRealtimeLoader.load
+        gtfsdb_rt_loader = ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader:GtfsdbRealtimeLoader.load
 
         otp_restart_new_graphs = ott.loader.otp.graph.otp_runner:OtpRunner.restart_new_graphs
         otp_run = ott.loader.otp.graph.otp_runner:OtpRunner.run
