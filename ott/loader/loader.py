@@ -55,6 +55,7 @@ def load_all():
     """
     force_update=object_utils.is_force_update()
 
+    # import pdb; pdb.set_trace()
     download_data()
 
     log.info("step 4: load gtfsdb")
