@@ -30,7 +30,7 @@ class GtfsdbRealtimeLoader(CacheBase):
         """ make a command line with options for app keys and creating new dbs, etc... """
         from ott.utils.parse.cmdline import db_cmdline
         from ott.utils.parse.cmdline import gtfs_cmdline
-        parser = gtfs_cmdline.blank_parser('bin/gtfsdb_rt_load')
+        parser = gtfs_cmdline.blank_parser('bin/gtfsrt_load')
         gtfs_cmdline.api_key(parser)
         db_cmdline.create_and_clear(parser)
         db_cmdline.is_spatial(parser)
