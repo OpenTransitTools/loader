@@ -1,4 +1,7 @@
 CP=cp
+FM=${1:-'.'}
+TO=${2:-'.'}
+echo $FM $TO
 
 ## check target directory
 if [ ! -d "./ott/loader/" ];
@@ -9,41 +12,22 @@ then
 fi
 
 ## check source directory
-if [[ $1 = *"@"**":"* ]];
+if [[ $FM = *"@"**":"* || $TO = *"@"**":"* ]];
 then
-    CP=scp  
-else 
-    if [ ! -d "$1" ];
-    then
-	echo "directory '$1' does not exist or is not a directory"
-	exit 1
-    fi
+    CP=scp
 fi
-
 
 ## copy junk over
 for d in ott/loader/gtfs/cache ott/loader/gtfsdb/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/call ott/loader/otp/graph/call-test ott/loader/otp/graph/prod ott/loader/otp/graph/test
 do
-    if [[ "$1/$d" = "./$d" ]];
+    if [[ "$FM/$d" = "$TO/$d" ]];
     then
-        echo "can't use the same directory for source and destination '$1/$d' = './$d'"
+        echo "can't use the same directory for source and destination '$FM/$d' = '$TO/$d'"
         exit 1
     fi
 
-    if [[ $CP = "cp" && ! -d "$1/$d" ]];
-    then
-	echo "src directory '$1/$d' does not exist..."
-        continue
-    fi
-
-    if [ -d "./$d" ];
-    then
-        echo rm -rf "./$d"
-        rm -rf "./$d"
-    fi
-
-    echo $CP -r "$1/$d" "./$d"
-    $CP -r "$1/$d" "./$d"
+    echo $CP -r "$FM/$d" "$TO/$d"
+    $CP -r "$FM/$d" "$TO/$d"
 done
 
 # remove gtfs.zip junk
