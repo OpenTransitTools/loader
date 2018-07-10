@@ -1,3 +1,8 @@
+#
+# COPY cache and necessary binary stuff from one 'loader' instance to another
+# EXAMPLE: scripts/cp_cache_from_old.sh ./ user@server:~/loader/
+#
+
 CP=cp
 CP_PARAMS=-pr
 FM=${1:-'./'}
