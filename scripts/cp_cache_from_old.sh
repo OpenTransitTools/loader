@@ -1,7 +1,9 @@
 CP=cp
-FM=${1:-'.'}
-TO=${2:-'.'}
+CP_PARAMS=-pr
+FM=${1:-'./'}
+TO=${2:-'./'}
 echo $FM $TO
+
 
 ## check target directory
 if [ ! -d "./ott/loader/" ];
@@ -12,22 +14,24 @@ then
 fi
 
 ## check source directory
-if [[ $FM = *"@"**":"* || $TO = *"@"**":"* ]];
+if [[ $FM = *"@"*":"* || $TO = *"@"*":"* ]];
 then
     CP=scp
+    CP_PARAMS=-prq
 fi
 
 ## copy junk over
 for d in ott/loader/gtfs/cache ott/loader/gtfsdb/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/call ott/loader/otp/graph/call-test ott/loader/otp/graph/prod ott/loader/otp/graph/test
 do
-    if [[ "$FM/$d" = "$TO/$d" ]];
+    if [[ "${FM}${d}" = "${TO}${d}" ]];
     then
-        echo "can't use the same directory for source and destination '$FM/$d' = '$TO/$d'"
+        echo "can't use the same directory for source and destination ${FM}${d} = ${TO}${d}"
         exit 1
     fi
 
-    echo $CP -r "$FM/$d" "$TO/$d"
-    $CP -r "$FM/$d" "$TO/$d"
+    # copy things to paraent directory, so we don't get cache/cache junk, etc...
+    echo $CP $CP_PARAMS "${FM}${d}/." "${TO}${d}/"
+    $CP $CP_PARAMS "${FM}${d}/." "${TO}${d}/"
 done
 
 # remove gtfs.zip junk
