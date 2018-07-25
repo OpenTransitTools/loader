@@ -1,0 +1,24 @@
+{
+  "rules": [
+    {
+      "key": "highway",
+      "value": "primary",
+      "factor": 1.5
+    },
+    {
+      "key": "sidewalk",
+      "value": "both",
+      "factor": 0.5
+    },
+    {
+      "key": "footway",
+      "value": "sidewalk",
+      "factor": 2
+    },
+    {
+      "key": "sidewalk",
+      "value": "no",
+      "factor": 1.5
+    }
+  ]
+}
