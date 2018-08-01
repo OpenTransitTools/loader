@@ -17,6 +17,7 @@ bkup
 *.osm
 *.pid
 call/
+mod/
 call-test/
 prod/
 test/
