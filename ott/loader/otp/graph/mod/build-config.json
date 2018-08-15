@@ -1,7 +1,7 @@
 {
   // useTransfersTxt: true, // https://github.com/opentripplanner/OpenTripPlanner/issues/2264
   osmNaming: "portland",
-  maxTransferDistance: 2000,
+  maxTransferDistance: 600,
   disableAlertFiltering: true,
   banDiscouragedWalking : true,
   banDiscouragedBiking : true,
