@@ -106,10 +106,19 @@ class OtpExporter(OtpBuilder):
             # step 2: package it...
             otp_utils.package_new(graph_dir=g['dir'])
 
+    @classmethod
+    def get_args(cls):
+        """
+        make the cli argparse for OTP graph exporting
+        """
+        parser = otp_utils.get_initial_arg_parser('otp-exporter')
+        parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
+
 
 def main():
     # import pdb; pdb.set_trace()
     OtpExporter.export()
+
 
 if __name__ == '__main__':
     main()
