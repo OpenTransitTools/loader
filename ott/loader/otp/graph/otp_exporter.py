@@ -75,12 +75,12 @@ class OtpExporter(OtpBuilder):
         svr_base_dir = self.config.get_json('svr_base_dir', section='deploy')
 
         # step B: loop thru each server, and scp a graph (and log and jar) to that server
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         for s in servers:
-            if object_utils.is_match(server_filter, s):
+            if object_utils.is_not_match(server_filter, s):
                 continue
             for g in self.graphs:
-                if object_utils.is_match(graph_filter, g['name']):
+                if object_utils.is_not_match(graph_filter, g['name']):
                     continue
                 dir = otp_utils.config_graph_dir(g, self.this_module_dir)
                 svr_dir = file_utils.append_to_path(svr_base_dir, g['name'])
@@ -88,7 +88,7 @@ class OtpExporter(OtpBuilder):
 
         # step C: remove the -new files (so we don't keep deploying / scp-ing)
         for g in self.graphs:
-            if object_utils.is_match(graph_filter, g['name']):
+            if object_utils.is_not_match(graph_filter, g['name']):
                 continue
             otp_utils.rm_new(graph_dir=g['dir'])
 
@@ -110,10 +110,14 @@ class OtpExporter(OtpBuilder):
             intended to run manually if we need to export a graph by hand
         """
         args = cls.get_args('bin/package-new', True)
+        graph_filter = args.name
 
         log.info("\nPackage new\n".format())
         d = OtpExporter()
         for g in d.graphs:
+            # step 0: do we filter this graph?
+            if object_utils.is_not_match(graph_filter, g['name']):
+                continue
 
             # step 1: is otp.v doesn't exist or is a bit old, create it
             vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
