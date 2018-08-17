@@ -1,6 +1,9 @@
 from ott.utils import web_utils
 from ott.utils import file_utils
 from ott.utils import otp_utils
+from ott.utils import object_utils
+
+from ott.utils.parse.cmdline import otp_cmdline
 
 from .otp_builder import OtpBuilder
 
@@ -17,7 +20,7 @@ class OtpExporter(OtpBuilder):
         super(OtpExporter, self).__init__(dont_update=True)
         self.graphs = otp_utils.get_graphs(self)
 
-    def export_graphs(self):
+    def export_graphs(self, server_filter=None, graph_filter=None):
         """ copy new graphs from build server to configured set of production servers
             (basically scp Graph.obj-new, otp.v-new and otp.jar-new over to another server)
         """
@@ -72,32 +75,46 @@ class OtpExporter(OtpBuilder):
         svr_base_dir = self.config.get_json('svr_base_dir', section='deploy')
 
         # step B: loop thru each server, and scp a graph (and log and jar) to that server
+        import pdb; pdb.set_trace()
         for s in servers:
+            if object_utils.is_match(server_filter, s):
+                continue
             for g in self.graphs:
+                if object_utils.is_match(graph_filter, g['name']):
+                    continue
                 dir = otp_utils.config_graph_dir(g, self.this_module_dir)
                 svr_dir = file_utils.append_to_path(svr_base_dir, g['name'])
                 scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir, graph=g)
 
         # step C: remove the -new files (so we don't keep deploying / scp-ing)
         for g in self.graphs:
+            if object_utils.is_match(graph_filter, g['name']):
+                continue
             otp_utils.rm_new(graph_dir=g['dir'])
 
         return ret_val
 
     @classmethod
     def export(cls):
+        parser = cls.get_args()
+        otp_cmdline.server_option(parser)
+        args = parser.parse_args()
+
         log.info("\nRunning otp_exporter.py at {0}\n".format(datetime.datetime.now()))
         d = OtpExporter()
-        d.export_graphs()
+        d.export_graphs(server_filter=args.server, graph_filter=args.name)
 
     @classmethod
     def package_new(cls):
         """ convenience routine will take Graph.obj and simply copy it to Graph.obj-new
             intended to run manually if we need to export a graph by hand
         """
+        args = cls.get_args('bin/package-new', True)
+
         log.info("\nPackage new\n".format())
         d = OtpExporter()
         for g in d.graphs:
+
             # step 1: is otp.v doesn't exist or is a bit old, create it
             vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
             if file_utils.exists(vlog_path) is False or file_utils.file_age(vlog_path) > 1:
@@ -107,12 +124,15 @@ class OtpExporter(OtpBuilder):
             otp_utils.package_new(graph_dir=g['dir'])
 
     @classmethod
-    def get_args(cls):
+    def get_args(cls, prog_name='bin/otp-exporter', make_args=False):
         """
         make the cli argparse for OTP graph exporting
         """
-        parser = otp_utils.get_initial_arg_parser('otp-exporter')
-        parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
+        parser = otp_cmdline.base_parser(prog_name)
+        ret_val = parser
+        if make_args:
+            ret_val = parser.parse_args()
+        return ret_val
 
 
 def main():
