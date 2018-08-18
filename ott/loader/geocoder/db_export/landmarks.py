@@ -11,14 +11,35 @@ log = logging.getLogger(__file__)
 
 # map TriMet landmark types to something more readable / relatable
 LANDMARK_TYPES = {}
-#LANDMARK_TYPES[2] = 'airport' # maybe we do this if we need the PDX alias
+LANDMARK_TYPES[2] = 'airport'  # maybe we do this if we need the PDX alias
+LANDMARK_TYPES[9] = "transportation"
 LANDMARK_TYPES[7] = 'station'
 LANDMARK_TYPES[10] = 'pr'
 LANDMARK_TYPES[14] = 'tc'
+LANDMARK_TYPES[17] = 'br'
 LANDMARK_TYPES[15] = 'facility'
 LANDMARK_TYPES[16] = 'fare_outlet'
-LANDMARK_TYPES[17] = 'br'
 LANDMARK_TYPES[26] = 'tvm'
+
+LANDMARK_TYPES[1]  = "activity_center"
+LANDMARK_TYPES[22] = "community_center"
+LANDMARK_TYPES[23] = "town_center"
+LANDMARK_TYPES[18] = "social_service"
+LANDMARK_TYPES[6]  = "library"
+LANDMARK_TYPES[3]  = "city_hall"
+LANDMARK_TYPES[25] = "government_agency"
+LANDMARK_TYPES[11] = "post_office"
+LANDMARK_TYPES[4]  = "fire_station"
+LANDMARK_TYPES[20] = "correctional_facility"
+
+LANDMARK_TYPES[5]  = "hospital"
+LANDMARK_TYPES[24] = "medical_clinic"
+LANDMARK_TYPES[19] = "major_employer"
+
+LANDMARK_TYPES[8]  = "museum"
+LANDMARK_TYPES[12] = "school"
+LANDMARK_TYPES[13] = "shopping"
+LANDMARK_TYPES[21] = "hotel_motel"
 
 
 class Landmarks(DbExporter):
