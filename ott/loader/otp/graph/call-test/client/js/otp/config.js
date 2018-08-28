@@ -161,7 +161,8 @@ otp.config = {
 
                 mailables : [
                     { name : 'Rte 1 Schedule (1-Vermont)', largePrint: true },
-                    { name : 'Rte 4 Schedule (4-Division/Fessenden)', largePrint: true },
+                    { name : 'Rte 2 Schedule (2-Division)', largePrint: true },
+                    { name : 'Rte 4 Schedule (4-Fessenden)', largePrint: true },
                     { name : 'Rte 6 Schedule (6-Martin Luther King Jr Blvd)', largePrint: true },
                     { name : 'Rte 8 Schedule (8-Jackson Park/NE 15th)', largePrint: true },
                     { name : 'Rte 9 Schedule (9-Powell Blvd)', largePrint: true },
@@ -173,7 +174,7 @@ otp.config = {
                     { name : 'Rte 17 Schedule (17-Holgate/Broadway)', largePrint: true },
                     { name : 'Rte 18/63 Schedule (18-Hillside, 63-Washington Park/Arlington Hts)', largePrint: true },
                     { name : 'Rte 19 Schedule (19-Woodstock/Glisan)', largePrint: true },
-                    { name : 'Rte 20 Schedule (20-Burnside/Stark)', largePrint: true },
+                    { name : 'Rte 20/272 Schedule (20-Burnside/Stark, 272-PDX Night Bus)', largePrint: true },
                     { name : 'Rte 21 Schedule (21-Sandy Blvd/223rd)', largePrint: true },
                     { name : 'Rte 22/23/25 Schedule (22-Parkrose, 23-San Rafael, 25-Glisan/Rockwood)', largePrint: true },
                     { name : 'Rte 24 Schedule (24-Fremont)', largePrint: true },
