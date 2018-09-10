@@ -153,6 +153,7 @@ def main():
     else:
         TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
+
 if __name__ == '__main__':
     #test_email()
     main()
