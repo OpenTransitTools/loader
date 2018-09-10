@@ -65,7 +65,7 @@ class OtpBuilder(CacheBase):
         if self.graphs:
             for g in self.graphs:
                 success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
-                if success and rebuilt:
+                if success and rebuilt and not g.get('skip_tests'):
                     success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
                     ret_val = success
                 elif not success:
@@ -124,7 +124,6 @@ class OtpBuilder(CacheBase):
     def test_graph(self, graph, suite_dir=None, java_mem=None, start_server=True):
         """ will test a given graph against a suite of tests
         """
-        #suite_dir="/java/DEV/loader/ott/loader/otp/tests/suites" # debug test reporting with small test suites
         success = True
         delay = 1
         if start_server:
@@ -205,7 +204,6 @@ class OtpBuilder(CacheBase):
                     success = b.build_and_test_graphs(java_mem=java_mem, force_update=args.force, start_server=not args.dont_restart)
 
         if args.email and (not success or args.force):
-            # otp_utils.build_test_email(emails=args.email, build_status=build_success, test_status=test_success, server_status=server_success)
             otp_utils.send_build_test_email(args.email)
 
         return success
