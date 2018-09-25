@@ -30,7 +30,9 @@
       	{ // GTFS-rt delay feed
       	    "type": "stop-time-updater",
                   "frequencySec": 60,
+                  // this is either http or file... shouldn't it default to http or guess from the presence of a URL?
                   "sourceType": "gtfs-http",
+                  // "url": "https://s3.amazonaws.com/trimet-mod-dev/gtfsrt/delay.proto",
                   "url": "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
                   "feedId": "TriMet"
       	},
@@ -44,6 +46,11 @@
             "type": "transportation-network-company-updater",
             "sourceType": "uber",
             "serverToken": "sfR0_lvDTW3Esmn1Iu9tRNw63_h2AI8Y24DUc_E_"
+        }, {
+            "type": "transportation-network-company-updater",
+            "sourceType": "lyft",
+            "clientId": "3vSLOyd4BjaQ",
+            "clientSecret": "a1yxFp14nzswNl8sov0YNBrXI873M7uy"
         },
         { // car2go locations feed + boundary area
           "type": "car-rental-updater",
