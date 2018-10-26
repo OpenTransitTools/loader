@@ -26,7 +26,7 @@ then
 fi
 
 ## copy junk over
-for d in ott/loader/gtfs/cache ott/loader/gtfsdb/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/call ott/loader/otp/graph/call-test ott/loader/otp/graph/prod ott/loader/otp/graph/test
+for d in ott/loader/gtfs/cache ott/loader/gtfsdb/cache ott/loader/osm/cache ott/loader/osm/osmosis ott/loader/otp/graph/prod ott/loader/otp/graph/call ott/loader/otp/graph/mod ott/loader/otp/graph/call-test ott/loader/otp/graph/test
 do
     if [[ "${FM}${d}" = "${TO}${d}" ]];
     then
