@@ -1,13 +1,14 @@
 import sys
 import random
-import urllib
 
 from ott.utils.parse import csv_reader
 
 from ott.loader.otp.preflight.tm_ws_runner import WsTest
 from ott.loader.otp.preflight.test_runner import Test
 
+
 def_header="Description/notes,From,To,Mode,Time,Service,Optimize,Max dist,Arrive by,Depart by,Expected output,Expected number of legs,Expected trip duration,Expected trip distance,Passes?"
+
 
 class RandomTrip(object):
     """ read in a .csv file full of points, and then output a set of test cases
@@ -65,25 +66,30 @@ class RandomTrip(object):
             else:
                 print "Planner didn't return anything (null)..."
 
+
 def zws_trips():
     s = Test.static_call_otp("http://maps7.trimet.org/maps/tpws/V1/trips/tripplanner?fromPlace=6236%20SE%20134TH%20AVE&toPlace=9341%20N%20FISKE%20AVE")
 
+
 def ws_trips():
     h = WsTest.make_hostname()
-    p,m = WsTest.make_urls(h)
+    p, m = WsTest.make_urls(h)
     rt = RandomTrip()
     rt.make_suite_csv(rt.from_to_list)
 
+
 def otp_trips():
     h = Test.make_hostname()
-    p,m = Test.make_urls(h)
+    p, m = Test.make_urls(h)
     rt = RandomTrip()
     rt.make_tests(p)
     rt.call_urls()
 
+
 def main(argv=sys.argv):
     #otp_trips()
     ws_trips()
+
 
 if __name__ == '__main__':
     main()

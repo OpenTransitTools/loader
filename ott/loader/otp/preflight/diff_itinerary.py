@@ -7,6 +7,7 @@ import filecmp
 import urllib2
 import socket
 
+
 class DiffItinerary(object):
     """ call a given url X number of times, strip out the variable pieces (currently the <date>timestamp here</date> stuff
         and compare the output to each other...report back 
@@ -15,6 +16,7 @@ class DiffItinerary(object):
         self.url = url
         self.name = name
         self.date = date
+        self.response_time = 0
 
     def call_otp(self, url, fname):
         """ calls the trip web service and saves the trip to a file fname
@@ -42,7 +44,6 @@ class DiffItinerary(object):
             f.write(itinerary)
             f.flush()
             f.close()
-
         except:
             print 'ERROR: could not get data from url:\n', url, '\n(not a friendly place)'
             traceback.print_exc(file=sys.stdout)
@@ -85,15 +86,17 @@ class DiffItinerary(object):
                 logging.info("diff_itinerary.run() sleeping for " + str(sleep) + " seconds")
                 time.sleep(sleep)
 
+
 def main():
     logging.basicConfig(level=logging.INFO)
     di = DiffItinerary("http://maps10.trimet.org/test?time=12:00pm&toPlace=45.552360%2C-122.852970&fromPlace=45.589850%2C-122.599266", "/tmp/otp-test")
     di = DiffItinerary("http://rtp.trimet.org/prod?time=12:00pm&fromPlace=4012%20SE%2017TH%20AVE::45.492620,-122.647500&toPlace=Zoo::45.509750,-122.714645&mode=BICYCLE&submit", "/tmp/otp-bike-test") 
     runs=3
     di.run(runs)
-    res,list = di.compare(runs)
-    for i in list:
+    res, lst = di.compare(runs)
+    for i in lst:
         print i['file1'],"is not equal to",i['file2']
+
 
 if __name__ == '__main__':
     main()

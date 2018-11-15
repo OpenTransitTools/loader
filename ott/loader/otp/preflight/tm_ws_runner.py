@@ -1,8 +1,9 @@
 import sys
 from test_runner import *
 
+
 class WsTest(Test):
-    """ ...
+    """ Nov 2018 -- TODO is this code used?
     """
     def __init__(self, param_dict, line_number, date=None):
         super(WsTest, self).__init__(param_dict, line_number, date)
@@ -70,10 +71,13 @@ class WsTest(Test):
             print "**************************"
             print "\n\n"
 
+
 Test.TestClass = WsTest
+
 
 def main(argv=sys.argv):
     runner(argv)
+
 
 if __name__ == '__main__':
     main()

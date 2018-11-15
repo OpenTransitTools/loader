@@ -54,6 +54,7 @@ class Test(object):
         self.is_valid        = True
         self.error_descript  = None
         self.result          = TestResult.FAIL
+        self.response_time   = -1.0
 
         self.ws_url          = ws_url
         self.map_url         = map_url
@@ -105,7 +106,7 @@ class Test(object):
     def test_otp_result(self, strict=True):
         """ regexp test of the itinerary output for certain strings
         """
-        if self.itinerary == None:
+        if self.itinerary is None:
             self.result = TestResult.FAIL if strict else TestResult.WARN
             self.error_descript = "test_otp_result: itinerary is null"
             log.info(self.error_descript)
@@ -169,7 +170,7 @@ class Test(object):
         self.otp_params = 'fromPlace={0}&toPlace={1}'.format(self.coord_from, self.coord_to)
 
         self.map_params = self.otp_params
-        if self.coord_from == None or self.coord_from == '' or self.coord_to == None or self.coord_to == '':
+        if self.coord_from is None or self.coord_from == '' or self.coord_to is None or self.coord_to == '':
             self.error_descript = "no from and/or to coordinate for the otp url (skipping test) - from:{} to:{}".format(self.coord_from, self.coord_to)
             if self.expect_output:
                 log.warn(self.error_descript)

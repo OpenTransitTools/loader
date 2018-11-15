@@ -1,8 +1,6 @@
 import os
 import time
 import inspect
-import logging
-log = logging.getLogger(__file__)
 
 from mako.template import Template
 
@@ -12,6 +10,9 @@ from ott.utils import file_utils
 from ott.utils import otp_utils
 
 from ott.loader.otp.preflight.test_suite import ListTestSuites
+
+import logging
+log = logging.getLogger(__file__)
 
 
 def get_args_parser():
