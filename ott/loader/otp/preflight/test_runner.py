@@ -98,9 +98,9 @@ class TestRunner(object):
                 log.info(msg)
 
     @classmethod
-    def is_up(cls, otp_url="https://maps.trimet.org/otp_prod", delay=10):
-        ret_val = otp_utils.wait_for_otp(otp_url, delay)
-        log.warn("OTP is{}up.".format(" " if ret_val else " NOT! "))
+    def is_up(cls, otp_url="https://maps.trimet.org/otp_prodx", delay=10):
+        ret_val = otp_utils.wait_for_otp(otp_url, delay, 2)
+        log.warn("{} is {}".format(otp_url, "UP." if ret_val else "NOT up!"))
         return ret_val
 
     @classmethod
