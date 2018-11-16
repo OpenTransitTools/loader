@@ -82,6 +82,7 @@ setup(
         otp_package_new = ott.loader.otp.graph.otp_exporter:OtpExporter.package_new
         otp_static_server = ott.loader.otp.graph.otp_runner:OtpRunner.static_server
         otp_preflight = ott.loader.otp.preflight.test_runner:main
+        otp_is_up = ott.loader.otp.preflight.test_runner:TestRunner.is_up
         otp_stress_test = ott.loader.otp.preflight.stress.stress_tests:main
         otp_test_urls = ott.loader.otp.preflight.tests_to_urls:main
 

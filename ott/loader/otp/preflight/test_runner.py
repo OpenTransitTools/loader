@@ -98,13 +98,22 @@ class TestRunner(object):
                 log.info(msg)
 
     @classmethod
+    def is_up(cls, otp_url="https://maps.trimet.org/otp_prod", delay=10):
+        ret_val = otp_utils.wait_for_otp(otp_url, delay)
+        log.warn("OTP is{}up.".format(" " if ret_val else " NOT! "))
+        return ret_val
+
+    @classmethod
     def test_graph_factory(cls, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
         """ run graph tests against whatever server is running
             @see otp_builder.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
         """
         ret_val = False
+
+        otp_url = web_utils.make_url(hostname, ws_port, ws_path)
+        otp_utils.wait_for_otp(otp_url, delay)
+
         log.info('GRAPH TESTS: Starting tests!')
-        time.sleep(delay)
         t = TestRunner(hostname, ws_path, ws_port, app_path, app_port, suite_dir=suite_dir, filter=filter)
         t.test_suites.run()
         t.report(graph_dir)
