@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<translations>
+  <translation>
+    <name>Eliminate Transit junk from OSM</name>
+    <description>Remove all public_transit marked elements in OSM</description>
+    <match>
+        <match mode="or">
+          <tag k="public_transport" v=".*"/>
+          <tag k="public_transport:version" v=".*"/>
+        </match>
+    </match>
+    <output>
+      <copy-unmatched/>
+    </output>
+  </translation>
+</translations>
