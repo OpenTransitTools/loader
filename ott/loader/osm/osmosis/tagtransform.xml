@@ -14,7 +14,7 @@ OTHER:
       Remove all public_transit marked elements in OSM.
 
       Uses:
-      bin/osmosis --read-xml file=../cache/or-wa.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/or-wa_pelias.osm
+      bin/osmosis --read-xml file=../cache/or-wa.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-pbf file=../cache/or-wa_pelias.osm.pbf
 
       bin/osmosis --read-xml file=../cache/portland.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/portland_pelias.osm
     </description>
