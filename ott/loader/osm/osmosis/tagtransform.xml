@@ -1,15 +1,23 @@
 <?xml version="1.0"?>
 <!--
-
-bin/osmosis --read-xml file=../cache/portland.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/portland-pelias.osm
-
 NOTES:
+  https://wiki.openstreetmap.org/wiki/Osmosis/Detailed_Usage_0.47#tag-filter   TAG FILTERS (how we use 'delete_me' to filter objects from OSM)
+  https://wiki.openstreetmap.org/wiki/Osmosis/TagTransform                     TAG TRANSFORM (this file)
+
+OTHER:
   https://www.openandromaps.org/en/map-basics-2/tagtransform
 -->
 <translations>
   <translation>
     <name>Eliminate Transit junk from OSM</name>
-    <description>Remove all public_transit marked elements in OSM</description>
+    <description>
+      Remove all public_transit marked elements in OSM.
+
+      Uses:
+      bin/osmosis --read-xml file=../cache/or-wa.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/or-wa_pelias.osm
+
+      bin/osmosis --read-xml file=../cache/portland.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/portland_pelias.osm
+    </description>
     <match>
       <match type="node" mode="or">
         <tag k="public_transport" v=".*"/>
