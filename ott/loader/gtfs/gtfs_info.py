@@ -22,8 +22,8 @@ class GtfsInfo(CacheBase):
     file_prefix = None
 
     def __init__(self, gtfs_path, file_prefix=''):
-        ''' note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
-        '''
+        """ note: file_prefix allows us to have old_gtfs.zip and new_gtfs.zip names to compare against either other
+        """
         # import pdb; pdb.set_trace()
         super(GtfsInfo, self).__init__(section='gtfs')
 
@@ -64,8 +64,8 @@ class GtfsInfo(CacheBase):
         return self._get_feed_date_range()
 
     def get_feed_details(self, feed_name):
-        '''
-        '''
+        """
+        """
         r = self.get_feed_date_range()
         v = self.get_feed_version()
         d = self.get_days_since_stats()
@@ -79,8 +79,8 @@ class GtfsInfo(CacheBase):
         return ret_val
 
     def get_feed_msg(self, feed_name, prefix=" ", suffix="\n"):
-        ''' get feed details msg string for the .vlog file
-        '''
+        """ get feed details msg string for the .vlog file
+        """
         f = self.get_feed_details(feed_name)
         msg = "{}{} : date range {} to {} ({:>3} more calendar days), version {}{}"\
             .format(prefix, f['name'], f['start'], f['end'], f['until'], f['version'], suffix)
@@ -91,8 +91,8 @@ class GtfsInfo(CacheBase):
 
     @classmethod
     def get_cache_msgs(cls, cache_dir, feeds, filter=None):
-        ''' returns string .vlog messages based on all cached gtfs feeds
-        '''
+        """ returns string .vlog messages based on all cached gtfs feeds
+        """
         #import pdb; pdb.set_trace()
         ret_val = ""
         info = cls.get_cache_info_list(cache_dir, feeds, filter)
@@ -102,8 +102,8 @@ class GtfsInfo(CacheBase):
 
     @classmethod
     def get_cache_info_list(cls, cache_dir, feeds, filter=None):
-        ''' returns updated [] of Info objects, based on a directory of feeds
-        '''
+        """ returns updated [] of Info objects, based on a directory of feeds
+        """
         ret_val = []
         try:
             for f in feeds:
@@ -278,7 +278,7 @@ class GtfsInfo(CacheBase):
 
 
 def main():
-    print GtfsInfo.cached_feeds_info_str()
+    print(GtfsInfo.cached_feeds_info_str())
 
 if __name__ == '__main__':
     main()

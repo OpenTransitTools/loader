@@ -1,10 +1,10 @@
+from ott.utils.cache_base import CacheBase
+from ott.loader.solr.solr_add import SolrAdd
+
 import os
 import json
 import logging
 log = logging.getLogger(__file__)
-
-from ott.utils.cache_base import CacheBase
-from ott.loader.solr.solr_add import SolrAdd
 
 
 class SobiCache(CacheBase):
@@ -55,8 +55,8 @@ class SobiCache(CacheBase):
 
 
 def mock():
-    ''' mock up
-    '''
+    """ mock up
+    """
     s = SolrAdd(type='bikeshare', type_name='BIKETOWN')
     s.new_doc(id='xxx')
     s.add_lon_lat('-122.5', '45.5')
@@ -64,4 +64,4 @@ def mock():
     s.new_doc(id='zzz')
     s.add_lon_lat('-122.5', '45.5')
 
-    print s.document_to_string()
+    print(s.document_to_string())

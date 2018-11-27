@@ -1,19 +1,19 @@
-import os
-import sys
-import time
-import datetime
-import logging
-log = logging.getLogger(__file__)
-
-import csv
-import re
-
 from ott.utils.config_util import ConfigUtil
 from ott.utils.cache_base import CacheBase
 
 from ott.utils import otp_utils
 from ott.utils import date_utils
 from ott.utils import object_utils
+
+import os
+import sys
+import csv
+import re
+
+import time
+import datetime
+import logging
+log = logging.getLogger(__file__)
 
 
 class TestResult:

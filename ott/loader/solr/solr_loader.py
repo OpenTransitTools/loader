@@ -22,32 +22,32 @@ class SolrLoader(object):
 
     @classmethod
     def load(cls):
-        ''' run the SOLR loader, which post all cahce/*_add.xml files into SOLR
+        """ run the SOLR loader, which post all cahce/*_add.xml files into SOLR
             NOTE: this is effectively a main method for sending solr/cache/*_add.xml files to SOLR
-        '''
+        """
         loader = SolrLoader()
         loader.process_del_files()
         loader.process_add_files()
 
     def process_add_files(self):
-        ''' find all cache/*_add.xml files and send them to SOLR
-        '''
+        """ find all cache/*_add.xml files and send them to SOLR
+        """
         files = file_utils.ls(self.cache.cache_dir, "_add.xml")
         for f in files:
             self._process_file(f, do_optimize=True)
 
     def process_del_files(self):
-        ''' run thru all the <name_del.xml> files in the cache
+        """ run thru all the <name_del.xml> files in the cache
             TODO: should I first check that an add file exists, and that it contains valid content?
-        '''
+        """
         files = file_utils.ls(self.cache.cache_dir, "_del.xml")
         for f in files:
             self._process_file(f, do_optimize=False)
 
     @classmethod
     def commit(cls, url):
-        ''' send commit (<commit/>) message to SOLR, which persists index changes to SOLR
-        '''
+        """ send commit (<commit/>) message to SOLR, which persists index changes to SOLR
+        """
         status = web_utils.post_data(url, "<commit/>")
         if status != 200:
             log.info("HTTP STATUS: {} when posting a 'commit' command to SOLR instance {}".format(status, url))
@@ -55,8 +55,8 @@ class SolrLoader(object):
 
     @classmethod
     def optimize(cls, url):
-        ''' send optimize (<optimize/>) message to SOLR, which fixes up the SOLR instance
-        '''
+        """ send optimize (<optimize/>) message to SOLR, which fixes up the SOLR instance
+        """
         status = web_utils.post_data(url, "<optimize/>")
         if status != 200:
             log.info("HTTP STATUS: {} when posting a 'optimize' command to SOLR instance {}".format(status, url))
@@ -64,8 +64,8 @@ class SolrLoader(object):
 
     @classmethod
     def post_file(cls, url, solr_xml_file_path):
-        ''' post a file to a SOLR instance
-        '''
+        """ post a file to a SOLR instance
+        """
         status = web_utils.post_file(url, solr_xml_file_path)
         if status != 200:
             log.info("HTTP STATUS: {} when posting file {} command to SOLR instance {}".format(status, solr_xml_file_path, url))
@@ -73,9 +73,9 @@ class SolrLoader(object):
 
     @classmethod
     def update_index(cls, url, solr_xml_file_path, do_optimize=False):
-        ''' update a SOLR index via a single instance
+        """ update a SOLR index via a single instance
             NOTE: if multiple instances of SOLR point to the same instance, only instance needs to call this routine
-        '''
+        """
         status = cls.post_file(url, solr_xml_file_path)
         cls.commit(url)
         if do_optimize:
@@ -83,11 +83,11 @@ class SolrLoader(object):
         return status == 200
 
     def _process_file(self, file_name, do_optimize):
-        ''' does the meat of the work in posting files to SOLR.
+        """ does the meat of the work in posting files to SOLR.
             the paths to SOLR instances are pulled from config/app.ini
             this routine will post to either a single SOLR instance, or manage multiple SOLR instances running
             on different ports.
-        '''
+        """
         is_success = False
 
         # step 1: grab file path

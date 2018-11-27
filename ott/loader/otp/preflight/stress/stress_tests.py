@@ -36,8 +36,8 @@ class StressTests(CacheBase):
             self.run_stress_tests()
 
     def run_stress_tests(self):
-        ''' run stress tests by calling the servers
-        '''
+        """ run stress tests by calling the servers
+        """
         #import pdb; pdb.set_trace()
 
         self.threads = []
@@ -75,8 +75,8 @@ class StressTests(CacheBase):
                 print result_str.format(self.args.search, self.num_tests, self.num_failures, t.seconds)
 
     def duration_stress_test(self, duration=5, thread_id=1):
-        ''' duration stress will run for a given amount of time
-        '''
+        """ duration stress will run for a given amount of time
+        """
         now = datetime.datetime.now()
         end = now + datetime.timedelta(seconds=duration)
         i = 0
@@ -86,14 +86,14 @@ class StressTests(CacheBase):
             i += 1
 
     def iterations_stress_test(self, num_iterations, thread_id=1):
-        ''' iteration stress will run a specified amount of time
-        '''
+        """ iteration stress will run a specified amount of time
+        """
         for i in range(num_iterations):
             self.launch_stress_tests(iteration_id=i+1, thread_id=thread_id)
 
     def launch_stress_tests(self, iteration_id, thread_id):
-        ''' run thru the test suite urls and call the service, blah...
-        '''
+        """ run thru the test suite urls and call the service, blah...
+        """
         for i, u in enumerate(self.url_list):
             response = web_utils.get_response(u, show_info=True)
             #sleep(0.05)
@@ -106,8 +106,8 @@ class StressTests(CacheBase):
                 web_utils.write_url_response_file(out_file, u, response)
 
     def make_response_file_path(self, iteration_id, test_number, thread_id=1):
-        '''return a path to a the response file
-        '''
+        """return a path to a the response file
+        """
         now = datetime.datetime.now()
         file_name = "{}-{:%m%d%y_%H%M}_{}-{}-{}.txt".format(self.args.file_prefix, now, thread_id, iteration_id, test_number)
         file_path = os.path.join(self.tmp_dir, file_name)

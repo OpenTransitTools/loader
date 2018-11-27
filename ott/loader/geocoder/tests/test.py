@@ -1,5 +1,5 @@
-''' http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started
-'''
+""" http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started
+"""
 import unittest
 
 import urllib

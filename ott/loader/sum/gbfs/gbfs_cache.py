@@ -1,13 +1,11 @@
-import os
-import json
-import logging
-log = logging.getLogger(__file__)
-
 from ott.utils.cache_base import CacheBase
 from ott.loader.solr.solr_add import SolrAdd
 from ott.loader.solr.solr_cache import SolrCache
 
 from ott.gbfsdb.stations import Stations
+
+import logging
+log = logging.getLogger(__file__)
 
 
 class GbfsCache(CacheBase):
@@ -32,9 +30,9 @@ class GbfsCache(CacheBase):
 
     @classmethod
     def get_clean_id(cls, station, def_val=-111):
-        ''' remove hub_ prefix crap from SOBI ids, etc...
+        """ remove hub_ prefix crap from SOBI ids, etc...
             note that: https://app.socialbicycles.com/map?hub_id=1581 works, but hub_1581 not so much...
-        '''
+        """
         id = station.get('station_id', def_val)
         if isinstance(id, (str, unicode)):
             id = id.replace('hub_', '')

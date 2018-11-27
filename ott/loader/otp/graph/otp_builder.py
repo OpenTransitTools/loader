@@ -59,7 +59,7 @@ class OtpBuilder(CacheBase):
         return graphs
 
     def update_vlog(self, graph):
-        """ print out gtfs feed(s) version numbers and dates to the otp.v log file
+        """ out gtfs feed(s) version numbers and dates to the otp.v log file
         """
         graph_dir = graph.get('dir', self.cache_dir)
         gtfs_msg = GtfsInfo.get_cache_msgs(graph_dir, self.feeds, graph.get('filter'))

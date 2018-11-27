@@ -13,7 +13,7 @@ class SolrCache(CacheBase):
 
     @classmethod
     def add_to_cache(self, solr):
-        ''' copy solr files to the cache where the SOLR loader will find and load them into SOLR
-        '''
+        """ copy solr files to the cache where the SOLR loader will find and load them into SOLR
+        """
         cache = SolrCache()
         solr.to_file(path=cache.cache_dir)

@@ -6,6 +6,7 @@ from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.gtfs.diff import Diff
 
+
 class TestGtfsDiff(unittest.TestCase):
 
     def setUp(self):
@@ -49,12 +50,11 @@ class TestGtfsDiff(unittest.TestCase):
         gtfsB = os.path.join(this_module_dir, "gtfsB.zip")
         diff = Diff(gtfsA, gtfsB)
         diff.is_different()
-        print diff.new_info.get_feed_info()
-        print diff.new_info.get_feed_version()
-        print diff.new_info.get_feed_date_range()
-        print diff.new_info.get_days_since_stats()
-        print diff.new_info.is_gtfs_out_of_date()
-
+        print(diff.new_info.get_feed_info())
+        print(diff.new_info.get_feed_version())
+        print(diff.new_info.get_feed_date_range())
+        print(diff.new_info.get_days_since_stats())
+        print(diff.new_info.is_gtfs_out_of_date())
 
 
 class TestGtfsCache(unittest.TestCase):

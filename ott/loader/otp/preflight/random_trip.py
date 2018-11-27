@@ -46,25 +46,25 @@ class RandomTrip(object):
         old_out = sys.stdout
         if file_name:
             sys.stdout = open(file_name, "w")
-        print suite_header
+        print(suite_header)
         for i, p in enumerate(from_to_list):
-            print suite_format.format(i+1, *p)
+            print(suite_format.format(i+1, *p))
         sys.stdout = old_out
 
     def call_urls(self, url_list):
         for u in url_list:
             #import pdb; pdb.set_trace()
             itinerary = Test.static_call_otp(u)
-            print u
+            print(u)
             if itinerary:
                 if len(itinerary) < 1000:
                     error_descript = "test_otp_result: itinerary content looks small at " + str(len(itinerary)) + " characters."
-                    print error_descript
+                    print(error_descript)
                 if "Uncertain Location" in itinerary:
                     error_descript = "test_otp_result: itinerary had ambiguous geocode"
-                    print error_descript
+                    print(error_descript)
             else:
-                print "Planner didn't return anything (null)..."
+                print("Planner didn't return anything (null)...")
 
 
 def zws_trips():

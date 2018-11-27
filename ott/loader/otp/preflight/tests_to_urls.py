@@ -74,7 +74,7 @@ def run(args):
             urls = to_urls(args, g['port'])
             ret_val[args.hostname] = urls
         else:
-            print "couldn't find graph {}".format(args.name)
+            print("couldn't find graph {}".format(args.name))
     return ret_val
 
 
@@ -111,8 +111,8 @@ def printer(args, file_path=None, url_hash=None):
         else:
             url_string = '\n'.join(url_list)
             if args.printer:
-                print "\n======={}=======\n".format(name)
-                print url_string
+                print("\n======={}=======\n".format(name))
+                print(url_string)
             else:
                 # write urls to file
                 file_name = make_filename(args, name, file_path, ".urls")

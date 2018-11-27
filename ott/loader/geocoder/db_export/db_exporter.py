@@ -32,7 +32,7 @@ class DbExporter(CacheBase):
     def get_table_orm(self, table_name):
         Base = self.make_database()
         TableOrm = Base.classes[table_name]
-        #print Base.classes.keys()
+        #print(Base.classes.keys())
         return TableOrm
 
     @classmethod
@@ -50,5 +50,5 @@ class DbExporter(CacheBase):
 
         # iterate thru all the children, and call export
         for subclass in cls.__subclasses__():
-            print subclass
+            print(subclass)
             subclass.export()

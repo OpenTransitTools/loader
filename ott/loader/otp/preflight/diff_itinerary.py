@@ -45,7 +45,7 @@ class DiffItinerary(object):
             f.flush()
             f.close()
         except:
-            print 'ERROR: could not get data from url:\n', url, '\n(not a friendly place)'
+            print('ERROR: could not get data from url:\n', url, '\n(not a friendly place)')
             traceback.print_exc(file=sys.stdout)
             pass
 
@@ -95,7 +95,7 @@ def main():
     di.run(runs)
     res, lst = di.compare(runs)
     for i in lst:
-        print i['file1'],"is not equal to",i['file2']
+        print(i['file1'],"is not equal to",i['file2'])
 
 
 if __name__ == '__main__':

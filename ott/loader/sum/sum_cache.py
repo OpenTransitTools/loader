@@ -13,8 +13,8 @@ class SumCache(CacheBase):
          -
     """
     def __init__(self, force_update=False):
-        ''' check osm cache
-        '''
+        """ check osm cache
+        """
         super(SumCache, self).__init__(section='sum')
 
         # check gbfs feed(s)
@@ -30,7 +30,7 @@ class SumCache(CacheBase):
 
     @classmethod
     def load(cls):
-        ''' run the SUM loader routines
-        '''
+        """ run the SUM loader routines
+        """
         sum = SumCache(force_update=object_utils.is_force_update())
         return sum

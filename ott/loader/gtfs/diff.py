@@ -23,8 +23,8 @@ class Diff(CacheBase):
         self.new_info = GtfsInfo(self.new_gtfs_zip, "new_")
 
     def is_different(self):
-        ''' compare feed_info.txt and calendar_dates.txt between two zips
-        '''
+        """ compare feed_info.txt and calendar_dates.txt between two zips
+        """
         feed_info_diff = file_utils.diff_files(self.old_info.unzip_feed_info_txt(), self.new_info.unzip_feed_info_txt())
         if feed_info_diff:
             logging.info("feed_info.txt files are different")

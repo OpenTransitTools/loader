@@ -65,11 +65,11 @@ class WsTest(Test):
             self.otp_params = 'appID=8846D83E8CEE8EBC2D177B591&from{0}={1}&to{2}={3}'.format(self.coord_or_name(f), f, self.coord_or_name(t), t)
             self.map_params = 'fromPlace={0}&toPlace={1}'.format(f, t)
         except:
-            print "**************************"
-            print "Error: this might not be a test, but a comment "
-            print self.__dict__
-            print "**************************"
-            print "\n\n"
+            print("**************************")
+            print("Error: this might not be a test, but a comment ")
+            print(self.__dict__)
+            print("**************************")
+            print("\n\n")
 
 
 Test.TestClass = WsTest

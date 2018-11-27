@@ -43,7 +43,7 @@ class OtpRunner(CacheBase):
         dir = graph['dir']
         otp_utils.mv_new_files_into_place(dir)
 
-        print "running {}".format(graph)
+        print("running {}".format(graph))
         status = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=dir, **graph)
         return status
 
@@ -68,7 +68,7 @@ class OtpRunner(CacheBase):
             elif args.viz:
                 success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
             else:
-                print "PLEASE select a option to either serve or vizualize graph {}".format(graph['name'])
+                print("PLEASE select a option to either serve or vizualize graph {}".format(graph['name']))
                 parser.print_help()
         return success
 
