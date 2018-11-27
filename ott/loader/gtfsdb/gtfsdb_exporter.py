@@ -1,4 +1,10 @@
+from ott.utils import file_utils
+from ott.utils import web_utils
 from .gtfsdb_loader import GtfsdbLoader
+
+import os
+import logging
+log = logging.getLogger(__file__)
 
 
 class GtfsdbExporter(GtfsdbLoader):
@@ -17,7 +23,7 @@ class GtfsdbExporter(GtfsdbLoader):
         """
         ret_val = True
 
-        def scp_dump_file(server, user, dump_dir, server_dir):
+        def scp_dump_file(server, user, dump_dir, dump_file, server_dir):
             """
             sub-routine to scp gtfsdb dump file to a a given server.
             crazy part of this code is all the path (string) manipulation
@@ -26,7 +32,7 @@ class GtfsdbExporter(GtfsdbLoader):
             global ret_val
 
             # step 1: create file paths to dump files locally, and also path where we'll scp these files
-            dump_path = otp_utils.get_graph_path(dump_dir)
+            dump_path = os.path.join(dump_dir, dump_file)
             dump_new = file_utils.make_new_path(dump_path)
             dump_svr = file_utils.append_to_path(server_dir, os.path.basename(dump_new), False)
 
@@ -35,13 +41,10 @@ class GtfsdbExporter(GtfsdbLoader):
             if file_utils.is_min_sized(dump_new):
                 scp = None
                 try:
-                    log.info("scp {} over to {}@{}:{}".format(graph_new, user, server, graph_svr))
+                    log.info("scp {} over to {}@{}:{}".format(dump_new, user, server, dump_svr))
                     scp, ssh = web_utils.scp_client(host=server, user=user)
-                    scp.put(graph_new, graph_svr)
-                    scp.put(log_v_new, log_v_svr)
-                    if file_utils.is_min_sized(jar_new):
-                        scp.put(jar_new, jar_svr)
-                except Exception, e:
+                    scp.put(dump_new, dump_svr)
+                except Exception as e:
                     log.warn(e)
                     ret_val = False
                 finally:

@@ -103,7 +103,7 @@ class GtfsdbLoader(CacheBase):
             dump_exe = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
             log.info(dump_exe)
             exe_utils.run_cmd(dump_exe, shell=True)
-        except Exception, e:
+        except Exception as e:
             ret_val = False
             log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
@@ -119,7 +119,7 @@ class GtfsdbLoader(CacheBase):
             restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
             log.info(restore_exe)
             exe_utils.run_cmd(restore_exe, shell=True)
-        except Exception, e:
+        except Exception as e:
             ret_val = False
             log.error("DB RESTORE ERROR {} : {}".format(feed_name, e))
         return ret_val
