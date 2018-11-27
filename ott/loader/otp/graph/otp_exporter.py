@@ -72,7 +72,7 @@ class OtpExporter(OtpBuilder):
         #         note, we need these server(s) to be 'known_hosts'
         user = self.config.get_json('user', section='deploy')
         servers = self.config.get_json('servers', section='deploy')
-        svr_base_dir = self.config.get_json('svr_base_dir', section='deploy')
+        otp_base_dir = self.config.get_json('otp_base_dir', section='deploy')
 
         # step B: loop thru each server, and scp a graph (and log and jar) to that server
         # import pdb; pdb.set_trace()
@@ -83,7 +83,7 @@ class OtpExporter(OtpBuilder):
                 if object_utils.is_not_match(graph_filter, g['name']):
                     continue
                 dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-                svr_dir = file_utils.append_to_path(svr_base_dir, g['name'])
+                svr_dir = file_utils.append_to_path(otp_base_dir, g['name'])
                 scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir, graph=g)
 
         # step C: remove the -new files (so we don't keep deploying / scp-ing)
