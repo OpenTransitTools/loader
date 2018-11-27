@@ -61,7 +61,7 @@ class OtpExporter(OtpBuilder):
                     scp.put(log_v_new, log_v_svr)
                     if file_utils.is_min_sized(jar_new):
                         scp.put(jar_new, jar_svr)
-                except Exception, e:
+                except Exception as e:
                     log.warn(e)
                     ret_val = False
                 finally:

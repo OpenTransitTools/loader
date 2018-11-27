@@ -71,9 +71,9 @@ class TestRunner(object):
                 f.write("Sorry, the template was null...")
             f.flush()
             f.close()
-        except NameError, e:
+        except NameError as e:
             log.warn("This ERROR probably means your template has a variable not being sent down with render: {}".format(e))
-        except Exception, e:
+        except Exception as e:
             log.warn(e)
         return ret_val
 
@@ -91,7 +91,7 @@ class TestRunner(object):
             msg = "OTP tests {} on {}\n{}\nOTP endpoint: {}".format(p, t, m, self.test_suites.ws_url)
             recipients = ConfigUtil(section='contact').get('emails')
             web_utils.simple_email(msg, recipients)
-        except Exception, e:
+        except Exception as e:
             log.warn(e)
         finally:
             if msg:

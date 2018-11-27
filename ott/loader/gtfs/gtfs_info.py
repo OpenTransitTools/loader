@@ -116,7 +116,7 @@ class GtfsInfo(CacheBase):
                     ret_val.append(info)
                 else:
                     log.info("feed {} doesn't exist".format(gtfs_path))
-        except Exception, e:
+        except Exception as e:
             log.warn(e)
         return ret_val
 

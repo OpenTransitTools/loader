@@ -112,7 +112,7 @@ class GtfsCache(CacheBase):
             # update the local cache
             if update_cache:
                 cache.cp_cached_file(name, app_dir)
-        except Exception, e:
+        except Exception as e:
             log.warn(e)
         return update_cache
 

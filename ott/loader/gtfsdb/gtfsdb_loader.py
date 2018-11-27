@@ -62,7 +62,7 @@ class GtfsdbLoader(CacheBase):
         log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
         try:
             database_load(feed_path, **kwargs)
-        except Exception, e:
+        except Exception as e:
             ret_val = False
             file_utils.mv(feed_path, feed_path + self.err_ext)
             log.error("DATABASE ERROR : {}".format(e))
