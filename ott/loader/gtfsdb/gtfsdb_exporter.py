@@ -10,3 +10,66 @@ class GtfsdbExporter(GtfsdbLoader):
     """
     def __init__(self):
         pass
+
+    def export_db_dump(self, server_filter=None, schema_filter=None):
+        """
+        scp new GTFS db dump files from build server to production servers
+        """
+        ret_val = True
+
+        def scp_dump_file(server, user, dump_dir, server_dir):
+            """
+            sub-routine to scp gtfsdb dump file to a a given server.
+            crazy part of this code is all the path (string) manipulation
+            in step 1 below...
+            """
+            global ret_val
+
+            # step 1: create file paths to dump files locally, and also path where we'll scp these files
+            dump_path = otp_utils.get_graph_path(dump_dir)
+            dump_new = file_utils.make_new_path(dump_path)
+            dump_svr = file_utils.append_to_path(server_dir, os.path.basename(dump_new), False)
+
+            # step 2: we are going to attempt to scp the dump file over to the server(s)
+            #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
+            if file_utils.is_min_sized(dump_new):
+                scp = None
+                try:
+                    log.info("scp {} over to {}@{}:{}".format(graph_new, user, server, graph_svr))
+                    scp, ssh = web_utils.scp_client(host=server, user=user)
+                    scp.put(graph_new, graph_svr)
+                    scp.put(log_v_new, log_v_svr)
+                    if file_utils.is_min_sized(jar_new):
+                        scp.put(jar_new, jar_svr)
+                except Exception, e:
+                    log.warn(e)
+                    ret_val = False
+                finally:
+                    if scp:
+                        scp.close()
+
+        # step A: grab config .ini (from app.ini) variables for the server(s) to scp OTP graphs to
+        #         note, we need these server(s) to be 'known_hosts'
+        user = self.config.get_json('user', section='deploy')
+        servers = self.config.get_json('servers', section='deploy')
+        otp_base_dir = self.config.get_json('gtfsdb_dir', section='deploy')
+
+        # step B: loop thru each server, and scp a graph (and log and jar) to that server
+        # import pdb; pdb.set_trace()
+        for s in servers:
+            if object_utils.is_not_match(server_filter, s):
+                continue
+            for g in self.graphs:
+                if object_utils.is_not_match(graph_filter, g['name']):
+                    continue
+                dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+                svr_dir = file_utils.append_to_path(otp_base_dir, g['name'])
+                scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir, graph=g)
+
+        # step C: remove the -new files (so we don't keep deploying / scp-ing)
+        for g in self.graphs:
+            if object_utils.is_not_match(graph_filter, g['name']):
+                continue
+            otp_utils.rm_new(graph_dir=g['dir'])
+
+        return ret_val
