@@ -19,7 +19,7 @@ OTHER:
       bin/osmosis --read-xml file=../cache/portland.osm  --tag-transform file=./tagtransform.xml --tf reject-node todo=delete_me  --tf reject-way todo=delete_me --tf reject-relation todo=delete_me --write-xml file=../cache/portland_pelias.osm
     </description>
     <match>
-      <match type="node" mode="or">
+      <match mode="or">
         <tag k="public_transport" v=".*"/>
         <tag k="public_transport:version" v=".*"/>
         <tag k="public_transport:version" v=".*"/>
