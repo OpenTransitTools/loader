@@ -26,7 +26,8 @@ OTHER:
         <tag k="public_transport:version" v=".*"/>
         <tag k="public_transport:version" v=".*"/>
         <tag k="vending" v="public_transport_tickets"/>
-        <tag k="railway|highway" v="bus_stop|tram_stop" />
+        <tag k="railway|highway" v="bus_stop|tram_stop|light_rail|tram"/>
+        <tag k="type" v="route_master"/>
       </match>
     </match>
     <output>
