@@ -38,10 +38,6 @@ class GtfsdbLoader(CacheBase):
         feed_path = os.path.join(self.cache_dir, feed['name'])
         return feed_path
 
-    def get_dump_path(self, feed_name):
-        """ get a name for the database (amoungst other systems) """
-        return "{}/{}.tar".format(self.cache_dir, feed_name)
-
     def load_feed(self, feed):
         """ insert a GTFS feed into configured db
         """

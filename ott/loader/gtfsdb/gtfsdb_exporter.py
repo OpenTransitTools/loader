@@ -1,5 +1,7 @@
 from ott.utils import file_utils
 from ott.utils import web_utils
+from ott.utils import exe_utils
+from ott.utils import object_utils
 from .gtfsdb_loader import GtfsdbLoader
 
 import os
@@ -15,7 +17,27 @@ class GtfsdbExporter(GtfsdbLoader):
      - use pg_load to load a dump file into a clean db
     """
     def __init__(self):
-        pass
+        super(GtfsdbExporter, self).__init__()
+
+    def get_dump_path(self, feed_name):
+        """ get a name for the database (amoungst other systems) """
+        return "{}/{}.tar".format(self.cache_dir, feed_name)
+
+    def dump_feed(self, feed):
+        """ run the db dumper
+        """
+        ret_val = True
+        feed_name = ""
+        try:
+            feed_name = self.get_feed_name(feed)
+            dump_path = self.get_dump_path(feed_name)
+            dump_exe = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
+            log.info(dump_exe)
+            exe_utils.run_cmd(dump_exe, shell=True)
+        except Exception as e:
+            ret_val = False
+            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
+        return ret_val
 
     def export_db_dump(self, server_filter=None, schema_filter=None):
         """
@@ -55,7 +77,7 @@ class GtfsdbExporter(GtfsdbLoader):
         #         note, we need these server(s) to be 'known_hosts'
         user = self.config.get_json('user', section='deploy')
         servers = self.config.get_json('servers', section='deploy')
-        otp_base_dir = self.config.get_json('gtfsdb_dir', section='deploy')
+        gtfsdb_cache = self.config.get_json('gtfsdb_dir', section='deploy')
 
         # step B: loop thru each server, and scp a graph (and log and jar) to that server
         # import pdb; pdb.set_trace()
@@ -75,22 +97,6 @@ class GtfsdbExporter(GtfsdbLoader):
                 continue
             otp_utils.rm_new(graph_dir=g['dir'])
 
-        return ret_val
-
-    def dump_feed(self, feed):
-        """ run the db dumper
-        """
-        ret_val = True
-        feed_name = ""
-        try:
-            feed_name = self.get_feed_name(feed)
-            dump_path = self.get_dump_path(feed_name)
-            dump_exe = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
-            log.info(dump_exe)
-            exe_utils.run_cmd(dump_exe, shell=True)
-        except Exception as e:
-            ret_val = False
-            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
 
     def restore_feed(self, feed):
