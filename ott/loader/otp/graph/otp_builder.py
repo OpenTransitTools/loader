@@ -113,9 +113,9 @@ class OtpBuilder(CacheBase):
         if success:
             success = TestRunner.test_graph_factory_config(graph, suite_dir=suite_dir, delay=delay)
             if not success:
-                log.warn("graph {} didn't pass it's tests".format(graph['name']))
+                log.warn("graph {} *did not* pass some tests!!!".format(graph['name']))
         else:
-            log.warn("was unable to run OTP server for graph {}".format(graph['name']))
+            log.warn("was unable to start the OTP server using graph {}!!!".format(graph['name']))
         return success
 
 

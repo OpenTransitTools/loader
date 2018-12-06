@@ -92,38 +92,6 @@ class GtfsdbLoader(CacheBase):
                 # step 3b: load the feed into the database
                 self.load_feed(f)
 
-    def dump_feed(self, feed):
-        """ run the db dumper
-        """
-        ret_val = True
-        feed_name = ""
-        try:
-            feed_name = self.get_feed_name(feed)
-            dump_path = self.get_dump_path(feed_name)
-            dump_exe = self.config.get('dump', section='db').format(schema=feed_name, dump_file=dump_path)
-            log.info(dump_exe)
-            exe_utils.run_cmd(dump_exe, shell=True)
-        except Exception as e:
-            ret_val = False
-            log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
-        return ret_val
-
-    def restore_feed(self, feed):
-        """ run the db restore
-        """
-        ret_val = True
-        feed_name = ""
-        try:
-            feed_name = self.get_feed_name(feed)
-            dump_path = self.get_dump_path(feed_name)
-            restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
-            log.info(restore_exe)
-            exe_utils.run_cmd(restore_exe, shell=True)
-        except Exception as e:
-            ret_val = False
-            log.error("DB RESTORE ERROR {} : {}".format(feed_name, e))
-        return ret_val
-
     @classmethod
     def load(cls):
         """ run the gtfsdb loader against all the specified feeds from config/app.ini
@@ -131,25 +99,3 @@ class GtfsdbLoader(CacheBase):
         """
         db = GtfsdbLoader()
         db.check_db(force_update=object_utils.is_force_update())
-
-    @classmethod
-    def dump(cls):
-        """ export """
-        db = GtfsdbLoader()
-
-        # step 1: loop thru all our feeds
-        for f in db.feeds:
-            db.dump_feed(f)
-            # step 2: check date on last export file vs. date of GTFS feed
-            # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
-
-    @classmethod
-    def restore(cls):
-        """ export """
-
-        # step 1: loop thru all our feeds
-        db = GtfsdbLoader()
-        for f in db.feeds:
-            db.restore_feed(f)
-            # step 2: check date on last export file vs. date of GTFS feed
-            # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
