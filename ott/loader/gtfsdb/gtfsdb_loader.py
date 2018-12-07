@@ -106,6 +106,7 @@ class GtfsdbLoader(CacheBase):
         ret_val = True
         feed_name = ""
         try:
+            # import pdb; pdb.set_trace()
             feed_name = self.get_feed_name(feed)
             dump_path = self.get_dump_path(feed_name)
             if file_utils.exists(dump_path):
