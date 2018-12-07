@@ -101,18 +101,34 @@ class GtfsdbLoader(CacheBase):
         db.check_db(force_update=object_utils.is_force_update())
 
     def restore_feed(self, feed, bkup="-processed"):
-        """ run the db restore
+        """ run the postgres db restore
+            first tho, move any old schemas out of the way as <schema>_old
+            (otherwise, there will be errors and the db won't load correctly)
         """
+        # import pdb; pdb.set_trace()
+
         ret_val = True
         feed_name = ""
         try:
-            # import pdb; pdb.set_trace()
             feed_name = self.get_feed_name(feed)
             dump_path = self.get_dump_path(feed_name)
             if file_utils.exists(dump_path):
+                # step a: remove <schema>_OLD
+                rm_schema_exe = self.config.get('rm_schema', section='db').format(schema=feed_name)
+                log.info(rm_schema_exe)
+                exe_utils.run_cmd(rm_schema_exe, shell=True)
+
+                # step b: move existing <schema> to <schema>_OLD
+                mv_schema_exe = self.config.get('mv_schema', section='db').format(schema=feed_name)
+                log.info(mv_schema_exe)
+                exe_utils.run_cmd(mv_schema_exe, shell=True)
+
+                # step c: restore new data
                 restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
                 log.info(restore_exe)
                 exe_utils.run_cmd(restore_exe, shell=True)
+
+                # step d:
                 file_utils.mv(dump_path, dump_path + bkup)
             else:
                 log.info("{} doesn't exist, so won't try to pg_restore".format(dump_path))
