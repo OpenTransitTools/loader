@@ -70,8 +70,8 @@ setup(
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
 
         gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
-        gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.dump
         gtfsdb_restore = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.restore
+        gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_expoter:GtfsdbExporter.dump
 
         gtfsrt_load = ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader:GtfsdbRealtimeLoader.load
 

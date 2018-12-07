@@ -19,10 +19,6 @@ class GtfsdbExporter(GtfsdbLoader):
     def __init__(self):
         super(GtfsdbExporter, self).__init__()
 
-    def get_dump_path(self, feed_name):
-        """ get a name for the database (amoungst other systems) """
-        return "{}/{}.tar".format(self.cache_dir, feed_name)
-
     def dump_feed(self, feed):
         """ run the db dumper
         """
@@ -99,22 +95,6 @@ class GtfsdbExporter(GtfsdbLoader):
 
         return ret_val
 
-    def restore_feed(self, feed):
-        """ run the db restore
-        """
-        ret_val = True
-        feed_name = ""
-        try:
-            feed_name = self.get_feed_name(feed)
-            dump_path = self.get_dump_path(feed_name)
-            restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
-            log.info(restore_exe)
-            exe_utils.run_cmd(restore_exe, shell=True)
-        except Exception as e:
-            ret_val = False
-            log.error("DB RESTORE ERROR {} : {}".format(feed_name, e))
-        return ret_val
-
     @classmethod
     def dump(cls):
         """ export """
@@ -123,16 +103,5 @@ class GtfsdbExporter(GtfsdbLoader):
         # step 1: loop thru all our feeds
         for f in db.feeds:
             db.dump_feed(f)
-            # step 2: check date on last export file vs. date of GTFS feed
-            # step 3: when export is either older than feed or missing entirely, create a new export and then scp it
-
-    @classmethod
-    def restore(cls):
-        """ export """
-
-        # step 1: loop thru all our feeds
-        db = GtfsdbLoader()
-        for f in db.feeds:
-            db.restore_feed(f)
             # step 2: check date on last export file vs. date of GTFS feed
             # step 3: when export is either older than feed or missing entirely, create a new export and then scp it

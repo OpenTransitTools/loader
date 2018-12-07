@@ -38,6 +38,10 @@ class GtfsdbLoader(CacheBase):
         feed_path = os.path.join(self.cache_dir, feed['name'])
         return feed_path
 
+    def get_dump_path(self, feed_name):
+        """ get a name for the database (amoungst other systems) """
+        return "{}/{}.tar".format(self.cache_dir, feed_name)
+
     def load_feed(self, feed):
         """ insert a GTFS feed into configured db
         """
@@ -95,3 +99,30 @@ class GtfsdbLoader(CacheBase):
         """
         db = GtfsdbLoader()
         db.check_db(force_update=object_utils.is_force_update())
+
+    def restore_feed(self, feed, bkup="-processed"):
+        """ run the db restore
+        """
+        ret_val = True
+        feed_name = ""
+        try:
+            feed_name = self.get_feed_name(feed)
+            dump_path = self.get_dump_path(feed_name)
+            if file_utils.exists(dump_path):
+                restore_exe = self.config.get('restore', section='db').format(schema=feed_name, dump_file=dump_path)
+                log.info(restore_exe)
+                exe_utils.run_cmd(restore_exe, shell=True)
+                file_utils.mv(dump_path, dump_path + bkup)
+            else:
+                log.info("{} doesn't exist, so won't try to pg_restore".format(dump_path))
+        except Exception as e:
+            ret_val = False
+            log.error("DB RESTORE ERROR {} : {}".format(feed_name, e))
+        return ret_val
+
+    @classmethod
+    def restore(cls):
+        """ run pg_restore on any existing pg_dump cache/*.tar files """
+        db = GtfsdbLoader()
+        for f in db.feeds:
+            db.restore_feed(f)
