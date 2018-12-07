@@ -29,17 +29,14 @@ class GtfsdbLoader(CacheBase):
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
 
     def get_feed_name(self, feed):
-        """ """
         db_schema_name = gtfs_utils.get_schema_name_from_feed(feed)
         return db_schema_name
 
     def get_feed_path(self, feed):
-        """  """
         feed_path = os.path.join(self.cache_dir, feed['name'])
         return feed_path
 
     def get_dump_path(self, feed_name):
-        """ get a name for the database (amoungst other systems) """
         return "{}/{}.tar".format(self.cache_dir, feed_name)
 
     def load_feed(self, feed):
@@ -140,6 +137,7 @@ class GtfsdbLoader(CacheBase):
     @classmethod
     def restore(cls):
         """ run pg_restore on any existing pg_dump cache/*.tar files """
+        gtfs_parser(exe_name='bin/gtfsdb_restore')
         db = GtfsdbLoader()
         for f in db.feeds:
             db.restore_feed(f)
