@@ -1,12 +1,10 @@
 from ott.utils import file_utils
 from ott.utils import web_utils
 from ott.utils import exe_utils
-from ott.utils import object_utils
 from ott.utils.parse.cmdline import gtfs_cmdline
 
 from .gtfsdb_loader import GtfsdbLoader
 
-import os
 import logging
 log = logging.getLogger(__file__)
 
@@ -48,16 +46,19 @@ class GtfsdbExporter(GtfsdbLoader):
         # step 1: create file paths to dump files locally, and also path where we'll scp these files
         feed_name = self.get_feed_name(feed)
         dump_path = self.get_dump_path(feed_name)
+        gtfsdb_dir = self.config.get('gtfsdb_dir', section='deploy')
 
         # step 2: we are going to attempt to scp the dump file over to the server
         #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
-        if file_utils.is_min_sized(dump_path):
+        if file_utils.exists(dump_path) and file_utils.is_min_sized(dump_path, 200000):
             scp = None
             try:
-                log.info("ssh mkdir {} on {}@{}".format(dump_path, user, server))
-
-                log.info("scp {} over to {}@{}:{}".format(dump_path, user, server, dump_svr))
                 #scp, ssh = web_utils.scp_client(host=server, user=user)
+
+                log.info("ssh mkdir {} on {}@{}".format(gtfsdb_dir, user, server))
+                #ssh.put('mkdir -p ~/')
+
+                log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
                 #scp.put(dump_new, dump_svr)
             except Exception as e:
                 log.warn(e)
@@ -69,10 +70,16 @@ class GtfsdbExporter(GtfsdbLoader):
 
     @classmethod
     def dump(cls):
-        """ export """
+        """
+        dump feed(s) using pg_dump
+        optionally scp those feeds to servers configured in app.ini [deploy]
+
+        method has command line parser, but method can be called programmatically (w/out command line)
+        if now cmdline, then will dump and deploy according to app.ini configured agencies [gtfs] and servers [deploy]
+        """
         db = GtfsdbExporter()
 
-        # cmd-line parser (used to filter either agency and/or server to scp dump file to)
+        # optional cmd-line parser (used to filter either agency and/or server to scp dump file to)
         parser = gtfs_cmdline.gtfs_parser(do_parse=False)
         gtfs_cmdline.server_option(parser)
         p = parser.parse_args()
@@ -87,18 +94,19 @@ class GtfsdbExporter(GtfsdbLoader):
                 if agency != 'all' and agency not in f.get('name').lower():
                     continue
 
-            log.info("DUMPING feed {}".format(f.get('name')))
-            #db.dump_feed(f)
+            # step 3: agency not filtered, so dump it
+            db.dump_feed(f)
 
-            # step 3: scp dump files to prod servers
+            # step 4: (optionally) scp dump files to prod servers
             if p.server:
-                # step 3b: scp stopping condition ... don't scp to none or null specified servers
+                # step 4b: scp filter condition ... don't scp to none or null specified servers via cmdline
                 server = p.server.lower()
                 if server in ('none', 'null', '0'):
                     continue
 
-                # step 4: loop thru servers
+                # step 5: loop thru app.ini [deploy] servers, looking to scp the pg_dump file over to production
                 user = db.config.get('user', section='deploy')
                 for scp_svr in db.config.get_json('servers', section='deploy'):
+                    # step 5b: scp filter condition ... either scp to 'all' servers, or a named (via cmdline) server
                     if server == 'all' or server in scp_svr:
                         db.scp_dump_file(f, scp_svr, user)
