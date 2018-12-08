@@ -60,7 +60,7 @@ class GtfsdbExporter(GtfsdbLoader):
                 ssh.exec_command(mkdir)
 
                 log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
-                scp.put(dump_path, dump_svr)
+                scp.put(dump_path, server)
             except Exception as e:
                 log.warn(e)
                 ret_val = False
