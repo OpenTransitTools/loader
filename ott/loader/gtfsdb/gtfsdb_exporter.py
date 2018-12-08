@@ -53,13 +53,14 @@ class GtfsdbExporter(GtfsdbLoader):
         if file_utils.exists(dump_path) and file_utils.is_min_sized(dump_path, 200000):
             scp = None
             try:
-                #scp, ssh = web_utils.scp_client(host=server, user=user)
+                scp, ssh = web_utils.scp_client(host=server, user=user)
 
-                log.info("ssh mkdir {} on {}@{}".format(gtfsdb_dir, user, server))
-                #ssh.put('mkdir -p ~/')
+                mkdir = "mkdir -p ~/{}".format(gtfsdb_dir)
+                log.info("ssh {} on {}@{}".format(mkdir, user, server))
+                ssh.exec_command(mkdir)
 
                 log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
-                #scp.put(dump_new, dump_svr)
+                scp.put(dump_new, dump_svr)
             except Exception as e:
                 log.warn(e)
                 ret_val = False
