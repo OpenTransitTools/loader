@@ -72,6 +72,8 @@ setup(
         gtfsdb_load = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.load
         gtfsdb_restore = ott.loader.gtfsdb.gtfsdb_loader:GtfsdbLoader.restore
         gtfsdb_dump = ott.loader.gtfsdb.gtfsdb_exporter:GtfsdbExporter.dump
+        gtfsdb_scp = ott.loader.gtfsdb.gtfsdb_exporter:GtfsdbExporter.scp
+        gtfsdb_dump_scp = ott.loader.gtfsdb.gtfsdb_exporter:GtfsdbExporter.dump_and_scp
 
         gtfsrt_load = ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader:GtfsdbRealtimeLoader.load
 

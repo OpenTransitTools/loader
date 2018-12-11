@@ -35,13 +35,12 @@ class GtfsdbExporter(GtfsdbLoader):
             log.error("DB DUMP ERROR {} : {}".format(feed_name, e))
         return ret_val
 
-    def scp_dump_file(self, feed, server, user):
+    def _scp_dump_file(self, feed, server, user):
         """
         scp gtfsdb dump file to a a given server.
-        crazy part of this code is all the path (string) manipulation
-        in step 1 below...
+        :returns path to the dump file
         """
-        ret_val = False
+        ret_val = None
 
         # step 1: create file paths to dump files locally, and also path where we'll scp these files
         feed_name = self.get_feed_name(feed)
@@ -51,6 +50,8 @@ class GtfsdbExporter(GtfsdbLoader):
         # step 2: we are going to attempt to scp the dump file over to the server
         #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
         if file_utils.exists(dump_path) and file_utils.is_min_sized(dump_path, 200000):
+            ret_val = dump_path
+
             scp = None
             try:
                 scp, ssh = web_utils.scp_client(host=server, user=user)
@@ -69,8 +70,58 @@ class GtfsdbExporter(GtfsdbLoader):
                     scp.close()
         return ret_val
 
+    def check_feeds(self, feeds):
+        # make sure we have a list of 'feeds' objects (see app.ini for the structure of a feed object)
+        if feeds is None:
+            feeds = self.feeds
+        elif not isinstance(feeds, (list, tuple)):
+            feeds = [feeds]
+        return feeds
+
+    def scp(cls, feeds=None, filter=None, rm_after_scp=True):
+        """
+        loop thru servers in app.ini [deploy], looking to scp the pg_dump file over to production
+        :returns number of feeds that were scp'd
+        """
+        ret_val = 0
+        db = GtfsdbExporter()
+        user = db.config.get('user', section='deploy')
+        for feed in db.check_feeds(feeds):
+            was_scpd = False
+
+            # scp the feed to the configured servers
+            for server in db.config.get_json('servers', section='deploy'):
+                if filter is None or filter == 'all' or filter in server:
+                    dump_path = self._scp_dump_file(feed, server, user)
+                    if dump_path and rm_after_scp:
+                        # note: don't rm dump file ... but we move the file aside (so it doesn't get scp'd a 2nd time)
+                        file_utils.mv(dump_path, dump_path + "-did_scp")
+                        was_scpd = True
+
+            # increment the number of scp'd feeds
+            if was_scpd:
+                ret_val += 1
+
+        return ret_val
+
     @classmethod
-    def dump(cls):
+    def dump(cls, feeds=None, filter=None):
+        """
+        call pg_dump on a given feed or list of feeds
+        can 'filter' the names of feeds also
+        :returns count of feeds dumped
+        """
+        ret_val = 0
+        db = GtfsdbExporter()
+        for f in db.check_feeds(feeds):
+            if filter and filter.lower() != 'all' and filter.lower() not in f.get('name').lower():
+                continue
+            db.dump_feed(f)  # agency not filtered, so dump it
+            ret_val += 1
+        return ret_val
+
+    @classmethod
+    def dump_and_scp(cls):
         """
         dump feed(s) using pg_dump
         optionally scp those feeds to servers configured in app.ini [deploy]
@@ -78,36 +129,20 @@ class GtfsdbExporter(GtfsdbLoader):
         method has command line parser, but method can be called programmatically (w/out command line)
         if now cmdline, then will dump and deploy according to app.ini configured agencies [gtfs] and servers [deploy]
         """
-        db = GtfsdbExporter()
 
-        # optional cmd-line parser (used to filter either agency and/or server to scp dump file to)
+        # step 1: optional cmd-line parser (used to filter either agency and/or server to scp dump file to)
         parser = gtfs_cmdline.gtfs_parser(do_parse=False)
         gtfs_cmdline.server_option(parser)
         p = parser.parse_args()
 
-        # step 1: loop thru all our feeds
-        # import pdb; pdb.set_trace()
-        for f in db.feeds:
+        # step 2: dump feed(s)
+        num_dumped = cls.dump(filter=p.agency_id)
 
-            # step 2: agency filter
-            if p.agency_id:
-                agency = p.agency_id.lower()
-                if agency != 'all' and agency not in f.get('name').lower():
-                    continue
+        # step 3: scp feed(s)
+        if num_dumped > 0:
+            num_scpd = cls.scp(filter=p.server)
 
-            # step 3: agency not filtered, so dump it
-            db.dump_feed(f)
+        if num_dumped != num_scpd:
+            log.warn("There were {} feeds dumped, but only {} feeds were scp'd.".format(num_dumped, num_scpd))
 
-            # step 4: (optionally) scp dump files to prod servers
-            if p.server:
-                # step 4b: scp filter condition ... don't scp to none or null specified servers via cmdline
-                server = p.server.lower()
-                if server in ('none', 'null', '0'):
-                    continue
-
-                # step 5: loop thru app.ini [deploy] servers, looking to scp the pg_dump file over to production
-                user = db.config.get('user', section='deploy')
-                for scp_svr in db.config.get_json('servers', section='deploy'):
-                    # step 5b: scp filter condition ... either scp to 'all' servers, or a named (via cmdline) server
-                    if server == 'all' or server in scp_svr:
-                        db.scp_dump_file(f, scp_svr, user)
+        return num_scpd

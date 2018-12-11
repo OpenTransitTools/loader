@@ -3,6 +3,7 @@ from ott.utils import object_utils
 from ott.utils import db_utils
 from ott.utils import exe_utils
 from ott.utils import file_utils
+
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from gtfsdb.api import database_load
@@ -88,6 +89,11 @@ class GtfsdbLoader(CacheBase):
 
                 # step 3b: load the feed into the database
                 self.load_feed(f)
+
+                # step 4: run the pg_dump
+                from .gtfsdb_exporter import GtfsdbExporter
+                export = GtfsdbExporter()
+                export.dump(feeds=f)
 
     @classmethod
     def load(cls):

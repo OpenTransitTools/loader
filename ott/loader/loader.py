@@ -5,6 +5,7 @@ from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.otp.graph.otp_exporter import OtpExporter
 from ott.loader.otp.graph.otp_builder import OtpBuilder
 from ott.loader.gtfsdb.gtfsdb_loader import GtfsdbLoader
+from ott.loader.gtfsdb.gtfsdb_exporter import GtfsdbExporter
 from ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader import GtfsdbRealtimeLoader
 from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
@@ -45,7 +46,7 @@ def load_all():
     """ will load OTP and gtfsdb
 
           3a. load gtfsdb
-          3b. export gtfsdb to production
+          3b. pg_dump an export file for gtfsdb
 
           4a. build OTP graph
           4b. test OTP graph
@@ -77,8 +78,8 @@ def load_all():
 def export_all():
     """
     """
-    log.info("step 1: export gtfsdb ")
-    GtfsdbLoader.dump()
+    log.info("step 1: scp any gtfsdb pg_dump files created in the load_all() call ")
+    GtfsdbExporter.scp()
 
     log.info("step 2: load any new OSM database snapshot")
     osm = OsmCache()
