@@ -63,7 +63,7 @@ class GtfsdbExporter(GtfsdbLoader):
                 log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
                 scp.put(dump_path, gtfsdb_dir)
             except Exception as e:
-                log.warn(e)
+                log.warn("{} -- feed={}, server={}, user={}".format(e, feed_name, server, user))
                 ret_val = False
             finally:
                 if scp:
@@ -93,7 +93,7 @@ class GtfsdbExporter(GtfsdbLoader):
             # scp the feed to the configured servers
             for server in db.config.get_json('servers', section='deploy'):
                 if filter is None or filter == 'all' or filter in server:
-                    dump_path = self._scp_dump_file(feed, server, user)
+                    dump_path = db._scp_dump_file(feed, server, user)
                     if dump_path and rm_after_scp:
                         # note: don't rm dump file ... but we move the file aside (so it doesn't get scp'd a 2nd time)
                         file_utils.mv(dump_path, dump_path + "-did_scp")

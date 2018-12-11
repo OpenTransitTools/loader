@@ -45,19 +45,19 @@ def download_data():
 def load_all():
     """ will load OTP and gtfsdb
 
-          3a. load gtfsdb
-          3b. pg_dump an export file for gtfsdb
+          load gtfsdb
+          pg_dump an export file for gtfsdb
 
-          4a. build OTP graph
-          4b. test OTP graph
-          4c. deploy graphs that pass tests to production servers
+          build OTP graph
+          test OTP graph
 
-          5. load SOLR with cached datad
+          load SOLR with cached data
     """
     force_update=object_utils.is_force_update()
 
+    # steps 1 - 3: download data (see above)
     # import pdb; pdb.set_trace()
-    #download_data()
+    download_data()
 
     log.info("step 4: load gtfsdb")
     db = GtfsdbLoader()
