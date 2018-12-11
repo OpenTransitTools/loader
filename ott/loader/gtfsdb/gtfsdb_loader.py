@@ -69,6 +69,8 @@ class GtfsdbLoader(CacheBase):
     def check_db(self, force_update=False):
         """ check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
         """
+        # import pdb; pdb.set_trace()
+
         # step 1: loop thru all our feeds
         purged = False
         for f in self.feeds:
@@ -81,7 +83,7 @@ class GtfsdbLoader(CacheBase):
             # step 3: okay, reload this GTFS feed into the database
             if reload or force_update:
                 # step 3a: we should purge any GTFS-error files that might have been generated on the last load
-                #          NOTE: we'll also check the database onthis step ... make sure it's available and ready
+                #          NOTE: we'll also check the database on this step ... make sure it's available and ready
                 if not purged:
                     db_utils.check_create_db(self.db_url, self.is_geospatial)
                     file_utils.purge(self.cache_dir, ".*" + self.err_ext)
@@ -93,7 +95,7 @@ class GtfsdbLoader(CacheBase):
                 # step 4: run the pg_dump
                 from .gtfsdb_exporter import GtfsdbExporter
                 export = GtfsdbExporter()
-                export.dump(feeds=f)
+                export.dump_feed(feed=f)
 
     @classmethod
     def load(cls):
@@ -108,8 +110,6 @@ class GtfsdbLoader(CacheBase):
             first tho, move any old schemas out of the way as <schema>_old
             (otherwise, there will be errors and the db won't load correctly)
         """
-        # import pdb; pdb.set_trace()
-
         ret_val = True
         feed_name = ""
         try:

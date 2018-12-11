@@ -78,6 +78,7 @@ class GtfsdbExporter(GtfsdbLoader):
             feeds = [feeds]
         return feeds
 
+    @classmethod
     def scp(cls, feeds=None, filter=None, rm_after_scp=True):
         """
         loop thru servers in app.ini [deploy], looking to scp the pg_dump file over to production

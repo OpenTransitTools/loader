@@ -57,10 +57,11 @@ def load_all():
     force_update=object_utils.is_force_update()
 
     # import pdb; pdb.set_trace()
-    download_data()
+    #download_data()
 
     log.info("step 4: load gtfsdb")
     db = GtfsdbLoader()
+    GtfsdbExporter.scp()
     db.check_db(force_update=force_update)
 
     log.info("step 5: load gtfsdb_realtime db")
