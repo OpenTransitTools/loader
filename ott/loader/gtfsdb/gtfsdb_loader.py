@@ -143,7 +143,6 @@ class GtfsdbLoader(CacheBase):
     @classmethod
     def restore(cls):
         """ run pg_restore on any existing pg_dump cache/*.tar files """
-        gtfs_parser(exe_name='bin/gtfsdb_restore')
         db = GtfsdbLoader()
         for f in db.feeds:
             db.restore_feed(f)

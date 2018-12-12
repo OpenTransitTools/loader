@@ -1,7 +1,6 @@
 from ott.utils import file_utils
 from ott.utils import web_utils
 from ott.utils import exe_utils
-from ott.utils.parse.cmdline import gtfs_cmdline
 
 from .gtfsdb_loader import GtfsdbLoader
 
@@ -132,6 +131,7 @@ class GtfsdbExporter(GtfsdbLoader):
         """
 
         # step 1: optional cmd-line parser (used to filter either agency and/or server to scp dump file to)
+        from ott.utils.parse.cmdline import gtfs_cmdline
         parser = gtfs_cmdline.gtfs_parser(do_parse=False)
         gtfs_cmdline.server_option(parser)
         p = parser.parse_args()
