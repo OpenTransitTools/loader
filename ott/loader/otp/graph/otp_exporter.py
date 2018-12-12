@@ -50,9 +50,8 @@ class OtpExporter(OtpBuilder):
             jar_new = file_utils.make_new_path(jar_path)
             jar_svr = file_utils.append_to_path(server_dir, os.path.basename(jar_new), False)
 
-            # TODO: SCP gtfs and OSM data over ... don't need to -new them, just overwrite existing
-            osm_path = otp_utils.get_otp_path(graph_dir)
-            gtfs_file_array = otp_utils.get_otp_path(graph_dir)
+            osm_paths = otp_utils.get_osm_paths(graph_dir)
+            gtfs_paths = otp_utils.get_gtfs_paths(graph_dir)
 
             # step 2: we are going to attempt to scp Graph.obj-new over to the server(s)
             #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
@@ -65,6 +64,10 @@ class OtpExporter(OtpBuilder):
                     scp.put(log_v_new, log_v_svr)
                     if file_utils.is_min_sized(jar_new):
                         scp.put(jar_new, jar_svr)
+                    for p in osm_paths:
+                        scp.put(p, server_dir)
+                    for p in gtfs_paths:
+                        scp.put(p, server_dir)
                 except Exception as e:
                     log.warn(e)
                     ret_val = False
