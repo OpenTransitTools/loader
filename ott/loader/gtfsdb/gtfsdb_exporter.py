@@ -48,25 +48,30 @@ class GtfsdbExporter(GtfsdbLoader):
 
         # step 2: we are going to attempt to scp the dump file over to the server
         #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
-        if file_utils.exists(dump_path) and file_utils.is_min_sized(dump_path, 200000):
-            ret_val = dump_path
+        if file_utils.exists(dump_path):
+            if file_utils.is_min_sized(dump_path, 200000):
+                ret_val = dump_path
 
-            scp = None
-            try:
-                scp, ssh = web_utils.scp_client(host=server, user=user)
+                scp = None
+                try:
+                    scp, ssh = web_utils.scp_client(host=server, user=user)
 
-                mkdir = "mkdir -p ~/{}".format(gtfsdb_dir)
-                log.info("ssh {} on {}@{}".format(mkdir, user, server))
-                ssh.exec_command(mkdir)
+                    mkdir = "mkdir -p ~/{}".format(gtfsdb_dir)
+                    log.info("ssh {} on {}@{}".format(mkdir, user, server))
+                    ssh.exec_command(mkdir)
 
-                log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
-                scp.put(dump_path, gtfsdb_dir)
-            except Exception as e:
-                log.warn("{} -- feed={}, server={}, user={}".format(e, feed_name, server, user))
-                ret_val = False
-            finally:
-                if scp:
-                    scp.close()
+                    log.info("scp {} over to {}@{}:~/{}/".format(dump_path, user, server, gtfsdb_dir))
+                    scp.put(dump_path, gtfsdb_dir)
+                except Exception as e:
+                    log.warn("{} -- feed={}, server={}, user={}".format(e, feed_name, server, user))
+                    ret_val = False
+                finally:
+                    if scp:
+                        scp.close()
+            else:
+                log.warn("{} is suspiciously SMaLl, so *not* going SCP it to {}".format(dump_path, server))
+        else:
+            log.warn("{} doesn't exit, so *not* going to SCP it to {}".format(dump_path, server))
         return ret_val
 
     def check_feeds(self, feeds):
