@@ -32,6 +32,7 @@ def download_data():
         force_update = True
 
     log.info("step 2: cache latest osm data")
+    updated_osm = False
     updated_osm = OsmCache.update(force_update=force_update)
     if updated_osm:
         force_update = True
@@ -68,8 +69,8 @@ def load_all():
     rt.load_all(is_geospatial=True, create_db=True)
 
     log.info("step 6: load otp (build new graph)")
-    #otp = OtpBuilder(force_update=force_update)
-    #otp.build_and_test_graphs(force_update=force_update)
+    otp = OtpBuilder(force_update=force_update)
+    otp.build_and_test_graphs(force_update=force_update)
 
     log.info("step 7: load various data layers into SOLR")
     solr_load = SolrLoader.load()
