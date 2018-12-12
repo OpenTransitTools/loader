@@ -50,8 +50,10 @@ class OtpExporter(OtpBuilder):
             jar_new = file_utils.make_new_path(jar_path)
             jar_svr = file_utils.append_to_path(server_dir, os.path.basename(jar_new), False)
 
+            # step 1b: these are the other OTP artifacts, like OSM, GTFS and JSON (config) files
             osm_paths = otp_utils.get_osm_paths(graph_dir)
             gtfs_paths = otp_utils.get_gtfs_paths(graph_dir)
+            config_paths = otp_utils.get_config_paths(graph_dir)
 
             # step 2: we are going to attempt to scp Graph.obj-new over to the server(s)
             #         note: the server paths (e.g., graph_svr, etc...) are relative to the user's home account
@@ -67,6 +69,8 @@ class OtpExporter(OtpBuilder):
                     for p in osm_paths:
                         scp.put(p, server_dir)
                     for p in gtfs_paths:
+                        scp.put(p, server_dir)
+                    for p in config_paths:
                         scp.put(p, server_dir)
                 except Exception as e:
                     log.warn(e)
