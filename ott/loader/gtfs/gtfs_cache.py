@@ -52,8 +52,7 @@ class GtfsCache(CacheBase):
         tmp_path = os.path.join(self.tmp_dir, file_name)
 
         # step 2b: don't keep downloading a file ... make sure the tmp file is at least 2 hours
-        if os.path.exists(tmp_path) is False or \
-           file_utils.file_age_seconds(tmp_path) > 7200:
+        if os.path.exists(tmp_path) is False or file_utils.file_age_seconds(tmp_path) > 7200:
             web_utils.wget(url, tmp_path)
 
         # step 3: check the cache whether we should update or not

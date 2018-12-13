@@ -27,11 +27,11 @@ class Diff(CacheBase):
         """
         feed_info_diff = file_utils.diff_files(self.old_info.unzip_feed_info_txt(), self.new_info.unzip_feed_info_txt())
         if feed_info_diff:
-            logging.info("feed_info.txt files are different")
+            logging.info("{} feed_info.txt files ARE VERY different".format(self.new_gtfs_zip))
         calendar_dates_diff = file_utils.diff_files(self.old_info.unzip_calendar_dates_txt(), self.new_info.unzip_calendar_dates_txt())
         if calendar_dates_diff:
-            logging.info("calender_dates.txt files are different")
+            logging.info("{} calender_dates.txt files ARE VERY different".format(self.new_gtfs_zip))
         calendar_diff = file_utils.diff_files(self.old_info.unzip_calendar_txt(), self.new_info.unzip_calendar_txt())
         if calendar_diff:
-            logging.info("calender.txt files are different")
+            logging.info("{} calender.txt files ARE VERY different".format(self.new_gtfs_zip))
         return feed_info_diff or calendar_diff or calendar_dates_diff
