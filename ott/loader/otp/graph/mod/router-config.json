@@ -19,22 +19,19 @@
     },
 
     updaters: [
-        // GTFS-RT service alerts (frequent polling)
-        {
+        { // GTFS-RT service alerts (frequent polling)
             type: "real-time-alerts",
             frequencySec: 20,
             earlyStart: 864000,
             url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
             feedId: "TriMet"
         },
-      	{ // GTFS-rt delay feed
-      	    "type": "stop-time-updater",
-                  "frequencySec": 60,
-                  // this is either http or file... shouldn't it default to http or guess from the presence of a URL?
-                  "sourceType": "gtfs-http",
-                  // "url": "https://s3.amazonaws.com/trimet-mod-dev/gtfsrt/delay.proto",
-                  "url": "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
-                  "feedId": "TriMet"
+      	{ // GTFS-RT delay feed
+      	    type: "stop-time-updater",
+            frequencySec: 60,
+            sourceType: "gtfs-http",
+            url: "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
+            feedId: "TriMet"
       	},
         {
             type: "bike-rental",
@@ -43,27 +40,29 @@
             frequencySec: 10
         },
         { // TNC (Uber) feed
-            "type": "transportation-network-company-updater",
-            "sourceType": "uber",
-            "serverToken": "sfR0_lvDTW3Esmn1Iu9tRNw63_h2AI8Y24DUc_E_"
-        }, {
-            "type": "transportation-network-company-updater",
-            "sourceType": "lyft",
-            "clientId": "3vSLOyd4BjaQ",
-            "clientSecret": "a1yxFp14nzswNl8sov0YNBrXI873M7uy"
+            type: "transportation-network-company-updater",
+            sourceType: "uber",
+            serverToken: "sfR0_lvDTW3Esmn1Iu9tRNw63_h2AI8Y24DUc_E_",
+            wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+        },
+        {
+            type: "transportation-network-company-updater",
+            sourceType: "lyft",
+            clientId: "3vSLOyd4BjaQ",
+            clientSecret: "a1yxFp14nzswNl8sov0YNBrXI873M7uy"
         },
         { // car2go locations feed + boundary area
-          "type": "car-rental-updater",
-          "sourceType": "car2go",
-          "vehiclesUrl": "http://maps7.trimet.org/carshare/car2go/data.json",
-          "regionGeoJson": {
-            "type": "Feature",
-            "properties": {
-              "Id": 0
-            },
-            "geometry": {
-              "type": "MultiPolygon",
-              "coordinates": [
+            type: "car-rental-updater",
+            sourceType: "car2go",
+            vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
+            regionGeoJson: {
+              type: "Feature",
+              properties: {
+                Id: 0
+              },
+              geometry: {
+                type: "MultiPolygon",
+                coordinates: [
                 [
                   [
                     [-122.68297466714286,
