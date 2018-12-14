@@ -16,5 +16,7 @@ fi
 def_db=postgres
 user=ott
 db=ott
+osm_db=ott
 
 $psql -d $def_db -c "DROP DATABASE ${db};"
+$psql -d $def_db -c "DROP DATABASE ${osm_db};"
