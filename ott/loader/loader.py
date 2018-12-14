@@ -1,6 +1,7 @@
 from ott.utils import object_utils
 
 from ott.osm.osm_cache import OsmCache
+from ott.osm.osm2pgsql.osm2pgsql import Osm2pgsql
 from ott.loader.gtfs.gtfs_cache import GtfsCache
 from ott.loader.otp.graph.otp_exporter import OtpExporter
 from ott.loader.otp.graph.otp_builder import OtpBuilder
@@ -36,6 +37,8 @@ def download_data():
     updated_osm = OsmCache.update(force_update=force_update)
     if updated_osm:
         force_update = True
+        pg = Osm2pgsql()
+        pg.run()
 
     log.info("step 3: download SUM data (BIKETOWN)")
     sum_update = SumCache.load

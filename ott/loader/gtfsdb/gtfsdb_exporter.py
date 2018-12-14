@@ -7,6 +7,8 @@ from .gtfsdb_loader import GtfsdbLoader
 import logging
 log = logging.getLogger(__file__)
 
+# TODO:  make this class 'generic', and then override it with config junk, so it can be repurposed
+# todo:  use this both here and for osm2pgsql ???
 
 class GtfsdbExporter(GtfsdbLoader):
     """
@@ -116,6 +118,7 @@ class GtfsdbExporter(GtfsdbLoader):
         can 'filter' the names of feeds also
         :returns count of feeds dumped
         """
+        # import pdb; pdb.set_trace()
         ret_val = 0
         db = GtfsdbExporter()
         for f in db.check_feeds(feeds):
