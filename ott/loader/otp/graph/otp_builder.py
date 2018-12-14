@@ -217,7 +217,6 @@ class OtpBuilder(CacheBase):
         parser = otp_utils.get_initial_arg_parser('otp-builder')
         parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
         parser.add_argument('--no_tests',    '-n', action='store_true', help="build graph w/out testing")
-        parser.add_argument('--force',       '-f', action='store_true', help="force a rebuild regardless of cache state and data update")
         parser.add_argument('--dont_update', '-d', action='store_true', help="don't update data regardless of state")
         parser.add_argument('--dont_restart',      action='store_true', help="don't restart OTP when testing new graphs, etc...")
         parser.add_argument('--mock',        '-m', action='store_true', help="mock up the otp.v to make it look like the graph built and tested")
