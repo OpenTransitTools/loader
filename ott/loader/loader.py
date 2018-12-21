@@ -67,15 +67,11 @@ def load_all():
     db = GtfsdbLoader()
     db.check_db(force_update=force_update)
 
-    log.info("step 5: load gtfsdb_realtime db")
-    rt = GtfsdbRealtimeLoader()
-    rt.load_all(is_geospatial=True, create_db=True)
-
-    log.info("step 6: load otp (build new graph)")
+    log.info("step 5: load otp (build new graph)")
     otp = OtpBuilder(force_update=force_update)
     otp.build_and_test_graphs(force_update=force_update)
 
-    log.info("step 7: load various data layers into SOLR")
+    log.info("step 6: load various data layers into SOLR")
     solr_load = SolrLoader.load()
 
 
