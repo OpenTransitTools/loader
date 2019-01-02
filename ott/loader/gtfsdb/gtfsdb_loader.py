@@ -20,6 +20,7 @@ class GtfsdbLoader(CacheBase):
     feeds = []
     db_url = None
     is_geospatial = False
+    current_tables = True
     err_ext = "-error_loading"
 
     def __init__(self):
@@ -28,6 +29,7 @@ class GtfsdbLoader(CacheBase):
         self.feeds = gtfs_utils.get_feeds_from_config(self.config)
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
+        self.current_tables = self.config.get_bool('current_tables', section='db', def_val=True)
 
     def get_feed_name(self, feed):
         db_schema_name = gtfs_utils.get_schema_name_from_feed(feed)
@@ -51,6 +53,7 @@ class GtfsdbLoader(CacheBase):
 
         # step 2: make args for gtfsdb
         kwargs = {}
+        kwargs['current_tables'] = self.current_tables
         kwargs['url'] = self.db_url
         if "sqlite:" not in self.db_url:
             kwargs['is_geospatial'] = self.is_geospatial
