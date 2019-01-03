@@ -31,7 +31,8 @@ class GtfsdbLoader(CacheBase):
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
         self.current_tables = self.config.get_bool('current_tables', section='db', def_val=True)
 
-    def get_feed_name(self, feed):
+    @classmethod
+    def get_feed_name(cls, feed):
         db_schema_name = gtfs_utils.get_schema_name_from_feed(feed)
         return db_schema_name
 

@@ -91,24 +91,37 @@ class GtfsdbExporter(GtfsdbLoader):
         :returns number of feeds that were scp'd
         """
         ret_val = 0
-        db = GtfsdbExporter()
-        user = db.config.get('user', section='deploy')
-        for feed in db.check_feeds(feeds):
-            was_scpd = False
+        exporter = GtfsdbExporter()
+        user = exporter.config.get('user', section='deploy')
+        for feed in exporter.check_feeds(feeds):
+            dump_path = None
+            num_scp = 0
 
             # scp the feed to the configured servers
-            for server in db.config.get_json('servers', section='deploy'):
+            prod_servers = exporter.config.get_json('servers', section='deploy')
+            for server in prod_servers:
                 if filter is None or filter == 'all' or filter in server:
-                    dump_path = db._scp_dump_file(feed, server, user)
-                    if dump_path and rm_after_scp:
-                        # note: don't rm dump file ... but we move the file aside (so it doesn't get scp'd a 2nd time)
-                        file_utils.mv(dump_path, dump_path + "-did_scp")
-                        was_scpd = True
+                    dump_path = exporter._scp_dump_file(feed, server, user)
+                    if dump_path:
+                        num_scp += 1
 
-            # increment the number of scp'd feeds
-            if was_scpd:
-                ret_val += 1
+            # move the dump.tar aside (but don't delete it), so it doesn't repeatedly get scp'd
+            if dump_path and rm_after_scp:
+                file_utils.mv(dump_path, dump_path + "-did_scp")
 
+            # report on number of times we scp'd to different servers, etc...
+            if num_scp > 0:
+                ret_val += 1  # number of feeds scp'd
+                num_servers = len(prod_servers)
+                feed_name = exporter.get_feed_name(feed)
+                if num_scp != num_servers:
+                    log.warn("Tried to scp feed {} to {} production servers, but only able to scp {} times.".format(
+                        feed_name,
+                        num_servers,
+                        num_dumped
+                    ))
+                else:
+                    log.info("successfully scp'd feed {} to {} production servers".format(feed_name, num_servers))
         return ret_val
 
     @classmethod
