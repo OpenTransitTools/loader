@@ -23,10 +23,10 @@ class GtfsdbLoader(CacheBase):
     current_tables = True
     err_ext = "-error_loading"
 
-    def __init__(self):
+    def __init__(self, feed_filter="all"):
         super(GtfsdbLoader, self).__init__(section='gtfs')
-
-        self.feeds = gtfs_utils.get_feeds_from_config(self.config)
+        import pdb; pdb.set_trace()
+        self.feeds = gtfs_utils.get_feeds_from_config(self.config, feed_filter)
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
         self.current_tables = self.config.get_bool('current_tables', section='db', def_val=True)
@@ -101,14 +101,6 @@ class GtfsdbLoader(CacheBase):
                 export = GtfsdbExporter()
                 export.dump_feed(feed=f)
 
-    @classmethod
-    def load(cls):
-        """ run the gtfsdb loader against all the specified feeds from config/app.ini
-            NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
-        """
-        db = GtfsdbLoader()
-        db.check_db(force_update=object_utils.is_force_update())
-
     def restore_feed(self, feed, bkup="-processed"):
         """ run the postgres db restore
             first tho, move any old schemas out of the way as <schema>_old
@@ -150,3 +142,16 @@ class GtfsdbLoader(CacheBase):
         db = GtfsdbLoader()
         for f in db.feeds:
             db.restore_feed(f)
+
+    @classmethod
+    def load(cls):
+        """
+        run the gtfsdb loader against all the specified feeds from config/app.ini
+        NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
+        """
+        from ott.utils.parse.cmdline import gtfs_cmdline
+        args = gtfs_cmdline.gtfs_parser()
+
+        db = GtfsdbLoader(args.agency_id)
+        db.check_db(force_update=args.force)
+
