@@ -1,12 +1,14 @@
 from ott.utils import gtfs_utils
-from ott.utils import object_utils
 from ott.utils import db_utils
 from ott.utils import exe_utils
 from ott.utils import file_utils
 
+from ott.utils.parse.cmdline import gtfs_cmdline
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
+
 from gtfsdb.api import database_load
+from gtfsdb import scripts
 
 import os
 import logging
@@ -25,7 +27,6 @@ class GtfsdbLoader(CacheBase):
 
     def __init__(self, feed_filter="all"):
         super(GtfsdbLoader, self).__init__(section='gtfs')
-        # import pdb; pdb.set_trace()
         self.feeds = gtfs_utils.get_feeds_from_config(self.config, feed_filter)
         self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
@@ -43,8 +44,26 @@ class GtfsdbLoader(CacheBase):
     def get_dump_path(self, feed_name):
         return "{}/{}.tar".format(self.cache_dir, feed_name)
 
+    def get_gtfsdb_args(self, feed, current_tables=False):
+        """
+        get the Database(kwargs) for gtfsdb from the feed
+
+        :param feed: see app.ini [gtfs] section
+        :return: hash table of args for gtfsdb
+        """
+        feed_name = self.get_feed_name(feed)
+
+        kwargs = {}
+        kwargs['url'] = self.db_url
+        kwargs['current_tables'] = self.current_tables or current_tables
+        if "sqlite:" not in self.db_url:
+            kwargs['is_geospatial'] = self.is_geospatial
+            kwargs['schema'] = feed_name
+        return kwargs
+
     def load_feed(self, feed):
-        """ insert a GTFS feed into configured db
+        """
+        insert a GTFS feed into configured db
         """
         ret_val = True
 
@@ -53,12 +72,7 @@ class GtfsdbLoader(CacheBase):
         feed_name = self.get_feed_name(feed)
 
         # step 2: make args for gtfsdb
-        kwargs = {}
-        kwargs['current_tables'] = self.current_tables
-        kwargs['url'] = self.db_url
-        if "sqlite:" not in self.db_url:
-            kwargs['is_geospatial'] = self.is_geospatial
-            kwargs['schema'] = feed_name
+        kwargs = self.get_gtfsdb_args(feed)
 
         # step 3: load this feed into gtfsdb
         log.info("loading {} ({}) into gtfsdb {}".format(feed_name, feed_path, self.db_url))
@@ -71,7 +85,8 @@ class GtfsdbLoader(CacheBase):
         return ret_val
 
     def check_db(self, force_update=False):
-        """ check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
+        """
+        check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
         """
         # import pdb; pdb.set_trace()
 
@@ -102,9 +117,10 @@ class GtfsdbLoader(CacheBase):
                 export.dump_feed(feed=f)
 
     def restore_feed(self, feed, bkup="-processed"):
-        """ run the postgres db restore
-            first tho, move any old schemas out of the way as <schema>_old
-            (otherwise, there will be errors and the db won't load correctly)
+        """
+        run the postgres db restore
+        first tho, move any old schemas out of the way as <schema>_old
+        (otherwise, there will be errors and the db won't load correctly)
         """
         ret_val = True
         feed_name = ""
@@ -149,9 +165,20 @@ class GtfsdbLoader(CacheBase):
         run the gtfsdb loader against all the specified feeds from config/app.ini
         NOTE: this is effectively a main method for downloading, caching and db loading new/updated gtfs feeds
         """
-        from ott.utils.parse.cmdline import gtfs_cmdline
-        args = gtfs_cmdline.gtfs_parser()
-
+        args = gtfs_cmdline.gtfs_parser('bin/gtfsdb_load')
         db = GtfsdbLoader(args.agency_id)
         db.check_db(force_update=args.force)
 
+    @classmethod
+    def current_load(cls):
+        """
+        run the gtfsdb current table loader against all the specified feeds from config/app.ini
+        :usage; this method should be called weekly (or daily) to move data into the current tables to keep them fresh
+        :note:  this is effectively a main method for populating the current tables.
+        """
+        #import pdb; pdb.set_trace()
+        args = gtfs_cmdline.gtfs_parser('bin/gtfsdb_current_load')
+        db = GtfsdbLoader(args.agency_id)
+        for f in db.feeds:
+            kwargs = db.get_gtfsdb_args(f, current_tables=True)
+            scripts.current_tables_load(**kwargs)
