@@ -39,8 +39,9 @@ class OtpBuilder(CacheBase):
         self.graphs = self.config_graph_dirs(force_update, dont_update)
 
     def config_graph_dirs(self, force_update=False, dont_update=False):
-        """ read the config for graph specs like graph dir and web port (for running OTP)
-            this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
+        """
+        read the config for graph specs like graph dir and web port (for running OTP)
+        this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
         """
         graphs = otp_utils.get_graphs(self)
 
@@ -59,7 +60,8 @@ class OtpBuilder(CacheBase):
         return graphs
 
     def update_vlog(self, graph):
-        """ out gtfs feed(s) version numbers and dates to the otp.v log file
+        """
+        out gtfs feed(s) version numbers and dates to the otp.v log file
         """
         graph_dir = graph.get('dir', self.cache_dir)
         gtfs_msg = GtfsInfo.get_cache_msgs(graph_dir, self.feeds, graph.get('filter'))
@@ -67,7 +69,8 @@ class OtpBuilder(CacheBase):
         otp_utils.append_vlog_file(graph_dir, gtfs_msg + osm_msg)
 
     def build_graph(self, graph_dir, java_mem=None, force_update=False):
-        """ will rebuild the graph...
+        """
+        build the graph...as long as the Graph.obj file looks out of date
         """
         success = True
 
@@ -101,9 +104,9 @@ class OtpBuilder(CacheBase):
 
         return success, rebuild_graph
 
-
     def test_graph(self, graph, suite_dir=None, java_mem=None, start_server=True):
-        """ will test a given graph against a suite of tests
+        """
+        will test a given graph against a suite of tests
         """
         success = True
         delay = 1
@@ -118,9 +121,9 @@ class OtpBuilder(CacheBase):
             log.warn("was unable to start the OTP server using graph {}!!!".format(graph['name']))
         return success
 
-
     def build_and_test_graphs(self, java_mem=None, force_update=False, start_server=True, graph_filter=None):
-        """ will build and test each of the graphs we have in self.graphs
+        """
+        will build and test each of the graphs we have in self.graphs
         """
         ret_val = True
         if self.graphs:
@@ -158,7 +161,8 @@ class OtpBuilder(CacheBase):
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True, graph_filter=None):
-        """ will test each of the graphs we have in self.graphs
+        """
+        will test each of the graphs we have in self.graphs
         """
         ret_val = True
         if self.graphs:
@@ -212,7 +216,8 @@ class OtpBuilder(CacheBase):
 
     @classmethod
     def get_args(cls):
-        """ make the cli argparse for OTP graph building and testing
+        """
+        make the cli argparse for OTP graph building and testing
         """
         parser = otp_utils.get_initial_arg_parser('otp-builder')
         parser.add_argument('--test',        '-t', action='store_true', help="to just run tests vs. building the graph")
