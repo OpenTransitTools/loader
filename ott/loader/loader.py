@@ -24,18 +24,21 @@ def download_data():
           3.  update SUM data in cache
     """
     force_update=object_utils.is_force_update()
+    if force_update:
+        log.info("step 0 IMPORTANT: loading due to 'force_update'!")
 
     log.info("step 1: cache latest gtfs feeds")
     gtfs = GtfsCache()
     updated_feeds = gtfs.check_cached_feeds(force_update=force_update)
     # NOTE: to do item could be to check updated_feeds (list of feed names) for certain agency names, and selectively force update
     if updated_feeds and len(updated_feeds) > 0:
+        log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format([f['name'] for f in updated_feeds]))
         force_update = True
 
     log.info("step 2: cache latest osm data")
-    updated_osm = False
     updated_osm = OsmCache.update(force_update=force_update)
     if updated_osm:
+        log.info("step 2 IMPORTANT: loading due to OSM changes!")
         force_update = True
         pg = Osm2pgsql()
         pg.run()
