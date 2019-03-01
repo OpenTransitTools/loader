@@ -15,7 +15,7 @@ requires = [
     'psycopg2',
     'mako',
     'scp',
-    'paramiko == 1.14.2',  # github saying to change to  >=2.0.9
+    'paramiko',
     'simplejson',
 ]
 
