@@ -30,9 +30,8 @@ def download_data():
     log.info("step 1: cache latest gtfs feeds")
     gtfs = GtfsCache()
     updated_feeds = gtfs.check_cached_feeds(force_update=force_update)
-    # NOTE: to do item could be to check updated_feeds (list of feed names) for certain agency names, and selectively force update
     if updated_feeds and len(updated_feeds) > 0:
-        log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format([f['name'] for f in updated_feeds]))
+        log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format(updated_feeds))
         force_update = True
 
     log.info("step 2: cache latest osm data")
