@@ -66,11 +66,17 @@ class GtfsCache(CacheBase):
             else:
                 update = True
 
-        # step 4: mv old file to backup then mv new file in tmp dir to cache
+        # step 4: test new .zip for validity and also
         if update:
-            log.info("cp {} to cache {}".format(tmp_path, file_path))
-            file_utils.bkup(file_path)
-            file_utils.cp(tmp_path, file_path)
+            # step 4a: make sure this new .zip feed has a trips.txt, routes.txt and stops.txt file ... if not no update
+            if GtfsInfo.feed_looks_valid(tmp_path):
+                # step 4b: mv old file to backup then mv new file in tmp dir to cache
+                log.info("cp {} to cache {}".format(tmp_path, file_path))
+                file_utils.bkup(file_path)
+                file_utils.cp(tmp_path, file_path)
+            else:
+                log.warning("something *WRONG* with file: {}".format(tmp_path))
+                update = False
 
         return update
 

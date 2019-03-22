@@ -65,7 +65,7 @@ setup(
         export_all = ott.loader.loader:export_all
 
         gtfs_update = ott.loader.gtfs.gtfs_cache:main
-        gtfs_info = ott.loader.gtfs.info:main
+        gtfs_info = ott.loader.gtfs.gtfs_info:main
         gtfs_fix = ott.loader.gtfs.fix:main
         gtfs_fix_tm = ott.loader.gtfs.fix:rename_trimet_agency
 

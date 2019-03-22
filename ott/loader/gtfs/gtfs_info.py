@@ -31,6 +31,29 @@ class GtfsInfo(CacheBase):
         self.dir_path = os.path.dirname(gtfs_path)
         self.file_prefix = file_prefix
 
+    def is_feed_valid(self):
+        ret_val = True
+
+        # check routes
+        r = self.unzip_routes()
+        if not file_utils.exists_and_sized(r, 100):
+            log.warning("VALID FEED?: {} routes.txt looks wrong".format(self.name))
+            ret_val = False
+
+        # check stops
+        s = self.unzip_stops()
+        if not file_utils.exists_and_sized(s, 100):
+            log.warning("VALID FEED?: {} stops.txt looks wrong".format(self.name))
+            ret_val = False
+
+        # check trips
+        t = self.unzip_trips()
+        if not file_utils.exists_and_sized(t, 100):
+            log.warning("VALID FEED?: {} trips.txt looks wrong".format(self.name))
+            ret_val = False
+
+        return ret_val
+
     def get_feed_version(self):
         start_date,end_date,id,version = self.get_feed_info()
         return version
@@ -128,6 +151,15 @@ class GtfsInfo(CacheBase):
 
     def unzip_feed_info_txt(self, feed_info_name='feed_info.txt'):
         return file_utils.unzip_file(self.gtfs_path, file_name=feed_info_name)
+
+    def unzip_stops(self, stops_name='stops.txt'):
+        return file_utils.unzip_file(self.gtfs_path, file_name=stops_name)
+
+    def unzip_routes(self, routes_name='routes.txt'):
+        return file_utils.unzip_file(self.gtfs_path, file_name=routes_name)
+
+    def unzip_trips(self, trips_name='trips.txt'):
+        return file_utils.unzip_file(self.gtfs_path, file_name=trips_name)
 
     def _get_calendar_range(self):
         """ get the date range from calendar.txt
@@ -246,7 +278,7 @@ class GtfsInfo(CacheBase):
         # step 2: update the cache first before getting info ???
         force_update=object_utils.is_force_update()
         if force_update:
-            cache.check_tcached_feeds(force_update=True)
+            cache.check_cached_feeds(force_update=True)
 
         # step 3:
         for f in cache.feeds:
@@ -275,6 +307,11 @@ class GtfsInfo(CacheBase):
             n = info_fmt.format(info_fmt, **i)
             ret_val = ret_val + n
         return ret_val
+
+    @classmethod
+    def feed_looks_valid(cls, feed_path):
+        info = GtfsInfo(feed_path)
+        return info.is_feed_valid()
 
 
 def main():
