@@ -17,7 +17,6 @@ class GtfsInfo(CacheBase):
          3. will calulate based on the calendar how old the feed is (and how many days it has left)
          4. will read the feed_info and pull out various date ranges and feed ids
     """
-    name = None
     gtfs_path = None
     file_prefix = None
 
@@ -37,19 +36,19 @@ class GtfsInfo(CacheBase):
         # check routes
         r = self.unzip_routes()
         if not file_utils.exists_and_sized(r, 100):
-            log.warning("VALID FEED?: {} routes.txt looks wrong".format(self.name))
+            log.warning("VALID FEED?: {} routes.txt looks wrong".format(self.gtfs_path))
             ret_val = False
 
         # check stops
         s = self.unzip_stops()
         if not file_utils.exists_and_sized(s, 100):
-            log.warning("VALID FEED?: {} stops.txt looks wrong".format(self.name))
+            log.warning("VALID FEED?: {} stops.txt looks wrong".format(self.gtfs_path))
             ret_val = False
 
         # check trips
         t = self.unzip_trips()
         if not file_utils.exists_and_sized(t, 100):
-            log.warning("VALID FEED?: {} trips.txt looks wrong".format(self.name))
+            log.warning("VALID FEED?: {} trips.txt looks wrong".format(self.gtfs_path))
             ret_val = False
 
         return ret_val
@@ -315,7 +314,10 @@ class GtfsInfo(CacheBase):
 
 
 def main():
-    print(GtfsInfo.cached_feeds_info_str())
+    logging.basicConfig()
+    # print(GtfsInfo.cached_feeds_info_str())
+    print(GtfsInfo.feed_looks_valid('./ott/loader/gtfs/cache/TRIMET.zip'))
+
 
 if __name__ == '__main__':
     main()
