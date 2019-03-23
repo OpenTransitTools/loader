@@ -1,13 +1,15 @@
 import os
 import csv
 import datetime
-import logging
-log = logging.getLogger(__file__)
 
 from ott.utils import file_utils
 from ott.utils import object_utils
 
 from ott.utils.cache_base import CacheBase
+
+import logging
+logging.basicConfig()
+log = logging.getLogger(__file__)
 
 
 class GtfsInfo(CacheBase):

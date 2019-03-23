@@ -10,6 +10,7 @@ from ott.loader.gtfs.gtfs_info import GtfsInfo
 from ott.loader.gtfs.diff import Diff
 
 import logging
+logging.basicConfig()
 log = logging.getLogger(__file__)
 
 
