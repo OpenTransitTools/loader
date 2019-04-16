@@ -43,7 +43,8 @@ LANDMARK_TYPES[21] = "hotel_motel"
 
 
 class Landmarks(DbExporter):
-    """ export Transit data from
+    """
+    export TriMet transit landmard data from map server
     """
     def __init__(self):
         super(Landmarks, self).__init__()
@@ -59,7 +60,9 @@ class Landmarks(DbExporter):
         type_ids = LANDMARK_TYPES.keys()
         for i, a in enumerate(session.query(LandmarksOrm).all()):
             if a.type in type_ids:
-                row = {'id': a.id, 'name': a.name, 'address': a.address, 'zipcode': a.zip_code, 'lon': a.lon, 'lat': a.lat, 'layer_id': LANDMARK_TYPES[a.type]}
+                lid = "{}-{}".format(a.id, i+1)
+                row = {'id': lid, 'name': a.name, 'address': a.address, 'zipcode': a.zip_code,
+                       'lon': a.lon, 'lat': a.lat, 'layer_id': LANDMARK_TYPES[a.type]}
                 csv_writer.writerow(row)
 
     @classmethod
