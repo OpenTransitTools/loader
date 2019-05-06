@@ -51,10 +51,18 @@
             clientSecret: "a1yxFp14nzswNl8sov0YNBrXI873M7uy"
         },
         {
-            type: "car-rental-updater",
-            sourceType: "car2go",
-            vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
-            regionsUrl:  "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json"
+            "type": "car-rental-updater",
+            "sourceType": "car2go",
+            "vehiclesUrl": "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
+            "regionsUrl": "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json",
+            "frequencySec": 40
+        },
+        {
+            "type": "car-rental-updater",
+            "sourceType": "reachnow",
+            "vehiclesUrl": "https://modbeta.trimet.org/ws/carshare/reachnow/data.json",
+            "regionsUrl": "https://modbeta.trimet.org/ws/carshare/reachnow/boundary.json",
+            "frequencySec": 40
         }
     ]
 }
