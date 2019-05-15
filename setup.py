@@ -9,9 +9,9 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 requires = [
     'gtfsdb',
     'ott.gtfsdb_realtime',
-    'ott.utils',
     'ott.gbfsdb',
     'ott.osm',
+    'ott.utils',
     'psycopg2',
     'mako',
     'scp',
