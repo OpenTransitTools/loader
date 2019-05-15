@@ -6,6 +6,7 @@ from ott.utils import file_utils
 from ott.utils.parse.cmdline import gtfs_cmdline
 from ott.utils.cache_base import CacheBase
 from ott.loader.gtfs.gtfs_cache import GtfsCache
+from ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader import GtfsdbRealtimeLoader
 
 from gtfsdb.api import database_load
 from gtfsdb import scripts
@@ -155,9 +156,19 @@ class GtfsdbLoader(CacheBase):
     @classmethod
     def restore(cls):
         """ run pg_restore on any existing pg_dump cache/*.tar files """
+
+        # step 1: restore the gtfsdb feed
+        create_rt_tables = False
         db = GtfsdbLoader()
         for f in db.feeds:
-            db.restore_feed(f)
+            new_load = db.restore_feed(f)
+            if new_load:
+                create_rt_tables = True
+
+        # step 2: re-create the RT tables on new db refresh
+        if create_rt_tables:
+            rt = GtfsdbRealtimeLoader(db.db_url)
+            rt.load_all(is_geospatial=db.is_geospatial, create_db=True)
 
     @classmethod
     def load(cls):

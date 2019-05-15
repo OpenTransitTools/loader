@@ -14,15 +14,19 @@ class GtfsdbRealtimeLoader(CacheBase):
     feeds = []
     db_url = None
 
-    def __init__(self):
+    def __init__(self, db_url=None):
         super(GtfsdbRealtimeLoader, self).__init__(section='gtfs_realtime')
         self.feeds = gtfs_utils.get_realtime_feed_from_config(self.config)
-        self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
+        if db_url:
+            self.db_url = db_url
+        else:
+            self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
 
     def load_all(self, api_key=None, is_geospatial=True, create_db=False):
         from ott.gtfsdb_realtime import loader
         for f in self.feeds:
-            if api_key: f['api_key'] = api_key
+            if api_key:
+                f['api_key'] = api_key
             loader.load_feeds_via_config(f, self.db_url, is_geospatial, create_db)
 
     @classmethod
