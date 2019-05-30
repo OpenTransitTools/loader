@@ -1,0 +1,154 @@
+{
+    "rules": [{
+        "type": "equal",
+        "key": "footway",
+        "value": "sidewalk",
+        "factor": 1.1
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "service",
+        "factor": 1.2
+    }, {
+        "type": "absent",
+        "key": "name",
+        "factor": 1.2
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "trunk",
+        "factor": 1.2
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "trunk_link",
+        "factor": 1.2
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "primary",
+        "factor": 1.2
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "primary_link",
+        "factor": 1.2
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "secondary",
+        "factor": 1.1
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "secondary_link",
+        "factor": 1.1
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "tertiary",
+        "factor": 1.1
+    }, {
+        "type": "equal",
+        "key": "highway",
+        "value": "tertiary_link",
+        "factor": 1.1
+    }, {
+        "type": "greater",
+        "key": "lanes",
+        "value": "4",
+        "factor": 1.1
+    }, {
+        "type": "equal",
+        "key": "sidewalk",
+        "value": "both",
+        "factor": 0.8
+    }, {
+        "type": "equal",
+        "key": "sidewalk",
+        "value": "left",
+        "factor": 0.9
+    }, {
+        "type": "equal",
+        "key": "sidewalk",
+        "value": "right",
+        "factor": 0.9
+    }, {
+        "type": "equal",
+        "key": "surface",
+        "value": "unpaved",
+        "factor": 1.4
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "55 mph"
+        }],
+        "factor": 6
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "50 mph"
+        }],
+        "factor": 5
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "45 mph"
+        }],
+        "factor": 4
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "40 mph"
+        }],
+        "factor": 3
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "35 mph"
+        }],
+        "factor": 2
+    }, {
+        "type": "and",
+        "tests": [{
+            "type": "equal",
+            "key": "sidewalk",
+            "value": "no"
+        }, {
+            "type": "equal",
+            "key": "maxspeed",
+            "value": "30 mph"
+        }],
+        "factor": 1.5
+    }]
+}
