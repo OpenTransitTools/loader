@@ -1,6 +1,7 @@
 from ott.utils import file_utils
 from ott.utils import web_utils
 from ott.utils import exe_utils
+from ott.utils import db_utils
 
 from .gtfsdb_loader import GtfsdbLoader
 
@@ -125,20 +126,32 @@ class GtfsdbExporter(GtfsdbLoader):
         return ret_val
 
     @classmethod
-    def dump(cls, feeds=None, filter=None):
+    def dump(cls, feeds=None, filter=None, clean_db=False):
         """
         call pg_dump on a given feed or list of feeds
         can 'filter' the names of feeds also
         :returns count of feeds dumped
         """
-        # import pdb; pdb.set_trace()
         ret_val = 0
+
+        # step 1: create the db and check the feeds that they're a list/tuple of feeds...
+        # import pdb; pdb.set_trace()
         db = GtfsdbExporter()
-        for f in db.check_feeds(feeds):
-            if filter and filter.lower() != 'all' and filter.lower() not in f.get('name').lower():
-                continue
-            db.dump_feed(f)  # agency not filtered, so dump it
-            ret_val += 1
+        feeds = db.check_feeds(feeds)
+
+        # step 2: process the feeds
+        if feeds and len(feeds) > 0:
+            # step 3: clean the database before exporting
+            if clean_db:
+                db_utils.postgres_db_cleanup()
+
+            # step 4: dump them feeds
+            for f in feeds:
+                if filter and filter.lower() != 'all' and filter.lower() not in f.get('name').lower():
+                    continue
+                db.dump_feed(f)  # agency not filtered, so dump it
+                ret_val += 1
+
         return ret_val
 
     @classmethod
@@ -153,12 +166,12 @@ class GtfsdbExporter(GtfsdbLoader):
 
         # step 1: optional cmd-line parser (used to filter either agency and/or server to scp dump file to)
         from ott.utils.parse.cmdline import gtfs_cmdline
-        parser = gtfs_cmdline.gtfs_parser(do_parse=False)
+        parser = gtfs_cmdline.gtfs_parser(prog_name='bin/gtfsdb_dump_scp', do_parse=False)
         gtfs_cmdline.server_option(parser)
         p = parser.parse_args()
 
         # step 2: dump feed(s)
-        num_dumped = cls.dump(filter=p.agency_id)
+        num_dumped = cls.dump(filter=p.agency_id, clean_db=p.clear)
 
         # step 3: scp feed(s)
         if num_dumped > 0:

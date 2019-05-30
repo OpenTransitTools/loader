@@ -90,6 +90,7 @@ class GtfsdbLoader(CacheBase):
         check the local cache of GTFS feeds, and decide whether we should reload a given feed based on feed info
         """
         # import pdb; pdb.set_trace()
+        export_list = []
 
         # step 1: loop thru all our feeds
         purged = False
@@ -111,11 +112,11 @@ class GtfsdbLoader(CacheBase):
 
                 # step 3b: load the feed into the database
                 self.load_feed(f)
+                export_list.append(f)
 
-                # step 4: run the pg_dump
-                from .gtfsdb_exporter import GtfsdbExporter
-                export = GtfsdbExporter()
-                export.dump_feed(feed=f)
+        if len(export_list) > 0:
+            from .gtfsdb_exporter import GtfsdbExporter
+            GtfsdbExporter.dump(export_list, clean_db=True)
 
     def restore_feed(self, feed, bkup="-processed"):
         """
