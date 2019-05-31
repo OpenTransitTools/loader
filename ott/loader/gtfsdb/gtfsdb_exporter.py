@@ -143,7 +143,7 @@ class GtfsdbExporter(GtfsdbLoader):
         if feeds and len(feeds) > 0:
             # step 3: clean the database before exporting
             if clean_db:
-                db_utils.postgres_db_cleanup()
+                db_utils.postgres_db_cleanup(db.db_url)
 
             # step 4: dump them feeds
             for f in feeds:
