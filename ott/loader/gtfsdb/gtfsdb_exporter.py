@@ -126,7 +126,7 @@ class GtfsdbExporter(GtfsdbLoader):
         return ret_val
 
     @classmethod
-    def dump(cls, feeds=None, filter=None, clean_db=False):
+    def dump(cls, feeds=None, filter=None, clean_db=True):
         """
         call pg_dump on a given feed or list of feeds
         can 'filter' the names of feeds also
