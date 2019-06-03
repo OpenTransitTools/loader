@@ -239,6 +239,7 @@ otp.config = {
                     { name : 'Trip Tools', largePrint: false},
                     { name : 'System Map', largePrint: true},
                     { name : 'Honored Citizen Application', largePrint: false},
+                    { name : 'LIFT Eligibility Packet', largePrint: false},
                     { name : 'Transit Access Flip-book for the Blind', largePrint: false},
                     { name : 'Lanyard', largePrint: false},
                     { name : 'Safety light', largePrint: false},
