@@ -45,7 +45,6 @@ class DbExporter(CacheBase):
         """ will run all the xporters sub-classed off of DbExporter """
 
         # have to import the classes first, so reflection below picks up the inheritance chain
-        from .intersections import Intersections
         from .landmarks import Landmarks
 
         # iterate thru all the children, and call export
