@@ -1,17 +1,6 @@
-// router-config.json
 {
-    timeouts: [7, 3, 2],
-
-    //requestLogFile: "request.log",
-
-    //
     // Routing defaults are any public field or setter in the Java class
     // org.opentripplanner.routing.core.RoutingRequest
-    // NOTE: updated Oct 2016 ...  adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
-    //       updated Dec 2016 ...  add disableAlertFiltering to show future alerts
-    //       updated Feb 2017 ...  add geoidElevation to fix the below sea-level with a regional offset
-    //       updated June 2017 ... add 2nd maxHours flag for using input date & time
-    //
     routingDefaults: {
         maxHours: 6,
         useRequestedDateTimeInMaxHours: true,
@@ -24,18 +13,49 @@
         stairsReluctance: 1.65,
         numItineraries: 3,
         disableAlertFiltering: true,
-        geoidElevation : true
+        geoidElevation : true,
+        invalidDateStrategy: "USE_CURRENT"
     },
 
     updaters: [
-        // GTFS-RT service alerts (frequent polling)
-        // @see: http://opentripplanner.readthedocs.io/en/latest/Configuration/#real-time-data
-        {
+        { // GTFS-RT service alerts (frequent polling)
             type: "real-time-alerts",
-            frequencySec: 180,
-            //url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
+            frequencySec: 20,
+            earlyStart: 864000,
             url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
             feedId: "TriMet"
+        },
+      	{ // GTFS-RT delay feed
+      	    type: "stop-time-updater",
+            frequencySec: 60,
+            sourceType: "gtfs-http",
+            url: "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
+            feedId: "TriMet"
+      	},
+        {
+            type: "bike-rental",
+            sourceType: "gbfs",
+            url: "http://biketownpdx.socialbicycles.com/opendata",
+            frequencySec: 10
+        },
+        { // TNC (Uber) feed
+            type: "transportation-network-company-updater",
+            sourceType: "uber",
+            serverToken: "<Uber_Server_Token>",
+            wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+        },
+        {
+            type: "transportation-network-company-updater",
+            sourceType: "lyft",
+            clientId: "<Lyft_Client_ID>",
+            clientSecret: "<Lyft_Client_Secret>"
+        },
+        {
+            "type": "car-rental-updater",
+            "sourceType": "car2go",
+            "vehiclesUrl": "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
+            "regionsUrl": "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json",
+            "frequencySec": 30
         }
     ]
 }
