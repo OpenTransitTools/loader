@@ -1,0 +1,17 @@
+{
+  "osmNaming": "portland",
+  "maxTransferDistance": 600,
+  "disableAlertFiltering": true,
+  "banDiscouragedWalking ": true,
+  "banDiscouragedBiking ": true,
+  "fetchElevationUS": true,
+  "elevationBucket": {
+    "accessKey" : "SECRET",
+    "secretKey" : "SECRET",
+    "bucketName" : "SECRET"
+  },
+  "fares": "pdx",
+  "includeOsmTags": true,
+  "micromobilityTravelRestrictionsUrlOrFile":  "file:/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_riding_zones.geojson",
+  "micromobilityDropoffRestrictionsUrlOrFile": "file:/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_parking_zones.geojson"
+}
