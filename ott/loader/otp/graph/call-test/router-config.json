@@ -75,7 +75,7 @@
           frequencySec: 60,
           network: "RAZOR",
           sourceType: "gbfs",
-          url: "https://razorapi.net/api/v1/gbfs/Portland",
+          url: "http://razorapi.net/api/v1/gbfs/Portland",
           regionsUrl: "file:/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.json"
         },
         {
@@ -107,7 +107,7 @@
           frequencySec: 60,
           network: "BOLT",
           sourceType: "gbfs",
-          url: "https://bolt.miami/bolt2/ptl/gbfs",
+          url: "https://bolt.miami/bolt2/ptl/gbfs/en",
           regionsUrl: "file:/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.json"
         }
     ]
