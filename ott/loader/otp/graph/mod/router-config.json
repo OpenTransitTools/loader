@@ -25,13 +25,13 @@
             url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
             feedId: "TriMet"
         },
-      	{ // GTFS-RT delay feed
-      	    type: "stop-time-updater",
+        { // GTFS-RT delay feed
+            type: "stop-time-updater",
             frequencySec: 60,
             sourceType: "gtfs-http",
             url: "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
             feedId: "TriMet"
-      	},
+        },
         {
             type: "bike-rental",
             sourceType: "gbfs",
@@ -51,11 +51,11 @@
             clientSecret: "<Lyft_Client_Secret>"
         },
         {
-            "type": "car-rental-updater",
-            "sourceType": "car2go",
-            "vehiclesUrl": "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
-            "regionsUrl": "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json",
-            "frequencySec": 30
+            type: "car-rental-updater",
+            sourceType: "car2go",
+            vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
+            regionsUrl: "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json",
+            frequencySec: 30
         }
     ]
 }
