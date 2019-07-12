@@ -1,0 +1,41 @@
+// router-config.json
+{
+    timeouts: [7, 3, 2],
+
+    //requestLogFile: "request.log",
+
+    //
+    // Routing defaults are any public field or setter in the Java class
+    // org.opentripplanner.routing.core.RoutingRequest
+    // NOTE: updated Oct 2016 ...  adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
+    //       updated Dec 2016 ...  add disableAlertFiltering to show future alerts
+    //       updated Feb 2017 ...  add geoidElevation to fix the below sea-level with a regional offset
+    //       updated June 2017 ... add 2nd maxHours flag for using input date & time
+    //
+    routingDefaults: {
+        maxHours: 6,
+        useRequestedDateTimeInMaxHours: true,
+        boardSlack: 0,
+        alightSlack: 0,
+        transferSlack: 180,
+        maxTransfers: 4,
+        waitReluctance: 0.9,
+        walkReluctance: 1.75,
+        stairsReluctance: 1.65,
+        numItineraries: 3,
+        disableAlertFiltering: true,
+        geoidElevation : true
+    },
+
+    updaters: [
+        // GTFS-RT service alerts (frequent polling)
+        // @see: http://opentripplanner.readthedocs.io/en/latest/Configuration/#real-time-data
+        {
+            type: "real-time-alerts",
+            frequencySec: 180,
+            //url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
+            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+            feedId: "TriMet"
+        }
+    ]
+}
