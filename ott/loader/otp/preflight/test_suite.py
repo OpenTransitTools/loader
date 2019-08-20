@@ -338,7 +338,7 @@ class TestSuite(object):
             for i in range(1, num_tries):
                 t.call_otp()
                 time.sleep(1)
-                if self.itinerary and len(self.itinerary) > MIN_SIZE_ITIN:
+                if t.itinerary and len(t.itinerary) > MIN_SIZE_ITIN:
                     break
                 time.sleep(i)
 
