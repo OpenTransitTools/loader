@@ -16,6 +16,8 @@ import logging
 log = logging.getLogger(__file__)
 
 
+MIN_SIZE_ITIN=1000
+
 class TestResult:
     FAIL=000
     WARN=333
@@ -111,7 +113,7 @@ class Test(object):
             self.error_descript = "test_otp_result: itinerary is null"
             log.info(self.error_descript)
         else:
-            if len(self.itinerary) < 1000:
+            if len(self.itinerary) < MIN_SIZE_ITIN:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
                 self.error_descript = "test_otp_result: itinerary content looks small at " + str(len(self.itinerary)) + " characters."
                 log.warn(self.error_descript)
@@ -331,10 +333,15 @@ class TestSuite(object):
         for row in reader:
             self.params.append(row)
 
-    def do_test(self, t, strict=True):
+    def do_test(self, t, strict=True, num_tries=5):
         if t.is_valid:
-            t.call_otp()
-            time.sleep(1)
+            for i in range(1, num_tries):
+                t.call_otp()
+                time.sleep(1)
+                if self.itinerary and len(self.itinerary) > MIN_SIZE_ITIN:
+                    break
+                time.sleep(i)
+
             t.test_otp_result(strict)
             self.tests.append(t)
             if t.result is TestResult.PASS:
