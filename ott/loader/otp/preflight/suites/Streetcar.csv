@@ -36,7 +36,7 @@ Tests NW Northrup & 21st (10777) arrival from Central Library,"45.518987,-122.68
 Tests NW Northrup & 22nd (10778) arrival from Central Library,"45.518987,-122.682664","45.531526,-122.696653","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,Streetcar.*10778,,,,
 Tests NW 23rd & Marshall (8989) arrival from Central Library,"45.518987,-122.682664","45.530507,-122.698960","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,Streetcar.*8989,,,,
 Tests NW 23rd & Marshall (8989) departure to Central Library,"45.530507,-122.698960","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"8989.*Streetcar",,,,
-Tests NW Lovejoy & 22nd (3596) departure to Central Library,"45.529559,-122.696579","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3596.*Streetcar",,,,
+Tests NW Lovejoy & 22nd (3596) departure to Central Library,"45.529559,-122.696579","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3596",,,,
 Tests NW Lovejoy & 21st (3595) departure to Central Library,"45.530074,-122.694570","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"3595.*Streetcar",,,,
 Tests NW Lovejoy & 18th (10751) departure to Central Library,"45.529683,-122.689493","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10751.*Streetcar",,,,
 Tests NW Lovejoy & 13th (10752) departure to Central Library,"45.530239,-122.684429","45.518823,-122.683368","TRAM,RAIL,SUBWAY,FUNICULAR,GONDOLA,WALK",9:11 AM,,QUICK,840,,,"10752.*Streetcar",,,,
