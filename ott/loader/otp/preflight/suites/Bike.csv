@@ -5,7 +5,7 @@ Snapping Test 2 - Downtown to Oaks ,"Downtown::45.518875,-122.679290","OaksBotto
 #NAME?,,,,,,,,,,,,,
 Tests Burnside Bridge biking east to west,"45.523623,-122.660230","45.523187,-122.673941",BICYCLE,,,QUICK,4828,,,Couch.*Burnside Bridge,,,
 Tests Burnside Bridge biking west to east,"45.523046,-122.674252","45.522931,-122.660241",BICYCLE,,,QUICK,4828,,,Burnside Bridge,,,
-Tests Morrison Bridge biking path from east to west,"45.515815,-122.665260","45.517203,-122.671906",BICYCLE,,,SAFE,4828,,,Morrison Bridge..path.,,,
+Tests Morrison Bridge biking path from east to west,"45.515815,-122.665260","45.51767799,-122.672702873",BICYCLE,,,SAFE,4828,,,Morrison Bridge..path.,,,
 Tests Morrison Bridge biking path from west to east,"45.517203,-122.671906","45.515815,-122.665260",BICYCLE,,,SAFE,4828,,,Morrison Bridge..path.,,,
 Tests Hawthorne Bridge biking path from east to west,"45.512908,-122.659249","45.515960,-122.678368",BICYCLE,,,SAFE,4828,,,Hawthorne Bridge..path,,,
 Tests Hawthorne Bridge biking path from west to east,"45.512123,-122.675486","45.512224,-122.659238",BICYCLE,,,SAFE,4828,,,Hawthorne Bridge..path,,,
