@@ -56,13 +56,6 @@
           regionsUrl: "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json"
         },
         {
-          type: "car-rental-updater",
-          sourceType: "reachnow",
-          frequencySec: 30,
-          vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/reachnow/data.json",
-          regionsUrl: "https://modbeta.trimet.org/ws/carshare/reachnow/boundary.json"
-        },
-        {
           type: "vehicle-rental-updater",
           frequencySec: 60,
           network: "LIME",
