@@ -91,6 +91,7 @@ class Test(object):
         self.url_mode()
         self.url_optimize()
         self.url_time()
+        self.url_param('ignoreRealtimeUpdates', 'true')
 
     def did_test_pass(self):
         ret_val = False
