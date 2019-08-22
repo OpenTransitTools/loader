@@ -111,15 +111,15 @@ class Test(object):
         """
         if self.itinerary is None:
             self.result = TestResult.FAIL if strict else TestResult.WARN
-            self.error_descript = "test_otp_result: itinerary is null"
+            self.error_descript = "test_otp: itinerary is null"
             log.info(self.error_descript)
         else:
             if len(self.itinerary) < MIN_SIZE_ITIN:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                self.error_descript = "test_otp_result: itinerary content looks small at " + str(len(self.itinerary)) + " characters."
+                self.error_descript = "test_otp: itinerary for {} looks small at {} characters.".format(self.ws_url, len(self.itinerary))
                 log.warn(self.error_descript)
             else:
-                self.error_descript = "test_otp_result: itinerary content size is " + str(len(self.itinerary)) + " characters."
+                self.error_descript = "test_otp: itinerary for {} is size {} characters.".format(self.ws_url, len(self.itinerary))
                 log.info(self.error_descript)
                 warn = False
                 warn = self.test_expected_response(self.expect_output, warn, strict)
@@ -131,7 +131,7 @@ class Test(object):
                     for duration in durations:
                         if int(duration) > high or int(duration) < low:
                             self.result = TestResult.FAIL if strict else TestResult.WARN
-                            self.error_descript += "test_otp_result: an itinerary duration was different than expected by more than {0}%.".format(error * 100)
+                            self.error_descript += "test_otp: an itinerary duration was different than expected by more than {0}%.".format(error * 100)
                             warn = True
                             break
                 if self.expect_num_legs is not None and len(self.expect_num_legs) > 0:
@@ -146,7 +146,7 @@ class Test(object):
                             num_legs = len(re.findall('<leg .*?>', legs))
                             if num_legs > max_legs or num_legs < min_legs:
                                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                                self.error_descript += "test_otp_result: an itinerary returned was not between {0} and {1} legs.".format(min_legs, max_legs)
+                                self.error_descript += "test_otp: an itinerary returned was not between {0} and {1} legs.".format(min_legs, max_legs)
                                 warn = True
                                 break
                     except ValueError:
@@ -163,7 +163,7 @@ class Test(object):
             regres = re.search(expected_output, self.itinerary)
             if regres is None:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                self.error_descript += "test_otp_result: couldn't find " + expected_output + " in otp response."
+                self.error_descript += "test_otp: couldn't find " + expected_output + " in otp response."
                 ret_val = True
         return ret_val
 
