@@ -1,6 +1,4 @@
 {
-    // Routing defaults are any public field or setter in the Java class
-    // org.opentripplanner.routing.core.RoutingRequest
     routingDefaults: {
         maxHours: 6,
         useRequestedDateTimeInMaxHours: true,
@@ -18,44 +16,92 @@
     },
 
     updaters: [
-        { // GTFS-RT service alerts (frequent polling)
-            type: "real-time-alerts",
-            frequencySec: 20,
-            earlyStart: 864000,
-            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
-            feedId: "TriMet"
-        },
-        { // GTFS-RT delay feed
-            type: "stop-time-updater",
-            frequencySec: 60,
-            sourceType: "gtfs-http",
-            url: "https://developer.trimet.org/ws/V1/TripUpdate/appID/B393B2CE96A258A72BAB481CA",
-            feedId: "TriMet"
+        {
+          type: "real-time-alerts",
+          frequencySec: 60,
+          earlyStart: 864000,
+          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+          feedId: "TriMet"
         },
         {
-            type: "bike-rental",
-            sourceType: "gbfs",
-            url: "http://biketownpdx.socialbicycles.com/opendata",
-            frequencySec: 10
-        },
-        { // TNC (Uber) feed
-            type: "transportation-network-company-updater",
-            sourceType: "uber",
-            serverToken: "<Uber_Server_Token>",
-            wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+          type: "stop-time-updater",
+          frequencySec: 30,
+          sourceType: "gtfs-http",
+          url: "https://trimet.org/transweb/ws/V1/TripUpdate",
+          feedId: "TriMet"
         },
         {
-            type: "transportation-network-company-updater",
-            sourceType: "lyft",
-            clientId: "<Lyft_Client_ID>",
-            clientSecret: "<Lyft_Client_Secret>"
+          type: "bike-rental",
+          sourceType: "gbfs",
+          url: "http://biketownpdx.socialbicycles.com/opendata",
+          frequencySec: 30
         },
         {
-            type: "car-rental-updater",
-            sourceType: "car2go",
-            vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
-            regionsUrl: "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json",
-            frequencySec: 30
+          type: "transportation-network-company-updater",
+          sourceType: "uber",
+          serverToken: "<TK>",
+          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+        },
+        {
+          type: "transportation-network-company-updater",
+          sourceType: "lyft",
+          clientId: "<ID>",
+          clientSecret: "<SEC>"
+        },
+        {
+          type: "car-rental-updater",
+          sourceType: "car2go",
+          frequencySec: 30,
+          vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
+          regionsUrl: "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "LIME",
+          sourceType: "gbfs",
+          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "RAZOR",
+          sourceType: "gbfs",
+          url: "http://razorapi.net/api/v1/gbfs/Portland",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "CLEVR",
+          sourceType: "gbfs",
+          url: "https://portal.clevrmobility.com/api/gbfs/portland/en",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "SHARED",
+          sourceType: "gbfs",
+          url: "https://api.tryshared.com/mds",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "SPIN",
+          sourceType: "gbfs",
+          url: "https://web.spin.pm/api/gbfs/v1/portland",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 60,
+          network: "BOLT",
+          sourceType: "gbfs",
+          url: "https://bolt.miami/bolt2/ptl/gbfs/en",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         }
     ]
 }
