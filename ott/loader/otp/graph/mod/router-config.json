@@ -34,7 +34,7 @@
           type: "bike-rental",
           frequencySec: 30,
           sourceType: "gbfs",
-          url: "http://biketownpdx.socialbicycles.com/opendata",
+          url: "http://biketownpdx.socialbicycles.com/opendata"
         },
         {
           type: "transportation-network-company-updater",
