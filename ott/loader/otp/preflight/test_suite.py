@@ -290,10 +290,13 @@ class Test(object):
     @classmethod
     def make_url(cls, url, separater="?submit&module=planner"):
         ret_val = url
-        if url is None:
-            url = "ERROR ERROR ERROR in test_suite.py line 284 ERROR ERROR ERROR"
-        if "?" not in url:
-            ret_val = "{}{}".format(url, separater)
+        if ret_val is None:
+            ret_val = "ERROR ERROR ERROR in test_suite.py line 284 ERROR ERROR ERROR"
+        else:
+            if ret_val.startswith('http'):
+                ret_val = "http://{}".format(url)
+            if "?" not in ret_val:
+                ret_val = "{}{}".format(ret_val, separater)
         return ret_val
 
     def get_ws_url(self):

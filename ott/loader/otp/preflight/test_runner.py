@@ -110,6 +110,7 @@ class TestRunner(object):
         """
         ret_val = False
 
+        # import pdb; pdb.set_trace()
         otp_url = web_utils.make_url(hostname, ws_port, ws_path)
         otp_utils.wait_for_otp(otp_url, delay)
 
@@ -133,14 +134,15 @@ class TestRunner(object):
                                       graph_dir=graph_dir, suite_dir=suite_dir, filter=args.test_suite)
 
     @classmethod
-    def test_graph_factory_config(cls, graph, suite_dir=None, delay=1, filter=None):
+    def test_graph_factory_config(cls, graph, hostname=None, suite_dir=None, delay=1, filter=None):
         """ expect a graph def from the config .ini file to populate test params """
         port = graph.get('port')
         ws_path = graph.get('ws_path')
         ws_port = "80" if ws_path else port
         app_path = graph.get('app_path')
         app_port = "80" if app_path else port
-        return cls.test_graph_factory(ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port,
+        return cls.test_graph_factory(hostname=hostname,
+                                      ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port,
                                       graph_dir=graph.get('dir', None), suite_dir=suite_dir, filter=filter,
                                       delay=delay)
 
@@ -154,12 +156,13 @@ def main():
         # run the suites from the ../tests directory
         dir = os.path.join(TestRunner.this_module_dir, "..", "tests", "suites")
 
+    # import pdb; pdb.set_trace()
     graph = None
     if args.name:
         g = otp_utils.get_graphs_from_config()
         graph = otp_utils.find_graph(g, args.name)
     if graph:
-        TestRunner.test_graph_factory_config(graph, suite_dir=dir, filter=args.test_suite)
+        TestRunner.test_graph_factory_config(graph, hostname=args.hostname, suite_dir=dir, filter=args.test_suite)
     else:
         TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
@@ -170,9 +173,9 @@ if __name__ == '__main__':
 
 
 def test_email():
-    """ this is a test routine for the email sender...
     """
-    #import pdb; pdb.set_trace()
+    this is a test routine for the email sender...
+    """
     t = TestRunner()
     t.send_email()
 
