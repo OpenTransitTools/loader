@@ -293,7 +293,7 @@ class Test(object):
         if ret_val is None:
             ret_val = "ERROR ERROR ERROR in test_suite.py line 284 ERROR ERROR ERROR"
         else:
-            if ret_val.startswith('http'):
+            if not ret_val.startswith('http'):
                 ret_val = "http://{}".format(url)
             if "?" not in ret_val:
                 ret_val = "{}{}".format(ret_val, separater)
