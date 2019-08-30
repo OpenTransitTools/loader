@@ -116,16 +116,17 @@ class Test(object):
         else:
             if len(self.itinerary) < MIN_SIZE_ITIN:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                self.error_descript = "test_otp: itinerary for {} looks small at {} characters.".format(self.ws_url, len(self.itinerary))
+                self.error_descript = "test_otp: itinerary for {} looks small at {} characters.".format(self.get_ws_url(), len(self.itinerary))
                 log.warn(self.error_descript)
             else:
                 # result properly sized ... now look for matches to expected data, etc...
                 # import pdb; pdb.set_trace()
-                self.error_descript = "test_otp: itinerary for {} is size {} characters.".format(self.ws_url, len(self.itinerary))
+                self.error_descript = "test_otp: itinerary for {} is size {} characters.".format(self.get_ws_url(), len(self.itinerary))
                 log.info(self.error_descript)
                 warn = False
                 warn = self.test_expected_response(self.expect_output, warn, strict)
                 if self.expect_duration is not None and len(self.expect_duration) > 0:
+                    # TODO: this is XML -- needs to be changed to either XML or JSON
                     durations = re.findall('<itinerary>.*?<duration>(.*?)</duration>.*?</itinerary>', self.itinerary) 
                     error = 0.2
                     high = float(self.expect_duration) * (1 + error)
@@ -143,6 +144,7 @@ class Test(object):
                             raise ValueError
                         min_legs = values[0]
                         max_legs = values[1]
+                        # TODO: this is XML -- needs to be changed to either XML or JSON
                         all_legs = re.findall('<itinerary>.*?<legs>(.*?)</legs>.*?</itinerary>', self.itinerary)
                         for legs in all_legs:
                             num_legs = len(re.findall('<leg .*?>', legs))
@@ -300,10 +302,11 @@ class Test(object):
             if "?" not in ret_val:
                 ret_val = "{}{}".format(ret_val, separater)
         return ret_val
-
+ 
     def get_ws_url(self):
-        # OTP 1.0 needs a date parameter if there's a time parameter
-        if "time" in self.otp_params and "date" not in self.otp_params:
+        # import pdb; pdb.set_trace()
+        # OTP needs *BOTH* a date and time parameter ... if you only have time, the request will fail
+        if "time=" in self.otp_params and "date=" not in self.otp_params:
             d = date_utils.today_str()
             self.url_param('date', d)
         return "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
