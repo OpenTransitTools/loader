@@ -119,6 +119,8 @@ class Test(object):
                 self.error_descript = "test_otp: itinerary for {} looks small at {} characters.".format(self.ws_url, len(self.itinerary))
                 log.warn(self.error_descript)
             else:
+                # result properly sized ... now look for matches to expected data, etc...
+                # import pdb; pdb.set_trace()
                 self.error_descript = "test_otp: itinerary for {} is size {} characters.".format(self.ws_url, len(self.itinerary))
                 log.info(self.error_descript)
                 warn = False

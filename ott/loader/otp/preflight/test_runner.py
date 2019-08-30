@@ -110,7 +110,6 @@ class TestRunner(object):
         """
         ret_val = False
 
-        #import pdb; pdb.set_trace()
         otp_url = web_utils.make_url(hostname, ws_port, ws_path)
         otp_utils.wait_for_otp(otp_url, delay)
 
