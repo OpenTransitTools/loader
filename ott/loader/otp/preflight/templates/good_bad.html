@@ -81,6 +81,10 @@ import datetime
 
         if test.expect_num_legs != None:
             expect_title += " num_legs: {0}, ".format(test.expect_num_legs)
+
+        # clean up the
+        import re
+        expect_title = re.sub('itinerary for http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+ is ', "", expect_title)
     %>
         <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number})
             | <a href="${test.get_ws_url()}" title="${expect_title}" target="#">Planner WS</a>
