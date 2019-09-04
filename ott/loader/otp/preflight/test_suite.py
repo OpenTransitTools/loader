@@ -302,7 +302,7 @@ class Test(object):
             if "?" not in ret_val:
                 ret_val = "{}{}".format(ret_val, separater)
         return ret_val
- 
+
     def get_ws_url(self):
         # import pdb; pdb.set_trace()
         # OTP needs *BOTH* a date and time parameter ... if you only have time, the request will fail
