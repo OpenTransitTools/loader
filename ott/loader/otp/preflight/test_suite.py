@@ -55,6 +55,7 @@ class Test(object):
 
         self.is_valid        = True
         self.error_descript  = None
+
         self.result          = TestResult.FAIL
         self.response_time   = -1.0
 
@@ -112,19 +113,15 @@ class Test(object):
         if self.itinerary is None:
             self.result = TestResult.FAIL if strict else TestResult.WARN
             self.error_descript = "test_otp: itinerary is null"
-            log.info(self.error_descript)
         else:
             if len(self.itinerary) < MIN_SIZE_ITIN:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                self.error_descript = "test_otp: itinerary for {} looks small at {} characters.".format(self.get_ws_url(), len(self.itinerary))
-                log.warn(self.error_descript)
+                self.error_descript = "test_otp: looks small at {} characters".format(len(self.itinerary))
             else:
                 # result properly sized ... now look for matches to expected data, etc...
                 # import pdb; pdb.set_trace()
-                self.error_descript = "test_otp: itinerary for {} is size {} characters.".format(self.get_ws_url(), len(self.itinerary))
-                log.info(self.error_descript)
-                warn = False
-                warn = self.test_expected_response(self.expect_output, warn, strict)
+                self.error_descript = "test_otp: size {} characters.".format(len(self.itinerary))
+                self.test_expected_response(self.expect_output, strict)
                 if self.expect_duration is not None and len(self.expect_duration) > 0:
                     # TODO: this is XML -- needs to be changed to either XML or JSON
                     durations = re.findall('<itinerary>.*?<duration>(.*?)</duration>.*?</itinerary>', self.itinerary) 
@@ -135,7 +132,6 @@ class Test(object):
                         if int(duration) > high or int(duration) < low:
                             self.result = TestResult.FAIL if strict else TestResult.WARN
                             self.error_descript += "test_otp: an itinerary duration was different than expected by more than {0}%.".format(error * 100)
-                            warn = True
                             break
                 if self.expect_num_legs is not None and len(self.expect_num_legs) > 0:
                     try:
@@ -151,23 +147,22 @@ class Test(object):
                             if num_legs > max_legs or num_legs < min_legs:
                                 self.result = TestResult.FAIL if strict else TestResult.WARN
                                 self.error_descript += "test_otp: an itinerary returned was not between {0} and {1} legs.".format(min_legs, max_legs)
-                                warn = True
                                 break
                     except ValueError:
                         self.error_descript += "expected number of legs test not in 'min|max' format."
-                        warn = True
-                if warn:
-                    log.warn(self.error_descript)
+
+        if self.result == TestResult.FAIL:
+            log.warn(self.error_descript + "\n  " + self.get_ws_url())
 
         return self.result
 
-    def test_expected_response(self, expected_output, initial_val, strict):
-        ret_val = initial_val
+    def test_expected_response(self, expected_output, strict):
+        ret_val = False
         if expected_output is not None and len(expected_output) > 0:
             regres = re.search(expected_output, self.itinerary)
             if regres is None:
                 self.result = TestResult.FAIL if strict else TestResult.WARN
-                self.error_descript += "test_otp: couldn't find " + expected_output + " in otp response."
+                self.error_descript += " - couldn't find " + expected_output + " in otp response"
                 ret_val = True
         return ret_val
 
