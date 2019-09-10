@@ -48,6 +48,22 @@ class OtpRunner(CacheBase):
         return status
 
     @classmethod
+    def version(cls):
+        r = OtpRunner()
+        args, parser = r.get_args()
+
+        def vprint(graph):
+            version, commit = otp_utils.get_otp_version(graph['dir'])
+            print("{0: <15} {1: <27} {2}".format(graph['name'], version, commit))
+
+        if args.all or 'all' == args.name or 'a' == args.name:
+            for g in r.graphs:
+                vprint(g)
+        else:
+            g = otp_utils.find_graph(r.graphs, args.name)
+            vprint(g)
+
+    @classmethod
     def run(cls):
         success = False
 

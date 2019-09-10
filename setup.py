@@ -88,6 +88,7 @@ setup(
         otp_is_up = ott.loader.otp.preflight.test_runner:TestRunner.is_up
         otp_stress_test = ott.loader.otp.preflight.stress.stress_tests:main
         otp_test_urls = ott.loader.otp.preflight.tests_to_urls:main
+        otp_version = ott.loader.otp.graph.otp_runner:OtpRunner.version
 
         sum_update = ott.loader.sum.sum_cache:SumCache.load
 
