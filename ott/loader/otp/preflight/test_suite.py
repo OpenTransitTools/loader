@@ -307,7 +307,7 @@ class Test(object):
         return "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
 
     def get_map_url(self):
-        return "{}&{}".format(self.make_url(self.map_url), self.map_params)
+        return "{}&{}&debug_layers=true".format(self.make_url(self.map_url), self.map_params)
 
     def get_ridetrimetorg_url(self):
         return "http://ride.trimet.org?submit&" + self.map_params
