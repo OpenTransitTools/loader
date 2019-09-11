@@ -85,8 +85,8 @@ class TestRunner(object):
             t = time.strftime('%B %d, %Y (%A) %I:%M%p').lower().replace(" 0", " ")
             m = ""
             p = "PASSED"
-            if self.test_suites.has_errors():
-                p = "FAILED"
+            if self.test_suites.has_errors(acceptable_num_fails=0):
+                p = "FAILED" if self.test_suites.has_errors() else "SORTA PASSED"
                 m = self.test_suites.list_errors()
             msg = "OTP tests {} on {}\n{}\nOTP endpoint: {}".format(p, t, m, self.test_suites.ws_url)
             recipients = ConfigUtil(section='contact').get('emails')
@@ -98,7 +98,7 @@ class TestRunner(object):
                 log.info(msg)
 
     @classmethod
-    def is_up(cls, otp_url="https://maps.trimet.org/otp_prodx", delay=10):
+    def is_up(cls, otp_url="https://maps.trimet.org/otp_prod", delay=10):
         ret_val = otp_utils.wait_for_otp(otp_url, delay, 2)
         log.warn("{} is {}".format(otp_url, "UP." if ret_val else "NOT up!"))
         return ret_val
@@ -122,7 +122,11 @@ class TestRunner(object):
             t.send_email()
             ret_val = False
         else:
-            log.info('GRAPH TESTS: Nope, no errors...')
+            if t.test_suites.has_errors(acceptable_num_fails=0):
+                log.info('GRAPH TESTS: There were errors, but an acceptable amount, so the graph will deploy !')
+                t.send_email()
+            else:
+                log.info('GRAPH TESTS: Nope, no errors...')
             ret_val = True
         return ret_val
 
@@ -177,4 +181,3 @@ def test_email():
     """
     t = TestRunner()
     t.send_email()
-
