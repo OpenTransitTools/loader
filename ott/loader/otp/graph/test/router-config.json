@@ -24,7 +24,8 @@
         stairsReluctance: 1.65,
         numItineraries: 3,
         disableAlertFiltering: true,
-        geoidElevation : true
+        geoidElevation : true,
+        invalidDateStrategy: "USE_CURRENT"
     },
 
     updaters: [
@@ -32,19 +33,20 @@
         // @see: http://opentripplanner.readthedocs.io/en/latest/Configuration/#real-time-data
         //  alt svc url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
         {
-            type: "real-time-alerts",
-            frequencySec: 180,
-            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
-            feedId: "TriMet"
+          type: "real-time-alerts",
+          frequencySec: 30,
+          earlyStart: 864000,
+          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+          feedId: "TriMet"
         },
 
         // Polling for GTFS-RT TripUpdates
         {
-            type: "stop-time-updater",
-            frequencySec: 30,
-            sourceType: "gtfs-http",
-            url: "http://trimet.org/transweb/ws/V1/TripUpdate",
-            feedId: "TriMet"
+          type: "stop-time-updater",
+          frequencySec: 30,
+          sourceType: "gtfs-http",
+          url: "https://trimet.org/transweb/ws/V1/TripUpdate",
+          feedId: "TriMet"
         },
 
         // Streaming differential GTFS-RT TripUpdates over websockets
