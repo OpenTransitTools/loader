@@ -1,4 +1,7 @@
 {
+    timeouts: [7, 3, 2],
+    includeOsmTags: true,
+
     routingDefaults: {
         maxHours: 6,
         useRequestedDateTimeInMaxHours: true,
