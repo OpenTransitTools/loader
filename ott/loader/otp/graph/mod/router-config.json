@@ -49,13 +49,6 @@
           clientSecret: "<SEC>"
         },
         {
-          type: "car-rental-updater",
-          frequencySec: 30,
-          sourceType: "car2go",
-          vehiclesUrl: "https://modbeta.trimet.org/ws/carshare/car2go/data.json",
-          regionsUrl: "https://modbeta.trimet.org/ws/carshare/car2go/boundary.json"
-        },
-        {
           type: "vehicle-rental-updater",
           frequencySec: 30,
           network: "LIME",
@@ -69,14 +62,6 @@
           network: "RAZOR",
           sourceType: "gbfs",
           url: "http://razorapi.net/api/v1/gbfs/Portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
-          frequencySec: 30,
-          network: "CLEVR",
-          sourceType: "gbfs",
-          url: "https://portal.clevrmobility.com/api/gbfs/portland/en",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
