@@ -120,7 +120,7 @@ class OtpExporter(OtpBuilder):
         """ convenience routine will take Graph.obj and simply copy it to Graph.obj-new
             intended to run manually if we need to export a graph by hand
         """
-        args = cls.get_args('bin/package-new', True)
+        args = cls.get_args('bin/otp_package_new', True)
         graph_filter = args.name
 
         log.info("\nPackage new\n".format())
@@ -137,6 +137,23 @@ class OtpExporter(OtpBuilder):
 
             # step 2: package it...
             otp_utils.package_new(graph_dir=g['dir'])
+
+    @classmethod
+    def otp_v_new(cls):
+        """ update otp.v """
+        args = cls.get_args('bin/otp_v_new', True)
+        graph_filter = args.name
+
+        log.info("\nCreate new otp.v\n".format())
+        d = OtpExporter()
+        for g in d.graphs:
+            # step 0: do we filter this graph?
+            if object_utils.is_not_match(graph_filter, g['name']):
+                continue
+
+            # step 1: is otp.v doesn't exist or is a bit old, create it
+            vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
+            d.update_vlog(g)
 
     @classmethod
     def get_args(cls, prog_name='bin/otp-exporter', make_args=False):
