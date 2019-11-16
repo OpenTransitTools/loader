@@ -34,7 +34,7 @@ Gresham Central Transit Center,GCTC,Gresham Central TC,Gresham TC
 Hillsboro Center/SE 3rd Ave Transit Center, HCTC, Hillsboro TC, Hillsboro Transit Center
 Hollywood/NE 42nd Ave Transit Center,HTC, HOllywood TC,HOllywood Transit Center
 Lake Oswego Transit Center, LOTC,Lake Oswego TC
-N Lombard Transit Center, Lombard Transit Center, Lombard TC,NLTC
+N Lombard Transit Center, Lombard Transit Center, Lombard TC,NLTC,LTC
 Parkrose/Sumner Transit Center, Parkrose Transit Center,Parkrose TC,PRSTC,PTC
 Rose Quarter Transit Center,RQTC, Rose Quarter TC
 Sunset Transit Center,Sunset TC, STC
