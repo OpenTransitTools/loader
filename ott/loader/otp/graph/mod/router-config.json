@@ -21,7 +21,7 @@
     updaters: [
         {
           type: "real-time-alerts",
-          frequencySec: 30,
+          frequencySec: 60,
           earlyStart: 864000,
           url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
           feedId: "TriMet"
@@ -35,7 +35,7 @@
         },
         {
           type: "bike-rental",
-          frequencySec: 30,
+          frequencySec: 60,
           sourceType: "gbfs",
           url: "http://biketownpdx.socialbicycles.com/opendata"
         },
@@ -53,7 +53,15 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 30,
+          frequencySec: 60,
+          network: "BIRD",
+          sourceType: "gbfs",
+          url: "https://mds.bird.co/gbfs/portland",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
+          frequencySec: 96,
           network: "LIME",
           sourceType: "gbfs",
           url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
@@ -61,7 +69,7 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 30,
+          frequencySec: 60,
           network: "RAZOR",
           sourceType: "gbfs",
           url: "http://razorapi.net/api/v1/gbfs/Portland",
@@ -69,7 +77,7 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 30,
+          frequencySec: 60,
           network: "SHARED",
           sourceType: "gbfs",
           url: "https://api.tryshared.com/mds",
@@ -77,26 +85,10 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 30,
+          frequencySec: 60,
           network: "SPIN",
           sourceType: "gbfs",
           url: "https://web.spin.pm/api/gbfs/v1/portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
-          frequencySec: 30,
-          network: "BOLT",
-          sourceType: "gbfs",
-          url: "https://bolt.miami/bolt2/ptl/gbfs/en",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
-          frequencySec: 30,
-          network: "BIRD",
-          sourceType: "gbfs",
-          url: "https://mds.bird.co/gbfs/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         }
     ]
