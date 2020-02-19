@@ -5,12 +5,16 @@ from ott.utils.cache_base import CacheBase
 
 
 class Fix(CacheBase):
-    """ Diff Two Gtfs Zip Files, looking at feed_info.txt & calendar_date.txt file to see differences between them
+    """
+    cmd line utility that opens a GTFS file, and can rename agency in routes/agency .txt files
+    why this exists, I forget :-(  that said, I can think of a handful of times I had to manually fix a gtfs file, so...
+    older comments below indicate this was created to match TriMet's gtfs-rt PSC alerts with the gtfs.zip data
     """
     gtfs_name = None
     gtfs_path = None
 
     def __init__(self, gtfs_name):
+        super(Fix, self).__init__(section='gtfs')
         self.gtfs_name = gtfs_name
         self.gtfs_path = os.path.join(self.cache_dir, gtfs_name)
 
@@ -30,8 +34,7 @@ class Fix(CacheBase):
 
     @classmethod
     def get_args(cls):
-        """ database load command-line arg parser and help util...
-
+        """ command-line arg parser and help util...
             examples:
                bin/gtfs_fix SAM.zip -a -r -f "^86" -t "SAM"
                bin/gtfs_fix SMART.zip -a -r -f "^108" -t "SMART"
