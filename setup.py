@@ -95,10 +95,10 @@ setup(
 
         solr_load = ott.loader.solr.solr_loader:SolrLoader.load
         geocoder_tests = ott.loader.geocoder.test:DbExporter.export_all
-        geocoder_export_all = ott.loader.geocoder.db_export.db_exporter:DbExporter.export_all
-        geocoder_export_landmarks = ott.loader.geocoder.db_export.landmarks:Landmarks.export
-        geocoder_export_intersections = ott.loader.geocoder.db_export.intersections:Intersections.export
-        park_ride_export = ott.loader.geocoder.db_export:ParkRideExporter.export
+        geocoder_export_all = ott.loader.geocoder.exporter.db_exporter:DbExporter.export_all
+        geocoder_export_landmarks = ott.loader.geocoder.exporter.landmarks:Landmarks.export
+        geocoder_export_intersections = ott.loader.geocoder.exporter.intersections:Intersections.export
+        park_ride_export = ott.loader.geocoder.exporter:ParkRideExporter.export
 
 
         log_find_pauses = ott.utils.parse.logs.request_dwell:main
