@@ -19,10 +19,6 @@ requires = [
     'simplejson',
 ]
 
-# eggs that you need if you're running a version of python lower than 2.7
-if sys.version_info[:2] < (2, 7):
-    requires.extend(['argparse>=1.2.1', 'unittest2>=0.5.1'])
-
 extras_require = dict(
     dev=[],
 )
@@ -30,7 +26,7 @@ extras_require = dict(
 
 setup(
     name='ott.loader',
-    version='0.1.0',
+    version='0.1.1',
     description='Open Transit Tools - OTT Loader',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
@@ -96,6 +92,7 @@ setup(
         solr_load = ott.loader.solr.solr_loader:SolrLoader.load
         geocoder_tests = ott.loader.geocoder.test:DbExporter.export_all
         geocoder_export_all = ott.loader.geocoder.exporter.db_exporter:DbExporter.export_all
+        geocoder_export_routes = ott.loader.geocoder.exporter.routes:Routes.export
         geocoder_export_landmarks = ott.loader.geocoder.exporter.landmarks:Landmarks.export
         geocoder_export_intersections = ott.loader.geocoder.exporter.intersections:Intersections.export
         park_ride_export = ott.loader.geocoder.exporter:ParkRideExporter.export

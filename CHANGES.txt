@@ -1,3 +1,8 @@
+0.1.1 (2020-02-20)
+------------------
+- TRIMET-routes.csv output for Pelias
+- (over the last 5+ years, many adds and changes)
+
 0.1.0 (2015-01-15)
 ------------------
 - Initial project setup
