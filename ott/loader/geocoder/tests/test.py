@@ -11,6 +11,7 @@ from ott.utils.parse import csv_reader
 HOST="localhost:44444"
 HOST="maps7.trimet.org/ride_ws"
 
+
 class TestGeoCoder(unittest.TestCase):
     def setUp(self):
         here = csv_reader.Csv.get_dirname(__file__)
@@ -42,10 +43,12 @@ def get_url(svc_name, params=None):
         ret_val = "{0}?{1}".format(ret_val, params)
     return ret_val
 
+
 def call_url(url):
     with contextlib.closing(urllib.urlopen(url)) as f:
         ret_json = json.load(f)
     return ret_json
+
 
 def call_url_text(url):
     return urllib.urlopen(url).read()

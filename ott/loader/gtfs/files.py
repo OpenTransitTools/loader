@@ -21,7 +21,7 @@ class Files(CacheBase):
         size = file_utils.file_size(self.gtfs_path)
         print("age: {}\nsize: {}".format(age, size))
 
-    def find(self, file_name):
+    def export(self, file_name):
         """
         find a file in a .zip, unzip it, then return the path to that file
         """
@@ -51,7 +51,8 @@ def main():
     if args.find:
         flist = args.find.split(",")
         for i in flist:
-            print(f.find(i))
+            print(f.export(i))
+
 
 if __name__ == '__main__':
     main()
