@@ -32,10 +32,14 @@ class Routes(CacheBase):
             rlist.append(rec)
 
         # step 2: create/open Pelias .csv file
+        if len(rlist) > 0:
+            print("writing file: {}".format(self.csv_path))
+            fields = rlist[0].keys()
+            with open(self.csv_path, 'w+') as fp:
+                csv = file_utils.make_csv_writer(fp, fields)
 
-        # step 3: write the route records to the Pelias .csv file
-        for r in rlist:
-            print(r)
+                # step 3: write the route records to the Pelias .csv file
+                csv.writerows(rlist)
 
     @classmethod
     def make_id(cls, route_rec, agency=None, type="routes"):
