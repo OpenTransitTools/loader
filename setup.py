@@ -94,7 +94,7 @@ setup(
         geocoder_export_all = ott.loader.geocoder.exporter.db_exporter:DbExporter.export_all
         geocoder_export_routes = ott.loader.geocoder.exporter.routes:Routes.export
         geocoder_export_landmarks = ott.loader.geocoder.exporter.landmarks:Landmarks.export
-        geocoder_export_intersections = ott.loader.geocoder.exporter.intersections:Intersections.export
+        geocoder_export_intersections = ott.osm.osm_cache:OsmCache.intersections_cache
         park_ride_export = ott.loader.geocoder.exporter:ParkRideExporter.export
 
 
