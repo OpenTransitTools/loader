@@ -33,9 +33,16 @@ class Fix(CacheBase):
     def rename_agency_in_agency_txt(self, regex_str, replace_str):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
-    def find_stops(self, stop, file_name="stop_times.txt"):
+    def remove_deadhead_stop_times(self, stop, file_name="stop_times.txt"):
         """
-        will remove preceding stop in trip given a target stop
+        will remove preceding stop_time in a trip given a target stop
+
+        THIS:
+          9683134,18:01:00,18:01:00,9654,1,Portland,1,0,0.0,1,,
+          9683134,18:03:00,18:03:00,8169,2,Portland,0,1,267.5,1,,
+
+        BECOMES:
+          9683134,18:03:00,18:03:00,8169,1,Portland,0,0,0.0,1,,
 
         grep a stop from stop_times.txt (w/in a gtfs.zip feed file)
         writes a stop_times.txt.tmp file with
@@ -113,7 +120,7 @@ def main():
     if args.agency:
         fix.rename_agency_in_agency_txt(args.regex, args.replace)
     if args.stop:
-        fix.find_stops(args.stop)
+        fix.remove_deadhead_stop_times(args.stop)
 
 
 if __name__ == '__main__':
