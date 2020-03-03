@@ -34,47 +34,46 @@ class Fix(CacheBase):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
     def find_stops(self, stop, file_name="stop_times.txt"):
-        """ grep something from stop_times.txt """
+        """
+        will remove preceding stop in trip given a target stop
 
-        # step 1: create the stop search ... thing we'll be looking for
-        ss = ",{},".format(stop)
-        print("going to search for {}".format(ss))
+        grep a stop from stop_times.txt (w/in a gtfs.zip feed file)
+        writes a stop_times.txt.tmp file with
+        got dict read/write ideas from:
+          https://stackoverflow.com/questions/2982023/how-to-write-header-row-with-csv-dictwriter/2982117
+        """
 
-        # step 2: extract file from gtfs -- open temp file to write stuff
-        file_path = file_utils.unzip_file(self.gtfs_path, file_name)
-        fp = open(file_path + ".tmp", "w+")
+        # step 1: extract file from gtfs -- open temp file to write stuff
+        in_file = file_utils.unzip_file(self.gtfs_path, file_name)
 
-        # step 3: read/write (to tmp) loop
-        first_line = None
-        prev_line = None
-        with open(file_path) as infile:
-            for line in infile:
-                if first_line is None:
-                    first_line = line
-                if ss in line and prev_line:
-                    import pdb; pdb.set_trace()
-                    # step 4: HACK - compare trip ids of 2 lines for match
-                    ls = line.split(",")
-                    ps = prev_line.split(",")
-                    if ls[0] == ps[0]:
-                        # step 5: break line
-                        li = line.index(ss) + len(ss)
-                        nl = "{}{}".format(line[0:li], prev_line[li:])
-                        print(nl)
+        # step 2: open this input csv
+        with open(in_file, 'r') as csv_in:
+            dr = csv.DictReader(csv_in)
+            prev_row = None
 
-                        # step 5: rewrite newly fixed line
-                        fp.write(line)
-                        prev_line = None
+            # step 3: open .csv output
+            with open(in_file + ".tmp", 'w+') as csv_out:
+                dw = csv.DictWriter(csv_out, fieldnames=dr.fieldnames)
+                dw.writerow(dict(zip(dr.fieldnames, dr.fieldnames)))
+                for row in dr:
+                    # step 4: cull the preceding stop_time to our target stop, and move a few vars over
+                    if prev_row and row.get('stop_id') == stop and row.get('trip_id') == prev_row.get('trip_id'):
+                        row['stop_sequence'] = prev_row['stop_sequence']
+                        row['shape_dist_traveled'] = prev_row['shape_dist_traveled']
+                        row['pickup_type'] = "0"
+                        row['drop_off_type'] = "0"
+                        dw.writerow(row)
+                        prev_row = None
                         continue
 
-                # step N: write and save line
-                if prev_line:
-                    fp.write(prev_line)
-                prev_line = line
+                    # step 5: write out normal (prev) row and move on to next row
+                    if prev_row:
+                        dw.writerow(prev_row)
+                    prev_row = row
 
-        if prev_line:
-            fp.write(prev_line)
-
+                # step 6: outside the read/write loop, write last row
+                if prev_row:
+                    dw.writerow(prev_row)
 
     @classmethod
     def get_args(cls):
