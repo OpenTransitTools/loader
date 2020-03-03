@@ -33,7 +33,7 @@ class Fix(CacheBase):
     def rename_agency_in_agency_txt(self, regex_str, replace_str):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
-    def remove_deadhead_stop_times(self, stop, file_name="stop_times.txt"):
+    def remove_deadhead_stop_times(self, stop, file_name="stop_times.txt", repack=True):
         """
         will remove preceding stop_time in a trip given a target stop
 
@@ -52,6 +52,7 @@ class Fix(CacheBase):
 
         # step 1: extract file from gtfs -- open temp file to write stuff
         in_file = file_utils.unzip_file(self.gtfs_path, file_name)
+        out_file = in_file + ".tmp"
 
         # step 2: open this input csv
         with open(in_file, 'r') as csv_in:
@@ -59,7 +60,7 @@ class Fix(CacheBase):
             prev_row = None
 
             # step 3: open .csv output
-            with open(in_file + ".tmp", 'w+') as csv_out:
+            with open(out_file, 'w+') as csv_out:
                 dw = csv.DictWriter(csv_out, fieldnames=dr.fieldnames)
                 dw.writerow(dict(zip(dr.fieldnames, dr.fieldnames)))
                 for row in dr:
@@ -81,6 +82,9 @@ class Fix(CacheBase):
                 # step 6: outside the read/write loop, write last row
                 if prev_row:
                     dw.writerow(prev_row)
+
+        if repack:
+            file_utils.replace_file_in_zipfile(self.gtfs_path, out_file, file_name)
 
     @classmethod
     def get_args(cls):
