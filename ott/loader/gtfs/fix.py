@@ -33,7 +33,7 @@ class Fix(CacheBase):
     def rename_agency_in_agency_txt(self, regex_str, replace_str):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
-    def remove_deadhead_stop_times(self, stop, file_name="stop_times.txt", repack=True):
+    def remove_deadhead_stop_times(self, stop, cull, perms, file_name="stop_times.txt", repack=True):
         """
         will remove preceding stop_time in a trip given a target stop
 
@@ -64,15 +64,22 @@ class Fix(CacheBase):
                 dw = csv.DictWriter(csv_out, fieldnames=dr.fieldnames)
                 dw.writerow(dict(zip(dr.fieldnames, dr.fieldnames)))
                 for row in dr:
-                    # step 4: cull the preceding stop_time to our target stop, and move a few vars over
-                    if prev_row and row.get('stop_id') == stop and row.get('trip_id') == prev_row.get('trip_id'):
-                        row['stop_sequence'] = prev_row['stop_sequence']
-                        row['shape_dist_traveled'] = prev_row['shape_dist_traveled']
-                        row['pickup_type'] = "0"
-                        row['drop_off_type'] = "0"
-                        dw.writerow(row)
-                        prev_row = None
-                        continue
+                    # step 4: find target stop and process...
+                    if row.get('stop_id') == stop:
+                        # step 4a: set perms to board & alight
+                        if perms:
+                            row['pickup_type'] = "0"
+                            row['drop_off_type'] = "0"
+
+                        # step 4n: NOTE: any other stop_time work must preceed step 4z due to the 'continue' below
+
+                        # step 4z: cull the preceding stop_time to our target stop, and move a few vars over
+                        if cull and prev_row and row.get('trip_id') == prev_row.get('trip_id'):
+                            row['stop_sequence'] = prev_row['stop_sequence']
+                            row['shape_dist_traveled'] = prev_row['shape_dist_traveled']
+                            dw.writerow(row)
+                            prev_row = None
+                            continue
 
                     # step 5: write out normal (prev) row and move on to next row
                     if prev_row:
@@ -96,12 +103,16 @@ class Fix(CacheBase):
         import argparse
         parser = argparse.ArgumentParser(prog='gtfs-fix', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         parser.add_argument('gtfs', help="Name of GTFS zip that is in the 'cache' (e.g., TRIMET.zip)")
-        parser.add_argument('--regex',   '-f', help="string (regex) to find in files")
         parser.add_argument('--replace', '-t', help="string to replace found regex strings")
+        parser.add_argument('--regex',   '-f', help="string (regex) to find in files")
         parser.add_argument('--routes',  '-r', default=False, action='store_true', help='fix routes.txt')
         parser.add_argument('--agency',  '-a', default=False, action='store_true', help='fix agency.txt')
-        parser.add_argument('--copy',    '-c', default=False, action='store_true', help="make a copy of the gtfs.zip (don't edit original")
-        parser.add_argument('--stop',    '-s', default=False, help="test stop query")
+        parser.add_argument('--copy',   '-cp', default=False, action='store_true', help="make a copy of the gtfs.zip (don't edit original")
+
+        parser.add_argument('--stop',    '-s', default=False, help="change gtfs.zip/stop_times.txt to eliminate previous stop from trip (e.g., BTC deadhead / boarding 8169)")
+        parser.add_argument('--perms',   '-p', default=False, action='store_true', help="change stop board/alight permissions")
+        parser.add_argument('--cull',    '-c', default=False, action='store_true', help="cull previous stop_time (deadhead)")
+
         args = parser.parse_args()
         return args
 
@@ -124,7 +135,7 @@ def main():
     if args.agency:
         fix.rename_agency_in_agency_txt(args.regex, args.replace)
     if args.stop:
-        fix.remove_deadhead_stop_times(args.stop)
+        fix.remove_deadhead_stop_times(args.stop, args.cull, args.perms)
 
 
 if __name__ == '__main__':
