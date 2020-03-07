@@ -17,7 +17,7 @@ class GtfsdbRealtimeLoader(CacheBase):
     def __init__(self, db_url=None):
         super(GtfsdbRealtimeLoader, self).__init__(section='gtfs_realtime')
         self.feeds = gtfs_utils.get_realtime_feed_from_config(self.config)
-        if db_url:
+        if db_url and db_url not in ('def', 'default', 'local'):
             self.db_url = db_url
         else:
             self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
@@ -43,11 +43,6 @@ class GtfsdbRealtimeLoader(CacheBase):
     @classmethod
     def make_cmdline(cls):
         """ make a command line with options for app keys and creating new dbs, etc... """
-        from ott.utils.parse.cmdline import db_cmdline
-        from ott.utils.parse.cmdline import gtfs_cmdline
-        parser = gtfs_cmdline.blank_parser('bin/gtfsrt_load')
-        gtfs_cmdline.api_key(parser)
-        db_cmdline.create_and_clear(parser)
-        db_cmdline.is_spatial(parser)
-        args = parser.parse_args()
+        from ott.utils.parse.cmdline.gtfs_cmdline import gtfs_rt_parser
+        args = gtfs_rt_parser(exe_name='bin/gtfsrt_load', do_parse=True)
         return args
