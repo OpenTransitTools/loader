@@ -27,7 +27,7 @@ class GtfsdbRealtimeLoader(CacheBase):
         for f in self.feeds:
             if api_key:
                 f['api_key'] = api_key
-            loader.load_feeds_via_config(f, self.db_url, is_geospatial, create_db)
+            loader.load_feeds_via_config(f, self.db_url, is_geospatial=is_geospatial, create_db=create_db)
 
     @classmethod
     def load(cls):
