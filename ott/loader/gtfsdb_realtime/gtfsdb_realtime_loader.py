@@ -25,7 +25,7 @@ class GtfsdbRealtimeLoader(CacheBase):
     def load_all(self, api_key=None, is_geospatial=True, create_db=False, vehicles_only=False):
         from ott.gtfsdb_realtime import loader
         for f in self.feeds:
-            if api_key:
+            if api_key and len(api_key) > 3:
                 f['api_key'] = api_key
 
             # control to do just vehicles
@@ -58,7 +58,7 @@ class GtfsdbRealtimeLoader(CacheBase):
         run the gtfsdb realtime loader against all the specified feeds from config/app.ini
         NOTE: this is effectively a main method for updating all the realtime feeds
         """
-        # import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         args = cls.make_cmdline()
         rt = GtfsdbRealtimeLoader()
         rt.load_all(args.api_key, args.is_geospatial, args.create, args.vehicles_only)
