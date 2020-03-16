@@ -12,9 +12,7 @@ otp_consts = {
     datastoreUrl   : "https://call-test.trimet.org:9443",
     hostname       : "https://call-test.trimet.org",
     restService    : "otp/routers/default",
-    //solrService    : "//modbeta.trimet.org/ws/solrwrap/v0/solr/select",
-    //solrService    : "//rj-dv-mapgeo01:5555/solr?q=4012%20SE%2017th%20Ave",
-    solrService    : "//maps6.trimet.org/solrwrap/solr/select",
+    solrService    : "https://ws-st.trimet.org/solrwrap/v1/select",
 
     center         : new L.LatLng(45.494833,-122.670376),
     maxWalk        : 804.672, // 1/2 mile walk
