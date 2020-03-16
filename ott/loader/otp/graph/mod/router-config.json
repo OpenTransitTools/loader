@@ -65,7 +65,7 @@
           network: "LIME",
           sourceType: "gbfs",
           url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/lime-portland-boundary.geojson"
         },
         {
           type: "vehicle-rental-updater",
