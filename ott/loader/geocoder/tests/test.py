@@ -1,11 +1,10 @@
 """ http://docs.zope.org/zope.testrunner/#some-useful-command-line-options-to-get-you-started
 """
 import unittest
-
-import urllib
 import contextlib
 import json
 
+from ott.utils.compat_2_to_3 import *
 from ott.utils.parse import csv_reader
 
 HOST="localhost:44444"

@@ -1,7 +1,7 @@
 import os
 
 from ott.utils import otp_utils
-from test_suite import ListTestSuites
+from .test_suite import ListTestSuites
 
 
 def url_args_parser():
