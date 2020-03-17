@@ -11,7 +11,6 @@
     "secretKey" : "SECRET",
     "bucketName" : "SECRET"
   },
-  # "fares": "pdx",
   "includeOsmTags": true,
   "micromobilityTravelRestrictionsUrlOrFile":  "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_riding_zones.geojson",
   "micromobilityDropoffRestrictionsUrlOrFile": "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_parking_zones.geojson"
