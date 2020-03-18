@@ -4,6 +4,9 @@ import csv
 from ott.utils import file_utils
 from ott.utils.cache_base import CacheBase
 
+import logging
+log = logging.getLogger(__file__)
+
 
 class Fix(CacheBase):
     """
@@ -50,6 +53,15 @@ class Fix(CacheBase):
           https://stackoverflow.com/questions/2982023/how-to-write-header-row-with-csv-dictwriter/2982117
         """
 
+        # step 0: warn if things don't look right
+        if cull is False and perms is False:
+            log.warning(" NOTE: since gtfs_fix is not going to do anything to the file {} in \n feed {}".format(file_name, self.gtfs_path))
+            log.warning(" --cull (remove preceding stop in stop_times.txt) and/or --perms (change board & alight) need to be specified")
+            return
+        if file_utils.exists(self.gtfs_path) is False:
+            log.error("gtfs file {} does not exist".format(self.gtfs_path))
+            return
+
         # step 1: extract file from gtfs -- open temp file to write stuff
         in_file = file_utils.unzip_file(self.gtfs_path, file_name)
         out_file = in_file + ".tmp"
@@ -58,6 +70,8 @@ class Fix(CacheBase):
         with open(in_file, 'r') as csv_in:
             dr = csv.DictReader(csv_in)
             prev_row = None
+            perm_count = 0
+            cull_count = 0
 
             # step 3: open .csv output
             with open(out_file, 'w+') as csv_out:
@@ -70,6 +84,7 @@ class Fix(CacheBase):
                         if perms:
                             row['pickup_type'] = "0"
                             row['drop_off_type'] = "0"
+                            perm_count += 1
 
                         # step 4n: NOTE: any other stop_time work must preceed step 4z due to the 'continue' below
 
@@ -79,6 +94,7 @@ class Fix(CacheBase):
                             row['shape_dist_traveled'] = prev_row['shape_dist_traveled']
                             dw.writerow(row)
                             prev_row = None
+                            cull_count += 1
                             continue
 
                     # step 5: write out normal (prev) row and move on to next row
@@ -90,8 +106,14 @@ class Fix(CacheBase):
                 if prev_row:
                     dw.writerow(prev_row)
 
+            log.warning("culls {}\nperms changes {}".format(cull_count, perm_count))
+
         if repack:
+            log.warning("repacking {} into {}".format(file_name, self.gtfs_path))
             file_utils.replace_file_in_zipfile(self.gtfs_path, out_file, file_name)
+        else:
+            log.warning("changes saved to file {}".format(out_file))
+
 
     @classmethod
     def get_args(cls):
