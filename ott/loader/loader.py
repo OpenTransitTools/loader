@@ -10,6 +10,7 @@ from ott.loader.gtfsdb.gtfsdb_exporter import GtfsdbExporter
 from ott.loader.gtfsdb_realtime.gtfsdb_realtime_loader import GtfsdbRealtimeLoader
 from ott.loader.sum.sum_cache import SumCache
 from ott.loader.solr.solr_loader import SolrLoader
+from ott.loader.gtfs.fix import Fix
 
 import logging
 log = logging.getLogger(__file__)
@@ -33,6 +34,10 @@ def download_data():
     if updated_feeds and len(updated_feeds) > 0:
         log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format(updated_feeds))
         force_update = True
+
+        # step 1b: TODO temp gtfs_fix until OTP is fixed
+        f = Fix("TRIMET.zip")
+        f.remove_deadhead_stop_times(stop="8169", cull=True)
 
     log.info("step 2: cache latest osm data")
     updated_osm = OsmCache.update(force_update=force_update)
