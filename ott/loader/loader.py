@@ -24,7 +24,7 @@ def download_data():
           2.  update OSM data in cache
           3.  update SUM data in cache
     """
-    force_update=object_utils.is_force_update()
+    force_update = object_utils.is_force_update()
     if force_update:
         log.info("step 0 IMPORTANT: loading due to 'force_update'!")
 
@@ -35,9 +35,9 @@ def download_data():
         log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format(updated_feeds))
         force_update = True
 
-        # step 1b: TODO temp gtfs_fix until OTP is fixed
-        f = Fix("TRIMET.zip")
-        f.remove_deadhead_stop_times(stop="8169", cull=True)
+    # step 1b: TODO temp gtfs_fix until OTP is fixed
+    f = Fix("TRIMET.zip")
+    f.remove_deadhead_stop_times(stop="8169", cull=True)
 
     log.info("step 2: cache latest osm data")
     updated_osm = OsmCache.update(force_update=force_update)
@@ -64,7 +64,7 @@ def load_all():
 
           load SOLR with cached data
     """
-    force_update=object_utils.is_force_update()
+    force_update = object_utils.is_force_update()
 
     # steps 1 - 3: download data (see above)
     # import pdb; pdb.set_trace()
