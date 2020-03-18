@@ -36,7 +36,7 @@ class Fix(CacheBase):
     def rename_agency_in_agency_txt(self, regex_str, replace_str):
         file_utils.replace_strings_in_zipfile(self.gtfs_path, "agency.txt", regex_str, replace_str)
 
-    def remove_deadhead_stop_times(self, stop, cull, perms, file_name="stop_times.txt", repack=True):
+    def remove_deadhead_stop_times(self, stop, cull, perms=False, file_name="stop_times.txt", repack=True):
         """
         will remove preceding stop_time in a trip given a target stop
 
