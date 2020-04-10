@@ -35,9 +35,9 @@ def download_data():
         log.info("step 1 IMPORTANT: loading on GTFS changes in feed(s): {}!".format(updated_feeds))
         force_update = True
 
-    # step 1b: TODO temp gtfs_fix until OTP is fixed
-    f = Fix("TRIMET.zip")
-    f.remove_deadhead_stop_times(stop="8169", cull=True)
+    # step 1b: TODO temp gtfs_fix until OTP is fixed -- commented due to fixed OTP - April 2020
+    #f = Fix("TRIMET.zip")
+    #f.remove_deadhead_stop_times(stop="8169", cull=True)
 
     log.info("step 2: cache latest osm data")
     updated_osm = OsmCache.update(force_update=force_update)
