@@ -53,6 +53,14 @@
         },
         {
           type: "vehicle-rental-updater",
+          frequencySec: 96,
+          network: "LIME",
+          sourceType: "gbfs",
+          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/lime-portland-boundary.geojson"
+        },
+        {
+          type: "vehicle-rental-updater",
           frequencySec: 60,
           network: "BIRD",
           sourceType: "gbfs",
@@ -61,11 +69,11 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 96,
-          network: "LIME",
+          frequencySec: 60,
+          network: "BOLT",
           sourceType: "gbfs",
-          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/lime-portland-boundary.geojson"
+          url: "https://bolt.miami/bolt2/ptl/gbfs",
+          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
           type: "vehicle-rental-updater",
