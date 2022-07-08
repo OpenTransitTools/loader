@@ -1,3 +1,7 @@
+//
+// *FXP* IMPORANT NOTE : jar uf otp.jar client/js/otp/config.js
+//
+//
 // make sure we have otp.config and otp.config.locale defined
 if(typeof(otp) == "undefined" || otp == null) otp = {};
 if(typeof(otp.config) == "undefined" || otp.config == null) otp.config = {};
