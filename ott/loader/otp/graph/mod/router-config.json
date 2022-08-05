@@ -37,7 +37,7 @@
           type: "bike-rental",
           frequencySec: 60,
           sourceType: "gbfs",
-          url: "http://biketownpdx.socialbicycles.com/opendata"
+          url: "https://gbfs.biketownpdx.com/gbfs"
         },
         {
           type: "transportation-network-company-updater",
@@ -53,14 +53,6 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 96,
-          network: "LIME",
-          sourceType: "gbfs",
-          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
           frequencySec: 60,
           network: "BIRD",
           sourceType: "gbfs",
@@ -69,18 +61,10 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 60,
-          network: "BOLT",
+          frequencySec: 96,
+          network: "LIME",
           sourceType: "gbfs",
-          url: "https://bolt.miami/bolt2/ptl/gbfs",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
-          frequencySec: 60,
-          network: "RAZOR",
-          sourceType: "gbfs",
-          url: "http://razorapi.net/api/v1/gbfs/Portland",
+          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
