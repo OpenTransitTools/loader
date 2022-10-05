@@ -15,6 +15,7 @@
         numItineraries: 3,
         disableAlertFiltering: true,
         geoidElevation : true,
+        maxPreTransitTime : 600,
         invalidDateStrategy: "USE_CURRENT"
     },
 
@@ -23,7 +24,7 @@
           type: "real-time-alerts",
           frequencySec: 60,
           earlyStart: 864000,
-          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
           feedId: "TriMet"
         },
         {
@@ -35,44 +36,45 @@
         },
         {
           type: "bike-rental",
-          frequencySec: 60,
+          frequencySec: 92,
           sourceType: "gbfs",
           url: "https://gbfs.biketownpdx.com/gbfs"
         },
         {
           type: "transportation-network-company-updater",
           sourceType: "uber",
-          serverToken: "<TK>",
-          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19",
+          clientId: "<CLIENT>",
+          clientSecret: "<SECRET>"
         },
         {
           type: "transportation-network-company-updater",
           sourceType: "lyft",
-          clientId: "<ID>",
-          clientSecret: "<SEC>"
+          clientId: "<CLIENT>",
+          clientSecret: "<SECRET>"
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 60,
+          frequencySec: 90,
           network: "BIRD",
           sourceType: "gbfs",
-          url: "https://mds.bird.co/gbfs/portland",
+          url: "https://mds.bird.co/gbfs/v2/public/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 96,
+          frequencySec: 91,
           network: "LIME",
           sourceType: "gbfs",
-          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
+          url: "https://data.lime.bike/api/partners/v2/gbfs/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 60,
+          frequencySec: 93,
           network: "SPIN",
           sourceType: "gbfs",
-          url: "https://web.spin.pm/api/gbfs/v1/portland",
+          url: "https://gbfs.spin.pm/api/gbfs/v2/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         }
     ]

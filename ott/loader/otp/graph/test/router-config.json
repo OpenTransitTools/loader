@@ -2,13 +2,6 @@
     timeouts: [7, 3, 2],
     includeOsmTags: true,
 
-    //
-    // Routing defaults are any public field or setter in the Java class
-    // org.opentripplanner.routing.core.RoutingRequest
-    // NOTE: updated Oct 2016 ... adds maxHours ... pretty much same as Conveyal (numItins not defined by them)
-    //       updated Dec 2016 ... add disableAlertFiltering to show future alerts
-    //       updated Feb 2017 ... add geoidElevation to fix the below sea-level with a regional offset
-    //
     routingDefaults: {
         maxHours: 6,
         useRequestedDateTimeInMaxHours: true,
@@ -22,6 +15,7 @@
         numItineraries: 3,
         disableAlertFiltering: true,
         geoidElevation : true,
+        maxPreTransitTime : 600,
         invalidDateStrategy: "USE_CURRENT"
     },
 
@@ -30,7 +24,7 @@
           type: "real-time-alerts",
           frequencySec: 60,
           earlyStart: 864000,
-          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
           feedId: "TriMet"
         },
         {
@@ -39,29 +33,29 @@
           sourceType: "gtfs-http",
           url: "https://trimet.org/transweb/ws/V1/TripUpdate",
           feedId: "TriMet"
-          // ???  WHAT IS THIS?  type: "websocket-gtfs-rt-updater"
         },
         {
           type: "bike-rental",
-          frequencySec: 600,
+          frequencySec: 92,
           sourceType: "gbfs",
-          url: "http://biketownpdx.socialbicycles.com/opendata"
+          url: "https://gbfs.biketownpdx.com/gbfs"
         },
         {
           type: "transportation-network-company-updater",
           sourceType: "uber",
-          serverToken: "<TK>",
-          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19"
+          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19",
+          clientId: "<CLIENT>",
+          clientSecret: "<SECRET>"
         },
         {
           type: "transportation-network-company-updater",
           sourceType: "lyft",
-          clientId: "<ID>",
-          clientSecret: "<SEC>"
+          clientId: "<CLIENT>",
+          clientSecret: "<SECRET>"
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 600,
+          frequencySec: 90,
           network: "BIRD",
           sourceType: "gbfs",
           url: "https://mds.bird.co/gbfs/portland",
@@ -69,26 +63,18 @@
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 999,
+          frequencySec: 91,
           network: "LIME",
           sourceType: "gbfs",
-          url: "https://data.lime.bike/api/partners/v1/gbfs/portland",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/lime-portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental-updater",
-          frequencySec: 600,
-          network: "RAZOR",
-          sourceType: "gbfs",
-          url: "http://razorapi.net/api/v1/gbfs/Portland",
+          url: "https://data.lime.bike/api/partners/v2/gbfs/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
           type: "vehicle-rental-updater",
-          frequencySec: 600,
+          frequencySec: 93,
           network: "SPIN",
           sourceType: "gbfs",
-          url: "https://web.spin.pm/api/gbfs/v1/portland",
+          url: "https://gbfs.spin.pm/api/gbfs/v2/portland",
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         }
     ]
