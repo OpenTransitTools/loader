@@ -34,7 +34,7 @@
             type: "real-time-alerts",
             frequencySec: 180,
             //url: "http://developer.trimet.org/ws/V1/FeedSpecAlerts/appID/B393B2CE96A258A72BAB481CA",
-            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true",
+            url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
             feedId: "TriMet"
         }
     ]
