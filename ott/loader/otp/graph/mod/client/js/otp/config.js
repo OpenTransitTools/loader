@@ -280,6 +280,13 @@ i18n.init(options, function(t) {
 
 otp.config.modes = {
     "TRANSIT,WALK"              : _tr("Transit"),
+
+    "MICROMOBILITY_RENT,TRANSIT": _tr('eScooters & Transit'),
+    "MICROMOBILITY_RENT,BUS"    : _tr('eScooters & Bus'),
+    "MICROMOBILITY_RENT,TRAM"   : _tr('eScooters & MAX'),
+    "MICROMOBILITY_RENT,RAIL"   : _tr('eScooters & RAIL'),
+    "MICROMOBILITY_RENT,WALK"   : _tr('eScooters Only'),
+
     "BUS,WALK"                  : _tr("Bus Only"),
     "TRAM,RAIL,GONDOLA,WALK"    : _tr("Rail Only"),
     "BICYCLE"                   : _tr('Bicycle Only'),
