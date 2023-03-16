@@ -5,8 +5,6 @@
     routingDefaults: {
         maxHours: 6,
         useRequestedDateTimeInMaxHours: true,
-        boardSlack: 0,
-        alightSlack: 0,
         transferSlack: 180,
         maxTransfers: 4,
         waitReluctance: 0.9,
@@ -41,20 +39,7 @@
           url: "https://gbfs.biketownpdx.com/gbfs"
         },
         {
-          type: "transportation-network-company-updater",
-          sourceType: "uber",
-          wheelChairAccessibleRideType: "0e9145be-98bb-48dd-a0bf-32964ac8df19",
-          clientId: "<CLIENT>",
-          clientSecret: "<SECRET>"
-        },
-        {
-          type: "transportation-network-company-updater",
-          sourceType: "lyft",
-          clientId: "<CLIENT>",
-          clientSecret: "<SECRET>"
-        },
-        {
-          type: "vehicle-rental-updater",
+          type: "vehicle-rental",
           frequencySec: 90,
           network: "BIRD",
           sourceType: "gbfs",
@@ -62,7 +47,7 @@
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
-          type: "vehicle-rental-updater",
+          type: "vehicle-rental",
           frequencySec: 91,
           network: "LIME",
           sourceType: "gbfs",
@@ -70,7 +55,7 @@
           regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
         },
         {
-          type: "vehicle-rental-updater",
+          type: "vehicle-rental",
           frequencySec: 93,
           network: "SPIN",
           sourceType: "gbfs",

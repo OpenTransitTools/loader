@@ -29,7 +29,7 @@ class OtpBuilder(CacheBase):
     graphs = None
     expire_days = 45
 
-    graph_name = otp_utils.GRAPH_NAME
+    graph_name = otp_utils.get_graph_name()
     graph_size = 35000000
     graph_failed = graph_name + "-failed-tests"
 
