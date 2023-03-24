@@ -82,7 +82,7 @@ class OtpRunner(CacheBase):
             if args.server:
                 success = cls.start_server(graph=graph, java_mem=java_mem)
             elif args.viz:
-                success = otp_utils.vizualize_graph(graph_dir=graph['dir'], java_mem=java_mem)
+                success = otp_utils.vizualize_graph(graph['dir'], "2.x", java_mem=java_mem)
             else:
                 print("PLEASE select a option to either serve or vizualize graph {}".format(graph['name']))
                 parser.print_help()
@@ -90,8 +90,9 @@ class OtpRunner(CacheBase):
 
     @classmethod
     def restart_new_graphs(cls):
-        """ search configured graph cache's, and if we find a Graph.obj-new, we'll move that into place and
-            restart the otp instance 
+        """
+        search configured graph cache's, and if we find a Graph.obj-new, we'll move that into place and
+        restart the otp instance
         """
         success = True
         r = OtpRunner()
@@ -116,8 +117,7 @@ class OtpRunner(CacheBase):
 
     @classmethod
     def static_server(cls):
-        """ start a static server where
-        """
+        """ start a static server where """
         success = False
         port, dir = OtpRunner.static_server_cfg()
         success = web_utils.background_web_server(dir, port)
