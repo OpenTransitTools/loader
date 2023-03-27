@@ -61,8 +61,9 @@ class OtpBuilder(CacheBase):
                 set_graph_details(g)                
                 filter = g.get('filter')
                 dir = g.get('dir')
-                if force_update or not dont_update:                    
-                    OsmCache.check_osm_file_against_cache(dir)
+                if force_update or not dont_update:
+                    # import pdb; pdb.set_trace()
+                    OsmCache.check_osm_file_against_cache(dir, force_update, otp_utils.build_with_pbf(g['version']))
                     GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
         return graphs
 
@@ -78,7 +79,6 @@ class OtpBuilder(CacheBase):
         """
         build the graph...as long as the Graph.obj file looks out of date
         """
-        #import pdb; pdb.set_trace()
         success = True
 
         # step 1: set some params
@@ -89,7 +89,7 @@ class OtpBuilder(CacheBase):
             rebuild_graph = True
 
         # step 3: check the cache files
-        if file_utils.dir_has_newer_files(graph['path'], graph['dir'], offset_minutes=60, include_filter=".jar,.json,.osm,.zip"):
+        if file_utils.dir_has_newer_files(graph['path'], graph['dir'], offset_minutes=60, include_filter=".jar,.json,.osm,.pbf,.zip"):
             rebuild_graph = True
 
         # step 4: build graph is needed
