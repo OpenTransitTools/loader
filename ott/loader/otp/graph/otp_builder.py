@@ -29,7 +29,7 @@ class OtpBuilder(CacheBase):
     feeds = None
     graphs = None
     expire_days = 45
-    graph_size = 35000000
+    graph_size = 30000000
 
     def __init__(self, name, force_update=False, dont_update=False):
         # import pdb; pdb.set_trace()
@@ -98,16 +98,17 @@ class OtpBuilder(CacheBase):
 
             # step 4b: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 5):
+                # import pdb; pdb.set_trace()
                 log.info(" build attempt {0} of a new graph ".format(n))
                 file_utils.rm(graph['path'])
                 otp_utils.run_graph_builder(graph['dir'], graph['version'], java_mem=java_mem)
-                time.sleep(60)
+                time.sleep(10)
                 if file_utils.exists_and_sized(graph['path'], self.graph_size, self.expire_days):
                     success = True
                     break
                 else:
                     log.warn("\n\nGRAPH DIDN'T BUILD ... WILL TRY TO BUILD AGAIN\n\n")
-                    time.sleep(3)
+                    time.sleep(15)
 
         return success, rebuild_graph
 
