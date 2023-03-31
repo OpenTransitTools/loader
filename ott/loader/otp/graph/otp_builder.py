@@ -31,7 +31,7 @@ class OtpBuilder(CacheBase):
     expire_days = 45
     graph_size = 30000000
 
-    def __init__(self, name, force_update=False, dont_update=False):
+    def __init__(self, name=None, force_update=False, dont_update=False):
         # import pdb; pdb.set_trace()
         super(OtpBuilder, self).__init__('otp')
         self.feeds = self.config.get_json('feeds', section='gtfs')
