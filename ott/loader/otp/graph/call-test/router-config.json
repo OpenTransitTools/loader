@@ -1,77 +1,75 @@
 {
-    timeouts: [7, 3, 2],
-    includeOsmTags: true,
-
-    // Routing defaults are any public field or setter in the Java class
-    // org.opentripplanner.routing.core.RoutingRequest
-    routingDefaults: {
-        maxHours: 6,
-        useRequestedDateTimeInMaxHours: true,
-        boardSlack: "0M",
-        alightSlack: "0M",
-        transferSlack: 180,
-        maxTransfers: 4,
-        waitReluctance: 0.9,
-        walkReluctance: 1.75,
-        stairsReluctance: 1.65,
-        numItineraries: 3,
-        disableAlertFiltering: true,
-        geoidElevation : true,
-        maxPreTransitTime : 600,
-        invalidDateStrategy: "USE_CURRENT"
-    },
-
-    updaters: [
-        {
-          type: "real-time-alerts",
-          frequencySec: 60,
-          earlyStart: 864000,
-          url: "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
-          feedId: "TriMet"
-        },
-        {
-          type: "stop-time-updater",
-          frequencySec: 30,
-          sourceType: "gtfs-http",
-          url: "https://trimet.org/transweb/ws/V1/TripUpdate",
-          feedId: "TriMet"
-        },
-        {
-          type: "vehicle-positions",
-          frequencySec: 30,
-          sourceType: "gtfs-http",
-          url: "http://trimet.org/transweb/ws/V1/VehiclePositions",
-          feedId: "TriMet"
-        },
-        {
-          type: "bike-rental",
-          frequencySec: 92,
-          sourceType: "gbfs",
-          url: "https://gbfs.biketownpdx.com/gbfs/gbfs.json"
-        },
-        {
-          type: "vehicle-rental",
-          frequencySec: 90,
-          network: "BIRD",
-          sourceType: "gbfs",
-          url: "https://mds.bird.co/gbfs/v2/public/portland/gbfs.json",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental",
-          frequencySec: 91,
-          network: "LIME",
-          sourceType: "gbfs",
-          url: "https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        },
-        {
-          type: "vehicle-rental",
-          frequencySec: 93,
-          network: "SPIN",
-          sourceType: "gbfs",
-          url: "https://gbfs.spin.pm/api/gbfs/v2_3/portland/gbfs.json",
-          regionsUrl: "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/portland-boundary.geojson"
-        }
-    ]
+  "streetRoutingTimeout": "7s",
+  "includeOsmTags": true,
+  "routingDefaults": {
+    "maxJourneyDuration": "6h",
+    "boardSlack": "0s",
+    "alightSlack": "0s",
+    "transferSlack": 180,
+    "waitReluctance": 0.9,
+    "walkReluctance": 1.75,
+    "stairsReluctance": 1.65,
+    "numItineraries": 3,
+    "geoidElevation": true
+  },
+  "transit": {
+    "maxNumberOfTransfers": 4
+  },
+  "updaters": [
+  {
+    "type": "real-time-alerts",
+    "frequencySec": 60,
+    "earlyStartSec": 864000,
+    "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
+    "feedId": "TriMet"
+  },
+  {
+    "type": "stop-time-updater",
+    "frequencySec": 31,
+    "url": "https://trimet.org/transweb/ws/V1/TripUpdate",
+    "feedId": "TriMet"
+  },
+  {
+    "type": "vehicle-positions",
+    "frequencySec": 27,
+    "sourceType": "gtfs-http",
+    "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
+    "feedId": "TriMet"
+  },
+  {
+    "type": "vehicle-rental",
+    "frequencySec": 90,
+    "sourceType": "gbfs",
+    "url": "https://gbfs.biketownpdx.com/gbfs"
+  },
+  {
+    "type": "vehicle-rental",
+    "frequencySec": 91,
+    "network": "BIRD",
+    "sourceType": "gbfs",
+    "url": "https://mds.bird.co/gbfs/v2/public/portland.gbfs",
+    "geofencingZones": "true"
+  },
+  {
+    "type": "vehicle-rental",
+    "frequencySec": 92,
+    "network": "LIME",
+    "sourceType": "gbfs",
+    "url": "https://data.lime.bike/api/partners/v2/gbfs/portland"
+  },
+  {
+    "type": "vehicle-rental",
+    "frequencySec": 93,
+    "network": "SPIN",
+    "sourceType": "gbfs",
+    "url": "https://gbfs.spin.pm/api/gbfs/v2/portland"
+  },
+  "rideHailingServices": [
+  {
+    "type": "uber-car-hailing",
+    "clientId": "${UBER_CLIENT_ID}",
+    "clientSecret": "${UBER_CLIENT_SECRET}",
+    "wheelchairAccessibleRideType": "970ed376-bd33-4ad1-81c5-d2928a347a06"
+  }
+  ]
 }
