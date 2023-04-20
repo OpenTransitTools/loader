@@ -10,7 +10,11 @@
     "walkReluctance": 1.75,
     "stairsReluctance": 1.65,
     "numItineraries": 3,
-    "geoidElevation": true
+    "geoidElevation": true,
+    "itineraryFilters": {
+      // only show non-transit (ie. walking) when it's at least as good as the transit option
+      "nonTransitGeneralizedCostLimit": "0 + 1.0 x"
+    }
   },
   "transit": {
     "maxNumberOfTransfers": 4
