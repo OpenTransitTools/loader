@@ -1,4 +1,4 @@
-GQL_URL=http://maps8.trimet.org/otp_ct/index/graphql
+GQL_URL=http://maps7.trimet.org/otp_ct/index/graphql
 
 function graphql()
 {
