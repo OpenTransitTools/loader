@@ -6,3 +6,6 @@ Also, some good urls on GraphQL:
  - https://howtographql.com/
  - https://api.entur.io/graphql-explorer/journey-planner-v3
  - https://developer.entur.org/pages-journeyplanner-journeyplanner
+ - https://docs.opentripplanner.org/en/v2.2.0/sandbox/LegacyGraphQLApi/
+ - http://localhost:8080/legacygraphql/graphiql
+ 
