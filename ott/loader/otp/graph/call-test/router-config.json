@@ -42,31 +42,32 @@
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 90,
+      "frequencySec": 47,
       "sourceType": "gbfs",
-      "url": "https://gbfs.biketownpdx.com/gbfs"
+      "url": "https://gbfs.biketownpdx.com/gbfs/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 91,
+      "frequencySec": 41,
       "network": "BIRD",
       "sourceType": "gbfs",
-      "url": "https://mds.bird.co/gbfs/v2/public/portland.gbfs",
+      "url": "https://mds.bird.co/gbfs/v2/public/portland/gbfs.json",
       "geofencingZones": "true"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 92,
+      "frequencySec": 43,
       "network": "LIME",
       "sourceType": "gbfs",
-      "url": "https://data.lime.bike/api/partners/v2/gbfs/portland"
+      "url": "https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 93,
+      "frequencySec": 45,
       "network": "SPIN",
-      "sourceType": "gbfs",
-      "url": "https://gbfs.spin.pm/api/gbfs/v2/portland"
+      "sourceType": "gbfs", 
+      "url": "https://gbfs.spin.pm/api/gbfs/v2_3/portland/gbfs",
+      "geofencingZones": "true"
     }
   ],
   "rideHailingServices": [
