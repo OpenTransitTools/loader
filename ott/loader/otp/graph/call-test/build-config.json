@@ -9,10 +9,11 @@
   "includeEllipsoidToGeoidDifference": true,
   "multiThreadElevationCalculations": true,
   "fetchElevationUS": true,
+  "writeCachedElevations": true,
   "elevationBucket": {
-    "accessKey" : "[SECRET]",
-    "secretKey" : "[SECRET]",
-    "bucketName" : "[SECRET]"
+    "accessKey" : "${NED_ACCESS}",
+    "secretKey" : "${NED_SECRET}",
+    "bucketName": "${NED_BUCKET}"
   },
 
   "includeOsmTags": true,
