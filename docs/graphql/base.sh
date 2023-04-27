@@ -2,7 +2,7 @@
 # 
 # params
 #
-MAPS=${1:-"maps7"}
+MAPS=${1:-"maps8"}
 SVR=${2:-"ct"}
 GEOM=${3:-"legGeometry{points}"}
 
