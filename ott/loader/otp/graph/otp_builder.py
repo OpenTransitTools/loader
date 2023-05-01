@@ -23,52 +23,59 @@ log = logging.getLogger(__file__)
 
 
 class OtpBuilder(CacheBase):
-    """ build an OTP graph
+    """
+    build an OTP graph
     """
     feeds = None
     graphs = None
     expire_days = 45
+    graph_size = 30000000
 
-    graph_name = otp_utils.GRAPH_NAME
-    graph_size = 35000000
-    graph_failed = graph_name + "-failed-tests"
-
-    def __init__(self, force_update=False, dont_update=False):
+    def __init__(self, name=None, force_update=False, dont_update=False):
+        # import pdb; pdb.set_trace()
         super(OtpBuilder, self).__init__('otp')
         self.feeds = self.config.get_json('feeds', section='gtfs')
-        self.graphs = self.config_graph_dirs(force_update, dont_update)
+        self.graphs = self.config_graph_dirs(name, force_update, dont_update)
 
-    def config_graph_dirs(self, force_update=False, dont_update=False):
+    def config_graph_dirs(self, name, force_update=False, dont_update=False):
         """
         read the config for graph specs like graph dir and web port (for running OTP)
         this routine will gather config .json files, .osm files and gtfs .zips into the graph folder
         """
         graphs = otp_utils.get_graphs(self)
 
-        # check for config list of graphs ... create a default if nothing exists
-        if force_update and (graphs is None or len(graphs) == 0):
-            graphs = [otp_utils.get_graph_details(None)]  # returns a default graph config
+        def set_graph_details(g):
+            dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+            ver = otp_utils.get_otp_version_simple(dir)
+            name = otp_utils.get_graph_name(ver)
+            g['version'] = ver
+            g['graph_name'] = name
+            g['dir'] = dir
+            g['path'] = os.path.join(dir, name)
+            g['failed'] = name + "-failed-tests"
 
         # run thru the graphs and
         if graphs:
             for g in graphs:
-                graph_dir = otp_utils.config_graph_dir(g, self.this_module_dir)
+                if name and len(name) > 1 and name != g.get('name'): continue
+                set_graph_details(g)                
                 filter = g.get('filter')
+                dir = g.get('dir')
                 if force_update or not dont_update:
-                    OsmCache.check_osm_file_against_cache(graph_dir)
-                    GtfsCache.check_feeds_against_cache(self.feeds, graph_dir, force_update, filter)
+                    # import pdb; pdb.set_trace()
+                    OsmCache.check_osm_file_against_cache(dir, force_update, otp_utils.build_with_pbf(g.get('version')))
+                    GtfsCache.check_feeds_against_cache(self.feeds, dir, force_update, filter)
         return graphs
 
     def update_vlog(self, graph):
         """
         out gtfs feed(s) version numbers and dates to the otp.v log file
         """
-        graph_dir = graph.get('dir', self.cache_dir)
-        gtfs_msg = GtfsInfo.get_cache_msgs(graph_dir, self.feeds, graph.get('filter'))
-        osm_msg = OsmInfo.get_cache_msgs(graph_dir)
-        otp_utils.append_vlog_file(graph_dir, gtfs_msg + osm_msg)
+        gtfs_msg = GtfsInfo.get_cache_msgs(graph.get('dir'), self.feeds, graph.get('filter'))
+        osm_msg = OsmInfo.get_cache_msgs(graph.get('dir'))
+        otp_utils.append_vlog_file(graph.get('dir'), gtfs_msg + osm_msg)
 
-    def build_graph(self, graph_dir, java_mem=None, force_update=False):
+    def build_graph(self, graph, java_mem=None, force_update=False):
         """
         build the graph...as long as the Graph.obj file looks out of date
         """
@@ -78,12 +85,11 @@ class OtpBuilder(CacheBase):
         rebuild_graph = force_update
 
         # step 2: check graph file is fairly recent and properly sized
-        graph_path = os.path.join(graph_dir, self.graph_name)
-        if not file_utils.exists_and_sized(graph_path, self.graph_size):
+        if not file_utils.exists_and_sized(graph.get('path'), self.graph_size):
             rebuild_graph = True
 
         # step 3: check the cache files
-        if file_utils.dir_has_newer_files(graph_path, graph_dir, offset_minutes=60, include_filter=".jar,.json,.osm,.zip"):
+        if file_utils.dir_has_newer_files(graph.get('path'), graph.get('dir'), offset_minutes=60, include_filter=".jar,.json,.osm,.pbf,.zip"):
             rebuild_graph = True
 
         # step 4: build graph is needed
@@ -92,15 +98,17 @@ class OtpBuilder(CacheBase):
 
             # step 4b: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 5):
+                # import pdb; pdb.set_trace()
                 log.info(" build attempt {0} of a new graph ".format(n))
-                otp_utils.run_graph_builder(graph_dir, java_mem=java_mem)
-                time.sleep(60)
-                if file_utils.exists_and_sized(graph_path, self.graph_size, self.expire_days):
+                file_utils.rm(graph.get('path'))
+                otp_utils.run_graph_builder(graph.get('dir'), graph.get('version'), java_mem=java_mem)
+                time.sleep(10)
+                if file_utils.exists_and_sized(graph.get('path'), self.graph_size, self.expire_days):
                     success = True
                     break
                 else:
                     log.warn("\n\nGRAPH DIDN'T BUILD ... WILL TRY TO BUILD AGAIN\n\n")
-                    time.sleep(3)
+                    time.sleep(15)
 
         return success, rebuild_graph
 
@@ -111,14 +119,14 @@ class OtpBuilder(CacheBase):
         success = True
         delay = 1
         if start_server:
-            success = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=graph['dir'], **graph)
+            success = otp_utils.run_otp_server(graph.get('dir'), graph.get('version'), java_mem=java_mem, **graph)
             delay = 60
         if success:
             success = TestRunner.test_graph_factory_config(graph, suite_dir=suite_dir, delay=delay)
             if not success:
-                log.warn("graph {} *did not* pass some tests!!!".format(graph['name']))
+                log.warn("graph {} *did not* pass some tests!!!".format(graph.get('name')))
         else:
-            log.warn("was unable to start the OTP server using graph {}!!!".format(graph['name']))
+            log.warn("was unable to start the OTP server using graph {}!!!".format(graph.get('name')))
         return success
 
     def build_and_test_graphs(self, java_mem=None, force_update=False, start_server=True, graph_filter=None):
@@ -127,15 +135,15 @@ class OtpBuilder(CacheBase):
         """
         ret_val = True
         if self.graphs:
-
             # step 1: loop thru all graph configs ... building and testing new graphs
             for g in self.graphs:
-
+                #import pdb; pdb.set_trace()
                 # step 1b: if we're filtering graphs by name, only run that specific graph
-                if graph_filter and g['name'] != graph_filter: continue
+                if graph_filter and g.get('name') != graph_filter: continue
+                elif graph_filter is None and g.get('skip'): continue
 
                 # step 2: build this graph
-                success, rebuilt = self.build_graph(g['dir'], java_mem, force_update)
+                success, rebuilt = self.build_graph(g, java_mem, force_update)
 
                 # step 3: test the successfully built new graph (restarting a new OTP server for the graph)
                 if success and rebuilt and not g.get('skip_tests'):
@@ -145,7 +153,7 @@ class OtpBuilder(CacheBase):
                 # step 3b: failed to build the graph ... send a warning
                 elif not success:
                     ret_val = False
-                    log.warn("graph build failed for graph {}".format(g['name']))
+                    log.warn("graph build failed for graph {}".format(g.get('name')))
 
                 # step 4: so we rebuilt the graph and any testing that was done was also a success...
                 if rebuilt:
@@ -153,11 +161,11 @@ class OtpBuilder(CacheBase):
                     # step 4b: update the vlog and package the graph as new
                     if success:
                         self.update_vlog(graph=g)
-                        otp_utils.package_new(graph_dir=g['dir'], graph_name=self.graph_name)
+                        otp_utils.package_new(graph_dir=g.get('dir'), graph_name=g.get('graph_name'))
 
                     # step 4c: shut down any graph that
                     if g.get('post_shutdown'):
-                        otp_utils.kill_otp_server(g['dir'])
+                        otp_utils.kill_otp_server(g.get('dir'))
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True, graph_filter=None):
@@ -167,7 +175,7 @@ class OtpBuilder(CacheBase):
         ret_val = True
         if self.graphs:
             for g in self.graphs:
-                if graph_filter and g['name'] != graph_filter: continue
+                if graph_filter and g.get('name') != graph_filter: continue
                 success = self.test_graph(graph=g, java_mem=java_mem, start_server=start_server)
                 if not success:
                     ret_val = False
@@ -182,7 +190,7 @@ class OtpBuilder(CacheBase):
 
         # step 1: config the builder system
         args, parser = OtpBuilder.get_args()
-        b = OtpBuilder(force_update=args.force, dont_update=args.dont_update)
+        b = OtpBuilder(args.name, force_update=args.force, dont_update=args.dont_update)
         java_mem = "-Xmx1236m" if args.mem else None
 
         if args.mock:
@@ -233,7 +241,6 @@ class OtpBuilder(CacheBase):
 
 
 def main(argv=sys.argv):
-    # import pdb; pdb.set_trace()
     OtpBuilder.build()
 
 

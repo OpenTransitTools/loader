@@ -310,7 +310,7 @@ class Test(object):
         return "{}&{}&debug_layers=true".format(self.make_url(self.map_url), self.map_params)
 
     def get_ridetrimetorg_url(self):
-        return "http://ride.trimet.org?submit&" + self.map_params
+        return "http://maps.trimet.org?submit&" + self.map_params
 
 
 class TestSuite(object):

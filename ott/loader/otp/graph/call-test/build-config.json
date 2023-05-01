@@ -1,17 +1,27 @@
 {
-  // useTransfersTxt: true, // https://github.com/opentripplanner/OpenTripPlanner/issues/2264
-  "osmNaming": "portland",
+  "htmlAnnotations": true,
+  "transitModelTimeZone": "America/Los_Angeles",
   "maxTransferDistance": 600,
   "disableAlertFiltering": true,
   "banDiscouragedWalking ": true,
   "banDiscouragedBiking ": true,
+
+  "includeEllipsoidToGeoidDifference": true,
+  "multiThreadElevationCalculations": true,
   "fetchElevationUS": true,
+  "writeCachedElevations": true,
   "elevationBucket": {
-    "accessKey" : "SECRET",
-    "secretKey" : "SECRET",
-    "bucketName" : "SECRET"
+    "accessKey" : "${NED_ACCESS}",
+    "secretKey" : "${NED_SECRET}",
+    "bucketName": "${NED_BUCKET}"
   },
+
   "includeOsmTags": true,
+  "osmNaming": "portland",
+  "osmDefaults": {
+    "osmTagMapping": "portland"
+  },
+
   "micromobilityTravelRestrictionsUrlOrFile":  "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_riding_zones.geojson",
   "micromobilityDropoffRestrictionsUrlOrFile": "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_parking_zones.geojson"
 }
