@@ -161,7 +161,7 @@ class OtpBuilder(CacheBase):
                     # step 4b: update the vlog and package the graph as new
                     if success:
                         self.update_vlog(graph=g)
-                        otp_utils.package_new(graph_dir=g.get('dir'), graph_name=g.get('graph_name'))
+                        otp_utils.package_new(graph_dir=g.get('dir', './'), graph_name=g.get('graph_name', otp_utils.DEF_GRAPH_NAME))
 
                     # step 4c: shut down any graph that
                     if g.get('post_shutdown'):
