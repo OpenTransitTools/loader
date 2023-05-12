@@ -157,14 +157,17 @@ class OtpBuilder(CacheBase):
 
                 # step 4: so we rebuilt the graph and any testing that was done was also a success...
                 if rebuilt:
+                    dir = g.get('dir', './')
+                    version = g.get('version', otp_utils.OTP_VERSION)
+
                     # step 4b: update the vlog and package the graph as new
                     if success:
                         self.update_vlog(graph=g)
-                        otp_utils.package_new(graph_dir=g.get('dir', './'), graph_version=g.get('graph_version', otp_utils.OTP_VERSION))
+                        otp_utils.package_new(graph_dir=dir, otp_version=version)
 
                     # step 4c: shut down any graph that
                     if g.get('post_shutdown'):
-                        otp_utils.kill_otp_server(g.get('dir'))
+                        otp_utils.kill_otp_server(dir)
         return ret_val
 
     def only_test_graphs(self, java_mem=None, break_on_fail=False, start_server=True, graph_filter=None):

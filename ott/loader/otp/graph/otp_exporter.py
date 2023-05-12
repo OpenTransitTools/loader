@@ -130,13 +130,16 @@ class OtpExporter(OtpBuilder):
             if object_utils.is_not_match(graph_filter, g['name']):
                 continue
 
+            dir = g.get('dir', './')
+            version = g.get('version', otp_utils.OTP_VERSION)
+
             # step 1: is otp.v doesn't exist or is a bit old, create it
-            vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
+            vlog_path = otp_utils.get_vlog_file_path(graph_dir=dir)
             if file_utils.exists(vlog_path) is False or file_utils.file_age(vlog_path) > 1:
                 d.update_vlog(g)
 
             # step 2: package it...
-            otp_utils.package_new(graph_dir=g['dir'])
+            otp_utils.package_new(graph_dir=dir, otp_version=version)
 
     @classmethod
     def otp_v_new(cls):
@@ -147,12 +150,8 @@ class OtpExporter(OtpBuilder):
         log.info("\nCreate new otp.v\n".format())
         d = OtpExporter()
         for g in d.graphs:
-            # step 0: do we filter this graph?
-            if object_utils.is_not_match(graph_filter, g['name']):
+            if object_utils.is_not_match(graph_filter, g.get('name')):
                 continue
-
-            # step 1: is otp.v doesn't exist or is a bit old, create it
-            vlog_path = otp_utils.get_vlog_file_path(graph_dir=g['dir'])
             d.update_vlog(g)
 
     @classmethod
