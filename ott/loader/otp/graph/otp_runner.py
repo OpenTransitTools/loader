@@ -12,7 +12,8 @@ log = logging.getLogger(__file__)
 
 
 class OtpRunner(CacheBase):
-    """ run OTP graph
+    """
+    run OTP graph
     """
     graphs = None
 
@@ -40,11 +41,12 @@ class OtpRunner(CacheBase):
     def start_server(cls, graph, java_mem=None):
         status = False
 
-        dir = graph['dir']
+        dir = graph.get('dir')
         otp_utils.mv_new_files_into_place(dir)
 
+        #import pdb; pdb.set_trace()
         print("running {}".format(graph))
-        status = otp_utils.run_otp_server(java_mem=java_mem, graph_dir=dir, **graph)
+        status = otp_utils.run_otp_server(otp_version=graph.get('version'), graph_dir=dir, java_mem=java_mem, **graph)
         return status
 
     @classmethod
@@ -82,9 +84,9 @@ class OtpRunner(CacheBase):
             if args.server:
                 success = cls.start_server(graph=graph, java_mem=java_mem)
             elif args.viz:
-                success = otp_utils.vizualize_graph(graph['dir'], "2.x", java_mem=java_mem)
+                success = otp_utils.vizualize_graph(graph.get('dir'), "2.x", java_mem=java_mem)
             else:
-                print("PLEASE select a option to either serve or vizualize graph {}".format(graph['name']))
+                print("PLEASE select a option to either serve or vizualize graph {}".format(graph.get('name')))
                 parser.print_help()
         return success
 
@@ -97,10 +99,10 @@ class OtpRunner(CacheBase):
         success = True
         r = OtpRunner()
         for g in r.graphs:
-            graph_path = otp_utils.get_graph_path(g['dir'])
+            graph_path = otp_utils.get_graph_path(g.get('dir'))
             new_path = file_utils.make_new_path(graph_path)
             if file_utils.exists(new_path):
-                log.info("restarting instance '{}' ... deploying file {} as the new Graph.obj".format(g['name'], new_path))
+                log.info("restarting instance '{}' ... deploying file {} as the new Graph.obj".format(g.get('name'), new_path))
                 s = cls.start_server(graph=g)
                 if s is False:
                     success = False

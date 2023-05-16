@@ -46,7 +46,9 @@ class OtpBuilder(CacheBase):
 
         def set_graph_details(g):
             dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-            ver = otp_utils.get_otp_version_simple(dir)
+            ver = g.get('version')
+            if ver is None:
+                ver = otp_utils.get_otp_version_simple(dir)
             name = otp_utils.get_graph_name(ver)
             g['version'] = ver
             g['graph_name'] = name
