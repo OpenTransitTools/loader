@@ -30,19 +30,28 @@ class OtpExporter(OtpBuilder):
             log.info("no [otp] graphs configured in the .ini file")
             return ret_val
 
-        def scp_graph(server, user, graph_dir, server_dir, graph=None):
+        # step A: grab config .ini (from app.ini) variables for the server(s) to scp OTP graphs to
+        #         note, we need these server(s) to be 'known_hosts'
+        user = self.config.get_json('user', section='deploy')
+        servers = self.config.get_json('servers', section='deploy')
+        otp_base_dir = self.config.get_json('otp_base_dir', section='deploy')
+
+        def scp_graph(server, graph):
             """ sub-routine to scp Graph.obj-new, otp.v-new and (optionally) otp.jar-new over to
                 a given server.  crazy part of this code is all the path (string) manipulation
                 in step 1 below...
             """
             global ret_val
 
+            graph_dir = otp_utils.config_graph_dir(graph, self.this_module_dir)
+            server_dir = file_utils.append_to_path(otp_base_dir, graph.get('name'))
+
             # step 1: create file paths to *-new files locally, and also path where we'll scp these files
             log_v_path = otp_utils.get_vlog_file_path(graph_dir)
             log_v_new = file_utils.make_new_path(log_v_path)
             log_v_svr = file_utils.append_to_path(server_dir, os.path.basename(log_v_new), False)
 
-            graph_path = otp_utils.get_graph_path(graph_dir)
+            graph_path = otp_utils.get_graph_path(graph_dir, otp_version=graph.get('version'))
             graph_new = file_utils.make_new_path(graph_path)
             graph_svr = file_utils.append_to_path(server_dir, os.path.basename(graph_new), False)
 
@@ -79,29 +88,21 @@ class OtpExporter(OtpBuilder):
                     if scp:
                         scp.close()
 
-        # step A: grab config .ini (from app.ini) variables for the server(s) to scp OTP graphs to
-        #         note, we need these server(s) to be 'known_hosts'
-        user = self.config.get_json('user', section='deploy')
-        servers = self.config.get_json('servers', section='deploy')
-        otp_base_dir = self.config.get_json('otp_base_dir', section='deploy')
-
         # step B: loop thru each server, and scp a graph (and log and jar) to that server
         # import pdb; pdb.set_trace()
         for s in servers:
             if object_utils.is_not_match(server_filter, s):
                 continue
             for g in self.graphs:
-                if object_utils.is_not_match(graph_filter, g['name']):
+                if object_utils.is_not_match(graph_filter, g.get('name')):
                     continue
-                dir = otp_utils.config_graph_dir(g, self.this_module_dir)
-                svr_dir = file_utils.append_to_path(otp_base_dir, g['name'])
-                scp_graph(server=s, user=user, graph_dir=dir, server_dir=svr_dir, graph=g)
+                scp_graph(server=s, graph=g)
 
         # step C: remove the -new files (so we don't keep deploying / scp-ing)
         for g in self.graphs:
-            if object_utils.is_not_match(graph_filter, g['name']):
+            if object_utils.is_not_match(graph_filter, g.get('name')):
                 continue
-            otp_utils.rm_new(graph_dir=g['dir'])
+            otp_utils.rm_new(graph_dir=g.get('dir'), otp_version=g.get('version'))
 
         return ret_val
 
