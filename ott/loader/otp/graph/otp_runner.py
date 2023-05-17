@@ -42,12 +42,13 @@ class OtpRunner(CacheBase):
     def start_server(cls, graph, java_mem=None):
         status = False
 
-        dir = graph.get('dir')
-        otp_utils.mv_new_files_into_place(dir)
-
         #import pdb; pdb.set_trace()
+        dir = graph.get('dir')
+        ver = graph.get('version')
+        otp_utils.mv_new_files_into_place(dir, otp_version=ver)
+
         print("running {}".format(graph))
-        status = otp_utils.run_otp_server(otp_version=graph.get('version'), graph_dir=dir, java_mem=java_mem, **graph)
+        status = otp_utils.run_otp_server(otp_version=ver, graph_dir=dir, java_mem=java_mem, **graph)
         return status
 
     @classmethod
