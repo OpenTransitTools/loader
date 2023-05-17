@@ -1,4 +1,5 @@
-""" Run
+""" 
+run graph builder or OTP server
 """
 import sys
 
@@ -99,7 +100,7 @@ class OtpRunner(CacheBase):
         success = True
         r = OtpRunner()
         for g in r.graphs:
-            graph_path = otp_utils.get_graph_path(g.get('dir'))
+            graph_path = otp_utils.get_graph_path(g.get('dir'), otp_version=g.get('version'))
             new_path = file_utils.make_new_path(graph_path)
             if file_utils.exists(new_path):
                 log.info("restarting instance '{}' ... deploying file {} as the new Graph.obj".format(g.get('name'), new_path))
@@ -107,7 +108,7 @@ class OtpRunner(CacheBase):
                 if s is False:
                     success = False
             else:
-                log.info("a 'new' graph for instance '{}' does not exist (e.g., {} doesn't exist) - no reason to restart ... skipping.".format(g['name'], new_path))
+                log.warning("a 'new' graph for instance '{}' does not exist (e.g., {} doesn't exist) - no reason to restart ... skipping.".format(g.get('name'), new_path))
         return success
 
     @classmethod
