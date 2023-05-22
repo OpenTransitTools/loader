@@ -25,15 +25,16 @@ def get_args_parser():
 
 
 class TestRunner(object):
-    """ Run .csv tests from ./tests/ by constructing a
-        url to the trip planner, calling the url, then printing a report
+    """ 
+    run .csv tests from ./tests/ by constructing a
+    url to the trip planner, calling the url, then printing a report
     """
     this_module_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
     def __init__(self, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, report_mako_path=None, date=None):
-        """constructor builds the test runner
-        """
+        """ constructor builds the test runner """
         #import pdb; pdb.set_trace()
+
         # step 1: build OTP ws and map urls from config
         self.ws_url, self.app_url = otp_utils.get_test_urls_from_config(hostname=hostname, ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port)
 
@@ -49,8 +50,7 @@ class TestRunner(object):
         self.test_suites = ListTestSuites(ws_url=self.ws_url, map_url=self.app_url, suite_dir=suite_dir, date=date, filter=filter)
 
     def report(self, dir=None, report_name='otp_report.html'):
-        """ render a test pass/fail report with mako
-        """
+        """ render a test pass/fail report with mako """
         ret_val = None
         try:
             # step 1: mako render of the report
@@ -78,8 +78,7 @@ class TestRunner(object):
         return ret_val
 
     def send_email(self):
-        """ send email
-        """
+        """ send email """
         msg = None
         try:
             t = time.strftime('%B %d, %Y (%A) %I:%M%p').lower().replace(" 0", " ")
@@ -105,8 +104,9 @@ class TestRunner(object):
 
     @classmethod
     def test_graph_factory(cls, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
-        """ run graph tests against whatever server is running
-            @see otp_builder.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
+        """ 
+        run graph tests against whatever server is running
+        @see otp_builder.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
         """
         ret_val = False
 
@@ -117,6 +117,7 @@ class TestRunner(object):
         t = TestRunner(hostname, ws_path, ws_port, app_path, app_port, suite_dir=suite_dir, filter=filter)
         t.test_suites.run()
         t.report(graph_dir)
+
         if t.test_suites.has_errors():
             log.info('GRAPH TESTS: There were errors!')
             t.send_email()

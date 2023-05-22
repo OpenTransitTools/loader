@@ -15,7 +15,6 @@ import datetime
 import logging
 log = logging.getLogger(__file__)
 
-
 MIN_SIZE_ITIN=1000
 
 class TestResult:
@@ -25,9 +24,10 @@ class TestResult:
 
 
 class Test(object):
-    """ Params for test, along with run capability -- Test object is typically built from a row in an .csv test suite 
+    """ 
+    test object is typically built from a row in an .csv test suite 
+    params for test, along with run capability
     """
-
     def __init__(self, param_dict, line_number, ws_url, map_url, date=None):
         """ {
             OTP parmas:
@@ -108,8 +108,7 @@ class Test(object):
             self.description = "{}{}".format(self.description, note)
 
     def test_otp_result(self, strict=True):
-        """ regexp test of the itinerary output for certain strings
-        """
+        """ regexp test of the itinerary output for certain strings """
         if self.itinerary is None:
             self.result = TestResult.FAIL if strict else TestResult.WARN
             self.error_descript = "test_otp: itinerary is null"
@@ -167,8 +166,6 @@ class Test(object):
         return ret_val
 
     def init_url_params(self):
-        """
-        """
         self.otp_params = 'fromPlace={0}&toPlace={1}'.format(self.coord_from, self.coord_to)
 
         self.map_params = self.otp_params
@@ -179,8 +176,6 @@ class Test(object):
             self.is_valid = False
 
     def url_param(self, name, param, default=None):
-        """
-        """
         p = param if param else default
         if p:
             self.otp_params += '&{0}={1}'.format(name, p)
@@ -212,13 +207,10 @@ class Test(object):
         self.url_param('time', '5:00pm')
 
     def url_service(self, svc=None):
-        """
-        """
         pass
 
     def get_date_param(self, date, fmt="%Y-%m-%d"):
-        """ provide a default date (set to today) if no service provided...
-        """
+        """ provide a default date (set to today) if no service provided... """
         if self.otp_params.find('date') < 0:
             if date is None:
                 if self.service is None:
@@ -235,13 +227,9 @@ class Test(object):
         return date
 
     def url_service_next_weekday(self):
-        """
-        """
         pass
 
     def url_service_next_month_weekday(self):
-        """
-        """
         pass
 
     def url_service_next_saturday(self):
@@ -270,8 +258,7 @@ class Test(object):
             self.is_valid = False
 
     def call_otp(self, url=None):
-        """ calls the trip web service
-        """
+        """ calls the trip web service """
         self.itinerary = None
         start = time.time()
         url = url if url else self.get_ws_url()
@@ -314,9 +301,9 @@ class Test(object):
 
 
 class TestSuite(object):
-    """ this class corresponds to a single .csv 'test suite'
+    """ 
+    corresponds to a single .csv 'test suite'
     """
-
     def __init__(self, suite_dir, file):
         self.suite_dir = suite_dir
         self.file = file
@@ -359,7 +346,8 @@ class TestSuite(object):
         return self.tests
 
     def run(self, ws_url, map_url, date=None, run_test=True):
-        """ iterate the list of tests from the .csv files, run the test (call otp), and check the output.
+        """ 
+        iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
         # return values for both arrive and depart urls
         ret_val=[]
@@ -375,8 +363,7 @@ class TestSuite(object):
             if run_test:
                 self.do_test(t)
 
-            """ arrive by tests
-            """
+            """ arrive by tests """
             t = Test(p, i+2, ws_url, map_url, date)
             t.url_arrive_by()
             t.append_note(" ***NOTE***: arrive by test ")
@@ -395,12 +382,12 @@ class TestSuite(object):
 
 
 class ListTestSuites(CacheBase):
-    """ this class corresponds a list of TestSuites.  Created based on all .csv files in the base directory
+    """ 
+    corresponds to list of TestSuites (list of lists)
+    created based on loading all .csv files in the base directory
     """
-
     def __init__(self, ws_url, map_url, suite_dir=None, date=None, filter=None):
-        """ this class corresponds to a single .csv 'test suite'
-        """
+        """ this class corresponds to a single .csv 'test suite' """
         #import pdb; pdb.set_trace()
         if suite_dir is None:
             suite_dir = self.sub_dir('suites')
@@ -439,9 +426,10 @@ class ListTestSuites(CacheBase):
     def get_suites(self):
         return self.test_suites
 
-    def run(self):
+    def run(self, run_test=True):
+        # import pdb; pdb.set_trace()
         for ts in self.test_suites:
-            ts.run(self.ws_url, self.map_url, self.date)
+            ts.run(self.ws_url, self.map_url, self.date, run_test)
 
     def printer(self):
         ret_val = ""
