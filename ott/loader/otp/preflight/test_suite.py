@@ -324,14 +324,17 @@ class TestSuite(object):
         for row in reader:
             self.params.append(row)
 
-    def do_test(self, t, strict=True, num_tries=5):
+    def do_test(self, t, strict=True, num_tries=5, run_test=True):
         if t.is_valid:
-            for i in range(1, num_tries):
-                t.call_otp()
-                time.sleep(1)
-                if t.itinerary and len(t.itinerary) > MIN_SIZE_ITIN:
-                    break
-                time.sleep(i)
+            if run_test:
+                for i in range(1, num_tries):
+                    t.call_otp()
+                    time.sleep(1)
+                    if t.itinerary and len(t.itinerary) > MIN_SIZE_ITIN:
+                        break
+                    time.sleep(i)
+            else:
+                t.result = TestResult.PASS
 
             t.test_otp_result(strict)
             self.tests.append(t)
@@ -349,6 +352,7 @@ class TestSuite(object):
         """ 
         iterate the list of tests from the .csv files, run the test (call otp), and check the output.
         """
+
         # return values for both arrive and depart urls
         ret_val=[]
 
@@ -360,8 +364,7 @@ class TestSuite(object):
 
             t.depart_by_check()
             ret_val.append(t.get_ws_url())
-            if run_test:
-                self.do_test(t)
+            self.do_test(t, run_test=run_test)
 
             """ arrive by tests """
             t = Test(p, i+2, ws_url, map_url, date)
@@ -369,8 +372,8 @@ class TestSuite(object):
             t.append_note(" ***NOTE***: arrive by test ")
             t.arrive_by_check()
             ret_val.append(t.get_ws_url())
-            if run_test:
-                self.do_test(t, False)
+            self.do_test(t, False, run_test=run_test)
+
         return ret_val
 
     def printer(self, ws_url, map_url, date):

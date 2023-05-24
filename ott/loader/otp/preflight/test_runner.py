@@ -21,6 +21,7 @@ def get_args_parser():
     parser.add_argument('--port',    '-p',   help="port")
     parser.add_argument('--ws_path', '-ws',  help="OTP url path, ala 'prod' or '/otp/routers/default/plan'")
     parser.add_argument('--debug',   '-d',   help="run DEBUG suites", action='store_true')
+    parser.add_argument('--skip_testing', '-skip', '-st', help="skip running the tests and just print report", action='store_true')
     return parser
 
 
@@ -53,6 +54,7 @@ class TestRunner(object):
         """ render a test pass/fail report with mako """
         ret_val = None
         try:
+            # import pdb; pdb.set_trace()
             # step 1: mako render of the report
             suites = self.test_suites.get_suites()
 
@@ -103,7 +105,7 @@ class TestRunner(object):
         return ret_val
 
     @classmethod
-    def test_graph_factory(cls, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, graph_dir=None, delay=1):
+    def test_graph_factory(cls, hostname=None, ws_path=None, ws_port=None, app_path=None, app_port=None, suite_dir=None, filter=None, graph_dir=None, delay=1, run_test=True):
         """ 
         run graph tests against whatever server is running
         @see otp_builder.py: TestRunner.test_graph_factory(port=graph['port'], suite_dir=suite_dir, graph_dir=graph['dir'], delay=delay)
@@ -111,11 +113,12 @@ class TestRunner(object):
         ret_val = False
 
         otp_url = web_utils.make_url(hostname, ws_port, ws_path)
-        otp_utils.wait_for_otp(otp_url, delay)
+        if run_test:
+            otp_utils.wait_for_otp(otp_url, delay)
 
         log.info('GRAPH TESTS: Starting tests!')
         t = TestRunner(hostname, ws_path, ws_port, app_path, app_port, suite_dir=suite_dir, filter=filter)
-        t.test_suites.run()
+        t.test_suites.run(run_test)
         t.report(graph_dir)
 
         if t.test_suites.has_errors():
@@ -135,10 +138,11 @@ class TestRunner(object):
     def test_graph_factory_args(cls, args, suite_dir, graph_dir):
         """ uses cmd-line params from argparse """
         return cls.test_graph_factory(args.hostname, args.ws_path, args.port,
-                                      graph_dir=graph_dir, suite_dir=suite_dir, filter=args.test_suite)
+                                      graph_dir=graph_dir, suite_dir=suite_dir, filter=args.test_suite,
+                                      run_test=not args.skip_testing)
 
     @classmethod
-    def test_graph_factory_config(cls, graph, hostname=None, suite_dir=None, delay=1, filter=None):
+    def test_graph_factory_config(cls, graph, hostname=None, suite_dir=None, delay=1, filter=None, run_tests=True):
         """ expect a graph def from the config .ini file to populate test params """
         port = graph.get('port')
         ws_path = graph.get('ws_path')
@@ -148,7 +152,7 @@ class TestRunner(object):
         return cls.test_graph_factory(hostname=hostname,
                                       ws_path=ws_path, ws_port=ws_port, app_path=app_path, app_port=app_port,
                                       graph_dir=graph.get('dir', None), suite_dir=suite_dir, filter=filter,
-                                      delay=delay)
+                                      delay=delay, run_test=run_tests)
 
 
 def main():
@@ -166,7 +170,7 @@ def main():
         g = otp_utils.get_graphs_from_config()
         graph = otp_utils.find_graph(g, args.name)
     if graph:
-        TestRunner.test_graph_factory_config(graph, hostname=args.hostname, suite_dir=dir, filter=args.test_suite)
+        TestRunner.test_graph_factory_config(graph, hostname=args.hostname, suite_dir=dir, filter=args.test_suite, run_tests=not args.skip_testing)
     else:
         TestRunner.test_graph_factory_args(args, suite_dir=dir, graph_dir=dir)
 
