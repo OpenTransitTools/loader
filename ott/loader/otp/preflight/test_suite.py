@@ -273,6 +273,9 @@ class Test(object):
             self.result = TestResult.WARN
             log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
 
+    def is_call(self):
+        return "otp_ct" in self.ws_url or "otp_call" in self.ws_url
+
     @classmethod
     def make_url(cls, url, separater="?submit&module=planner"):
         ret_val = url
