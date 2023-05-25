@@ -303,18 +303,19 @@ class Test(object):
         """
         calltaker/otp-react-redux UI has a different url path, along with some unique parameter values
         eg:
-         http://call-test.trimet.org/#/?fromPlace=PDX...
-         arrive=true 
-         time=13:45
-         mode=BUS,TRAM,RAIL,GONDOLA,WALK
+          http://call-test.trimet.org/#/?fromPlace=PDX...
+            time=13:45
+            mode=BUS,TRAM,RAIL,GONDOLA,WALK
         """
-        arrive = 'true' if self.arrive_by else 'false'
+        #import pdb; pdb.set_trace()
+        arrive = 'true' if self.arrive_by or 'arriveBy=true' in self.otp_params else 'false'
         time = date_utils.english_to_24hr(self.time)
         mode =  otp_utils.breakout_transit_modes(self.mode)
         params = "fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
             self.coord_from, self.coord_to, time, arrive, mode
         )
-        return "{}{}".format(self.make_url(self.map_url, "#/?"), params)
+        ret_val = "{}{}".format(self.make_url(self.map_url, "#/?"), params)
+        return ret_val
 
     def get_ridetrimetorg_url(self):
         return "http://maps.trimet.org?submit&" + self.map_params
@@ -336,7 +337,8 @@ class TestSuite(object):
         self.read()
 
     def read(self):
-        """ read a .csv file, and save each row as a set of test params
+        """
+        read a .csv file, and save each row as a set of test params
         """
         file = open(self.file_path, 'r')
         reader = csv.DictReader(file)
