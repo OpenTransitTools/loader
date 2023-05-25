@@ -85,7 +85,7 @@ import datetime
         <div class="${res}"><span class="${res}">${res}</span> - ${test.description} (.csv line #${test.csv_line_number})
             | <a href="${test.get_ws_url()}" title="${expect_title}" target="#">Planner WS</a>
             % if test.is_call():
-            | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Call View</a>
+            | <a href="${test.get_otpRR_url()}" title="${expect_title}" target="#">Call View</a>
             % else:
             | <a href="${test.get_map_url()}" title="${expect_title}" target="#">Map View</a>
             % endif

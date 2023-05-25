@@ -274,7 +274,7 @@ class Test(object):
             log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
 
     def is_call(self):
-        return "otp_ct" in self.ws_url or "otp_call" in self.ws_url
+        return "otp_ct" in self.ws_url or "otp_call_REMOVE-ME-WHEN-DEPLOYED" in self.ws_url
 
     @classmethod
     def make_url(cls, url, separater="?submit&module=planner"):
@@ -298,6 +298,23 @@ class Test(object):
 
     def get_map_url(self):
         return "{}&{}&debug_layers=true".format(self.make_url(self.map_url), self.map_params)
+
+    def get_otpRR_url(self):
+        """
+        calltaker/otp-react-redux UI has a different url path, along with some unique parameter values
+        eg:
+         http://call-test.trimet.org/#/?fromPlace=PDX...
+         arrive=true 
+         time=13:45
+         mode=BUS,TRAM,RAIL,GONDOLA,WALK
+        """
+        arrive = 'true' if self.arrive_by else 'false'
+        time = date_utils.english_to_24hr(self.time)
+        mode =  otp_utils.breakout_transit_modes(self.mode)
+        params = "fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
+            self.coord_from, self.coord_to, time, arrive, mode
+        )
+        return "{}{}".format(self.make_url(self.map_url, "#/?"), params)
 
     def get_ridetrimetorg_url(self):
         return "http://maps.trimet.org?submit&" + self.map_params
