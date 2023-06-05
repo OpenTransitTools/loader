@@ -6,7 +6,7 @@
     "boardSlack": "0s",
     "alightSlack": "0s",
     "transferSlack": 180,
-    "carReluctance": 5,
+    "carReluctance": 5.0,
     "waitReluctance": 0.9,
     "walkReluctance": 1.75,
     "stairsReluctance": 1.65,
