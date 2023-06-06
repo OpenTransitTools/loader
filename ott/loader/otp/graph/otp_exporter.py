@@ -82,7 +82,7 @@ class OtpExporter(OtpBuilder):
                     for p in config_paths:
                         scp.put(p, server_dir)
                 except Exception as e:
-                    log.warn(e)
+                    log.warning(e)
                     ret_val = False
                 finally:
                     if scp:

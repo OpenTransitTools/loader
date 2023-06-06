@@ -262,6 +262,7 @@ class Test(object):
         self.itinerary = None
         start = time.time()
         url = url if url else self.get_ws_url()
+        url = self.fix_url(url)
         self.itinerary = otp_utils.call_planner_svc(url)
         end = time.time()
         self.response_time = end - start
@@ -272,6 +273,20 @@ class Test(object):
         else:
             self.result = TestResult.WARN
             log.info("call_otp: :::NOTE::: response time took *longer than 30 seconds* for url {}".format(url))
+
+    def fix_url(self, url):
+        """
+        this routine will clean up parameter values in a url
+        e.g., OTP 2.x throws an exception on optimize=BLAH, when BLAH is unknown to OTP (like TRANSFERS), 
+              so this routine cleans that
+        """
+        ret_val = url
+        try:
+            if self.is_call() and "optimize=TRANSFERS" in url:
+                ret_val = url.replace("optimize=TRANSFERS", "optimize=QUICK")
+        except Exception as e:
+            log.warning(e)
+        return ret_val
 
     def is_call(self):
         return "otp_ct" in self.ws_url or "otp_call_REMOVE-ME-WHEN-DEPLOYED" in self.ws_url
@@ -294,7 +309,9 @@ class Test(object):
         if "time=" in self.otp_params and "date=" not in self.otp_params:
             d = date_utils.today_str()
             self.url_param('date', d)
-        return "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
+        ret_val = "{}&{}".format(self.make_url(self.ws_url), self.otp_params)
+        ret_val = self.fix_url(ret_val)
+        return ret_val
 
     def get_map_url(self):
         return "{}&{}&debug_layers=true".format(self.make_url(self.map_url), self.map_params)
