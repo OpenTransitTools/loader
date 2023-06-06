@@ -328,7 +328,7 @@ class Test(object):
         arrive = 'true' if self.arrive_by or 'arriveBy=true' in self.otp_params else 'false'
         time = date_utils.english_to_24hr(self.time)
         mode =  otp_utils.breakout_transit_modes(self.mode)
-        params = "fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
+        params = "sessionId=SMILE&fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
             self.coord_from, self.coord_to, time, arrive, mode
         )
         ret_val = "{}{}".format(self.make_url(self.map_url, "#/?"), params)
