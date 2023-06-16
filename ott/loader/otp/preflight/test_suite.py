@@ -4,6 +4,7 @@ from ott.utils.cache_base import CacheBase
 from ott.utils import otp_utils
 from ott.utils import date_utils
 from ott.utils import object_utils
+from ott.utils import num_utils
 
 import os
 import sys
@@ -182,8 +183,20 @@ class Test(object):
             self.map_params += '&{0}={1}'.format(name, p)
 
     def url_distance(self, dist=None):
-        self.url_param('maxWalkDistance', dist, self.distance)
-        self.url_param('Walk', dist, self.distance)
+        #import pdb; pdb.set_trace()
+        if self.is_call():
+            dist = num_utils.to_int(dist, self.distance)
+            if dist:
+                if   dist > 9000: dist = 0
+                elif dist > 2000: dist = 2
+                elif dist > 1500: dist = 5
+                elif dist > 1000: dist = 10
+                elif dist >  500: dist = 15
+                else: dist = 20
+                self.url_param('walkReluctance', dist)
+        else:
+            self.url_param('maxWalkDistance', dist, self.distance)
+            self.url_param('Walk', dist, self.distance)
 
     def url_mode(self, mode=None):
         self.url_param('mode', mode, self.mode)
@@ -328,7 +341,7 @@ class Test(object):
         arrive = 'true' if self.arrive_by or 'arriveBy=true' in self.otp_params else 'false'
         time = date_utils.english_to_24hr(self.time)
         mode =  otp_utils.breakout_transit_modes(self.mode)
-        params = "sessionId=SMILE&fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
+        params = "sessionId=test&fromPlace={}&toPlace={}&time={}&arriveBy={}&mode={}&ui_activeItinerary=0&ui_activeSearch=TEST".format(
             self.coord_from, self.coord_to, time, arrive, mode
         )
         ret_val = "{}{}".format(self.make_url(self.map_url, "#/?"), params)
