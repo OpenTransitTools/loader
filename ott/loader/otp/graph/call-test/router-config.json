@@ -21,7 +21,7 @@
       "minTransitTimeCoefficient": 0.5,
       "minWaitTimeCoefficient": 0.5,
       "minWindow": "8h",
-      "maxWindow": "12h"
+      "maxWindow": "8h"
     }
   },
   "updaters": [
