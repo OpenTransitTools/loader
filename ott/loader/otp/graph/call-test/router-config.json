@@ -1,6 +1,4 @@
 {
-  "streetRoutingTimeout": "7s",
-  "includeOsmTags": true,
   "routingDefaults": {
     "maxJourneyDuration": "6h",
     "boardSlack": "0s",
@@ -18,38 +16,43 @@
     }
   },
   "transit": {
-    "maxNumberOfTransfers": 4
+    "maxNumberOfTransfers": 4,
+    "dynamicSearchWindow": {
+      "minTransitTimeCoefficient": 0.5,
+      "minWaitTimeCoefficient": 0.5,
+      "minWindow": "8h",
+      "maxWindow": "12h"
+    }
   },
   "updaters": [
     {
       "type": "real-time-alerts",
-      "frequencySec": 60,
+      "frequency": "60s",
       "earlyStartSec": 864000,
       "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
       "feedId": "TriMet"
     },
     {
       "type": "stop-time-updater",
-      "frequencySec": 31,
+      "frequency": "31s",
       "url": "http://trimet.org/transweb/ws/V1/TripUpdate",
       "feedId": "TriMet"
     },
     {
       "type": "vehicle-positions",
-      "frequencySec": 17,
-      "sourceType": "gtfs-http",
+      "frequency": "17s",
       "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
       "feedId": "TriMet"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 47,
+      "frequency": "47s",
       "sourceType": "gbfs",
       "url": "https://gbfs.biketownpdx.com/gbfs/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 41,
+      "frequency": "41s",
       "network": "BIRD",
       "sourceType": "gbfs",
       "url": "https://mds.bird.co/gbfs/v2/public/portland/gbfs.json",
@@ -57,14 +60,14 @@
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 43,
+      "frequency": "43s",
       "network": "LIME",
       "sourceType": "gbfs",
       "url": "https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequencySec": 45,
+      "frequency": "45s",
       "network": "SPIN",
       "sourceType": "gbfs", 
       "url": "https://gbfs.spin.pm/api/gbfs/v2_3/portland/gbfs",
