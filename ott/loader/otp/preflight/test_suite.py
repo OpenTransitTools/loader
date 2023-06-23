@@ -188,11 +188,10 @@ class Test(object):
             dist = num_utils.to_int(dist, self.distance)
             if dist:
                 if   dist > 9000: dist = 0
-                elif dist > 2000: dist = 2
-                elif dist > 1500: dist = 5
-                elif dist > 1000: dist = 10
-                elif dist >  500: dist = 15
-                else: dist = 20
+                elif dist > 2000: dist = 1
+                elif dist > 1000: dist = 2
+                elif dist >  500: dist = 3
+                else: dist = 1
                 self.url_param('walkReluctance', dist)
         else:
             self.url_param('maxWalkDistance', dist, self.distance)
