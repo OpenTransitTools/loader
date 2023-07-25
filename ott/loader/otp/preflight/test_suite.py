@@ -186,12 +186,15 @@ class Test(object):
         #import pdb; pdb.set_trace()
         if self.is_call():
             dist = num_utils.to_int(dist, self.distance)
+            """
+            lower the walk reluctance for shorter 
+            """
             if dist:
-                if   dist > 9000: dist = 0
-                elif dist > 2000: dist = 1
-                elif dist > 1000: dist = 2
-                elif dist >  500: dist = 3
-                else: dist = 1
+                if   dist > 9000: dist = 1
+                elif dist > 2000: dist = 2
+                elif dist > 1000: dist = 4
+                elif dist >  500: dist = 5
+                else: dist = 3
                 self.url_param('walkReluctance', dist)
         else:
             self.url_param('maxWalkDistance', dist, self.distance)
