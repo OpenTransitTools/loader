@@ -6,6 +6,10 @@
   "banDiscouragedWalking ": true,
   "banDiscouragedBiking ": true,
 
+  "fares": {
+    "type": "combine-interlined-legs"
+  },
+
   "includeEllipsoidToGeoidDifference": true,
   "multiThreadElevationCalculations": true,
   "fetchElevationUS": true,
