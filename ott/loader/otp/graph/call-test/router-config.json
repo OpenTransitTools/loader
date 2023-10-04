@@ -1,12 +1,9 @@
 {
   "routingDefaults": {
     "maxJourneyDuration": "6h",
-    "maxHours": 6,
-    "useRequestedDateTimeInMaxHours": true,
     "boardSlack": "0M",
     "alightSlack": "0M",
     "transferSlack": 180,
-    "maxTransfers": 4,
     "waitReluctance": 0.9,
     "walkReluctance": 2.75,
     "stairsReluctance": 1.65,
@@ -14,7 +11,6 @@
     "numItineraries": 3,
     "disableAlertFiltering": true,
     "invalidDateStrategy": "USE_CURRENT",
-    "nonTransitGeneralizedCostLimit": "0 + 0.5x",
     "itineraryFilters": {
       // only show non-transit (ie. walking) when it's at least as good as the transit option
       "nonTransitGeneralizedCostLimit": "0 + 1.0 x"
