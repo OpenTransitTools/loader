@@ -32,31 +32,31 @@
   "updaters": [
     {
       "type": "real-time-alerts",
-      "frequency": 20,
+      "frequency": "20s",
       "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
       "feedId": "TriMet"
     },
     {
       "type": "stop-time-updater",
-      "frequency": 31,
+      "frequency": "31s",
       "url": "http://trimet.org/transweb/ws/V1/TripUpdate",
       "feedId": "TriMet"
     },
     {
       "type": "vehicle-positions",
-      "frequency": 37,
+      "frequency": "37s",
       "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
       "feedId": "TriMet"
     },
     {
       "type": "vehicle-rental",
-      "frequency": 40,
+      "frequency": "40s",
       "sourceType": "gbfs",
       "url": "https://gbfs.biketownpdx.com/gbfs/2.3/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequency": 41,
+      "frequency": "41s",
       "network": "BIRD",
       "sourceType": "gbfs",
       "url": "https://mds.bird.co/gbfs/v2/public/portland/gbfs.json",
@@ -64,14 +64,14 @@
     },
     {
       "type": "vehicle-rental",
-      "frequency": 43,
+      "frequency": "43s",
       "network": "LIME",
       "sourceType": "gbfs",
       "url": "https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json"
     },
     {
       "type": "vehicle-rental",
-      "frequency": 45,
+      "frequency": "45s",
       "network": "SPIN",
       "sourceType": "gbfs", 
       "url": "https://gbfs.spin.pm/api/gbfs/v2_3/portland/gbfs",
