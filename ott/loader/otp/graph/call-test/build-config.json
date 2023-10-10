@@ -1,18 +1,7 @@
 {
-  "htmlAnnotations": true,
   "transitModelTimeZone": "America/Los_Angeles",
-  "maxTransferDistance": 600,
-  "disableAlertFiltering": true,
-  "banDiscouragedWalking ": true,
-  "banDiscouragedBiking ": true,
-
-  "fares": {
-    "type": "combine-interlined-legs"
-  },
-
   "includeEllipsoidToGeoidDifference": true,
   "multiThreadElevationCalculations": true,
-  "fetchElevationUS": true,
   "writeCachedElevations": true,
   "elevationBucket": {
     "accessKey" : "${NED_ACCESS}",
@@ -20,12 +9,8 @@
     "bucketName": "${NED_BUCKET}"
   },
 
-  "includeOsmTags": true,
   "osmNaming": "portland",
   "osmDefaults": {
     "osmTagMapping": "portland"
-  },
-
-  "micromobilityTravelRestrictionsUrlOrFile":  "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_riding_zones.geojson",
-  "micromobilityDropoffRestrictionsUrlOrFile": "file:/home/otp/loader/ott/loader/otp/graph/config/regions/portland_OR/no_parking_zones.geojson"
+  }
 }
