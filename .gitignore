@@ -5,6 +5,7 @@ build-config.json
 router-config.json
 lucene
 bkup
+*.tar
 *.old
 *-old
 *.urls
