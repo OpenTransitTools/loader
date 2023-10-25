@@ -10,7 +10,7 @@ then
 fi
 
 db_url=$1
-def_db=postgres
+def_db=${2:-postgres}
 user=ott
 db=ott
 osm_db=osm
