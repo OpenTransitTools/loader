@@ -7,7 +7,7 @@ README = open(os.path.join(here, 'README.md')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
-    'venusian==1.2.0',
+    'venusian',
     'gtfsdb',
     'ott.gtfsdb_realtime',
     'ott.gbfsdb',
@@ -27,7 +27,7 @@ extras_require = dict(
 
 setup(
     name='ott.loader',
-    version='0.1.1',
+    version='0.1.2',
     description='Open Transit Tools - OTT Loader',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
