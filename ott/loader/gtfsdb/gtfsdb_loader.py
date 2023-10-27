@@ -29,7 +29,7 @@ class GtfsdbLoader(CacheBase):
     def __init__(self, feed_filter="all"):
         super(GtfsdbLoader, self).__init__(section='gtfs')
         self.feeds = gtfs_utils.get_feeds_from_config(self.config, feed_filter)
-        self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott@127.0.0.1:5432/ott')
+        self.db_url = self.config.get('url', section='db', def_val='postgresql+psycopg2://ott:ott@127.0.0.1:5432/ott')
         self.is_geospatial = self.config.get_bool('is_geospatial', section='db')
         self.current_tables = self.config.get_bool('current_tables', section='db', def_val=True)
 

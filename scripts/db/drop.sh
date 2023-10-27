@@ -6,3 +6,4 @@ DIR=`dirname $0`
 
 $psql -d ${db_url}${def_db} -c "DROP DATABASE ${db};"
 $psql -d ${db_url}${def_db} -c "DROP DATABASE ${osm_db};"
+$psql -d ${db_url}${def_db} -c "DROP USER ${user};"

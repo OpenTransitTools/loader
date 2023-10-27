@@ -11,7 +11,10 @@ fi
 
 db_url=$1
 def_db=${2:-postgres}
+
+# IMPORTANT: there are are python configs for user, pass and db in loader/config/app.ini, which also need to change
 user=ott
+pass=ott
 db=ott
 osm_db=osm
 
