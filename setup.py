@@ -13,7 +13,7 @@ requires = [
     'ott.gbfsdb',
     'ott.osm',
     'ott.utils',
-    'psycopg2',
+    'psycopg2-binary',
     'mako',
     'scp',
     'paramiko',
