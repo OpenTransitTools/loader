@@ -1,7 +1,12 @@
 {
   "transitModelTimeZone": "America/Los_Angeles",
+  "areaVisibility": true,
+  "matchBusRoutesToStreets": true,
+  "maxTransferDuration": "PT30M",
   "includeEllipsoidToGeoidDifference": true,
+
   "multiThreadElevationCalculations": true,
+  "readCachedElevations": true,
   "writeCachedElevations": true,
   "elevationBucket": {
     "accessKey" : "${NED_ACCESS}",
