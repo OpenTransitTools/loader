@@ -33,7 +33,8 @@ class OtpRunner(CacheBase):
         parser = otp_utils.get_initial_arg_parser('otp_runner')
         parser.add_argument('--server', '-s',  required=False, action='store_true', help="run 'named' graph in server mode")
         parser.add_argument('--all',    '-a',  required=False, action='store_true', help="run all graphs in server mode")
-        parser.add_argument('--viz',    '-v',  required=False, action='store_true', help="run 'named' graph with the vizualizer client")
+        parser.add_argument('--version', '-v', required=False, default="*",       help="filter version (default is '1.x')")
+        parser.add_argument('--viz',    '-vz', required=False, action='store_true', help="run 'named' graph with the vizualizer client")
         parser.add_argument('--mem',    '-lm', required=False, action='store_true', help="set the jvm heap memory for the graph")
         args = parser.parse_args()
         return args, parser
@@ -98,9 +99,15 @@ class OtpRunner(CacheBase):
         search configured graph cache's, and if we find a Graph.obj-new, we'll move that into place and
         restart the otp instance
         """
-        success = True
         r = OtpRunner()
+        args, parser = r.get_args()
+
+        success = True
         for g in r.graphs:
+            if args.version != "*" and args.version != g.get('version'):
+                log.warning("skipping graph {} ({}), since cmdline says to filter version {}".format(g.get('name'), g.get('version'), args.version))
+                continue
+
             graph_path = otp_utils.get_graph_path(g.get('dir'), otp_version=g.get('version'))
             new_path = file_utils.make_new_path(graph_path)
             if file_utils.exists(new_path):
