@@ -168,7 +168,7 @@ class GtfsdbExporter(GtfsdbLoader):
         from ott.utils.parse.cmdline import gtfs_cmdline
         parser = gtfs_cmdline.gtfs_parser(exe_name='bin/gtfsdb_dump_scp', do_parse=False)
         gtfs_cmdline.server_option(parser)
-        gtfs_cmdline.clear_option(parser)
+        gtfs_cmdline.misc_options(parser, "clear")
         p = parser.parse_args()
 
         # step 2: dump feed(s)
