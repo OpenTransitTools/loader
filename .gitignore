@@ -6,6 +6,7 @@ router-config.json
 lucene
 bkup
 *.tar
+*.pbf
 *.old
 *-old
 *.urls
