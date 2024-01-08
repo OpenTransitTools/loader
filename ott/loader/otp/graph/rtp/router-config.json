@@ -25,22 +25,70 @@
   },
   "updaters": [
     {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/TripUpdates",
+      "feedId": "C-TRAN"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/VehiclePostions",
+      "feedId": "C-TRAN"
+    },
+    {
       "type": "real-time-alerts",
-      "frequency": "20s",
-      "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
-      "feedId": "TriMet"
+      "frequency": "45s",
+      "url": "https://mysmartbus.com/gtfs-rt/alerts",
+      "feedId": "SMART"
+    },
+    {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "https://mysmartbus.com/gtfs-rt/tripupdates",
+      "feedId": "SMART"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://mysmartbus.com/gtfs-rt/vehiclepositions",
+      "feedId": "SMART"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true",
+      "feedId": "TRIMET"
     },
     {
       "type": "stop-time-updater",
       "frequency": "31s",
       "url": "http://trimet.org/transweb/ws/V1/TripUpdate",
-      "feedId": "TriMet"
+      "feedId": "TRIMET"
     },
     {
       "type": "vehicle-positions",
-      "frequency": "37s",
+      "frequency": "29s",
       "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
       "feedId": "TriMet"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/alert",
+      "feedId": "YAMHILL"
+    },
+    {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/tripupdate",
+      "feedId": "YAMHILL"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/vehicleposition",
+      "feedId": "YAMHILL"
     },
     {
       "type": "vehicle-rental",
