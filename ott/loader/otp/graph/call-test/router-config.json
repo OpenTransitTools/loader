@@ -28,19 +28,19 @@
       "type": "real-time-alerts",
       "frequency": "20s",
       "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true/",
-      "feedId": "TriMet"
+      "feedId": "TRIMET"
     },
     {
       "type": "stop-time-updater",
       "frequency": "31s",
       "url": "http://trimet.org/transweb/ws/V1/TripUpdate",
-      "feedId": "TriMet"
+      "feedId": "TRIMET"
     },
     {
       "type": "vehicle-positions",
       "frequency": "37s",
       "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
-      "feedId": "TriMet"
+      "feedId": "TRIMET"
     },
     {
       "type": "vehicle-rental",
