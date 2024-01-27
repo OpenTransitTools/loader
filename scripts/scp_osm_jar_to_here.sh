@@ -8,10 +8,14 @@ rm -f ~/rtp/$osm
 mkdir ~/rtp/$osm
 cmd="scp $svr:~/$osm/*[fls] ~/rtp/$osm"
 echo $cmd
-eval $cmd
+#eval $cmd
 
 # scp OSM
 otp="loader/ott/loader/otp/graph"
 cmd="scp $svr:~/$otp/$fdir/*.jar ~/rtp/$otp/$tdir/"
+echo $cmd
+eval $cmd
+
+cmd="scp -r $svr:~/$otp/$fdir/ned ~/rtp/$otp/$tdir/"
 echo $cmd
 eval $cmd
