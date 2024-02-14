@@ -42,6 +42,11 @@
     },
     {
       "type": "gtfs",
+      "feedId": "CHERRIOTS",
+      "source": "CHERRIOTS.gtfs.zip"
+    },
+    {
+      "type": "gtfs",
       "feedId": "CLACKAMAS",
       "source": "CLACKAMAS.gtfs.zip"
     },
@@ -49,6 +54,11 @@
       "type": "gtfs",
       "feedId": "CTRAN",
       "source": "CTRAN.gtfs.zip"
+    },
+    {
+      "type": "gtfs",
+      "feedId": "MATS",
+      "source": "MATS.gtfs.zip"
     },
     {
       "type": "gtfs",
@@ -99,11 +109,6 @@
       "type": "gtfs",
       "feedId": "YAMHILL",
       "source": "YAMHILL.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "CHERRIOTS",
-      "source": "CHERRIOTS.gtfs.zip"
     }
   ]
 }

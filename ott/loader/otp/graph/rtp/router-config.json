@@ -73,6 +73,12 @@
       "feedId": "TRIMET"
     },
     {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://ewp.transloc.com/subscriptions/gtfsrt/vehicles.ashx",
+      "feedId": "WAPARK"
+    },
+    {
       "type": "real-time-alerts",
       "frequency": "45s",
       "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/alert",
