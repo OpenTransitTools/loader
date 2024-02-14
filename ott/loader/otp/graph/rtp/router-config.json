@@ -114,6 +114,7 @@
   ],
   "vectorTiles": {
     "basePath": "/rtp/vectorTiles",
+    "attribution": "<a href='https://trimet.org/mod'>Regional Partners</a>",
     "layers": [
       {
         "name": "stops",
