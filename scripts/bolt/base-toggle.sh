@@ -1,7 +1,9 @@
+DIR=`dirname $0`
+. $DIR/servers.sh
+
 # LB script settings
-ACCOUNTS=${1:-"rtp"}
-ECHO_SETTINGS=${2:-"FALSE"}
-LOAD_BALANCER=${3:-"web_ws-trimet-org@rj-st-pubweb01"}
+ECHO_SETTINGS=${1:-"FALSE"}
+LOAD_BALANCER=${2:-"web_ws-trimet-org@rj-st-pubweb01"}
 
 LOG_FILE=/tmp/toggle.txt
 
@@ -13,9 +15,23 @@ GREEN="$TOGGLE_SCRIPT green"
 STATUS="$TOGGLE_SCRIPT status"
 
 
-function boltCmd() {
+function boltExe() {
+  CMD=${1:-$STATUS}
+  MACH=${2:-$LOAD_BALANCER}
+  ECHO=${3:-$ECHO_SETTINGS}
+
+  bolt command run "$CMD" --targets "$MACH" >> $LOG_FILE 2>&1
+
+  if [ $ECHO == "TRUE" ]; then
+    cat $LOG_FILE
+  fi
+}
+
+
+function boltLbCmd() {
   CMD=${1:-$STATUS}
   ECHO=${3:-$ECHO_SETTINGS}
+  MACH=${4:-$LOAD_BALANCER}
 
   if [ $2 ]; then
     rm -f $LOG_FILE > /dev/null 2>&1
@@ -23,7 +39,7 @@ function boltCmd() {
 
   for a in $ACCOUNTS
   do
-    bolt command run "$CMD $a" --targets $LOAD_BALANCER >> $LOG_FILE 2>&1
+    boltExe "$CMD $a" $MACH FALSE
   done
 
   if [ $ECHO == "TRUE" ]; then
@@ -32,12 +48,14 @@ function boltCmd() {
 }
 
 
+#
+# returns 1 if the MACH val is not found in the log file
+# (e.g., grep returns 0 on success and 1 on fail)
+#
 function isBlue() {
-  # returns 1 if the MACH val is not found in the log file
-  # (e.g., grep returns 0 on success and 1 on fail)
   MACH=${1:-"GREEN"}
 
-  boltCmd "$STATUS" RM "NO";
+  boltExe "$STATUS" RM "NO";
   GREP=`grep $MACH $LOG_FILE`;
   return $?
 }

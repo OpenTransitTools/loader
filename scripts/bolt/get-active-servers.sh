@@ -3,11 +3,12 @@ DIR=`dirname $0`
 
 isBlue
 if [ $? == 1 ]; then
-  boltLbCmd "$BLUE" RM
+  echo BLUE
+  echo "otp@cs-st-mapapp01"
 else
-  boltLbCmd "$GREEN" RM
+  echo GREEN
+  echo "otp@rj-st-mapapp01"
 fi
-
 
 if [ $ECHO_SETTINGS == "TRUE" ]; then
   boltLbCmd
