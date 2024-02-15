@@ -119,7 +119,7 @@
     }
   ],
   "vectorTiles": {
-    "basePath": "/rtp/vectorTiles",
+    "basePath": "/rtp/routers/default/vectorTiles",
     "attribution": "<a href='https://trimet.org/mod'>Regional Partners</a>",
     "layers": [
       {
