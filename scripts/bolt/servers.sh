@@ -1,5 +1,5 @@
-BLUE_STAG="rj-st-mapapp01"
-GREEN_STAG="cs-st-mapapp01"
+BLUE_STAG="cs-st-mapapp01"
+GREEN_STAG="rj-st-mapapp01"
 
 if [ $USER == 'otp' ]; then
   ACCOUNTS="rtp"

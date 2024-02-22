@@ -4,16 +4,16 @@ DIR=`dirname $0`
 isBlue
 if [ $? == 1 ]; then
   CUR=BLUE
-  TOG=$GREEN
+  TOG=$GREEN_STAG
   SCP=$USER@$GREEN_STAG
 else
   CUR=GREEN
-  TOG=$BLUE
+  TOG=$BLUE_STAG
   SCP=$USER@$BLUE_STAG
 fi
 
 echo $CUR is active, so update $SCP
-
-RTP_DIR=~/rtp/loader/ott/loader/otp/graph/rtp
-ls $RTP_DIR/*new $RTP_DIR/*json
+ls -l $RTP_DIR/*new $RTP_DIR/*json
 scp $RTP_DIR/*new $RTP_DIR/*json $SCP:$RTP_DIR/
+rm -f $LOG_FILE
+boltExe "$RUN_NEW" $TOG TRUE
