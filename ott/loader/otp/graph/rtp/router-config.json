@@ -23,6 +23,10 @@
       "maxWindow": "8h"
     }
   },
+  "flex": {
+    "maxAccessWalkDuration": "10m",
+    "maxEgressWalkDuration": "10m"
+  },
   "updaters": [
     {
       "type": "stop-time-updater",

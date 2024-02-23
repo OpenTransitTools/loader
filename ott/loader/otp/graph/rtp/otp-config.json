@@ -1,14 +1,17 @@
 {
   "otpFeatures" : {
-    "TransferConstraints": true,
     "SandboxAPIMapboxVectorTilesApi": true,
     "SandboxAPIParkAndRideApi": true,
-    "VehicleToStopHeuristics": true,
-    "FlexRouting": true,
-    "OptimizeTransfers": false,
     "FloatingBike": true,
-    "ParallelRouting":true,
     "Co2Emissions": true,
+    "VehicleToStopHeuristics": true,
+    "TransferConstraints": true,
+    "TransferAnalyzer": true,
+    "OptimizeTransfers": true,
+    "ParallelRouting":true,
+    "RealtimeResolver": true,
+    "GtfsGraphQlApi": true,
+    "FlexRouting": true,
     "FaresV2" : true
   }
 }
