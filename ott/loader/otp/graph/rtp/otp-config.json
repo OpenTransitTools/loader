@@ -6,7 +6,7 @@
     "Co2Emissions": true,
     "VehicleToStopHeuristics": true,
     "TransferConstraints": true,
-    "TransferAnalyzer": true,
+    "TransferAnalyzer": false,
     "OptimizeTransfers": true,
     "ParallelRouting":true,
     "RealtimeResolver": true,

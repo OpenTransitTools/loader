@@ -2,14 +2,22 @@ CACHE=~/rtp/cache
 LOADR=~/rtp/loader
 RTP=~/rtp/loader/ott/loader/otp/graph/rtp
 
-echo "update gtfs"
-rm $CACHE/*
-cd $LOADR
-bin/gtfs_update
+UP_GTFS=${1:-"NOPE"}
+if [ $UP_GTFS == GTFS ]; then
+  echo "update gtfs"
+  rm $CACHE/*
+  cd $LOADR
+  bin/gtfs_update
 
-echo "patch CTRAN"
-cd $CACHE
-cp OLD/CTRAN*zip .
+  cd $CACHE
+
+  echo "patch CTRAN"
+  cp OLD/CTRAN*zip .
+
+  echo "patch SMART"
+  cp OLD/SMART*zip .
+fi
+
 
 cd $RTP
 rm *.zip or-wa*
