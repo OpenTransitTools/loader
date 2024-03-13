@@ -60,8 +60,10 @@ function isBlue() {
   rm -f $LOG_FILE 
   boltLbCmd "$STATUS" RM "NO";
   if grep -q BLUE $LOG_FILE; then
+    #echo "BLUE"
     retVal=1
   else
+    #echo "GREEN"; cat $LOG_FILE
     retVal=0
   fi
   return $retVal

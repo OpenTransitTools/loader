@@ -3,11 +3,11 @@ DIR=`dirname $0`
 
 isBlue
 if [ $? == 1 ]; then
-  CUR=BLUE
+  CUR="BLUE ($BLUE_STAG)"
   TOG=$GREEN_STAG
   SCP=$USER@$GREEN_STAG
 else
-  CUR=GREEN
+  CUR="GREEN ($GREEN_STAG)"
   TOG=$BLUE_STAG
   SCP=$USER@$BLUE_STAG
 fi
