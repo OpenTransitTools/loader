@@ -4,13 +4,13 @@
     "SandboxAPIParkAndRideApi": true,
     "FloatingBike": true,
     "Co2Emissions": true,
-    "VehicleToStopHeuristics": true,
     "TransferConstraints": true,
     "TransferAnalyzer": false,
     "OptimizeTransfers": true,
-    "ParallelRouting":true,
+    "ParallelRouting": true,
     "RealtimeResolver": true,
     "GtfsGraphQlApi": true,
+    "ReportApi": true,
     "FlexRouting": true,
     "FaresV2" : true
   }
