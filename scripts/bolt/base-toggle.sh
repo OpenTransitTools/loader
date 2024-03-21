@@ -14,7 +14,11 @@ FLIP="$TOGGLE_SCRIPT flip"
 BLUE="$TOGGLE_SCRIPT blue"
 GREEN="$TOGGLE_SCRIPT green"
 STATUS="$TOGGLE_SCRIPT status"
+
 RUN_NEW="cd ~/rtp/loader; rm nohup.out; nohup bin/otp_restart_new_graphs &"
+RUN_NEW="cd ~/rtp/loader; tmux; bin/otp_restart_new_graphs > out.txt 2>&1"
+RUN_RTP="cd ~/rtp/loader; tmux; bin/otp_run -s rtp > out.txt 2>&"1
+#RUN_RTP="cd ~/rtp/loader; tmux new-session -d -s my_session 'bin/otp_run -s rtp > out.txt 2>&1'"
 
 
 function boltExe() {
@@ -67,4 +71,20 @@ function isBlue() {
     retVal=0
   fi
   return $retVal
+}
+
+
+function isUp() {
+  MACH=${1:-""}
+  ECHO=${2:-$ECHO_SETTINGS}
+
+  UP=/tmp/otpup
+  rm -f $UP
+  cmd="curl http://$MACH:52425/otp/routers > $UP 2>&1"
+  eval $cmd
+  if [ $ECHO == "TRUE" ]; then
+    echo $cmd
+  fi
+
+  grep TRANSIT $UP
 }

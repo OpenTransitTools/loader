@@ -20,12 +20,19 @@ fi
 
 
 cd $RTP
-rm *.zip or-wa*
+mkdir -p OLD
+mv *.zip or-wa* *new ./OLD/
 scp maps6:~/htdocs/pelias/or-wa.osm.pbf .
 
 cd $LOADR
 bin/otp_build rtp
 bin/otp_package_new rtp
+
+cd $RTP
+jar uf otp.jar client
+cp otp.jar otp.jar-new
+
+cd $LOADR
 scripts/bolt/scp-restart.sh
 
 cd $RTP
