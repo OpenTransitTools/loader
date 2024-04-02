@@ -13,9 +13,6 @@ if [ $UP_GTFS == GTFS ]; then
 
   echo "patch CTRAN"
   cp OLD/CTRAN*zip .
-
-  echo "patch SMART"
-  cp OLD/SMART*zip .
 fi
 
 
