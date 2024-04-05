@@ -29,6 +29,24 @@
   },
   "updaters": [
     {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/serviceAlerts",
+      "feedId": "CLACKAMAS"
+    },
+    {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/tripUpdates",
+      "feedId": "CLACKAMAS"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/vehiclePositions",
+      "feedId": "CLACKAMAS"
+    },
+    {
       "type": "stop-time-updater",
       "frequency": "31s",
       "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/TripUpdates",
@@ -39,6 +57,24 @@
       "frequency": "29s",
       "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/VehiclePositions",
       "feedId": "CTRAN"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/serviceAlerts",
+      "feedId": "SAM"
+    },
+    {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/tripUpdates",
+      "feedId": "SAM"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/vehiclePositions",
+      "feedId": "SAM"
     },
     {
       "type": "real-time-alerts",
