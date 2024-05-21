@@ -19,8 +19,9 @@ if [[ $size -gt 200000000 ]]
 then
   echo $CUR is active, so update $SCP
   ls -l $RTP_DIR/*new $RTP_DIR/*json
-  scp $RTP_DIR/*new $RTP_DIR/*json $SCP:$RTP_DIR/
+  boltExe "update.sh" $TOG TRUE  # git update
   rm -f $LOG_FILE
+  scp $RTP_DIR/*new $RTP_DIR/*json $SCP:$RTP_DIR/
   boltExe "$RUN_NEW" $TOG TRUE
   sleep 60
 
