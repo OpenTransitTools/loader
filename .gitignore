@@ -6,6 +6,8 @@ router-config.json
 lucene
 bkup
 pid.txt
+log.txt
+out.txt
 *.tar
 *.pbf
 *.old
