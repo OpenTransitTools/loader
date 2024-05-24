@@ -34,6 +34,8 @@ function boltExe() {
 
   if [ $ECHO == "TRUE" ]; then
     cat $LOG_FILE
+  elif [ $ECHO == "RM" ]; then
+    RM $LOG_FILE
   fi
 }
 

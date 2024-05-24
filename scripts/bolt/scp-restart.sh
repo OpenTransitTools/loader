@@ -7,7 +7,7 @@ if [[ $size -gt 200000000 ]]
 then
   getMachineToToggle
   echo "$CUR is active, so scp new files to $SCP"
-  boltExe "update.sh" $TOG FALSE  # git update first
+  boltExe "update.sh" $TOG RM  # git update first
   ls -l $RTP_DIR/*new $RTP_DIR/*json
   rm -f $LOG_FILE
   scp $RTP_DIR/*new $RTP_DIR/*json $SCP:$RTP_DIR/
