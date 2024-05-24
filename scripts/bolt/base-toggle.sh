@@ -88,6 +88,7 @@ function isUp() {
   eval $cmd
   if [ $ECHO == "TRUE" ]; then
     echo $cmd
+    echo $UP
   fi
 
   grep TRANSIT $UP
