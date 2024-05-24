@@ -2,24 +2,13 @@ DIR=`dirname $0`
 . $DIR/base-toggle.sh
 
 
-isBlue
-if [ $? == 1 ]; then
-  CUR="BLUE ($BLUE_STAG)"
-  TOG=$GREEN_STAG
-  SCP=$USER@$GREEN_STAG
-else
-  CUR="GREEN ($GREEN_STAG)"
-  TOG=$BLUE_STAG
-  SCP=$USER@$BLUE_STAG
-fi
-
-
 size=`ls -ltr $RTP_DIR/graph.obj-new | awk -F" " '{ print $5 }'`
 if [[ $size -gt 200000000 ]]
 then
-  echo $CUR is active, so update $SCP
+  getMachineToToggle
+  echo "$CUR is active, so scp new files to $SCP"
+  boltExe "update.sh" $TOG FALSE  # git update first
   ls -l $RTP_DIR/*new $RTP_DIR/*json
-  boltExe "update.sh" $TOG TRUE  # git update
   rm -f $LOG_FILE
   scp $RTP_DIR/*new $RTP_DIR/*json $SCP:$RTP_DIR/
   boltExe "$RUN_NEW" $TOG TRUE
@@ -29,5 +18,9 @@ then
   if [ $? == 0 ]; then
     echo "Toggeling $LOAD_BALANCER"
     boltLbCmd "$FLIP" RM
+  else
+    echo "Unsure $TOG is running, so not touching the $LOAD_BALANCER ($FLIP)"
   fi
+else
+  echo "doing nothing: $RTP_DIR/graph.obj-new looks small at $size bytes"
 fi

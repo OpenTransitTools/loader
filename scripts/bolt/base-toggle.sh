@@ -27,7 +27,9 @@ function boltExe() {
   ECHO=${3:-$ECHO_SETTINGS}
 
   cmd="bolt command run \"$CMD\" --targets \"$MACH\" >> $LOG_FILE 2>&1"
-  echo $cmd
+  if [ $ECHO == "TRUE" ]; then
+    echo $cmd
+  fi
   eval $cmd
 
   if [ $ECHO == "TRUE" ]; then
@@ -87,4 +89,18 @@ function isUp() {
   fi
 
   grep TRANSIT $UP
+}
+
+
+function getMachineToToggle() {
+  isBlue
+  if [ $? == 1 ]; then
+    CUR="BLUE ($BLUE_STAG)"
+    TOG=$GREEN_STAG
+    SCP=$USER@$GREEN_STAG
+  else
+    CUR="GREEN ($GREEN_STAG)"
+    TOG=$BLUE_STAG
+    SCP=$USER@$BLUE_STAG
+  fi
 }
