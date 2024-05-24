@@ -148,14 +148,6 @@
       "network": "LIME",
       "sourceType": "gbfs",
       "url": "https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json"
-    },
-    {
-      "type": "vehicle-rental",
-      "frequency": "45s",
-      "network": "SPIN",
-      "sourceType": "gbfs", 
-      "url": "https://gbfs.spin.pm/api/gbfs/v2_3/portland/gbfs",
-      "geofencingZones": "true"
     }
   ],
   "vectorTiles": {
@@ -168,6 +160,14 @@
         "mapper": "Digitransit",
         "maxZoom": 20,
         "minZoom": 14,
+        "cacheMaxSeconds": 600
+      },
+      {
+        "name": "areaStops",
+        "type": "AreaStop",
+        "mapper": "OTPRR",
+        "maxZoom": 30,
+        "minZoom":  8,
         "cacheMaxSeconds": 600
       },
       {
