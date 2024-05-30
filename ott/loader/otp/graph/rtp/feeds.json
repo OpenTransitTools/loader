@@ -35,6 +35,11 @@
     },
     {
       "type": "gtfs",
+      "feedId": "CTRAN_FLEX",
+      "source": "CTRAN_FLEX.gtfs.zip"
+    },
+    {
+      "type": "gtfs",
       "feedId": "MATS",
       "source": "MATS.gtfs.zip"
     },
