@@ -84,7 +84,7 @@ function isUp() {
 
   UP=/tmp/otpup
   rm -f $UP
-  cmd="curl http://$MACH:52425/otp/routers > $UP 2>&1"
+  cmd="curl http://$MACH:$OTP_PORT/otp/routers > $UP 2>&1"
   eval $cmd
   if [ $ECHO == "TRUE" ]; then
     echo $cmd

@@ -1,6 +1,8 @@
 BLUE_STAG="cs-st-mapapp01"
 GREEN_STAG="rj-st-mapapp01"
 
+OTP_PORT=52425
+
 if [ $USER == 'otp' ]; then
   ACCOUNTS="rtp"
 elif [ $USER == 'geoserver' ]; then

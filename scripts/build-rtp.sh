@@ -28,6 +28,7 @@ mv *.zip or-wa* *new ./OLD/
 scp maps6:~/htdocs/pelias/or-wa.osm.pbf .
 
 cd $LOADR
+rm -f $RTP/graph.obj*
 bin/otp_build rtp
 bin/otp_package_new rtp
 

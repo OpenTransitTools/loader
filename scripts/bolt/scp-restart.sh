@@ -1,7 +1,6 @@
 DIR=`dirname $0`
 . $DIR/base-toggle.sh
 
-
 size=`ls -ltr $RTP_DIR/graph.obj-new | awk -F" " '{ print $5 }'`
 if [[ $size -gt 200000000 ]]
 then
@@ -24,3 +23,5 @@ then
 else
   echo "doing nothing: $RTP_DIR/graph.obj-new looks small at $size bytes"
 fi
+
+echo "BUILD LOG: http://$MACH:$OTP_PORT/otp.v"
