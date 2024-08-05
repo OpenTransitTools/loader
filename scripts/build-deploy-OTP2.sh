@@ -17,8 +17,9 @@ else
   echo "BUILDING $CT ($CT_TIME), as it's older than $MOD ($MOD_TIME)"
 fi
 
-rm $CT
-bin/otp_build -d call-test
+rm $CT $GRAPH/call-test/*.gtfs.zip
+bin/gtfs_update
+bin/otp_build call-test
 bin/otp_v_new call-test
 bin/otp_package_new call-test
 bin/otp_export
