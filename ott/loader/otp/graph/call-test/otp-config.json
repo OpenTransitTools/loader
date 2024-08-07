@@ -1,5 +1,6 @@
 {
   "otpFeatures" : {
+    "LegacyRestApi": true,
     "SandboxAPITransmodelApi": true,
     "SandboxAPIMapboxVectorTilesApi": true,
     "SandboxAPILegacyGraphQLApi": true,
