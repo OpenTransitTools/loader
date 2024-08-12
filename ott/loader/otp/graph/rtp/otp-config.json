@@ -1,5 +1,6 @@
 {
   "otpFeatures" : {
+    "LegacyRestApi": true,
     "SandboxAPIMapboxVectorTilesApi": true,
     "SandboxAPIParkAndRideApi": true,
     "FloatingBike": true,
