@@ -14,11 +14,9 @@ if [ $UP_GTFS == GTFS ]; then
   bin/gtfs_update
 
   cd $CACHE
-
-  echo "patch CTRAN"
-  cp OLD/CTRAN*zip .
-
-  scp *gtfs.zip geoserver@rj-dv-mapapp01:~/gtfs/cache/
+  scp="scp *gtfs.zip geoserver@rj-dv-mapapp01:~/gtfs/cache/"
+  echo $scp
+  eval $scp
 fi
 
 
