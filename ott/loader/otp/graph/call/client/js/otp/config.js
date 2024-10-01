@@ -217,7 +217,7 @@ otp.config = {
                     { name : 'Rte 94 Schedule (94-Pacific Hwy/Sherwood)', largePrint: true },
                     { name : 'Rte 96/97 Schedule (96-Tualatin/I-5, 97-Tualatin-Sherwood Rd)', largePrint: true },
                     { name : 'Rte 152 Schedule (152-Milwaukie)', largePrint: true },
-                    { name : 'Rte 153 Schedule (153-Stafford/Salamo), largePrint: true },
+                    { name : 'Rte 153 Schedule (153-Stafford/Salamo)', largePrint: true },
                     { name : 'Rte 155/156 Schedule (155-Sunnyside, 156-Mather Rd)', largePrint: true },
                     { name : 'MAX Schedule: Blue, Green, Orange, Red, Yellow & Late Night/Early Morning Bus', largePrint: true },
                     { name : 'MAX Schedule: Red Line', largePrint: true },
