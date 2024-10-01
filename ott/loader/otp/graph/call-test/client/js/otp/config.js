@@ -161,7 +161,7 @@ otp.config = {
 
                 mailables : [
                     { name : 'Rte 1 Schedule (1-Vermont)', largePrint: true },
-                    { name : 'Rte FX2 Schedule (FX2-Division)', largePrint: true },
+                    { name : 'Rte 2 Schedule (FX2-Division)', largePrint: true },
                     { name : 'Rte 4 Schedule (4-Fessenden)', largePrint: true },
                     { name : 'Rte 6 Schedule (6-Martin Luther King Jr Blvd)', largePrint: true },
                     { name : 'Rte 8 Schedule (8-Jackson Park/NE 15th)', largePrint: true },
@@ -197,7 +197,7 @@ otp.config = {
                     { name : 'Rte 52 Schedule (52-Farmington/185th)', largePrint: true },
                     { name : 'Rte 53 Schedule (53-Arctic/Allen)', largePrint: true },
                     { name : 'Rte 54 Schedule (54-Beaverton-Hillsdale Hwy)', largePrint: true },
-                    { name : 'Rte 55 Schedule (55-Hamilton )', largePrint: true },
+                    { name : 'Rte 55 Schedule (55-Hamilton)', largePrint: true },
                     { name : 'Rte 56 Schedule (56-Scholls Ferry/Marquam Hill)', largePrint: true },
                     { name : 'Rte 57/59 Schedule (57-TV Hwy/Forest Grove, 59-Walker/Park Way)', largePrint: true },
                     { name : 'Rte 58 Schedule (58-Canyon Rd)', largePrint: true },
