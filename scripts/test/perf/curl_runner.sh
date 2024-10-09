@@ -1,4 +1,4 @@
-#SECONDS=0
+SECONDS=0
 for f in {1..10}
 do
   curl_bike_transit.sh &
@@ -13,5 +13,5 @@ wait
 
 echo
 echo
-#echo run of $f curls took $SECONDS seconds
+echo run of $f curls took $SECONDS seconds
 echo
