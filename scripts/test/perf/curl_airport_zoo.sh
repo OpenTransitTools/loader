@@ -7,7 +7,7 @@ d=`date +"%Y-%m-%d"`
 t=`date +"%H:%M"`
 # echo $d $t; exit
 
-curl -m 15 "$m$p" \
+curl -m 30 "$m$p" \
   -H 'Accept: */*' \
   -H 'Accept-Language: en-US,en;q=0.9' \
   -H 'Connection: keep-alive' \

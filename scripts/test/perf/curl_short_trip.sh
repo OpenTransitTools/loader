@@ -7,7 +7,7 @@ d=`date +"%Y-%m-%d"`
 t=`date +"%H:%M"`
 # echo $d $t; exit
 
-curl -m 15 "$m$p" \
+curl -m 30 "$m$p" \
   -H 'sec-ch-ua-platform: "macOS"' \
   -H 'Referer: https://rtp.trimet.org/' \
   -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36' \
