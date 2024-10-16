@@ -64,7 +64,8 @@
         "type": "Stop",
         "mapper": "Digitransit",
         "maxZoom": 20,
-        "minZoom": 14,
+        "minZoom": 4,
+        "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
       {
