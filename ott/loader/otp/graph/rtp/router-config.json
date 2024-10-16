@@ -152,14 +152,15 @@
   ],
   "vectorTiles": {
     "basePath": "/rtp/routers/default/vectorTiles",
-    "attribution": "<a href='https://trimet.org/mod'>Regional Partners</a>",
+    "attribution": "<a href='https://rtp.trimet.org/rtp/#/route'>Regional Partners</a>",
     "layers": [
       {
         "name": "stops",
         "type": "Stop",
         "mapper": "Digitransit",
         "maxZoom": 20,
-        "minZoom": 14,
+        "minZoom": 4,
+        "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
       {
