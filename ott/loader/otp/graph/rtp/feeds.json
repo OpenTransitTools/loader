@@ -1,30 +1,5 @@
     {
       "type": "gtfs",
-      "feedId": "CANBY",
-      "source": "CANBY.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "CANBYFERRY",
-      "source": "CANBYFERRY.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "CAT",
-      "source": "CAT.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "CCRIDER",
-      "source": "CCRIDER.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "CHERRIOTS",
-      "source": "CHERRIOTS.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
       "feedId": "CLACKAMAS",
       "source": "CLACKAMAS.gtfs.zip"
     },
@@ -40,8 +15,8 @@
     },
     {
       "type": "gtfs",
-      "feedId": "MATS",
-      "source": "MATS.gtfs.zip"
+      "feedId": "MULT",
+      "source": "MULT.gtfs.zip"
     },
     {
       "type": "gtfs",
@@ -55,23 +30,8 @@
     },
     {
       "type": "gtfs",
-      "feedId": "SCTD",
-      "source": "SCTD.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "SKAMANIA",
-      "source": "SKAMANIA.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
       "feedId": "SMART",
       "source": "SMART.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "SWAN",
-      "source": "SWAN.gtfs.zip"
     },
     {
       "type": "gtfs",
@@ -82,14 +42,4 @@
       "type": "gtfs",
       "feedId": "WAPARK",
       "source": "WAPARK.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "WOODBURN",
-      "source": "WOODBURN.gtfs.zip"
-    },
-    {
-      "type": "gtfs",
-      "feedId": "YAMHILL",
-      "source": "YAMHILL.gtfs.zip"
     }
