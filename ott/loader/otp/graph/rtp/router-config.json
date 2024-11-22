@@ -5,9 +5,6 @@
     "alightSlack": "0M",
     "transferSlack": 180,
     "waitReluctance": 0.9,
-    "walkReluctance": 2.75,
-    "stairsReluctance": 1.65,
-    "carReluctance": 16,
     "numItineraries": 3,
     "itineraryFilters": {
       // only show non-transit (ie. walking) when it's at least as good as the transit option
@@ -117,24 +114,6 @@
       "frequency": "29s",
       "url": "https://ewp.transloc.com/subscriptions/gtfsrt/vehicles.ashx",
       "feedId": "WAPARK"
-    },
-    {
-      "type": "real-time-alerts",
-      "frequency": "45s",
-      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/alert",
-      "feedId": "YAMHILL"
-    },
-    {
-      "type": "stop-time-updater",
-      "frequency": "31s",
-      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/tripupdate",
-      "feedId": "YAMHILL"
-    },
-    {
-      "type": "vehicle-positions",
-      "frequency": "29s",
-      "url": "https://ycta.connexionz.net/rtt/public/utility/gtfsrealtime.aspx/vehicleposition",
-      "feedId": "YAMHILL"
     },
     {
       "type": "vehicle-rental",
