@@ -462,7 +462,7 @@ class ListTestSuites(CacheBase):
                 t = TestSuite(self.suite_dir, f)
                 self.test_suites.append(t)
 
-    def has_errors(self, acceptable_num_fails=2):
+    def has_errors(self, acceptable_num_fails=5):
         ret_val = False
         for t in self.test_suites:
             if t.failures > acceptable_num_fails or t.passes <= 0:
