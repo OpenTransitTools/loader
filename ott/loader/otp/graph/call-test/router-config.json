@@ -1,4 +1,5 @@
 {
+  // JAN 2025: changes to itin filters search window
   "routingDefaults": {
     "maxJourneyDuration": "6h",
     "boardSlack": "0M",
@@ -10,8 +11,11 @@
     "carReluctance": 16,
     "numItineraries": 3,
     "itineraryFilters": {
+      "parkAndRideDurationRatio": 0.15,
+      "bikeRentalDistanceRatio": 0.15,
+
       // only show non-transit (ie. walking) when it's at least as good as the transit option
-      "nonTransitGeneralizedCostLimit": "0 + 1.0 x"
+      "nonTransitGeneralizedCostLimit": "0 + 1.5 x"
     }
   },
   "transit": {
@@ -19,7 +23,7 @@
     "dynamicSearchWindow": {
       "minTransitTimeCoefficient": 0.5,
       "minWaitTimeCoefficient": 0.5,
-      "minWindow": "8h",
+      "minWindow": "1h",
       "maxWindow": "8h"
     }
   },
