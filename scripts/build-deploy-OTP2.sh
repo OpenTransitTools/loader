@@ -20,7 +20,7 @@ fi
 rm $CT $GRAPH/call-test/*.gtfs.zip
 bin/gtfs_update
 bin/otp_build -n call-test
-bin/otp_v_new call-test
+#bin/otp_v_new call-test
 bin/otp_package_new call-test
 bin/otp_export
 touch $GRAPH/*/*obj*
