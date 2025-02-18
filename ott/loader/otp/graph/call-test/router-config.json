@@ -61,7 +61,6 @@
     }
   ],
   "vectorTiles": {
-    "basePath": "/otp_ct/vectorTiles",
     "layers": [
       {
         "name": "stops",
@@ -73,11 +72,11 @@
         "cacheMaxSeconds": 600
       },
       {
-        "name": "stations",
-        "type": "Station",
-        "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "name": "areaStops",
+        "type": "AreaStop",
+        "mapper": "OTPRR",
+        "maxZoom": 30,
+        "minZoom":  8,
         "cacheMaxSeconds": 600
       },
       {
@@ -106,13 +105,5 @@
         "expansionFactor": 0.25
       }
     ]
-  },
-  "rideHailingServices": [
-    {
-      "type": "uber-car-hailing",
-      "clientId": "${UBER_CLIENT_ID}",
-      "clientSecret": "${UBER_CLIENT_SECRET}",
-      "wheelchairAccessibleProductId": "970ed376-bd33-4ad1-81c5-d2928a347a06"
-    }
-  ]
+  }
 }
