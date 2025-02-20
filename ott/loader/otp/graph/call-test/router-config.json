@@ -88,10 +88,10 @@
       {
         "name": "realtimeRentalStations",
         "type": "VehicleRentalStation",
-        "mapper": "Digitransit",
+        "mapper": "DigitransitRealtime",
         "maxZoom": 20,
         "minZoom": 2,
-        "cacheMaxSeconds": 10
+        "cacheMaxSeconds": 100
       },
       {
         "name": "rentalStations",
