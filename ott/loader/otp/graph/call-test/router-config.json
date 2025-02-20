@@ -6,9 +6,6 @@
     "alightSlack": "0M",
     "transferSlack": 180,
     "waitReluctance": 0.9,
-    "walkReluctance": 2.75,
-    "stairsReluctance": 1.65,
-    "carReluctance": 16,
     "numItineraries": 3,
     "itineraryFilters": {
       "parkAndRideDurationRatio": 0.15,
@@ -61,6 +58,7 @@
     }
   ],
   "vectorTiles": {
+    "basePath": "/rtp/routers/default/vectorTiles",
     "layers": [
       {
         "name": "stops",
@@ -86,6 +84,14 @@
         "maxZoom": 20,
         "minZoom": 2,
         "cacheMaxSeconds": 60
+      },
+      {
+        "name": "realtimeRentalStations",
+        "type": "VehicleRentalStation",
+        "mapper": "Digitransit",
+        "maxZoom": 20,
+        "minZoom": 2,
+        "cacheMaxSeconds": 10
       },
       {
         "name": "rentalStations",
