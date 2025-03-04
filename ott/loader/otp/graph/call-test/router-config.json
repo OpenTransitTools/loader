@@ -1,5 +1,6 @@
 {
   // JAN 2025: changes to itin filters search window
+  // MAR 2025: car reluctance + timeout
   "routingDefaults": {
     "maxJourneyDuration": "6h",
     "boardSlack": "0M",
@@ -13,7 +14,11 @@
 
       // only show non-transit (ie. walking) when it's at least as good as the transit option
       "nonTransitGeneralizedCostLimit": "0 + 1.5 x"
-    }
+    },
+    "car" : {
+      "reluctance" : 20.0
+    },
+    "streetRoutingTimeout" : "7s"
   },
   "transit": {
     "maxNumberOfTransfers": 4,
@@ -64,8 +69,8 @@
         "name": "stops",
         "type": "Stop",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 4,
+        "maxZoom": 30,
+        "minZoom": 1,
         "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
@@ -74,40 +79,50 @@
         "type": "AreaStop",
         "mapper": "OTPRR",
         "maxZoom": 30,
-        "minZoom":  8,
+        "minZoom": 1,
+        "filter": "sunday-to-sunday-service-week",
+        "cacheMaxSeconds": 600
+      },
+      {
+        "name": "stations",
+        "type": "Station",
+        "mapper": "Digitransit",
+        "maxZoom": 30,
+        "minZoom": 1,
+        "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
       {
         "name": "rentalVehicles",
         "type": "VehicleRentalVehicle",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "maxZoom": 30,
+        "minZoom": 1,
         "cacheMaxSeconds": 60
       },
       {
         "name": "realtimeRentalStations",
         "type": "VehicleRentalStation",
         "mapper": "DigitransitRealtime",
-        "maxZoom": 20,
-        "minZoom": 2,
-        "cacheMaxSeconds": 100
+        "maxZoom": 30,
+        "minZoom": 1,
+        "cacheMaxSeconds": 90
       },
       {
         "name": "rentalStations",
         "type": "VehicleRentalStation",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "maxZoom": 30,
+        "minZoom": 1,
         "cacheMaxSeconds": 600
       },
       {
         "name": "vehicleParking",
         "type": "VehicleParking",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 10,
-        "cacheMaxSeconds": 60,
+        "maxZoom": 30,
+        "minZoom": 1,
+        "cacheMaxSeconds": 600,
         "expansionFactor": 0.25
       }
     ]
