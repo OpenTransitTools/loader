@@ -3,10 +3,16 @@
     "LegacyRestApi": true,
     "SandboxAPIMapboxVectorTilesApi": true,
     "SandboxAPIParkAndRideApi": true,
-    "FlexRouting": false,
-    "OptimizeTransfers": false,
+    "Co2Emissions": false,
     "FloatingBike": true,
+    "FaresV2" : true,
+    "FlexRouting": false,
+    "GtfsGraphQlApi": true,
+    "TransferConstraints": true,
+    "TransferAnalyzer": false,
+    "OptimizeTransfers": true,
     "ParallelRouting":true,
-    "FaresV2" : true
+    "RealtimeResolver": true,
+    "ReportApi": true
   }
 }
