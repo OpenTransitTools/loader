@@ -7,22 +7,29 @@
     "waitReluctance": 0.9,
     "numItineraries": 3,
     "itineraryFilters": {
+      "parkAndRideDurationRatio": 0.15,
+      "bikeRentalDistanceRatio": 0.15,
+
       // only show non-transit (ie. walking) when it's at least as good as the transit option
-      "nonTransitGeneralizedCostLimit": "0 + 1.0 x"
-    }
+      "nonTransitGeneralizedCostLimit": "0 + 1.5 x"
+    },
+    "car" : {
+      "reluctance" : 20.0
+    },
+    "streetRoutingTimeout" : "7s"
+  },
+  "flex": {
+    "maxAccessWalkDuration": "10m",
+    "maxEgressWalkDuration": "10m"
   },
   "transit": {
     "maxNumberOfTransfers": 4,
     "dynamicSearchWindow": {
       "minTransitTimeCoefficient": 0.5,
       "minWaitTimeCoefficient": 0.5,
-      "minWindow": "8h",
+      "minWindow": "1h",
       "maxWindow": "8h"
     }
-  },
-  "flex": {
-    "maxAccessWalkDuration": "10m",
-    "maxEgressWalkDuration": "10m"
   },
   "updaters": [
     {
@@ -144,8 +151,8 @@
         "name": "stops",
         "type": "Stop",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 4,
+        "maxZoom": 30,
+        "minZoom": 1,
         "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
@@ -154,50 +161,52 @@
         "type": "AreaStop",
         "mapper": "OTPRR",
         "maxZoom": 30,
-        "minZoom":  8,
+        "minZoom": 1,
+        "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
       {
         "name": "stations",
         "type": "Station",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "maxZoom": 30,
+        "minZoom": 1,
+        "filter": "sunday-to-sunday-service-week",
         "cacheMaxSeconds": 600
       },
       {
         "name": "rentalVehicles",
         "type": "VehicleRentalVehicle",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "maxZoom": 30,
+        "minZoom": 1,
         "cacheMaxSeconds": 60
+      },
+      {
+        "name": "realtimeRentalStations",
+        "type": "VehicleRentalStation",
+        "mapper": "DigitransitRealtime",
+        "maxZoom": 30,
+        "minZoom": 1,
+        "cacheMaxSeconds": 90
       },
       {
         "name": "rentalStations",
         "type": "VehicleRentalStation",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 2,
+        "maxZoom": 30,
+        "minZoom": 1,
         "cacheMaxSeconds": 600
       },
       {
         "name": "vehicleParking",
         "type": "VehicleParking",
         "mapper": "Digitransit",
-        "maxZoom": 20,
-        "minZoom": 10,
-        "cacheMaxSeconds": 60,
+        "maxZoom": 30,
+        "minZoom": 1,
+        "cacheMaxSeconds": 600,
         "expansionFactor": 0.25
       }
     ]
-  },
-  "rideHailingServices": [
-    {
-      "type": "uber-car-hailing",
-      "clientId": "${UBER_CLIENT_ID}",
-      "clientSecret": "${UBER_CLIENT_SECRET}",
-      "wheelchairAccessibleProductId": "970ed376-bd33-4ad1-81c5-d2928a347a06"
-    }
-  ]
+  }
 }
