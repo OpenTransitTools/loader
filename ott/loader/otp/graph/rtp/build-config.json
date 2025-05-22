@@ -19,5 +19,9 @@
 
   "transitFeeds": [
     "${includeFile:feeds.json}"
-  ]
+  ],
+
+  "fares": {
+    "type": "combine-interlined-legs"
+  }
 }
