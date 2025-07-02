@@ -16,7 +16,19 @@
     "car" : {
       "reluctance" : 20.0
     },
-    "streetRoutingTimeout" : "7s"
+    "streetRoutingTimeout" : "7s",
+    "accessEgress" : {
+      "penalty" : {
+        "SCOOTER_RENTAL" : {
+          "timePenalty" : "0m + 0.8t",
+          "costFactor" : 1.0
+        },
+        "BIKE_RENTAL" : {
+          "timePenalty" : "0m + 0.8t",
+          "costFactor" : 1.0
+        }
+      }
+    }
   },
   "flex": {
     "maxAccessWalkDuration": "10m",
