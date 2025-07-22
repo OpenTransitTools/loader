@@ -97,10 +97,18 @@ class OtpBuilder(CacheBase):
         # step 4: build graph is needed
         if rebuild_graph:
             success = False
+            #import pdb; pdb.set_trace()
+
+            # step 4a: hack ... delete OTP 2.x call-test graph so it builds after this
+            try:
+                if graph.get('name') in ('call', 'mod'):
+                    print("Build of {}, then remove call-test graph".format(graph.get('name')))
+                    os.remove("/home/otp/loader/ott/loader/otp/graph/call-test/graph.obj")
+            except:
+                pass
 
             # step 4b: run the builder multiple times until we get a good looking Graph.obj
             for n in range(1, 5):
-                # import pdb; pdb.set_trace()
                 log.info(" build attempt {0} of a new graph ".format(n))
                 file_utils.rm(graph.get('path'))
                 otp_utils.run_graph_builder(graph.get('dir'), graph.get('version'), java_mem=java_mem)
