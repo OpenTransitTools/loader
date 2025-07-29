@@ -20,7 +20,14 @@
   "transitFeeds": [
     "${includeFile:feeds.json}"
   ],
-
+  "transferRequests": [
+    {
+      "modes": "WALK"
+    },
+    {
+      "modes": "BICYCLE"
+    }
+  ],
   "fares": {
     "type": "combine-interlined-legs"
   }
