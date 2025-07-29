@@ -7,6 +7,11 @@ export JAVA_OPTS="-Xms2298m -Xmx4096m -server"
 GRAPH=~/loader/ott/loader/otp/graph
 CT=${1:-"$GRAPH/call-test/graph.obj"}
 MOD=${2:-"$GRAPH/mod/Graph.obj"}
+SVR=${3:-""}
+
+echo "$CT -> $SVR (all?)"
+#exit
+
 MOD_TIME=`stat -c %Y $MOD`
 CT_TIME=`stat -c %Y $CT`
 let CT_TIME=$CT_TIME+100 # add a few seconds to prevent same time causing rebuilt
@@ -22,5 +27,5 @@ bin/gtfs_update
 bin/otp_build -n call-test
 #bin/otp_v_new call-test
 bin/otp_package_new call-test
-bin/otp_export
+bin/otp_export $SVR
 touch $GRAPH/*/*obj*
