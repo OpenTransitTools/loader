@@ -135,13 +135,6 @@
       "feedId": "TRIMET"
     },
     {
-      "type": "vehicle-positions",
-      "frequency": "29s",
-      "fuzzyTripMatching": true,
-      "url": "https://ewp.transloc.com/subscriptions/gtfsrt/vehicles.ashx",
-      "feedId": "WAPARK"
-    },
-    {
       "type": "vehicle-rental",
       "frequency": "40s",
       "sourceType": "gbfs",
