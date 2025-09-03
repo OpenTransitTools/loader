@@ -20,11 +20,8 @@ let CT_TIME=$CT_TIME+100 # add a few seconds to prevent same time causing rebuil
 if [ $CT_TIME -gt $MOD_TIME ]; then
   echo "NOT building $CT ($CT_TIME), as it's newer than $MOD ($MOD_TIME)"
   exit 1
-elif [ ! -f $OSM ]; then
-  echo "NOT building $OSM doesn't exist"
-  exit 1
-elif [ ! -f $GTFS ]; then
-  echo "NOT building $GTFS doesn't exist"
+elif [ ! -f $MOD ]; then
+  echo "NOT building $MOD doesn't exist"
   exit 1
 else
   echo "BUILDING $CT ($CT_TIME), as it's older than $MOD ($MOD_TIME)"
@@ -33,7 +30,15 @@ fi
 rm $CT $GRAPH/call-test/*.gtfs.zip
 bin/gtfs_update
 bin/otp_build -n call-test
-#bin/otp_v_new call-test
+
+if [ ! -f $OSM ]; then
+  echo "NOT deploying - graph suspect as $OSM doesn't exist"
+  exit 1
+elif [ ! -f $GTFS ]; then
+  echo "NOT deploying - graph suspect as $GTFS doesn't exist"
+  exit 1
+fi
+
 bin/otp_package_new call-test
 bin/otp_export $SVR
 touch $GRAPH/*/*obj*
