@@ -8,6 +8,8 @@ GRAPH=~/loader/ott/loader/otp/graph
 CT=${1:-"$GRAPH/call-test/graph.obj"}
 MOD=${2:-"$GRAPH/mod/Graph.obj"}
 SVR=${3:-""}
+OSM=${4:-"$GRAPH/call-test/or-wa.osm.pbf"}
+GTFS=${5:-"$GRAPH/call-test/TRIMET.gtfs.zip"}
 
 echo "$CT -> $SVR (all?)"
 #exit
@@ -17,6 +19,12 @@ CT_TIME=`stat -c %Y $CT`
 let CT_TIME=$CT_TIME+100 # add a few seconds to prevent same time causing rebuilt
 if [ $CT_TIME -gt $MOD_TIME ]; then
   echo "NOT building $CT ($CT_TIME), as it's newer than $MOD ($MOD_TIME)"
+  exit 1
+elif [ ! -f $OSM ]; then
+  echo "NOT building $OSM doesn't exist"
+  exit 1
+elif [ ! -f $GTFS ]; then
+  echo "NOT building $GTFS doesn't exist"
   exit 1
 else
   echo "BUILDING $CT ($CT_TIME), as it's older than $MOD ($MOD_TIME)"
