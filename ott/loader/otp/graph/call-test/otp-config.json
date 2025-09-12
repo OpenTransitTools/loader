@@ -5,7 +5,7 @@
     "SandboxAPIParkAndRideApi": true,
     "Co2Emissions": false,
     "FloatingBike": true,
-    "FaresV2" : true,
+    "FaresV2" : false,
     "FlexRouting": false,
     "GtfsGraphQlApi": true,
     "TransferConstraints": true,
