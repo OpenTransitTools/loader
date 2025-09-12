@@ -31,13 +31,18 @@ rm $CT $GRAPH/call-test/*.gtfs.zip
 bin/gtfs_update
 bin/otp_build -n call-test
 
-if [ ! -f $OSM ]; then
+if [ ! -f $CT ]; then
+  echo "NOT deploying - graph $CT doesn't exist"
+  exit 1
+elif [ ! -f $OSM ]; then
   echo "NOT deploying - graph suspect as $OSM doesn't exist"
   exit 1
 elif [ ! -f $GTFS ]; then
   echo "NOT deploying - graph suspect as $GTFS doesn't exist"
   exit 1
 fi
+
+#echo DONE BUILDIN; exit
 
 bin/otp_package_new call-test
 bin/otp_export $SVR
