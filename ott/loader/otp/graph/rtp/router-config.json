@@ -45,75 +45,33 @@
   },
   "updaters": [
     {
-      "type": "real-time-alerts",
-      "frequency": "45s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/serviceAlerts",
-      "feedId": "CLACKAMAS"
-    },
-    {
       "type": "stop-time-updater",
       "frequency": "31s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/tripUpdates",
-      "feedId": "CLACKAMAS"
-    },
-    {
-      "type": "vehicle-positions",
-      "frequency": "29s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/clackamas/passioTransit/gtfs/realtime/vehiclePositions",
-      "feedId": "CLACKAMAS"
-    },
-    {
-      "type": "stop-time-updater",
-      "frequency": "31s",
-      "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/TripUpdates",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CTRAN&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "CTRAN"
     },
     {
       "type": "vehicle-positions",
       "frequency": "29s",
-      "url": "http://gtfs-rt.c-tran.org/gtfsrealtime/VehiclePositions",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CTRAN&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "CTRAN"
     },
     {
       "type": "real-time-alerts",
       "frequency": "45s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/serviceAlerts",
-      "feedId": "SAM"
-    },
-    {
-      "type": "stop-time-updater",
-      "frequency": "31s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/tripUpdates",
-      "feedId": "SAM"
-    },
-    {
-      "type": "vehicle-positions",
-      "frequency": "29s",
-      "fuzzyTripMatching": true,
-      "url": "https://passio3.com/sandyor/passioTransit/gtfs/realtime/vehiclePositions",
-      "feedId": "SAM"
-    },
-    {
-      "type": "real-time-alerts",
-      "frequency": "45s",
-      "url": "https://mysmartbus.com/gtfs-rt/alerts",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SMART&type=alerts&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "SMART"
     },
     {
       "type": "stop-time-updater",
       "frequency": "31s",
-      "url": "https://mysmartbus.com/gtfs-rt/tripupdates",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SMART&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "SMART"
     },
     {
       "type": "vehicle-positions",
       "frequency": "29s",
-      "url": "https://mysmartbus.com/gtfs-rt/vehiclepositions",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SMART&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "SMART"
     },
     {
@@ -133,6 +91,24 @@
       "frequency": "9s",
       "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
       "feedId": "TRIMET"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=WAPARK&type=alerts&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "WAPARK"
+    },
+    {
+      "type": "stop-time-updater",
+      "frequency": "31s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=WAPARK&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "WAPARK"
+    },
+    {
+      "type": "vehicle-positions",
+      "frequency": "29s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=WAPARK&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "WAPARK"
     },
     {
       "type": "vehicle-rental",
