@@ -14,12 +14,12 @@ LANDMARK_TYPES = {}
 LANDMARK_TYPES[2] = 'airport'  # maybe we do this if we need the PDX alias
 LANDMARK_TYPES[9] = "transportation"
 LANDMARK_TYPES[7] = 'station'
-LANDMARK_TYPES[10] = 'pr'
+#LANDMARK_TYPES[10] = 'pr'
 LANDMARK_TYPES[14] = 'tc'
 LANDMARK_TYPES[17] = 'br'
 LANDMARK_TYPES[15] = 'facility'
 LANDMARK_TYPES[16] = 'fare_outlet'
-LANDMARK_TYPES[26] = 'tvm'
+#LANDMARK_TYPES[26] = 'tvm'
 
 LANDMARK_TYPES[1]  = "activity_center"
 LANDMARK_TYPES[22] = "community_center"
