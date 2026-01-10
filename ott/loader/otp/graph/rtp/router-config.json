@@ -45,16 +45,34 @@
   },
   "updaters": [
     {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CLACKAMAS&type=alerts&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "CLACKAMAS"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CTRAN&type=alerts&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "CTRAN"
+    },
+    {
       "type": "stop-time-updater",
-      "frequency": "31s",
+      "frequency": "11s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CTRAN&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "CTRAN"
     },
     {
       "type": "vehicle-positions",
-      "frequency": "29s",
+      "frequency": "14s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=CTRAN&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "CTRAN"
+    },
+    {
+      "type": "real-time-alerts",
+      "frequency": "45s",
+      "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SAM&type=alerts&appid=8CBD14D520C6026CC7EEE56A9",
+      "feedId": "SAM"
     },
     {
       "type": "real-time-alerts",
@@ -64,32 +82,32 @@
     },
     {
       "type": "stop-time-updater",
-      "frequency": "31s",
+      "frequency": "11s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SMART&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "SMART"
     },
     {
       "type": "vehicle-positions",
-      "frequency": "29s",
+      "frequency": "14s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=SMART&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "SMART"
     },
     {
       "type": "real-time-alerts",
       "frequency": "45s",
-      "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts/includeFuture/true/suppressSystemWideAlerts/true",
+      "url": "http://trimet.org/transweb/ws/V1/FeedSpecAlerts?includeFuture=true&suppressSystemWideAlerts=true",
       "feedId": "TRIMET"
     },
     {
       "type": "stop-time-updater",
       "frequency": "11s",
-      "url": "http://trimet.org/transweb/ws/V1/TripUpdate",
+      "url": "http://trimet.org/transweb/ws/V1/TripUpdate?n",
       "feedId": "TRIMET"
     },
     {
       "type": "vehicle-positions",
-      "frequency": "9s",
-      "url": "http://trimet.org/transweb/ws/V1/VehiclePositions",
+      "frequency": "13s",
+      "url": "http://trimet.org/transweb/ws/V1/VehiclePositions?n",
       "feedId": "TRIMET"
     },
     {
@@ -100,13 +118,13 @@
     },
     {
       "type": "stop-time-updater",
-      "frequency": "31s",
+      "frequency": "11s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=WAPARK&type=trips&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "WAPARK"
     },
     {
       "type": "vehicle-positions",
-      "frequency": "29s",
+      "frequency": "14s",
       "url": "https://developer.trimet.org/ws/v1/gtfsCache?feedId=WAPARK&type=vehicles&appid=8CBD14D520C6026CC7EEE56A9",
       "feedId": "WAPARK"
     },
