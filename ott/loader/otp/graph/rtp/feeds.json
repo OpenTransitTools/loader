@@ -25,6 +25,11 @@
     },
     {
       "type": "gtfs",
+      "feedId": "WASH_FLEX",
+      "source": "WASH_FLEX.gtfs.zip"
+    },
+    {
+      "type": "gtfs",
       "feedId": "SAM",
       "source": "SAM.gtfs.zip"
     },
