@@ -31,10 +31,8 @@
     }
   },
   "flex": {
-    "maxFlexTripDuration":   "80m",
-    "maxTransferDuration":   "15m",
-    "maxAccessWalkDuration": "15m",
-    "maxEgressWalkDuration": "15m"
+    "maxAccessWalkDuration": "10m",
+    "maxEgressWalkDuration": "10m"
   },
   "transit": {
     "maxNumberOfTransfers": 4,
