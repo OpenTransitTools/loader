@@ -16,6 +16,9 @@
   "osmDefaults": {
     "osmTagMapping": "portland"
   },
+  "fares": {
+    "type": "hop"
+  },
 
   "transferRequests": [
     {
