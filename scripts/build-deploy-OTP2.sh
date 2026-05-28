@@ -1,4 +1,4 @@
-export JAVA_HOME=$HOME/jdk_21
+export JAVA_HOME=$HOME/jdk_25
 export PATH="$JAVA_HOME/bin:.:/home/otp/install/mvn/bin:$PATH"
 export JAVA_OPTS="-Xms2298m -Xmx4096m -server"
 
